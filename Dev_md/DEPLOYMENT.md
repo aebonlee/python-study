@@ -3,7 +3,9 @@
 ## 배포 환경
 - **호스팅**: GitHub Pages
 - **빌드 도구**: Vite 7.3
-- **URL**: https://aebonlee.github.io/python-study/
+- **배포 도구**: gh-pages
+- **URL**: https://python-study.dreamitbiz.com/
+- **GitHub**: https://github.com/aebonlee/python-study
 
 ## 로컬 개발
 
@@ -16,49 +18,60 @@ npm install
 ```bash
 npm run dev
 ```
-개발 서버는 http://localhost:5173 에서 실행됩니다.
+http://localhost:5173 에서 실행
 
 ### 빌드
 ```bash
 npm run build
 ```
-빌드 결과물은 `dist/` 폴더에 생성됩니다.
+결과물: `dist/` 폴더
 
 ### 미리보기
 ```bash
 npm run preview
 ```
-빌드된 결과물을 로컬에서 미리 확인합니다.
 
-## GitHub Pages 배포
+## 배포 방법
 
-### 방법 1: GitHub Actions (자동 배포)
-`main` 브랜치에 푸시하면 자동으로 빌드 및 배포됩니다.
-
-### 방법 2: 수동 배포
+### 방법 1: gh-pages (수동 배포)
 ```bash
 npm run build
-# gh-pages 패키지 사용 시
-npx gh-pages -d dist
+npm run deploy
 ```
+`gh-pages -d dist` 명령으로 gh-pages 브랜치에 배포됩니다.
 
-## Vite 설정 (GitHub Pages)
-```js
-// vite.config.js
-export default defineConfig({
-  base: '/python-study/',  // 리포지토리 이름
-  plugins: [react()]
-})
+### 방법 2: GitHub Actions (자동 배포)
+`main` 브랜치에 푸시하면 `.github/workflows/deploy.yml`이 자동 실행됩니다.
+
+## GitHub Pages 설정
+1. Repository Settings -> Pages
+2. Source: **Deploy from a branch**
+3. Branch: **gh-pages** / **(root)**
+4. Save
+
+## 커스텀 도메인
+- `public/CNAME` 파일에 `python-study.dreamitbiz.com` 설정
+- DNS에서 CNAME 레코드 설정 필요
+
+## OG 이미지 갱신
+```bash
+node scripts/generate-og.mjs
 ```
+`public/og-image.png`이 생성됩니다.
 
-## 환경 변수
-현재 프로젝트는 외부 API를 사용하지 않으므로 환경 변수가 필요하지 않습니다.
-
-## SPA 라우팅 처리
-GitHub Pages에서 SPA 라우팅을 지원하기 위해 404.html 리디렉션을 사용합니다.
+## Supabase 설정 (선택)
+1. `.env.example`을 `.env`로 복사
+2. Supabase 프로젝트 URL과 Anon Key 입력
+```
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+3. `.env` 미설정 시 localStorage만 사용 (정상 작동)
 
 ## 체크리스트
-- [x] vite.config.js에 base 경로 설정
-- [x] GitHub Actions 워크플로우 설정
-- [ ] 커스텀 도메인 (선택)
-- [x] HTTPS 활성화 (GitHub Pages 기본)
+- [x] vite.config.js base: '/' (커스텀 도메인)
+- [x] CNAME 파일 설정
+- [x] 404.html SPA 리디렉트
+- [x] GitHub Actions 워크플로우
+- [x] OG 메타태그 + 이미지
+- [x] gh-pages 배포 스크립트

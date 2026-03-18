@@ -2,27 +2,40 @@
 
 ## CSS 변수 시스템
 
-### 색상
+### 색상 (Python 팔레트 통일)
 ```css
---primary: #306998;          /* Python Blue */
+--primary: #306998;          /* Python Blue (메인) */
 --primary-dark: #1E4F72;     /* 어두운 파란 */
 --primary-light: #4B8BBE;    /* 밝은 파란 */
 --accent: #FFD43B;           /* Python Yellow */
---accent-dark: #F0C419;      /* 어두운 노란 */
+--accent-dark: #E6B800;      /* 어두운 노란 */
+--accent-light: #FFE873;     /* 밝은 노란 */
 --success: #10B981;          /* 성공/초록 */
 --error: #EF4444;            /* 에러/빨강 */
 --warning: #F59E0B;          /* 경고/주황 */
+--info: #3B82F6;             /* 정보/파랑 */
 ```
+
+### 레벨별 색상 (Python 팔레트 파생)
+```css
+--level-basics: #4B8BBE;      /* Python Light Blue */
+--level-intermediate: #306998; /* Python Blue */
+--level-advanced: #1E4F72;     /* Python Dark Blue */
+--level-applied: #D4A017;      /* Python Muted Gold */
+```
+
+> 모든 레벨 색상은 Python 공식 로고의 Blue/Yellow에서 파생됩니다.
+> 추후 컬러셋 변경 시 CSS 변수만 수정하면 전체 적용됩니다.
 
 ### 배경 & 텍스트
 ```css
 /* 라이트 모드 */
 --bg-white: #FFFFFF;
---bg-light: #F8FAFC;
---bg-medium: #E2E8F0;
---text-primary: #0F172A;
---text-secondary: #475569;
---text-light: #94A3B8;
+--bg-light: #F7F9FC;
+--bg-medium: #E8EDF2;
+--text-primary: #111827;
+--text-secondary: #4B5563;
+--text-light: #5B6370;
 
 /* 다크 모드 */
 --bg-white: #111827;
@@ -36,35 +49,36 @@
 ### 크기 & 간격
 ```css
 --nav-height: 72px;
+--container-max: 1280px;
 --radius-sm: 8px;
 --radius-md: 12px;
 --radius-lg: 16px;
+--radius-xl: 20px;
 --radius-full: 9999px;
---shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
---shadow-md: 0 4px 12px rgba(0,0,0,0.1);
---shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
 ```
 
-## 레벨별 색상
-| 레벨 | 색상 | 용도 |
-|------|------|------|
-| 기초 | #10B981 | 카드, 헤더, 진도바 |
-| 중급 | #3B82F6 | 카드, 헤더, 진도바 |
-| 고급 | #8B5CF6 | 카드, 헤더, 진도바 |
-| 응용 | #F59E0B | 카드, 헤더, 진도바 |
+## 이모지 사용 규칙
 
-## 배지 티어 색상
-| 티어 | 배경 | 글로우 |
-|------|------|--------|
-| 브론즈 | #CD7F32 | rgba(205,127,50,0.3) |
-| 실버 | #C0C0C0 | rgba(192,192,192,0.3) |
-| 골드 | #FFD700 | rgba(255,215,0,0.3) |
-| 플래티넘 | #E5E4E2 | rgba(229,228,226,0.4) |
+### 레벨 아이콘 (고정)
+| 레벨 | 이모지 | 의미 |
+|------|--------|------|
+| 기초 | 🌱 | 새싹 |
+| 중급 | 🚀 | 로켓 |
+| 고급 | ⚡ | 번개 |
+| 응용 | 🔬 | 현미경 |
+
+### 레슨 아이콘 규칙
+- 각 레슨은 고유한 이모지 사용 (중복 금지)
+- 레벨 아이콘과 겹치지 않도록 주의
+
+### 배지 아이콘 규칙
+- 해당 레벨/레슨과 연관된 이모지 허용 (예: 🌱 기초 마스터)
+- 동일 티어 내 중복 금지
 
 ## 버튼 스타일
-- `.btn-primary`: Python Blue 배경, 흰색 텍스트
+- `.btn-primary`: Python Blue 그라디언트, 흰색 텍스트
 - `.btn-secondary`: 투명 배경, 보더
-- `.btn-accent`: Python Yellow 배경
+- `.btn-accent`: Python Yellow 그라디언트
 - `.btn-sm`, `.btn-lg`: 크기 변형
 
 ## 글라스모피즘
@@ -74,21 +88,17 @@ background: rgba(255, 255, 255, 0.75);
 border: 1px solid rgba(255, 255, 255, 0.18);
 ```
 
-## 반응형 브레이크포인트
-```css
-@media (max-width: 1024px) { /* 태블릿 */ }
-@media (max-width: 768px)  { /* 모바일 */ }
-@media (max-width: 480px)  { /* 소형 모바일 */ }
-```
-
 ## 다크 모드
 - `[data-theme="dark"]` 선택자로 오버라이드
-- CSS 변수를 재정의하여 일괄 적용
-- 글라스모피즘 효과도 다크 모드에 맞게 조정
+- CSS 변수 재정의로 일괄 적용
 
 ## 애니메이션
-- `fadeInUp`: 아래에서 위로 나타남 (카드 등)
+- `fadeInUp`: 아래에서 위로 나타남 (카드)
 - `fadeIn`: 서서히 나타남
 - `scaleIn`: 작은 크기에서 커지며 나타남
-- `slideInRight`: 오른쪽에서 슬라이드
-- 기본 트랜지션: `all 0.2s ease`
+- 기본 트랜지션: `all 0.3s cubic-bezier(0.4, 0, 0.2, 1)`
+
+## 컬러셋 변경 방법
+1. `src/styles/base.css`의 `:root` 변수 수정
+2. `src/data/lessons.js`의 `levelInfo.color` 수정
+3. 나머지는 CSS 변수를 참조하므로 자동 적용

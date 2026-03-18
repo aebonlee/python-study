@@ -29,8 +29,6 @@
 - **Navbar.jsx**: 스크롤 감지, 드롭다운 메뉴, 진도 서클, 테마 토글, 모바일 메뉴
 - **Footer.jsx**: 4열 그리드, GitHub 링크, 맨위로 버튼
 - **CodeEditor.jsx**: Python 코드 실행 시뮬레이터
-  - 라인 넘버, Tab/Ctrl+Enter 단축키
-  - print, 변수, f-string, for/range 시뮬레이션
 - **BadgeCard.jsx**: 획득/잠금 상태, 티어별 색상/글로우
 - **LessonCard.jsx**: 아이콘, 완료 배지, 난이도 별, 시간/주제
 - **ProgressBar.jsx**: 재사용 가능, 라벨/퍼센트/색상/사이즈 옵션
@@ -49,15 +47,16 @@
 - **QuizCenter.jsx**: 퀴즈 선택 그리드, 점수 표시
 
 ### 데이터 파일 (4개)
-- **lessons.js**: 4단계 × 5~9 레슨 = 총 27개 레슨 정의
+- **lessons.js**: 4단계 x 5~9 레슨 = 총 27개 레슨 정의
 - **badges.js**: 4티어 23개 배지, 조건 시스템
-- **quizzes.js**: 4개 퀴즈 × 10문제 = 40문제 (실제 Python 지식 기반)
+- **quizzes.js**: 4개 퀴즈 x 10문제 = 40문제 (실제 Python 지식 기반)
 - **lessonContents.js**: 각 레슨별 교육 섹션 (설명, 코드 예제, 예상 출력, 팁)
 
-### 진입점
-- **main.jsx**: ReactDOM.createRoot, StrictMode
-- **App.jsx**: BrowserRouter, Provider 래핑, 라우트 정의
-- **index.css**: 11개 CSS 파일 임포트
+### 배포
+- GitHub Pages 배포 (gh-pages 브랜치)
+- GitHub Actions 워크플로우 설정
+- 커스텀 도메인: python-study.dreamitbiz.com
+- CNAME, 404.html SPA 리디렉트
 
 ### 기술적 결정사항
 1. **클라이언트 사이드 코드 실행**: 백엔드 없이 간단한 Python 시뮬레이터 구현
@@ -65,3 +64,52 @@
 3. **CSS 모듈화**: CSS-in-JS 대신 순수 CSS 파일 분리 (성능 + 유지보수)
 4. **localStorage**: 서버 DB 없이 브라우저 저장 (개인 학습용으로 충분)
 5. **디자인 참조**: D:\koreatech 프로젝트의 글라스모피즘, 다크모드 패턴 적용
+
+---
+
+## 2026-03-18 (Day 1 후반) - 품질 개선 및 인프라
+
+### 이모지 정리
+- 중복 이모지 6건 해결
+  - 📦 모듈 -> 📚 (변수와 중복)
+  - 🔢 NumPy -> 🧮 (연산자와 중복)
+  - 🔄 Pandas 가공 -> ⚗️ (반복문과 중복)
+  - ⚡ 동시성 -> 🧵 (고급 레벨과 중복)
+  - 🏆 데이터 프로젝트 -> 📈 (퀴즈 챔피언 배지와 중복)
+  - 🔥 30일 챌린지 -> 🌟 (열정 학습자 배지와 중복)
+- Navbar 잘못된 링크 수정 (data-visualization -> numpy-advanced)
+
+### 컬러 통일
+- Python Blue/Yellow 팔레트로 레벨 색상 통일
+  - 기초: #4B8BBE, 중급: #306998, 고급: #1E4F72, 응용: #D4A017
+- LessonCard.jsx 하드코딩 색상 제거 -> levelInfo 참조
+- CSS 변수 업데이트 (--level-basics 등)
+
+### Error Boundary + Lazy Loading
+- **ErrorBoundary.jsx**: 런타임 에러 복구 UI (다시 시도/새로고침 버튼)
+- **React.lazy + Suspense**: 5개 페이지 모두 코드 스플리팅 적용
+- 빌드 최적화: 350KB 단일 -> 256KB 메인 + 개별 청크 분리
+
+### OG 메타태그
+- index.html에 Open Graph 메타태그 추가 (Kakao/SNS 공유 미리보기)
+- sharp로 1200x630 OG 이미지 자동 생성 (scripts/generate-og.mjs)
+- og:title, og:description, og:image, og:url, og:site_name, og:locale
+
+### Supabase 설정
+- @supabase/supabase-js 설치
+- src/config/supabase.js 생성 (pymaster_ 접두사)
+- .env.example 제공
+- Supabase 미설정 시 localStorage fallback 지원
+
+### 기능 점검 결과
+| # | 기능 | 상태 |
+|---|------|------|
+| 1 | Error Boundary | 추가 완료 |
+| 2 | Lazy Loading | 추가 완료 |
+| 3 | Supabase 연동 | 클라이언트 설정 완료 |
+| 4 | 사용자 인증 | Supabase 준비됨 (추후 활성화) |
+| 5 | 학습 진도 추적 | localStorage 작동 중 |
+| 8 | 학습 현황 | Home.jsx 진도 현황 섹션 |
+| 9 | 배지 시스템 | 23개 배지 자동 평가 |
+| 11 | 학습 완료 버튼 | LessonPage.jsx에 존재 |
+| 12 | 시험 성적 기록 | ProgressContext에서 자동 저장 |

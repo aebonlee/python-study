@@ -9,6 +9,9 @@
 | 라우팅 | React Router DOM | 7.13 |
 | 코드 하이라이팅 | PrismJS | 1.30 |
 | 코드 에디터 | react-simple-code-editor | 0.14 |
+| DB 클라이언트 | @supabase/supabase-js | 2.x |
+| OG 이미지 생성 | sharp | (devDep) |
+| 배포 | gh-pages | 6.3 |
 | 언어 | JavaScript (JSX) | ES2022 |
 | 스타일 | CSS Custom Properties | CSS3 |
 
@@ -16,24 +19,35 @@
 
 ```
 D:\python-study\
-├── index.html                  # 진입점 HTML
+├── index.html                  # 진입점 HTML + OG 메타태그
 ├── package.json               # 의존성 관리
 ├── vite.config.js             # Vite 설정
+├── .env.example               # 환경 변수 템플릿
+├── .github/workflows/
+│   └── deploy.yml             # GitHub Actions 배포
+├── scripts/
+│   └── generate-og.mjs        # OG 이미지 생성 스크립트
 ├── public/
-│   └── favicon.svg            # 파비콘 (Python 로고)
+│   ├── favicon.svg            # 파비콘 (Python 로고)
+│   ├── og-image.png           # OG 미리보기 이미지
+│   ├── CNAME                  # 커스텀 도메인
+│   └── 404.html               # SPA 리디렉트
 ├── src/
 │   ├── main.jsx               # React 엔트리 포인트
-│   ├── App.jsx                # 라우터 및 Provider 래핑
+│   ├── App.jsx                # 라우터 + Provider + ErrorBoundary + Lazy
 │   ├── index.css              # CSS 임포트 허브
 │   ├── components/
 │   │   ├── layout/
 │   │   │   ├── Navbar.jsx     # 상단 네비게이션
 │   │   │   └── Footer.jsx     # 하단 푸터
+│   │   ├── ErrorBoundary.jsx  # 런타임 에러 복구 UI
 │   │   ├── CodeEditor.jsx     # Python 코드 에디터
 │   │   ├── BadgeCard.jsx      # 배지 카드
 │   │   ├── LessonCard.jsx     # 레슨 카드
 │   │   ├── ProgressBar.jsx    # 진도율 바
 │   │   └── QuizComponent.jsx  # 퀴즈 컴포넌트
+│   ├── config/
+│   │   └── supabase.js        # Supabase 클라이언트 (pymaster_ 접두사)
 │   ├── contexts/
 │   │   ├── ThemeContext.jsx    # 다크모드 상태
 │   │   ├── ProgressContext.jsx # 학습 진도 상태
@@ -49,18 +63,7 @@ D:\python-study\
 │   │   ├── LessonPage.jsx     # 레슨 상세/학습
 │   │   ├── BadgeCollection.jsx # 배지 컬렉션
 │   │   └── QuizCenter.jsx     # 퀴즈 센터
-│   └── styles/
-│       ├── base.css           # 기본 스타일, CSS 변수
-│       ├── navbar.css         # 네비게이션
-│       ├── hero.css           # 히어로 & 메인 섹션
-│       ├── footer.css         # 푸터
-│       ├── course.css         # 과정/레슨 페이지
-│       ├── badge.css          # 배지 시스템
-│       ├── quiz.css           # 퀴즈 시스템
-│       ├── editor.css         # 코드 에디터
-│       ├── animations.css     # 애니메이션
-│       ├── dark-mode.css      # 다크 모드
-│       └── responsive.css     # 반응형
+│   └── styles/                # CSS 11개 파일
 └── Dev_md/                    # 개발 문서
 ```
 
@@ -69,10 +72,16 @@ D:\python-study\
 ### Context API 패턴
 ```
 App
- └── ThemeProvider (테마 상태)
-      └── ProgressProvider (학습 진도)
-           └── BadgeProvider (배지 시스템)
-                └── Router + Pages
+ └── ErrorBoundary (전역)
+      └── ThemeProvider (테마 상태)
+           └── ProgressProvider (학습 진도)
+                └── BadgeProvider (배지 시스템)
+                     └── AppLayout
+                          ├── Navbar
+                          ├── ErrorBoundary (페이지별)
+                          │    └── Suspense (lazy loading)
+                          │         └── Pages (lazy)
+                          └── Footer
 ```
 
 ### 데이터 흐름
@@ -81,34 +90,46 @@ App
 - **BadgeContext**: 배지 조건 평가, 획득 알림, 배지 목록 관리
 
 ### 데이터 저장
-- `pymaster-theme`: 테마 설정 (localStorage)
-- `pymaster-progress`: 학습 진도 데이터 (localStorage)
-- `pymaster-badges`: 획득 배지 목록 (localStorage)
+| 키 | 용도 | 저장소 |
+|----|------|--------|
+| `pymaster-theme` | 테마 설정 | localStorage |
+| `pymaster-progress` | 학습 진도 | localStorage (+Supabase 예정) |
+| `pymaster-badges` | 획득 배지 | localStorage (+Supabase 예정) |
+
+### Supabase 테이블 (접두사: pymaster_)
+| 테이블 | 용도 |
+|--------|------|
+| `pymaster_users` | 사용자 정보 |
+| `pymaster_progress` | 학습 진도 동기화 |
+| `pymaster_badges` | 배지 획득 기록 |
+| `pymaster_quiz_scores` | 퀴즈 점수 |
+| `pymaster_streaks` | 연속 학습 기록 |
 
 ## 라우팅
 
-| 경로 | 페이지 | 설명 |
+| 경로 | 페이지 | 로딩 |
 |------|--------|------|
-| `/` | Home | 메인 페이지 |
-| `/:level` | LevelPage | 단계별 레슨 목록 |
-| `/:level/:lessonId` | LessonPage | 레슨 학습 |
-| `/badges` | BadgeCollection | 배지 컬렉션 |
-| `/quiz` | QuizCenter | 퀴즈 센터 |
-| `*` | 404 | 페이지 없음 |
+| `/` | Home | lazy |
+| `/:level` | LevelPage | lazy |
+| `/:level/:lessonId` | LessonPage | lazy |
+| `/badges` | BadgeCollection | lazy |
+| `/quiz` | QuizCenter | lazy |
+| `*` | 404 | inline |
 
 ## 디자인 시스템
 
-### 색상 테마
+### 색상 테마 (Python 팔레트 통일)
 - **Primary**: #306998 (Python Blue)
+- **Primary Light**: #4B8BBE
+- **Primary Dark**: #1E4F72
 - **Accent**: #FFD43B (Python Yellow)
-- **Success**: #10B981
-- **Error**: #EF4444
+- **Accent Dark**: #D4A017
 
-### 레벨별 색상
-- 기초: #10B981 (초록)
-- 중급: #3B82F6 (파랑)
-- 고급: #8B5CF6 (보라)
-- 응용: #F59E0B (노랑)
+### 레벨별 색상 (Python 팔레트 파생)
+- 기초: #4B8BBE (Python Light Blue)
+- 중급: #306998 (Python Blue)
+- 고급: #1E4F72 (Python Dark Blue)
+- 응용: #D4A017 (Python Muted Gold)
 
 ### 반응형 브레이크포인트
 - Desktop: > 1024px
@@ -119,3 +140,15 @@ App
 ### 폰트
 - 본문: 'Noto Sans KR' (Google Fonts)
 - 코드: 'JetBrains Mono' (Google Fonts)
+
+## 코드 스플리팅
+
+빌드 결과 (React.lazy + Suspense):
+| 청크 | 크기 | 내용 |
+|------|------|------|
+| index.js | 256KB | React, Router, Contexts |
+| LessonPage.js | 49KB | 레슨 페이지 + 컨텐츠 |
+| QuizCenter.js | 20KB | 퀴즈 센터 + 문제 데이터 |
+| Home.js | 7KB | 홈 페이지 |
+| BadgeCollection.js | 3KB | 배지 컬렉션 |
+| LevelPage.js | 3KB | 레벨 페이지 |
