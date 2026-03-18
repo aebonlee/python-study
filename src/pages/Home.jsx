@@ -154,7 +154,7 @@ export default function Home() {
               <div className="overview-card">
                 <h4>전체 진도</h4>
                 <div className="overview-big-number">{totalProgress}%</div>
-                <ProgressBar value={totalProgress} color="var(--primary-blue)" />
+                <ProgressBar value={totalProgress} color="var(--primary)" />
                 <p>{completedLessons.size} / {totalLessons} 레슨 완료</p>
               </div>
               <div className="overview-card">

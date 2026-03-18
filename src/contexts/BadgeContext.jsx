@@ -89,7 +89,7 @@ export function BadgeProvider({ children }) {
       {newBadge && (
         <div className="badge-notification" onClick={dismissBadgeNotification}>
           <div className="badge-notification-content">
-            <div className="badge-notification-icon">{newBadge.icon}</div>
+            <div className="badge-notification-icon"><i className={newBadge.icon} /></div>
             <div className="badge-notification-text">
               <span className="badge-notification-label">새 배지 획득!</span>
               <span className="badge-notification-title">{newBadge.title}</span>

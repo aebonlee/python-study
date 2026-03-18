@@ -7,10 +7,10 @@ export default function BadgeCollection() {
 
   const tiers = ['platinum', 'gold', 'silver', 'bronze']
   const tierNames = {
-    platinum: { icon: 'fa-solid fa-gem', label: '플래티넘', color: '#B9F2FF' },
-    gold: { icon: 'fa-solid fa-award', label: '골드', color: '#FFD700' },
-    silver: { icon: 'fa-solid fa-award', label: '실버', color: '#C0C0C0' },
-    bronze: { icon: 'fa-solid fa-award', label: '브론즈', color: '#CD7F32' }
+    platinum: { icon: 'fa-solid fa-gem', label: '플래티넘', color: 'var(--primary-light)' },
+    gold: { icon: 'fa-solid fa-award', label: '골드', color: 'var(--tier-gold)' },
+    silver: { icon: 'fa-solid fa-award', label: '실버', color: 'var(--tier-silver)' },
+    bronze: { icon: 'fa-solid fa-award', label: '브론즈', color: 'var(--tier-bronze)' }
   }
 
   const earned = badges.filter(b => earnedBadges.includes(b.id))

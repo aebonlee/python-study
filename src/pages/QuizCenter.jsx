@@ -59,7 +59,7 @@ export default function QuizCenter() {
               const passed = score !== undefined && score >= quiz.passingScore
               return (
                 <div key={quiz.id} className="quiz-card" onClick={() => setActiveQuiz(quiz.id)}>
-                  <div className="quiz-card-header" style={{ background: quiz.info?.color || '#3B82F6' }}>
+                  <div className="quiz-card-header" style={{ background: quiz.info?.color || 'var(--primary)' }}>
                     <span className="quiz-card-icon">
                       <i className={quiz.info?.icon || 'fa-solid fa-file-lines'} />
                     </span>

@@ -1,6 +1,6 @@
 /* Badge System */
 .badge-page { min-height: 100vh; }
-.badge-header { background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 50%, #4C1D95 100%); }
+.badge-header { background: var(--gradient-hero); }
 .badge-overview-stats { display: flex; gap: 32px; margin-top: 24px; }
 .badge-stat { text-align: center; }
 .badge-stat-num { display: block; font-size: 32px; font-weight: 800; color: white; }
@@ -22,10 +22,10 @@
 .badge-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; color: var(--text-primary); }
 .badge-description { font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
 .badge-tier { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-full); }
-.badge-tier.tier-bronze { background: #FEF3C7; color: #92400E; }
-.badge-tier.tier-silver { background: #F3F4F6; color: #4B5563; }
-.badge-tier.tier-gold { background: #FEF3C7; color: #B45309; }
-.badge-tier.tier-platinum { background: #EDE9FE; color: #6D28D9; }
+.badge-tier.tier-bronze { background: rgba(205,127,50,0.12); color: var(--tier-bronze); }
+.badge-tier.tier-silver { background: var(--bg-medium); color: var(--text-secondary); }
+.badge-tier.tier-gold { background: rgba(255,215,0,0.12); color: #B45309; }
+.badge-tier.tier-platinum { background: rgba(48,105,152,0.08); color: var(--primary); }
 
 /* Badge Notification */
 .badge-notification { position: fixed; top: 100px; right: 24px; z-index: 1100; animation: badge-slide-in 0.5s ease; cursor: pointer; }

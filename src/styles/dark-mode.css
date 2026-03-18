@@ -33,10 +33,10 @@
 [data-theme="dark"] .path-section { background: #0D1117; }
 [data-theme="dark"] .lesson-nav-btn { border-color: var(--border-medium); }
 [data-theme="dark"] .lesson-nav-btn:hover { border-color: var(--primary); }
-[data-theme="dark"] .badge-tier.tier-bronze { background: #78350F; color: #FCD34D; }
-[data-theme="dark"] .badge-tier.tier-silver { background: #374151; color: #D1D5DB; }
-[data-theme="dark"] .badge-tier.tier-gold { background: #78350F; color: #FCD34D; }
-[data-theme="dark"] .badge-tier.tier-platinum { background: #4C1D95; color: #C4B5FD; }
+[data-theme="dark"] .badge-tier.tier-bronze { background: rgba(205,127,50,0.2); color: #FCD34D; }
+[data-theme="dark"] .badge-tier.tier-silver { background: var(--bg-medium); color: #D1D5DB; }
+[data-theme="dark"] .badge-tier.tier-gold { background: rgba(255,215,0,0.15); color: #FCD34D; }
+[data-theme="dark"] .badge-tier.tier-platinum { background: rgba(75,139,190,0.15); color: var(--primary-light); }
 [data-theme="dark"] .quiz-card-score.passed { background: #064E3B; color: #6EE7B7; }
 [data-theme="dark"] .quiz-card-score.failed { background: #7F1D1D; color: #FCA5A5; }
 [data-theme="dark"] .quiz-explanation { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.15); }

@@ -90,7 +90,7 @@
 /* Code Block in Lesson */
 .python-code-block { margin: 16px 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); }
 .python-code-header { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: #1E293B; font-size: 12px; font-weight: 600; color: #94A3B8; }
-.python-code-header i { color: #4B8BBE; }
+.python-code-header i { color: var(--primary-light); }
 .python-code-body { padding: 16px; background: #0F172A; overflow-x: auto; }
 .python-code-body pre { margin: 0; font-family: var(--font-code); font-size: 14px; line-height: 1.7; color: #E2E8F0; white-space: pre; }
 .python-code-body .comment { color: #64748B; }

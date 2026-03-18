@@ -5,10 +5,10 @@ export default function BadgeCard({ badge }) {
   const isEarned = earnedBadges.includes(badge.id)
 
   const tierColors = {
-    bronze: { bg: '#CD7F32', glow: 'rgba(205, 127, 50, 0.3)' },
-    silver: { bg: '#C0C0C0', glow: 'rgba(192, 192, 192, 0.3)' },
-    gold: { bg: '#FFD700', glow: 'rgba(255, 215, 0, 0.3)' },
-    platinum: { bg: '#E5E4E2', glow: 'rgba(229, 228, 226, 0.4)' }
+    bronze: { glow: 'rgba(205, 127, 50, 0.3)' },
+    silver: { glow: 'rgba(192, 192, 192, 0.3)' },
+    gold: { glow: 'rgba(255, 215, 0, 0.3)' },
+    platinum: { glow: 'rgba(48, 105, 152, 0.3)' }
   }
 
   const tier = tierColors[badge.tier] || tierColors.bronze
@@ -29,10 +29,10 @@ export default function BadgeCard({ badge }) {
         <h3 className="badge-title">{badge.title}</h3>
         <p className="badge-description">{badge.description}</p>
         <span className={`badge-tier tier-${badge.tier}`}>
-          {badge.tier === 'bronze' && <><i className="fa-solid fa-award" style={{color: '#CD7F32'}} /> 브론즈</>}
-          {badge.tier === 'silver' && <><i className="fa-solid fa-award" style={{color: '#C0C0C0'}} /> 실버</>}
-          {badge.tier === 'gold' && <><i className="fa-solid fa-award" style={{color: '#FFD700'}} /> 골드</>}
-          {badge.tier === 'platinum' && <><i className="fa-solid fa-gem" style={{color: '#B9F2FF'}} /> 플래티넘</>}
+          {badge.tier === 'bronze' && <><i className="fa-solid fa-award" style={{color: 'var(--tier-bronze)'}} /> 브론즈</>}
+          {badge.tier === 'silver' && <><i className="fa-solid fa-award" style={{color: 'var(--tier-silver)'}} /> 실버</>}
+          {badge.tier === 'gold' && <><i className="fa-solid fa-award" style={{color: 'var(--tier-gold)'}} /> 골드</>}
+          {badge.tier === 'platinum' && <><i className="fa-solid fa-gem" style={{color: 'var(--primary-light)'}} /> 플래티넘</>}
         </span>
       </div>
     </div>
