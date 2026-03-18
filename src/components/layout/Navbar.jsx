@@ -32,14 +32,8 @@ export default function Navbar() {
     { to: '/intermediate', label: '중급' },
     { to: '/advanced', label: '고급' },
     { to: '/applied', label: '응용' },
-    {
-      label: '실습',
-      children: [
-        { to: '/applied/numpy-basics', icon: 'fa-solid fa-calculator', label: 'NumPy 실습' },
-        { to: '/applied/pandas-basics', icon: 'fa-solid fa-table', label: 'Pandas 실습' },
-        { to: '/applied/numpy-advanced', icon: 'fa-solid fa-chart-bar', label: 'NumPy 연산' },
-      ]
-    },
+    { to: '/applied/numpy-basics', label: 'NumPy' },
+    { to: '/applied/pandas-basics', label: 'Pandas' },
     { to: '/quiz', label: '퀴즈' },
     { to: '/badges', label: '도장깨기' },
   ]
