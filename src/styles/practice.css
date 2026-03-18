@@ -1,119 +1,210 @@
 /* ============================================
    Python Practice Page Styles
-   — viewport-fit: no page scroll
+   — viewport-fit: 100vh - nav, zero page scroll
+   — every fixed element minimized for max editor space
    — scrollbar UI hidden, scroll functional
    ============================================ */
 
-/* Invisible scrollbar utility — scroll works, bar hidden */
+/* ── Invisible scrollbar: works via wheel/touch, bar hidden ── */
 .practice-page ::-webkit-scrollbar { display: none; }
 .practice-page * { scrollbar-width: none; -ms-overflow-style: none; }
 
-/* Full-viewport layout — hide global footer, use full height */
-.practice-page { display: flex; flex-direction: column; height: calc(100vh - var(--nav-height)); overflow: hidden; }
+/* ── Full-viewport shell ── */
+.practice-page {
+  display: flex; flex-direction: column;
+  height: calc(100vh - var(--nav-height));
+  overflow: hidden;
+}
 .main-content:has(.practice-page) + .footer { display: none; }
 .main-content:has(.practice-page) { min-height: auto; }
 
-/* Compact mini-footer inside practice page */
-.practice-mini-footer { flex-shrink: 0; padding: 6px 16px; text-align: center; font-size: 11px; color: var(--text-light); border-top: 1px solid var(--border-light); background: var(--bg-light); }
+/* ── Page Header — 최소화 (~48px) ── */
+.practice-page .page-header-section {
+  flex-shrink: 0; padding: 8px 0 6px; text-align: center;
+  background: linear-gradient(135deg, rgba(48,105,152,0.08) 0%, rgba(255,212,59,0.05) 100%);
+  border-bottom: 1px solid var(--border-light);
+}
+.practice-page .page-title { font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 2px; }
+.practice-page .page-title i { color: var(--primary); margin-right: 6px; }
+.practice-page .page-subtitle { font-size: 12px; color: var(--text-secondary); }
 
-/* Page Header — compact */
-.practice-page .page-header-section { flex-shrink: 0; padding: 16px 0 10px; text-align: center; background: linear-gradient(135deg, rgba(48,105,152,0.08) 0%, rgba(255,212,59,0.05) 100%); border-bottom: 1px solid var(--border-light); }
-.practice-page .page-title { font-size: 26px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
-.practice-page .page-title i { color: var(--primary); margin-right: 8px; }
-.practice-page .page-subtitle { font-size: 14px; color: var(--text-secondary); }
-
-/* Section — fills remaining height */
+/* ── Section — flex:1 잔여 높이 전부 채움 ── */
 .practice-page .section { flex: 1; min-height: 0; overflow: hidden; padding: 0; }
-.practice-page .section > .container { display: flex; flex-direction: column; height: 100%; padding-top: 12px; padding-bottom: 8px; }
+.practice-page .section > .container {
+  display: flex; flex-direction: column;
+  height: 100%; padding-top: 8px; padding-bottom: 0;
+}
 
-/* Step Tabs — fixed height */
-.practice-step-tabs { flex-shrink: 0; background: rgba(48,105,152,0.04); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 8px 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; }
-.practice-tab-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-.practice-tab { display: flex; align-items: center; gap: 10px; padding: 6px 14px; border-radius: var(--radius-md); border: 1px solid var(--border-light); background: var(--bg-white); color: var(--text-secondary); cursor: pointer; transition: var(--transition); font-size: 13px; min-width: 0; }
+/* ── Step Tabs — 최소화 (~74px) ── */
+.practice-step-tabs {
+  flex-shrink: 0;
+  background: rgba(48,105,152,0.04); border: 1px solid var(--border-light);
+  border-radius: var(--radius-md); padding: 6px 10px; margin-bottom: 8px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.practice-tab-row { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+.practice-tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 12px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light); background: var(--bg-white);
+  color: var(--text-secondary); cursor: pointer; transition: var(--transition);
+  font-size: 13px; min-width: 0;
+}
 .practice-tab:hover { border-color: var(--primary); color: var(--primary); background: rgba(48,105,152,0.04); }
 .practice-tab.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 2px 8px rgba(48,105,152,0.3); }
-.practice-tab-icon { font-size: 16px; flex-shrink: 0; }
-.practice-tab-label { display: flex; flex-direction: column; text-align: left; gap: 1px; }
-.practice-tab-step { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; }
-.practice-tab-title { font-size: 13px; font-weight: 600; white-space: nowrap; }
+.practice-tab-label { display: flex; flex-direction: column; text-align: left; gap: 0; }
+.practice-tab-step { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; }
+.practice-tab-title { font-size: 12px; font-weight: 600; white-space: nowrap; }
 
-/* Step Layout: Sidebar + Runner — fills remaining */
-.practice-step-layout { display: flex; gap: 16px; flex: 1; min-height: 0; overflow: hidden; align-items: stretch; }
+/* ── Step Layout: Sidebar + Runner — flex:1 나머지 전부 ── */
+.practice-step-layout { display: flex; gap: 12px; flex: 1; min-height: 0; overflow: hidden; align-items: stretch; }
 
-/* Example Sidebar — fills height, invisible scroll */
-.practice-example-sidebar { width: 260px; flex-shrink: 0; background: var(--bg-white); border: 1px solid var(--border-light); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; }
-.practice-sidebar-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border-light); background: rgba(48,105,152,0.03); flex-shrink: 0; }
-.practice-sidebar-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-.practice-sidebar-header h3 { font-size: 14px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.3; }
-.practice-file-count { font-size: 12px; color: var(--text-light); }
-.practice-example-nav { overflow-y: auto; flex: 1; min-height: 0; padding: 6px 0; }
-.practice-example-item { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 10px 16px; border: none; background: none; text-align: left; cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
+/* ── Sidebar — 세로 꽉 참, 내부 invisible scroll ── */
+.practice-example-sidebar {
+  width: 250px; flex-shrink: 0;
+  background: var(--bg-white); border: 1px solid var(--border-light);
+  border-radius: var(--radius-md); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.practice-sidebar-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; border-bottom: 1px solid var(--border-light);
+  background: rgba(48,105,152,0.03); flex-shrink: 0;
+}
+.practice-sidebar-icon {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.practice-sidebar-header h3 { font-size: 13px; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.3; }
+.practice-file-count { font-size: 11px; color: var(--text-light); }
+.practice-example-nav { overflow-y: auto; flex: 1; min-height: 0; padding: 4px 0; }
+.practice-example-item {
+  display: flex; flex-direction: column; gap: 1px; width: 100%;
+  padding: 7px 12px; border: none; background: none; text-align: left;
+  cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent;
+}
 .practice-example-item:hover { background: rgba(48,105,152,0.04); }
 .practice-example-item.active { background: rgba(48,105,152,0.08); border-left-color: var(--primary); }
-.practice-example-name { font-family: var(--font-code); font-size: 13px; font-weight: 600; color: var(--primary); }
+.practice-example-name { font-family: var(--font-code); font-size: 12px; font-weight: 600; color: var(--primary); }
 .practice-example-name i { margin-right: 4px; }
-.practice-example-title { font-size: 12px; color: var(--text-secondary); padding-left: 20px; }
+.practice-example-title { font-size: 11px; color: var(--text-secondary); padding-left: 20px; }
 
-/* Runner Panel — fills height */
+/* ── Runner Panel — flex:1 세로 꽉 참 ── */
 .practice-runner-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
-.practice-runner-empty { flex: 1; min-height: 0; border: 2px dashed var(--border-light); border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--text-light); }
+.practice-runner-empty {
+  flex: 1; min-height: 0;
+  border: 2px dashed var(--border-light); border-radius: var(--radius-md);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; color: var(--text-light);
+}
 .practice-runner-empty i { font-size: 32px; }
 .practice-runner-empty p { font-size: 14px; }
 
-/* Step Code Runner — flex column, bounded */
-.practice-step-runner { border: 2px solid var(--primary); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-white); animation: fadeInRunner 0.2s ease; display: flex; flex-direction: column; flex: 1; min-height: 0; }
+/* ── Code Runner — flex column, 세로 꽉 참 ── */
+.practice-step-runner {
+  border: 2px solid var(--primary); border-radius: var(--radius-md);
+  overflow: hidden; background: var(--bg-white);
+  animation: fadeInRunner 0.2s ease;
+  display: flex; flex-direction: column; flex: 1; min-height: 0;
+}
 @keyframes fadeInRunner { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-.practice-runner-header { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; background: var(--primary); color: white; flex-wrap: wrap; gap: 8px; flex-shrink: 0; }
-.practice-runner-filename { display: flex; align-items: center; gap: 8px; font-family: var(--font-code); font-size: 14px; font-weight: 600; }
-.practice-runner-title { font-family: var(--font-body, 'Noto Sans KR', sans-serif); font-size: 12px; opacity: 0.85; font-weight: 400; }
-.practice-runner-actions { display: flex; gap: 6px; }
-.practice-runner-actions .editor-btn { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: white; font-size: 12px; padding: 4px 10px; }
+/* Runner Header — 최소화 (~34px) */
+.practice-runner-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 12px; background: var(--primary); color: white;
+  flex-wrap: wrap; gap: 6px; flex-shrink: 0;
+}
+.practice-runner-filename { display: flex; align-items: center; gap: 6px; font-family: var(--font-code); font-size: 13px; font-weight: 600; }
+.practice-runner-title { font-family: var(--font-body, 'Noto Sans KR', sans-serif); font-size: 11px; opacity: 0.85; font-weight: 400; }
+.practice-runner-actions { display: flex; gap: 4px; }
+.practice-runner-actions .editor-btn { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); color: white; font-size: 11px; padding: 3px 8px; }
 .practice-runner-actions .editor-btn:hover { background: rgba(255,255,255,0.25); }
 .practice-runner-actions .editor-btn.copied { background: rgba(16,185,129,0.3); }
 
-/* Mode Tabs */
+/* Mode Tabs — (~34px) */
 .practice-mode-tabs { display: flex; gap: 0; background: rgba(48,105,152,0.08); flex-shrink: 0; }
-.practice-mode-tab { flex: 1; padding: 8px 16px; font-size: 13px; font-weight: 600; border: none; background: transparent; color: var(--primary); cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px; }
+.practice-mode-tab {
+  flex: 1; padding: 6px 12px; font-size: 12px; font-weight: 600;
+  border: none; background: transparent; color: var(--primary);
+  cursor: pointer; transition: var(--transition);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
 .practice-mode-tab.active { background: var(--primary); color: white; }
 .practice-mode-tab:not(.active):hover { background: rgba(48,105,152,0.12); }
 
-/* Editor Body — flex fill, invisible scroll */
-.practice-editor-body { display: flex; flex: 1; min-height: 100px; overflow: hidden; }
-.practice-editor-body .line-numbers { padding: 16px 0; background: #1E293B; color: #64748B; font-family: var(--font-code); font-size: 14px; line-height: 1.7; text-align: right; user-select: none; min-width: 48px; overflow-y: auto; }
-.practice-editor-body .line-numbers span { display: block; padding: 0 12px; }
-.practice-editor-body .code-input { flex: 1; padding: 16px; background: #0F172A; color: #E2E8F0; font-family: var(--font-code); font-size: 14px; line-height: 1.7; border: none; outline: none; resize: none; min-height: 0; tab-size: 4; overflow-y: auto; }
+/* ── Editor Body — flex:1 나머지 전부 차지 (핵심 확장 영역) ── */
+.practice-editor-body { display: flex; flex: 1 1 0; min-height: 80px; overflow: hidden; }
+.practice-editor-body .line-numbers {
+  padding: 12px 0; background: #1E293B; color: #64748B;
+  font-family: var(--font-code); font-size: 13px; line-height: 1.7;
+  text-align: right; user-select: none; min-width: 44px; overflow-y: auto;
+}
+.practice-editor-body .line-numbers span { display: block; padding: 0 10px; }
+.practice-editor-body .code-input {
+  flex: 1; padding: 12px; background: #0F172A; color: #E2E8F0;
+  font-family: var(--font-code); font-size: 13px; line-height: 1.7;
+  border: none; outline: none; resize: none; min-height: 0;
+  tab-size: 4; overflow-y: auto;
+}
 .practice-editor-body .code-input::placeholder { color: #475569; }
 
-/* Toolbar — fixed */
-.practice-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; background: var(--bg-light); border-top: 1px solid var(--border-light); flex-shrink: 0; }
-.practice-toolbar-right { display: flex; gap: 6px; }
+/* Toolbar — 최소화 (~32px) */
+.practice-toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 12px; background: var(--bg-light);
+  border-top: 1px solid var(--border-light); flex-shrink: 0;
+}
+.practice-toolbar-right { display: flex; gap: 4px; }
 
-/* Output — bounded, invisible scroll */
-.practice-output { border-top: 1px solid var(--border-light); flex-shrink: 0; max-height: 160px; overflow-y: auto; }
-.practice-output-header { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--bg-light); border-bottom: 1px solid var(--border-light); font-size: 13px; font-weight: 600; color: var(--text-secondary); position: sticky; top: 0; z-index: 1; }
-.practice-output-content { padding: 12px 16px; background: var(--bg-white); }
-.practice-stdout { font-family: var(--font-code); font-size: 14px; line-height: 1.6; color: var(--text-primary); margin: 0; white-space: pre-wrap; background: transparent; padding: 0; border-radius: 0; }
-.practice-stderr { font-family: var(--font-code); font-size: 14px; line-height: 1.6; color: #DC2626; margin: 0; white-space: pre-wrap; background: transparent; padding: 0; border-radius: 0; }
-.practice-no-output { color: var(--text-light); font-size: 13px; }
-.practice-unsupported { display: flex; align-items: flex-start; gap: 12px; padding: 16px; background: rgba(245,158,11,0.08); }
-.practice-unsupported i { font-size: 20px; color: var(--warning); flex-shrink: 0; margin-top: 2px; }
-.practice-unsupported p { margin: 6px 0 0; font-size: 13px; opacity: 0.85; }
+/* ── Output — flex-shrink:1 (에디터를 밀지 않음), 내부 invisible scroll ── */
+.practice-output {
+  border-top: 1px solid var(--border-light);
+  flex: 0 1 auto; max-height: 140px; overflow-y: auto;
+}
+.practice-output-header {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 12px; background: var(--bg-light);
+  border-bottom: 1px solid var(--border-light);
+  font-size: 12px; font-weight: 600; color: var(--text-secondary);
+  position: sticky; top: 0; z-index: 1;
+}
+.practice-output-content { padding: 8px 12px; background: var(--bg-white); }
+.practice-stdout { font-family: var(--font-code); font-size: 13px; line-height: 1.5; color: var(--text-primary); margin: 0; white-space: pre-wrap; background: transparent; padding: 0; border-radius: 0; }
+.practice-stderr { font-family: var(--font-code); font-size: 13px; line-height: 1.5; color: #DC2626; margin: 0; white-space: pre-wrap; background: transparent; padding: 0; border-radius: 0; }
+.practice-no-output { color: var(--text-light); font-size: 12px; }
+.practice-unsupported { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: rgba(245,158,11,0.08); }
+.practice-unsupported i { font-size: 18px; color: var(--warning); flex-shrink: 0; margin-top: 2px; }
+.practice-unsupported p { margin: 4px 0 0; font-size: 12px; opacity: 0.85; }
 
 /* Turtle SVG output */
-.practice-turtle-svg { padding: 12px; display: flex; justify-content: center; background: #fff; border-radius: 6px; }
+.practice-turtle-svg { padding: 8px; display: flex; justify-content: center; background: #fff; border-radius: 6px; }
 
 /* Input Form */
-.practice-input-form { padding: 16px; display: flex; flex-direction: column; gap: 12px; background: rgba(48,105,152,0.04); }
-.practice-input-row { display: flex; flex-direction: column; gap: 4px; }
-.practice-input-row label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
-.practice-input-field { padding: 8px 12px; border: 1px solid var(--border-medium); border-radius: var(--radius-sm); font-family: var(--font-code); font-size: 14px; background: var(--bg-white); color: var(--text-primary); outline: none; transition: var(--transition); }
+.practice-input-form { padding: 12px; display: flex; flex-direction: column; gap: 8px; background: rgba(48,105,152,0.04); }
+.practice-input-row { display: flex; flex-direction: column; gap: 3px; }
+.practice-input-row label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+.practice-input-field {
+  padding: 6px 10px; border: 1px solid var(--border-medium); border-radius: var(--radius-sm);
+  font-family: var(--font-code); font-size: 13px;
+  background: var(--bg-white); color: var(--text-primary);
+  outline: none; transition: var(--transition);
+}
 .practice-input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(48,105,152,0.1); }
 
 /* Error state */
 .practice-output-content.has-error { background: rgba(239,68,68,0.04); }
 
-/* Dark mode */
+/* ── Mini-footer (~24px) ── */
+.practice-mini-footer {
+  flex-shrink: 0; padding: 3px 16px; text-align: center;
+  font-size: 10px; color: var(--text-light);
+  border-top: 1px solid var(--border-light); background: var(--bg-light);
+}
+
+/* ── Dark mode ── */
 [data-theme="dark"] .practice-page .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.12) 0%, rgba(255,212,59,0.06) 100%); }
 [data-theme="dark"] .practice-step-tabs { background: rgba(75,139,190,0.08); }
 [data-theme="dark"] .practice-tab { background: var(--bg-medium); border-color: var(--border-light); }
@@ -134,13 +225,13 @@
 [data-theme="dark"] .practice-output-header { background: var(--bg-medium); }
 [data-theme="dark"] .practice-mini-footer { background: var(--bg-medium); border-color: var(--border-medium); }
 
-/* Responsive */
+/* ── Responsive ── */
 @media (max-width: 1024px) {
   .practice-page { height: auto; min-height: calc(100vh - var(--nav-height)); overflow: auto; }
   .practice-step-layout { flex-direction: column; overflow: visible; }
   .practice-example-sidebar { width: 100%; }
-  .practice-example-nav { display: flex; overflow-x: auto; overflow-y: hidden; padding: 8px; gap: 6px; max-height: 120px; }
-  .practice-example-item { min-width: 140px; border-left: none; border-bottom: 2px solid transparent; padding: 8px 12px; }
+  .practice-example-nav { display: flex; overflow-x: auto; overflow-y: hidden; padding: 6px; gap: 4px; max-height: 100px; }
+  .practice-example-item { min-width: 130px; border-left: none; border-bottom: 2px solid transparent; padding: 6px 10px; }
   .practice-example-item.active { border-bottom-color: var(--primary); border-left-color: transparent; }
   .practice-runner-panel { overflow: visible; }
   .practice-step-runner { max-height: none; }
@@ -149,16 +240,15 @@
 }
 
 @media (max-width: 768px) {
-  .practice-tab { padding: 6px 10px; }
+  .practice-tab { padding: 4px 8px; }
   .practice-tab-title { font-size: 11px; }
-  .practice-tab-step { font-size: 9px; }
+  .practice-tab-step { font-size: 8px; }
   .practice-runner-header { flex-direction: column; align-items: flex-start; }
   .practice-runner-actions { width: 100%; justify-content: flex-end; }
 }
 
 @media (max-width: 480px) {
-  .practice-tab-row { gap: 4px; }
-  .practice-tab { padding: 6px 8px; gap: 6px; }
-  .practice-tab-icon { font-size: 14px; }
+  .practice-tab-row { gap: 3px; }
+  .practice-tab { padding: 4px 6px; gap: 4px; }
   .practice-tab-label { display: none; }
 }
