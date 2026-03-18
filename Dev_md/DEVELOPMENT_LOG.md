@@ -332,3 +332,37 @@
 - CSS 총 63.41KB (기존 대비 +약 2KB)
 - 빌드 성공, 커밋 d4189f7
 - GitHub Pages 배포 완료
+
+---
+
+## 2026-03-19 (Day 2 후반) - turtle textinput 직접입력 + 실행결과 CSS 수정
+
+### turtle.textinput() / numinput() 직접입력 기능
+- **pyodide.worker.js**: turtle mock의 `textinput()`/`numinput()`이 stdin(`input()`)을 사용하도록 변경
+  - 기존: `return 'test'` (더미값 반환)
+  - 변경: `return input(prompt)` (stdin에서 읽기, EOFError 시 기본값)
+  - 모듈-레벨 `textinput()`/`numinput()`도 `Screen()` 위임으로 변경
+- **PythonPractice.jsx**: `generateInputVersion()` 정규식 확장
+  - 기존: `input(` 패턴만 인식
+  - 변경: `input(` + `turtle.textinput(` + `turtle.numinput(` + `screen.textinput(` 등 인식
+- **PythonPractice.jsx**: `detectInputPrompts()` 확장
+  - `textinput("title", "prompt")` → 두 번째 인자(prompt) 추출
+  - 기존 `input()` 감지에 negative lookbehind 추가 (textinput/numinput 오탐 방지)
+- **step5.js (drawshape)**: 변수명 `s` → `shape`으로 일관성 수정, 불필요한 경고 제거
+- **step6.js (if3)**: "브라우저에서 실행 불가" 경고 → 설명 코멘트로 교체
+
+### 실행결과 배경색/텍스트 수정
+- **practice.css**: `.practice-stdout`/`.practice-stderr`에 `background: transparent; padding: 0; border-radius: 0` 추가
+  - 원인: base.css의 전역 `pre { background: #1E293B }` 스타일이 실행결과 `<pre>` 태그에 적용되어 라이트 모드에서 어두운 배경 + 어두운 텍스트 = 보이지 않는 문제
+
+### 상하단 여백 이중 적용 수정
+- `.main-content`에 이미 `padding-top: var(--nav-height)`가 있으므로 중복 `margin-top` 제거:
+  - `.practice-page .page-header-section`: margin-top 제거
+  - `.python-learning-page .page-header-section`: margin-top 제거
+  - `.python-lesson-detail`: margin-top 제거
+- 페이지 헤더 패딩 축소: 60px → 40px (더 적절한 간격)
+- 배경 gradient opacity 미세 조정 (0.06 → 0.08)
+
+### 빌드 결과
+- 빌드 성공, 커밋 aa65123
+- GitHub Pages 배포 완료
