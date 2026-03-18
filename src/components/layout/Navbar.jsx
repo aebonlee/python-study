@@ -37,6 +37,7 @@ export default function Navbar() {
       { to: '/intermediate/math-cmath', label: 'math', icon: 'fa-solid fa-square-root-variable' },
       { to: '/intermediate/json-module', label: 'json', icon: 'fa-solid fa-code' },
       { to: '/intermediate/datetime-module', label: 'datetime', icon: 'fa-solid fa-calendar-days' },
+      { to: '/intermediate/turtle-graphics', label: 'turtle', icon: 'fa-solid fa-pen-ruler' },
       { to: '/applied/numpy-basics', label: 'NumPy', icon: 'fa-solid fa-calculator' },
       { to: '/applied/pandas-basics', label: 'Pandas', icon: 'fa-solid fa-table' },
       { to: '/applied/matplotlib-seaborn', label: 'Matplotlib', icon: 'fa-solid fa-chart-pie' },

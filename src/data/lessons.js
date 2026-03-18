@@ -220,6 +220,15 @@ export const lessons = {
       estimatedTime: 25,
       difficulty: 2,
       topics: ['datetime.now', 'date', 'time', 'timedelta', 'strftime', 'strptime']
+    },
+    {
+      id: 'turtle-graphics',
+      title: 'Turtle Graphics',
+      description: '거북이 그래픽으로 도형, 패턴, 프랙탈 그리기',
+      icon: 'fa-solid fa-pen-ruler',
+      estimatedTime: 30,
+      difficulty: 1,
+      topics: ['forward', 'left/right', 'circle', 'color', 'fill', '정다각형', '별', '나선']
     }
   ],
 
