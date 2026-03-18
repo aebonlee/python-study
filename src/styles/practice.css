@@ -3,7 +3,7 @@
    ============================================ */
 
 /* Page Header */
-.practice-page .page-header-section { padding: 60px 0 30px; text-align: center; background: linear-gradient(135deg, rgba(48,105,152,0.06) 0%, rgba(255,212,59,0.06) 100%); border-bottom: 1px solid var(--border-light); margin-top: var(--nav-height); }
+.practice-page .page-header-section { padding: 40px 0 24px; text-align: center; background: linear-gradient(135deg, rgba(48,105,152,0.08) 0%, rgba(255,212,59,0.05) 100%); border-bottom: 1px solid var(--border-light); }
 .practice-page .page-title { font-size: 32px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
 .practice-page .page-title i { color: var(--primary); margin-right: 8px; }
 .practice-page .page-subtitle { font-size: 16px; color: var(--text-secondary); }
@@ -74,8 +74,8 @@
 .practice-output { border-top: 1px solid var(--border-light); }
 .practice-output-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--bg-light); border-bottom: 1px solid var(--border-light); font-size: 13px; font-weight: 600; color: var(--text-secondary); }
 .practice-output-content { padding: 16px; background: var(--bg-white); }
-.practice-stdout { font-family: var(--font-code); font-size: 14px; line-height: 1.6; color: var(--text-primary); margin: 0; white-space: pre-wrap; }
-.practice-stderr { font-family: var(--font-code); font-size: 14px; line-height: 1.6; color: #DC2626; margin: 0; white-space: pre-wrap; }
+.practice-stdout { font-family: var(--font-code); font-size: 14px; line-height: 1.6; color: var(--text-primary); margin: 0; white-space: pre-wrap; background: transparent; padding: 0; border-radius: 0; }
+.practice-stderr { font-family: var(--font-code); font-size: 14px; line-height: 1.6; color: #DC2626; margin: 0; white-space: pre-wrap; background: transparent; padding: 0; border-radius: 0; }
 .practice-no-output { color: var(--text-light); font-size: 13px; }
 .practice-unsupported { display: flex; align-items: flex-start; gap: 12px; padding: 16px; background: rgba(245,158,11,0.08); }
 .practice-unsupported i { font-size: 20px; color: var(--warning); flex-shrink: 0; margin-top: 2px; }
@@ -95,7 +95,7 @@
 .practice-output-content.has-error { background: rgba(239,68,68,0.04); }
 
 /* Dark mode */
-[data-theme="dark"] .practice-page .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.1) 0%, rgba(255,212,59,0.06) 100%); }
+[data-theme="dark"] .practice-page .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.12) 0%, rgba(255,212,59,0.06) 100%); }
 [data-theme="dark"] .practice-step-tabs { background: rgba(75,139,190,0.08); }
 [data-theme="dark"] .practice-tab { background: var(--bg-medium); border-color: var(--border-light); }
 [data-theme="dark"] .practice-example-sidebar { background: var(--bg-medium); }

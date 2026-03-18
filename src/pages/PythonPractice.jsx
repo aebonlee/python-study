@@ -12,7 +12,7 @@ function generateInputVersion(code) {
     const line = lines[i]
     const trimmed = line.trim()
     const commentMatch = trimmed.match(
-      /^#\s*([\w]+)\s*=\s*(?:int|float|str)?\s*\(?\s*input\s*\(/
+      /^#\s*([\w]+)\s*=\s*(?:int|float|str)?\s*\(?\s*(?:input|(?:\w+\.)?(?:textinput|numinput))\s*\(/
     )
     if (commentMatch) {
       const varName = commentMatch[1]
@@ -39,13 +39,17 @@ function generateInputVersion(code) {
   return changed ? result.join('\n') : null
 }
 
-/* ── input() 감지 ── */
+/* ── input() / textinput() / numinput() 감지 ── */
 function detectInputPrompts(code) {
   const prompts = []
   for (const line of code.split('\n')) {
     if (line.trim().startsWith('#')) continue
-    const matches = [...line.matchAll(/input\s*\(\s*(?:["']([^"']*?)["'])?\s*\)/g)]
-    for (const m of matches) prompts.push(m[1] || '입력하세요:')
+    /* standard input("prompt") - exclude textinput/numinput */
+    const inputMatches = [...line.matchAll(/(?<![a-zA-Z])input\s*\(\s*(?:["']([^"']*?)["'])?\s*\)/g)]
+    for (const m of inputMatches) prompts.push(m[1] || '입력하세요:')
+    /* turtle.textinput("title", "prompt") / turtle.numinput("title", "prompt") */
+    const turtleMatches = [...line.matchAll(/(?:textinput|numinput)\s*\(\s*["'][^"']*["']\s*,\s*["']([^"']*?)["']/g)]
+    for (const m of turtleMatches) prompts.push(m[1] || '입력하세요:')
   }
   return prompts
 }

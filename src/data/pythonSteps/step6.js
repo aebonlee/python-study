@@ -35,8 +35,7 @@ else:                      # 그렇지 않으면
     title: 'turtle로 양수/음수 표시',
     desc: 'if 조건에 따라 turtle 이동',
     code: `# === turtle로 양수/음수 표시 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
+# if 조건에 따라 turtle이 다른 위치로 이동합니다.
 
 import turtle
 t = turtle.Turtle()

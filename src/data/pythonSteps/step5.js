@@ -164,19 +164,14 @@ turtle.done()`
     title: '도형 이름 입력 그리기',
     desc: 'textinput으로 도형 선택',
     code: `# === 도형 이름 입력 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
-
 import turtle
 t = turtle.Turtle()
 t.shape("turtle")
 
-# s = turtle.textinput("", "도형을 입력하시오: ")
-# 브라우저 실행 불가이므로 코드만 확인하세요
-
-# 도형에 따라 다르게 그리기
+# shape = turtle.textinput("", "도형을 입력하시오(circle/square): ")
 shape = "square"  # "circle" 또는 "square"
 
+# 도형에 따라 다르게 그리기
 if shape == "circle":
     t.circle(100)           # 원 그리기
 elif shape == "square":

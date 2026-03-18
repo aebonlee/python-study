@@ -32,9 +32,15 @@ class _Screen:
     def mainloop(self):
         _render_svg()
     def textinput(self, title, prompt):
-        return 'test'
+        try:
+            return input(prompt)
+        except EOFError:
+            return ''
     def numinput(self, title, prompt, default=None, minval=None, maxval=None):
-        return default or 0
+        try:
+            return float(input(prompt))
+        except (ValueError, EOFError):
+            return default if default is not None else 0
     def listen(self): pass
     def onkey(self, fun, key): pass
     def onkeypress(self, fun, key): pass
@@ -341,8 +347,8 @@ def onclick(fun, btn=1, add=None): pass
 def onscreenclick(fun, btn=1, add=None): pass
 def ontimer(fun, t=0): pass
 def onrelease(fun, btn=1, add=None): pass
-def textinput(title, prompt): return 'test'
-def numinput(title, prompt, **kw): return kw.get('default', 0)
+def textinput(title, prompt): return Screen().textinput(title, prompt)
+def numinput(title, prompt, **kw): return Screen().numinput(title, prompt, **kw)
 def mode(m=None): return 'standard'
 
 def _render_svg():

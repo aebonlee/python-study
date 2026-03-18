@@ -3,7 +3,7 @@
    ============================================ */
 
 /* Hub Page */
-.python-learning-page .page-header-section { padding: 60px 0 30px; text-align: center; background: linear-gradient(135deg, rgba(48,105,152,0.06) 0%, rgba(255,212,59,0.06) 100%); border-bottom: 1px solid var(--border-light); margin-top: var(--nav-height); }
+.python-learning-page .page-header-section { padding: 40px 0 24px; text-align: center; background: linear-gradient(135deg, rgba(48,105,152,0.08) 0%, rgba(255,212,59,0.05) 100%); border-bottom: 1px solid var(--border-light); }
 .python-learning-page .page-title { font-size: 32px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
 .python-learning-page .page-title i { color: var(--primary); margin-right: 8px; }
 .python-learning-page .page-subtitle { font-size: 16px; color: var(--text-secondary); }
@@ -20,8 +20,8 @@
 .python-lesson-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 0; }
 
 /* Individual Lesson Page */
-.python-lesson-detail { margin-top: var(--nav-height); }
-.python-lesson-detail .page-header-section { padding: 60px 0 30px; text-align: center; background: linear-gradient(135deg, rgba(48,105,152,0.06) 0%, rgba(255,212,59,0.06) 100%); border-bottom: 1px solid var(--border-light); }
+/* Individual Lesson Detail Page - positioned by .main-content padding-top */
+.python-lesson-detail .page-header-section { padding: 40px 0 24px; text-align: center; background: linear-gradient(135deg, rgba(48,105,152,0.08) 0%, rgba(255,212,59,0.05) 100%); border-bottom: 1px solid var(--border-light); }
 .python-lesson-detail .lesson-number-badge { display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px; border-radius: var(--radius-full); background: rgba(48,105,152,0.1); color: var(--primary); font-size: 13px; font-weight: 700; margin-bottom: 12px; }
 
 /* Page Header (koreatech compat) */
@@ -127,7 +127,7 @@
 .python-lesson-nav a:hover { border-color: var(--primary); color: var(--primary); background: rgba(48,105,152,0.04); }
 
 /* Dark mode */
-[data-theme="dark"] .python-learning-page .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.1) 0%, rgba(255,212,59,0.06) 100%); }
+[data-theme="dark"] .python-learning-page .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.12) 0%, rgba(255,212,59,0.06) 100%); }
 [data-theme="dark"] .python-lesson-card { background: var(--bg-medium); }
 [data-theme="dark"] .python-lesson-card-icon { background: rgba(75,139,190,0.15); }
 [data-theme="dark"] .python-code-header { background: #0F172A; }
@@ -146,7 +146,7 @@
 [data-theme="dark"] .python-lesson-nav a { border-color: var(--border-medium); color: var(--text-secondary); }
 [data-theme="dark"] .python-lesson-nav a:hover { border-color: var(--primary-light); color: var(--primary-light); background: rgba(75,139,190,0.08); }
 [data-theme="dark"] .python-lesson-detail .page-header { background: linear-gradient(135deg, #1a3a5c 0%, #0d2740 100%); }
-[data-theme="dark"] .python-lesson-detail .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.1) 0%, rgba(255,212,59,0.06) 100%); }
+[data-theme="dark"] .python-lesson-detail .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.12) 0%, rgba(255,212,59,0.06) 100%); }
 [data-theme="dark"] .python-lesson-detail .callout-box { background: rgba(75,139,190,0.1); border-left-color: rgba(75,139,190,0.6); }
 [data-theme="dark"] .python-lesson-detail .callout-box li,
 [data-theme="dark"] .python-lesson-detail .callout-box p { color: var(--text-primary); }
