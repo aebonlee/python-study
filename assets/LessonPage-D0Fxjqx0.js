@@ -1,4 +1,4 @@
-import{r as reactExports,j as jsxRuntimeExports,u as useProgress,c as useParams,l as lessons,L as Link,b as levelInfo}from"./index-BCb3ypxl.js";const lessonContents={"hello-python":{sections:[{title:"print() 함수로 출력하기",content:`파이썬에서 가장 먼저 배우는 것은 화면에 텍스트를 출력하는 것입니다.
+import{r as reactExports,j as jsxRuntimeExports,u as useProgress,c as useParams,l as lessons,L as Link,b as levelInfo}from"./index-DfL3Mnj7.js";const lessonContents={"hello-python":{sections:[{title:"print() 함수로 출력하기",content:`파이썬에서 가장 먼저 배우는 것은 화면에 텍스트를 출력하는 것입니다.
 print() 함수를 사용하면 원하는 내용을 콘솔에 출력할 수 있습니다.
 
 문자열은 작은따옴표(') 또는 큰따옴표(")로 감싸서 표현합니다.`,code:`# 첫 번째 파이썬 프로그램!
