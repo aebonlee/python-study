@@ -7,6 +7,7 @@
 | 프레임워크 | React | 19.2 |
 | 빌드 도구 | Vite | 7.3 |
 | 라우팅 | React Router DOM | 7.13 |
+| 아이콘 | Font Awesome | 6.5.1 (CDN) |
 | 코드 하이라이팅 | PrismJS | 1.30 |
 | 코드 에디터 | react-simple-code-editor | 0.14 |
 | DB 클라이언트 | @supabase/supabase-js | 2.x |
@@ -19,9 +20,10 @@
 
 ```
 D:\python-study\
-├── index.html                  # 진입점 HTML + OG 메타태그
+├── index.html                  # 진입점 HTML + OG 메타태그 + Font Awesome CDN
 ├── package.json               # 의존성 관리
 ├── vite.config.js             # Vite 설정
+├── .env                       # Supabase 환경 변수 (gitignore)
 ├── .env.example               # 환경 변수 템플릿
 ├── .github/workflows/
 │   └── deploy.yml             # GitHub Actions 배포
@@ -35,35 +37,38 @@ D:\python-study\
 ├── src/
 │   ├── main.jsx               # React 엔트리 포인트
 │   ├── App.jsx                # 라우터 + Provider + ErrorBoundary + Lazy
-│   ├── index.css              # CSS 임포트 허브
+│   ├── index.css              # CSS 임포트 허브 (12개 CSS)
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── Navbar.jsx     # 상단 네비게이션
+│   │   │   ├── Navbar.jsx     # 상단 네비게이션 (1열 메뉴 + 인증 UI)
 │   │   │   └── Footer.jsx     # 하단 푸터
 │   │   ├── ErrorBoundary.jsx  # 런타임 에러 복구 UI
 │   │   ├── CodeEditor.jsx     # Python 코드 에디터
-│   │   ├── BadgeCard.jsx      # 배지 카드
-│   │   ├── LessonCard.jsx     # 레슨 카드
+│   │   ├── BadgeCard.jsx      # 배지 카드 (FA 아이콘)
+│   │   ├── LessonCard.jsx     # 레슨 카드 (FA 아이콘)
 │   │   ├── ProgressBar.jsx    # 진도율 바
 │   │   └── QuizComponent.jsx  # 퀴즈 컴포넌트
 │   ├── config/
 │   │   └── supabase.js        # Supabase 클라이언트 (pymaster_ 접두사)
 │   ├── contexts/
+│   │   ├── AuthContext.jsx    # 인증 상태 (Google/Kakao OAuth)
 │   │   ├── ThemeContext.jsx    # 다크모드 상태
 │   │   ├── ProgressContext.jsx # 학습 진도 상태
 │   │   └── BadgeContext.jsx   # 배지 상태
 │   ├── data/
-│   │   ├── lessons.js         # 레슨 메타데이터
+│   │   ├── lessons.js         # 레슨 메타데이터 (FA 아이콘 클래스)
 │   │   ├── lessonContents.js  # 레슨 교육 컨텐츠
-│   │   ├── badges.js          # 배지 정의
+│   │   ├── badges.js          # 배지 정의 (FA 아이콘 클래스)
 │   │   └── quizzes.js         # 퀴즈 문제
 │   ├── pages/
 │   │   ├── Home.jsx           # 메인 페이지
+│   │   ├── Login.jsx          # 로그인 페이지 (Google/Kakao)
 │   │   ├── LevelPage.jsx      # 단계별 레슨 목록
 │   │   ├── LessonPage.jsx     # 레슨 상세/학습
 │   │   ├── BadgeCollection.jsx # 배지 컬렉션
 │   │   └── QuizCenter.jsx     # 퀴즈 센터
-│   └── styles/                # CSS 11개 파일
+│   └── styles/                # CSS 12개 파일
+│       └── auth.css           # 로그인 페이지 + Navbar 인증 UI
 └── Dev_md/                    # 개발 문서
 ```
 
@@ -74,17 +79,19 @@ D:\python-study\
 App
  └── ErrorBoundary (전역)
       └── ThemeProvider (테마 상태)
-           └── ProgressProvider (학습 진도)
-                └── BadgeProvider (배지 시스템)
-                     └── AppLayout
-                          ├── Navbar
-                          ├── ErrorBoundary (페이지별)
-                          │    └── Suspense (lazy loading)
-                          │         └── Pages (lazy)
-                          └── Footer
+           └── AuthProvider (인증 상태)
+                └── ProgressProvider (학습 진도)
+                     └── BadgeProvider (배지 시스템)
+                          └── AppLayout
+                               ├── Navbar (인증 UI 포함)
+                               ├── ErrorBoundary (페이지별)
+                               │    └── Suspense (lazy loading)
+                               │         └── Pages (lazy)
+                               └── Footer
 ```
 
 ### 데이터 흐름
+- **AuthContext**: Supabase OAuth 인증 (Google/Kakao), 유저 상태, 로그인/로그아웃
 - **ThemeContext**: light/dark 테마 토글, HTML data-theme 속성 제어
 - **ProgressContext**: 완료 레슨, 퀴즈 점수, 코드 실행 수, 스트릭 관리
 - **BadgeContext**: 배지 조건 평가, 획득 알림, 배지 목록 관리
@@ -95,6 +102,7 @@ App
 | `pymaster-theme` | 테마 설정 | localStorage |
 | `pymaster-progress` | 학습 진도 | localStorage (+Supabase 예정) |
 | `pymaster-badges` | 획득 배지 | localStorage (+Supabase 예정) |
+| Supabase Auth | 인증 세션 | Supabase (자동 관리) |
 
 ### Supabase 테이블 (접두사: pymaster_)
 | 테이블 | 용도 |
@@ -110,11 +118,26 @@ App
 | 경로 | 페이지 | 로딩 |
 |------|--------|------|
 | `/` | Home | lazy |
+| `/login` | Login | lazy |
 | `/:level` | LevelPage | lazy |
 | `/:level/:lessonId` | LessonPage | lazy |
 | `/badges` | BadgeCollection | lazy |
 | `/quiz` | QuizCenter | lazy |
 | `*` | 404 | inline |
+
+## 아이콘 시스템
+
+### Font Awesome 6.5.1
+- CDN으로 로드 (`index.html`)
+- 데이터 파일에서 `icon: 'fa-solid fa-seedling'` 형식으로 저장
+- 렌더링: `<i className={icon} />`
+- 색상: CSS에서 `var(--primary)` (#306998) 적용
+- 다크모드: CSS 변수 기반 자동 전환
+
+### Navbar 구조 (1열 평탄 메뉴)
+```
+기초 | 중급 | 고급 | 응용 | NumPy | Pandas | 퀴즈 | 도장깨기 | [진도] [테마] [로그인/아바타]
+```
 
 ## 디자인 시스템
 
@@ -140,15 +163,17 @@ App
 ### 폰트
 - 본문: 'Noto Sans KR' (Google Fonts)
 - 코드: 'JetBrains Mono' (Google Fonts)
+- 아이콘: Font Awesome 6 (CDN)
 
 ## 코드 스플리팅
 
 빌드 결과 (React.lazy + Suspense):
 | 청크 | 크기 | 내용 |
 |------|------|------|
-| index.js | 256KB | React, Router, Contexts |
+| index.js | 433KB | React, Router, Contexts, Supabase |
 | LessonPage.js | 49KB | 레슨 페이지 + 컨텐츠 |
-| QuizCenter.js | 20KB | 퀴즈 센터 + 문제 데이터 |
+| QuizCenter.js | 21KB | 퀴즈 센터 + 문제 데이터 |
 | Home.js | 7KB | 홈 페이지 |
-| BadgeCollection.js | 3KB | 배지 컬렉션 |
+| BadgeCollection.js | 4KB | 배지 컬렉션 |
 | LevelPage.js | 3KB | 레벨 페이지 |
+| Login.js | 2KB | 로그인 페이지 |

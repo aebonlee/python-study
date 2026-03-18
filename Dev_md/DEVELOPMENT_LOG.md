@@ -69,47 +69,62 @@
 
 ## 2026-03-18 (Day 1 후반) - 품질 개선 및 인프라
 
-### 이모지 정리
-- 중복 이모지 6건 해결
-  - 📦 모듈 -> 📚 (변수와 중복)
-  - 🔢 NumPy -> 🧮 (연산자와 중복)
-  - 🔄 Pandas 가공 -> ⚗️ (반복문과 중복)
-  - ⚡ 동시성 -> 🧵 (고급 레벨과 중복)
-  - 🏆 데이터 프로젝트 -> 📈 (퀴즈 챔피언 배지와 중복)
-  - 🔥 30일 챌린지 -> 🌟 (열정 학습자 배지와 중복)
-- Navbar 잘못된 링크 수정 (data-visualization -> numpy-advanced)
-
-### 컬러 통일
+### 이모지 정리 → 컬러 통일 → Error Boundary
+- 중복 이모지 6건 해결, Navbar 링크 수정
 - Python Blue/Yellow 팔레트로 레벨 색상 통일
-  - 기초: #4B8BBE, 중급: #306998, 고급: #1E4F72, 응용: #D4A017
-- LessonCard.jsx 하드코딩 색상 제거 -> levelInfo 참조
-- CSS 변수 업데이트 (--level-basics 등)
+- ErrorBoundary.jsx 생성, React.lazy + Suspense 코드 스플리팅 적용
 
-### Error Boundary + Lazy Loading
-- **ErrorBoundary.jsx**: 런타임 에러 복구 UI (다시 시도/새로고침 버튼)
-- **React.lazy + Suspense**: 5개 페이지 모두 코드 스플리팅 적용
-- 빌드 최적화: 350KB 단일 -> 256KB 메인 + 개별 청크 분리
+### OG 메타태그 + Supabase 설정
+- index.html에 Open Graph 메타태그 추가
+- sharp로 1200x630 OG 이미지 자동 생성
+- Supabase 클라이언트 설정 (pymaster_ 접두사, localStorage fallback)
 
-### OG 메타태그
-- index.html에 Open Graph 메타태그 추가 (Kakao/SNS 공유 미리보기)
-- sharp로 1200x630 OG 이미지 자동 생성 (scripts/generate-og.mjs)
-- og:title, og:description, og:image, og:url, og:site_name, og:locale
+---
 
-### Supabase 설정
-- @supabase/supabase-js 설치
-- src/config/supabase.js 생성 (pymaster_ 접두사)
-- .env.example 제공
-- Supabase 미설정 시 localStorage fallback 지원
+## 2026-03-18 (Day 1 심야) - 아이콘 시스템 교체 + 인증
 
-### 기능 점검 결과
+### Font Awesome 6 아이콘 교체 (12개 파일 수정)
+- **이모지 전면 제거**: 프로젝트 내 모든 이모지를 Font Awesome 6 아이콘으로 교체
+- **index.html**: Font Awesome 6.5.1 CDN 추가
+- **lessons.js**: 4개 레벨 + 27개 레슨 아이콘 → FA 클래스 (`fa-solid fa-seedling` 등)
+- **badges.js**: 22개 배지 아이콘 → FA 클래스
+- **모든 컴포넌트/페이지**: `{icon}` 텍스트 → `<i className={icon} />` 렌더링 변경
+- **인라인 이모지**: 시간(⏱️→fa-clock), 주제(📋→fa-clipboard), 난이도(⭐→fa-star), 팁(💡→fa-lightbulb), 체크(✓→fa-check) 등 전부 교체
+- **티어 메달**: 🥉🥈🥇💎 → fa-award/fa-gem + 인라인 컬러
+- **FA 아이콘 컬러**: base.css에 `var(--primary)` (#306998) 적용, 다크모드 자동 대응
+
+### Navbar 메뉴 구조 변경
+- 기존: "학습 경로" 드롭다운 (기초/중급/고급/응용), "실습" 드롭다운 (NumPy/Pandas)
+- 변경: **기초 | 중급 | 고급 | 응용 | NumPy | Pandas | 퀴즈 | 도장깨기** (1열 평탄 구조)
+- 모든 드롭다운 제거, 개별 메뉴 항목으로 분리
+
+### 카카오/구글 로그인 (Supabase Auth)
+- **AuthContext.jsx**: Supabase Auth 기반 인증 상태 관리
+  - `signInWithGoogle()`: Google OAuth 로그인
+  - `signInWithKakao()`: Kakao OAuth 로그인
+  - `signOut()`: 로그아웃
+  - `onAuthStateChange` 리스너로 세션 자동 관리
+- **Login.jsx**: 로그인 페이지 (`/login`)
+  - Google 로그인 버튼 (Google 공식 색상 SVG)
+  - Kakao 로그인 버튼 (카카오 노란색 #FEE500)
+  - "로그인 없이 시작하기" 옵션
+- **auth.css**: 로그인 카드 UI, Navbar 유저 메뉴, 다크모드 대응
+- **Navbar.jsx**: 비로그인 시 "로그인" 버튼, 로그인 시 아바타 + 드롭다운 (이름/이메일/로그아웃)
+- **App.jsx**: AuthProvider 추가, `/login` 라우트 추가
+- **.env**: Supabase 프로젝트 URL/Key 설정 완료
+
+### 기능 점검 결과 (업데이트)
 | # | 기능 | 상태 |
 |---|------|------|
-| 1 | Error Boundary | 추가 완료 |
-| 2 | Lazy Loading | 추가 완료 |
-| 3 | Supabase 연동 | 클라이언트 설정 완료 |
-| 4 | 사용자 인증 | Supabase 준비됨 (추후 활성화) |
-| 5 | 학습 진도 추적 | localStorage 작동 중 |
-| 8 | 학습 현황 | Home.jsx 진도 현황 섹션 |
-| 9 | 배지 시스템 | 23개 배지 자동 평가 |
-| 11 | 학습 완료 버튼 | LessonPage.jsx에 존재 |
-| 12 | 시험 성적 기록 | ProgressContext에서 자동 저장 |
+| 1 | Error Boundary | 완료 |
+| 2 | Lazy Loading | 완료 |
+| 3 | Supabase 연동 | 완료 (클라이언트 + .env 설정) |
+| 4 | 사용자 인증 | 완료 (Google/Kakao OAuth) |
+| 5 | 학습 진도 추적 | 완료 (localStorage) |
+| 6 | 로그인 페이지 | 완료 (/login) |
+| 8 | 학습 현황 | 완료 (Home.jsx) |
+| 9 | 배지 시스템 | 완료 (23개 배지) |
+| 10 | Font Awesome 아이콘 | 완료 (이모지 전면 교체) |
+| 11 | 학습 완료 버튼 | 완료 |
+| 12 | 시험 성적 기록 | 완료 |
+| 13 | Navbar 인증 UI | 완료 (로그인 버튼/아바타) |

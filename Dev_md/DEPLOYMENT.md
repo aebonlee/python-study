@@ -59,7 +59,7 @@ node scripts/generate-og.mjs
 ```
 `public/og-image.png`이 생성됩니다.
 
-## Supabase 설정 (선택)
+## Supabase 설정
 1. `.env.example`을 `.env`로 복사
 2. Supabase 프로젝트 URL과 Anon Key 입력
 ```
@@ -68,6 +68,12 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
 3. `.env` 미설정 시 localStorage만 사용 (정상 작동)
 
+## OAuth 설정 (Google/Kakao)
+1. Supabase Dashboard -> Authentication -> Providers
+2. Google: Client ID/Secret 입력
+3. Kakao: REST API Key 입력
+4. Redirect URI: `https://[project-ref].supabase.co/auth/v1/callback`
+
 ## 체크리스트
 - [x] vite.config.js base: '/' (커스텀 도메인)
 - [x] CNAME 파일 설정
@@ -75,3 +81,6 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 - [x] GitHub Actions 워크플로우
 - [x] OG 메타태그 + 이미지
 - [x] gh-pages 배포 스크립트
+- [x] Font Awesome 6 CDN
+- [x] Supabase .env 설정
+- [x] Google/Kakao OAuth 클라이언트 코드

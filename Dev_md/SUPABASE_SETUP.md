@@ -3,12 +3,13 @@
 ## 개요
 - **접두사**: `pymaster_` (다른 프로젝트와 DB 공유 시 충돌 방지)
 - **클라이언트**: `src/config/supabase.js`
+- **인증 컨텍스트**: `src/contexts/AuthContext.jsx`
 - **환경 변수**: `.env` (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY)
 
-## 1. Supabase 프로젝트 생성
+## 1. Supabase 프로젝트 설정
 1. https://supabase.com 에서 프로젝트 생성
 2. Project URL과 anon/public key 확인
-3. `.env` 파일 생성:
+3. `.env` 파일 설정:
 ```
 VITE_SUPABASE_URL=https://xxxxx.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGciOi...
@@ -92,9 +93,45 @@ CREATE POLICY "Users can update own data" ON pymaster_users
 -- 나머지 테이블도 동일 패턴
 ```
 
-## 4. OAuth 설정 (예정)
-- Google OAuth: Supabase Dashboard -> Authentication -> Providers
-- Kakao OAuth: Supabase에서 직접 지원하지 않으므로 Custom Provider 또는 별도 구현
+## 4. OAuth 설정 (구현 완료)
+
+### Google OAuth
+1. Supabase Dashboard -> Authentication -> Providers -> Google
+2. Google Cloud Console에서 OAuth 2.0 클라이언트 생성
+3. Authorized redirect URI: `https://[project-ref].supabase.co/auth/v1/callback`
+4. Client ID와 Client Secret을 Supabase에 입력
+
+### Kakao OAuth
+1. Supabase Dashboard -> Authentication -> Providers -> Kakao
+2. Kakao Developers에서 앱 생성
+3. Redirect URI: `https://[project-ref].supabase.co/auth/v1/callback`
+4. REST API 키를 Supabase에 입력
+
+### 클라이언트 코드 (AuthContext.jsx)
+```js
+import { supabase } from '../config/supabase'
+
+// Google 로그인
+const signInWithGoogle = async () => {
+  await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin }
+  })
+}
+
+// Kakao 로그인
+const signInWithKakao = async () => {
+  await supabase.auth.signInWithOAuth({
+    provider: 'kakao',
+    options: { redirectTo: window.location.origin }
+  })
+}
+
+// 로그아웃
+const signOut = async () => {
+  await supabase.auth.signOut()
+}
+```
 
 ## 5. 클라이언트 사용 예시
 ```js

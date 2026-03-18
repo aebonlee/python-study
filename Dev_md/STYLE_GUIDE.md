@@ -57,23 +57,57 @@
 --radius-full: 9999px;
 ```
 
-## 이모지 사용 규칙
+## 아이콘 시스템 (Font Awesome 6)
 
-### 레벨 아이콘 (고정)
-| 레벨 | 이모지 | 의미 |
-|------|--------|------|
-| 기초 | 🌱 | 새싹 |
-| 중급 | 🚀 | 로켓 |
-| 고급 | ⚡ | 번개 |
-| 응용 | 🔬 | 현미경 |
+### CDN
+```html
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+```
 
-### 레슨 아이콘 규칙
-- 각 레슨은 고유한 이모지 사용 (중복 금지)
-- 레벨 아이콘과 겹치지 않도록 주의
+### 아이콘 색상 규칙
+- **기본 색상**: `var(--primary)` (#306998) - 대부분의 아이콘
+- **흰색 배경 위**: primary 색상 적용 (.feature-icon, .lesson-icon, .badge-icon)
+- **컬러 배경 위**: 부모 색상 상속 (page-header, quiz-card-header)
+- **특수 색상**: 팁 아이콘 = accent, 성공 아이콘 = success
+- **다크모드**: CSS 변수 기반 자동 전환 (#4B8BBE)
 
-### 배지 아이콘 규칙
-- 해당 레벨/레슨과 연관된 이모지 허용 (예: 🌱 기초 마스터)
-- 동일 티어 내 중복 금지
+### 레벨 아이콘
+| 레벨 | FA 클래스 | 의미 |
+|------|-----------|------|
+| 기초 | `fa-solid fa-seedling` | 새싹 |
+| 중급 | `fa-solid fa-rocket` | 로켓 |
+| 고급 | `fa-solid fa-bolt` | 번개 |
+| 응용 | `fa-solid fa-microscope` | 현미경 |
+
+### 레슨 아이콘 (주요)
+| 레슨 | FA 클래스 |
+|------|-----------|
+| Hello Python | `fa-solid fa-hand` |
+| 변수 | `fa-solid fa-box` |
+| 연산자 | `fa-solid fa-hashtag` |
+| OOP | `fa-solid fa-cubes` |
+| NumPy | `fa-solid fa-calculator` |
+| Pandas | `fa-solid fa-table` |
+
+### 배지 티어 아이콘
+| 티어 | FA 클래스 | 색상 |
+|------|-----------|------|
+| 브론즈 | `fa-solid fa-award` | #CD7F32 |
+| 실버 | `fa-solid fa-award` | #C0C0C0 |
+| 골드 | `fa-solid fa-award` | #FFD700 |
+| 플래티넘 | `fa-solid fa-gem` | #B9F2FF |
+
+### 렌더링 패턴
+```jsx
+// 데이터 파일에서 클래스명으로 저장
+{ icon: 'fa-solid fa-seedling' }
+
+// 컴포넌트에서 <i> 태그로 렌더링
+<i className={icon} />
+
+// 인라인 아이콘
+<i className="fa-solid fa-clock" /> 약 15분
+```
 
 ## 버튼 스타일
 - `.btn-primary`: Python Blue 그라디언트, 흰색 텍스트

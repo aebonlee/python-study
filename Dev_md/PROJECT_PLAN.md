@@ -36,11 +36,16 @@
 - 연속 학습일 (스트릭)
 - localStorage 기반 데이터 저장 + Supabase 동기화 준비
 
-### 6. 안정성 기능
+### 6. 사용자 인증
+- Supabase Auth 기반 Google/Kakao OAuth 로그인
+- AuthContext로 전역 인증 상태 관리
+- 로그인 페이지 (/login), Navbar 유저 UI
+
+### 7. 안정성 기능
 - Error Boundary (런타임 에러 복구 UI)
 - React.lazy + Suspense (코드 스플리팅)
 
-### 7. SNS 공유
+### 8. SNS 공유
 - Open Graph 메타태그 (Kakao, Facebook, Twitter)
 - 자동 생성 OG 이미지 (1200x630)
 
@@ -50,6 +55,7 @@
 - 클라이언트 사이드 렌더링 (SPA)
 - 빠른 초기 로딩 (Vite + 코드 스플리팅)
 - GitHub Pages 배포 + 커스텀 도메인
+- Font Awesome 6 아이콘 (이모지 대신 아이콘 폰트)
 
 ## 마일스톤
 1. ~~프로젝트 초기 설정~~ ✅
@@ -61,5 +67,9 @@
 7. ~~이모지 정리, 컬러 통일~~ ✅
 8. ~~Error Boundary, Lazy Loading~~ ✅
 9. ~~OG 메타태그, Supabase 설정~~ ✅
-10. 사용자 인증 (Supabase OAuth) - 예정
-11. 학습 데이터 클라우드 동기화 - 예정
+10. ~~이모지 → Font Awesome 6 아이콘 교체~~ ✅
+11. ~~사용자 인증 (Google/Kakao OAuth)~~ ✅
+12. ~~Navbar 메뉴 개별화 (1열 평탄 구조)~~ ✅
+13. 학습 데이터 클라우드 동기화 - 예정
+14. 프로필 페이지 - 예정
+15. 수료증 발급 - 예정
