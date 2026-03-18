@@ -1,14 +1,35 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { ProgressProvider } from './contexts/ProgressContext'
 import { BadgeProvider } from './contexts/BadgeContext'
+import ErrorBoundary from './components/ErrorBoundary'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
-import Home from './pages/Home'
-import LevelPage from './pages/LevelPage'
-import LessonPage from './pages/LessonPage'
-import BadgeCollection from './pages/BadgeCollection'
-import QuizCenter from './pages/QuizCenter'
+
+const Home = lazy(() => import('./pages/Home'))
+const LevelPage = lazy(() => import('./pages/LevelPage'))
+const LessonPage = lazy(() => import('./pages/LessonPage'))
+const BadgeCollection = lazy(() => import('./pages/BadgeCollection'))
+const QuizCenter = lazy(() => import('./pages/QuizCenter'))
+
+function PageLoader() {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh' }}>
+      <div className="loading-spinner-small" style={{ width: 32, height: 32, borderWidth: 3, borderColor: 'rgba(48,105,152,0.2)', borderTopColor: '#306998' }} />
+    </div>
+  )
+}
+
+function LazyRoute({ element }) {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<PageLoader />}>
+        {element}
+      </Suspense>
+    </ErrorBoundary>
+  )
+}
 
 function AppLayout() {
   return (
@@ -16,11 +37,11 @@ function AppLayout() {
       <Navbar />
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/:level" element={<LevelPage />} />
-          <Route path="/:level/:lessonId" element={<LessonPage />} />
-          <Route path="/badges" element={<BadgeCollection />} />
-          <Route path="/quiz" element={<QuizCenter />} />
+          <Route path="/" element={<LazyRoute element={<Home />} />} />
+          <Route path="/:level" element={<LazyRoute element={<LevelPage />} />} />
+          <Route path="/:level/:lessonId" element={<LazyRoute element={<LessonPage />} />} />
+          <Route path="/badges" element={<LazyRoute element={<BadgeCollection />} />} />
+          <Route path="/quiz" element={<LazyRoute element={<QuizCenter />} />} />
           <Route path="*" element={
             <div className="not-found-page">
               <div className="not-found-content">
@@ -44,7 +65,9 @@ export default function App() {
       <ThemeProvider>
         <ProgressProvider>
           <BadgeProvider>
-            <AppLayout />
+            <ErrorBoundary>
+              <AppLayout />
+            </ErrorBoundary>
           </BadgeProvider>
         </ProgressProvider>
       </ThemeProvider>

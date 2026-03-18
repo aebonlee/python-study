@@ -4,25 +4,25 @@ export const levelInfo = {
     title: '기초',
     description: '파이썬의 핵심 문법과 기본 개념을 탄탄하게 다집니다',
     icon: '🌱',
-    color: '#10B981'
+    color: '#4B8BBE'
   },
   intermediate: {
     title: '중급',
     description: '객체지향, 파일 처리, 예외 처리 등 실무 역량을 키웁니다',
     icon: '🚀',
-    color: '#3B82F6'
+    color: '#306998'
   },
   advanced: {
     title: '고급',
     description: '데코레이터, 제너레이터, 동시성 등 고급 기법을 익힙니다',
     icon: '⚡',
-    color: '#8B5CF6'
+    color: '#1E4F72'
   },
   applied: {
     title: '응용',
     description: 'NumPy, Pandas를 활용한 데이터 분석 실습',
     icon: '🔬',
-    color: '#F59E0B'
+    color: '#D4A017'
   }
 }
 
@@ -162,7 +162,7 @@ export const lessons = {
       id: 'modules',
       title: '모듈과 패키지',
       description: 'import, 표준 라이브러리, 패키지 구조',
-      icon: '📦',
+      icon: '📚',
       estimatedTime: 20,
       difficulty: 2,
       topics: ['import', 'from', 'as', '__name__', 'pip', '표준 라이브러리']
@@ -219,7 +219,7 @@ export const lessons = {
       id: 'concurrency',
       title: '동시성 프로그래밍',
       description: '스레딩, 멀티프로세싱, asyncio 기초',
-      icon: '⚡',
+      icon: '🧵',
       estimatedTime: 40,
       difficulty: 3,
       topics: ['threading', 'multiprocessing', 'asyncio', 'async/await', 'GIL', 'concurrent.futures']
@@ -240,7 +240,7 @@ export const lessons = {
       id: 'numpy-basics',
       title: 'NumPy 기초',
       description: 'ndarray, 배열 생성, 인덱싱, 슬라이싱, 브로드캐스팅',
-      icon: '🔢',
+      icon: '🧮',
       estimatedTime: 35,
       difficulty: 2,
       topics: ['ndarray', 'np.array', 'np.zeros', 'reshape', '인덱싱', '브로드캐스팅']
@@ -267,7 +267,7 @@ export const lessons = {
       id: 'pandas-manipulation',
       title: 'Pandas 데이터 가공',
       description: '필터링, 정렬, 그룹화, 결측치 처리, 병합',
-      icon: '🔄',
+      icon: '⚗️',
       estimatedTime: 40,
       difficulty: 3,
       topics: ['필터링', 'sort_values', 'groupby', 'fillna', 'merge', 'pivot_table']
@@ -276,7 +276,7 @@ export const lessons = {
       id: 'data-project',
       title: '데이터 분석 미니 프로젝트',
       description: 'NumPy와 Pandas를 활용한 실전 데이터 분석',
-      icon: '🏆',
+      icon: '📈',
       estimatedTime: 45,
       difficulty: 3,
       topics: ['데이터 로딩', '탐색적 분석', '데이터 정제', '통계 분석', '결과 해석']

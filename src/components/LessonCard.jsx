@@ -1,18 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useProgress } from '../contexts/ProgressContext'
+import { levelInfo } from '../data/lessons'
 
 export default function LessonCard({ lesson, level }) {
   const { completedLessons } = useProgress()
   const isCompleted = completedLessons.has(lesson.id)
 
-  const levelColors = {
-    basics: '#10B981',
-    intermediate: '#3B82F6',
-    advanced: '#8B5CF6',
-    applied: '#F59E0B'
-  }
-
-  const color = levelColors[level] || '#3B82F6'
+  const color = levelInfo[level]?.color || '#306998'
 
   return (
     <Link to={`/${level}/${lesson.id}`} className={`lesson-card${isCompleted ? ' completed' : ''}`}>

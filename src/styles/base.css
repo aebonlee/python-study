@@ -10,7 +10,7 @@
   --text-primary: #111827; --text-secondary: #4B5563; --text-light: #5B6370; --text-inverse: #FFFFFF;
   --border-light: #E5E7EB; --border-medium: #CBD5E0;
   --success: #10B981; --warning: #F59E0B; --error: #EF4444; --info: #3B82F6;
-  --level-beginner: #10B981; --level-intermediate: #3B82F6; --level-advanced: #8B5CF6; --level-applied: #F59E0B;
+  --level-basics: #4B8BBE; --level-intermediate: #306998; --level-advanced: #1E4F72; --level-applied: #D4A017;
   --glass-bg: rgba(255,255,255,0.85); --glass-blur: 12px;
   --gradient-python: linear-gradient(135deg, #306998 0%, #4B8BBE 100%);
   --gradient-hero: linear-gradient(135deg, #306998 0%, #1E4F72 50%, #0D2137 100%);

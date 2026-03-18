@@ -36,7 +36,7 @@ export const badges = [
     id: 'first-quiz',
     title: '첫 시험',
     description: '기초 퀴즈를 통과하세요',
-    icon: '📝',
+    icon: '✏️',
     tier: 'bronze',
     condition: { type: 'quiz_passed', quizId: 'basics', minScore: 70 }
   },
@@ -186,7 +186,7 @@ export const badges = [
     id: 'streak-30',
     title: '30일 챌린지',
     description: '30일 연속으로 학습하세요',
-    icon: '🔥',
+    icon: '🌟',
     tier: 'platinum',
     condition: { type: 'streak', days: 30 }
   }

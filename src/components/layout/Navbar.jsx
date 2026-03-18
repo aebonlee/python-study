@@ -37,9 +37,9 @@ export default function Navbar() {
     {
       label: '실습',
       children: [
-        { to: '/applied/numpy-basics', label: '🔢 NumPy 실습' },
+        { to: '/applied/numpy-basics', label: '🧮 NumPy 실습' },
         { to: '/applied/pandas-basics', label: '🐼 Pandas 실습' },
-        { to: '/applied/data-visualization', label: '📊 데이터 시각화' },
+        { to: '/applied/numpy-advanced', label: '📊 NumPy 연산' },
       ]
     },
     { to: '/quiz', label: '퀴즈' },
