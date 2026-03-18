@@ -127,23 +127,38 @@
 .python-lesson-nav a:hover { border-color: var(--primary); color: var(--primary); background: rgba(48,105,152,0.04); }
 
 /* Dark mode */
+[data-theme="dark"] .python-learning-page .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.1) 0%, rgba(255,212,59,0.06) 100%); }
 [data-theme="dark"] .python-lesson-card { background: var(--bg-medium); }
 [data-theme="dark"] .python-lesson-card-icon { background: rgba(75,139,190,0.15); }
 [data-theme="dark"] .python-code-header { background: #0F172A; }
 [data-theme="dark"] .python-code-body { background: #020617; }
 [data-theme="dark"] .python-table th { background: rgba(75,139,190,0.1); }
+[data-theme="dark"] .python-table td { border-color: var(--border-medium); }
 [data-theme="dark"] .python-table code { background: rgba(75,139,190,0.15); }
-[data-theme="dark"] .python-info-box { background: rgba(75,139,190,0.08); }
+[data-theme="dark"] .python-table tr:hover td { background: rgba(75,139,190,0.06); }
+[data-theme="dark"] .python-info-box { background: rgba(75,139,190,0.08); border-color: rgba(75,139,190,0.2); }
+[data-theme="dark"] .python-info-box.tip { background: rgba(255,212,59,0.06); border-color: rgba(255,212,59,0.15); }
+[data-theme="dark"] .python-info-box.warning { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.15); }
+[data-theme="dark"] .python-output-block { background: rgba(16,185,129,0.08); }
+[data-theme="dark"] .python-output-block pre { color: var(--text-primary); }
+[data-theme="dark"] .python-lesson-section h2 { border-bottom-color: rgba(75,139,190,0.2); }
+[data-theme="dark"] .python-lesson-nav { border-top-color: var(--border-medium); }
+[data-theme="dark"] .python-lesson-nav a { border-color: var(--border-medium); color: var(--text-secondary); }
+[data-theme="dark"] .python-lesson-nav a:hover { border-color: var(--primary-light); color: var(--primary-light); background: rgba(75,139,190,0.08); }
 [data-theme="dark"] .python-lesson-detail .page-header { background: linear-gradient(135deg, #1a3a5c 0%, #0d2740 100%); }
+[data-theme="dark"] .python-lesson-detail .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.1) 0%, rgba(255,212,59,0.06) 100%); }
 [data-theme="dark"] .python-lesson-detail .callout-box { background: rgba(75,139,190,0.1); border-left-color: rgba(75,139,190,0.6); }
 [data-theme="dark"] .python-lesson-detail .callout-box li,
 [data-theme="dark"] .python-lesson-detail .callout-box p { color: var(--text-primary); }
 [data-theme="dark"] .python-lesson-detail .code-header { background: #0F172A; }
 [data-theme="dark"] .python-lesson-detail .code-block pre { background: #0d1117; }
 [data-theme="dark"] .python-lesson-detail .lesson-table th { background: rgba(75,139,190,0.12); }
+[data-theme="dark"] .python-lesson-detail .lesson-table td { border-color: var(--border-medium); }
 [data-theme="dark"] .python-lesson-detail .lesson-table td code { background: rgba(75,139,190,0.15); }
 [data-theme="dark"] .python-lesson-detail .lesson-body code { background: rgba(75,139,190,0.15); }
+[data-theme="dark"] .python-lesson-detail .lesson-body h2 { border-bottom-color: rgba(75,139,190,0.3); }
 [data-theme="dark"] .python-lesson-detail .exercise-box { background: rgba(75,139,190,0.08); border-color: rgba(75,139,190,0.2); }
+[data-theme="dark"] .python-lesson-detail .lesson-nav { border-top-color: var(--border-medium); }
 [data-theme="dark"] .python-lesson-detail .lesson-nav-btn.prev { background: var(--bg-medium); }
 [data-theme="dark"] .python-lesson-detail .lesson-nav-btn.prev:hover { background: var(--bg-light); }
 
@@ -155,10 +170,28 @@
   .python-lesson-grid { grid-template-columns: 1fr; }
   .python-lesson-content { padding: 24px 16px; }
   .python-lesson-section h2 { font-size: 20px; }
+  .python-lesson-nav { flex-direction: column; gap: 8px; }
+  .python-lesson-nav a { justify-content: center; padding: 8px 16px; font-size: 13px; }
   .python-lesson-detail .page-header h1 { font-size: 1.6rem; }
   .python-lesson-detail .lesson-body h2 { font-size: 1.3rem; }
   .python-lesson-detail .lesson-nav { flex-direction: column; gap: 10px; }
   .python-lesson-detail .lesson-nav-btn { text-align: center; }
   .python-lesson-detail .lesson-table { font-size: 0.85rem; }
   .python-lesson-detail .lesson-table th, .python-lesson-detail .lesson-table td { padding: 8px 10px; }
+}
+@media (max-width: 480px) {
+  .python-learning-page .page-header-section { padding: 40px 0 20px; }
+  .python-learning-page .page-title { font-size: 24px; }
+  .python-lesson-card { padding: 16px; }
+  .python-lesson-card h3 { font-size: 14px; }
+  .python-lesson-card-icon { width: 32px; height: 32px; font-size: 14px; top: 14px; right: 14px; }
+  .python-lesson-content { padding: 16px 12px; }
+  .python-lesson-section h2 { font-size: 18px; }
+  .python-lesson-section p, .python-lesson-section li { font-size: 14px; }
+  .python-table { font-size: 12px; }
+  .python-table th, .python-table td { padding: 6px 8px; }
+  .python-lesson-detail .page-header h1 { font-size: 1.3rem; }
+  .python-lesson-detail .page-header p { font-size: 0.9rem; }
+  .python-lesson-detail .lesson-body h2 { font-size: 1.15rem; }
+  .python-lesson-detail .callout-box { padding: 14px 16px; }
 }

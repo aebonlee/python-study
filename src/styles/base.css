@@ -33,6 +33,7 @@ img, svg { display: block; max-width: 100%; }
 .container { max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
 .main-content { padding-top: var(--nav-height); min-height: 100vh; }
 
+.section { padding: 40px 0; }
 .section-header { text-align: center; margin-bottom: 64px; }
 .section-title { font-size: 36px; font-weight: 800; color: var(--text-primary); margin-bottom: 16px; }
 .section-subtitle { font-size: 18px; color: var(--text-secondary); max-width: 640px; margin: 0 auto; line-height: 1.7; }

@@ -91,12 +91,26 @@
 .practice-input-field { padding: 8px 12px; border: 1px solid var(--border-medium); border-radius: var(--radius-sm); font-family: var(--font-code); font-size: 14px; background: var(--bg-white); color: var(--text-primary); outline: none; transition: var(--transition); }
 .practice-input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(48,105,152,0.1); }
 
+/* Error state */
+.practice-output-content.has-error { background: rgba(239,68,68,0.04); }
+
 /* Dark mode */
+[data-theme="dark"] .practice-page .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.1) 0%, rgba(255,212,59,0.06) 100%); }
 [data-theme="dark"] .practice-step-tabs { background: rgba(75,139,190,0.08); }
 [data-theme="dark"] .practice-tab { background: var(--bg-medium); border-color: var(--border-light); }
+[data-theme="dark"] .practice-example-sidebar { background: var(--bg-medium); }
+[data-theme="dark"] .practice-sidebar-header { background: rgba(75,139,190,0.1); }
+[data-theme="dark"] .practice-example-item.active { background: rgba(75,139,190,0.15); }
+[data-theme="dark"] .practice-example-item:hover { background: rgba(75,139,190,0.1); }
+[data-theme="dark"] .practice-step-runner { background: var(--bg-medium); border-color: var(--primary-light); }
 [data-theme="dark"] .practice-mode-tabs { background: rgba(75,139,190,0.12); }
+[data-theme="dark"] .practice-output-content { background: var(--bg-medium); }
+[data-theme="dark"] .practice-output-content.has-error { background: rgba(239,68,68,0.08); }
+[data-theme="dark"] .practice-stderr { color: #F87171; }
+[data-theme="dark"] .practice-toolbar { background: var(--bg-medium); }
 [data-theme="dark"] .practice-turtle-svg { background: #161b22; }
 [data-theme="dark"] .practice-input-form { background: rgba(75,139,190,0.08); }
+[data-theme="dark"] .practice-runner-empty { border-color: var(--border-medium); }
 [data-theme="dark"] .practice-unsupported { background: rgba(245,158,11,0.12); }
 
 /* Responsive */
