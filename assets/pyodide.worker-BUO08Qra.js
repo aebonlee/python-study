@@ -1,4 +1,4 @@
-(function(){"use strict";let t=null,s=!1;const d="https://cdn.jsdelivr.net/pyodide/v0.27.0/full/",a=`
+(function(){"use strict";let l=null,f=!1;const o="https://cdn.jsdelivr.net/pyodide/v0.27.0/full/",_=`
 import math as _math
 
 class _Screen:
@@ -396,16 +396,16 @@ def _render_svg():
 
 import atexit as _atexit
 _atexit.register(_render_svg)
-`,_=/^\s*(import\s+turtle|from\s+turtle\s+import)/m;async function p(){if(t)return t;if(s){for(;s;)await new Promise(l=>setTimeout(l,100));return t}s=!0;try{return importScripts(d+"pyodide.js"),t=await loadPyodide({indexURL:d}),t}finally{s=!1}}self.onmessage=async l=>{const{id:n,code:o,inputs:r}=l.data;try{const e=await p();if(e.runPython(`
+`,p=/^\s*(import\s+turtle|from\s+turtle\s+import)/m,c=["numpy","pandas","scipy","matplotlib","sympy","scikit-learn","statsmodels","networkx","pillow","regex","pyyaml","jsonschema","lxml","beautifulsoup4","html5lib","sqlalchemy","micropip"];function u(n){const t=new Set,r=/^\s*(?:import\s+([\w]+)|from\s+([\w]+)\s+import)/gm;let s;for(;(s=r.exec(n))!==null;){const e=(s[1]||s[2]).toLowerCase();e==="sklearn"?t.add("scikit-learn"):e==="bs4"?t.add("beautifulsoup4"):e==="PIL"?t.add("pillow"):e==="yaml"?t.add("pyyaml"):c.includes(e)&&t.add(e)}return[...t]}async function h(){if(l)return l;if(f){for(;f;)await new Promise(n=>setTimeout(n,100));return l}f=!0;try{return importScripts(o+"pyodide.js"),l=await loadPyodide({indexURL:o}),l}finally{f=!1}}self.onmessage=async n=>{const{id:t,code:r,inputs:s}=n.data;try{const e=await h();if(e.runPython(`
 import sys, io
 sys.stdout = io.StringIO()
 sys.stderr = io.StringIO()
-`),r&&r.length>0){const f=r.join(`
+`),s&&s.length>0){const d=s.join(`
 `)+`
-`;e.runPython(`sys.stdin = io.StringIO(${JSON.stringify(f)})`)}_.test(o)&&e.runPython(`
+`;e.runPython(`sys.stdin = io.StringIO(${JSON.stringify(d)})`)}const i=u(r);i.length>0&&await e.loadPackage(i),p.test(r)&&e.runPython(`
 import types, sys
 _turtle_mod = types.ModuleType('turtle')
-exec(${JSON.stringify(a)}, _turtle_mod.__dict__)
+exec(${JSON.stringify(_)}, _turtle_mod.__dict__)
 sys.modules['turtle'] = _turtle_mod
 del _turtle_mod
-`);try{e.runPython(o)}catch(f){const u=e.runPython("sys.stderr.getvalue()"),h=e.runPython("sys.stdout.getvalue()");self.postMessage({id:n,success:!1,output:h||"",stderr:u||f.message});return}const c=e.runPython("sys.stdout.getvalue()"),i=e.runPython("sys.stderr.getvalue()");self.postMessage({id:n,success:!i,output:c||"",stderr:i||""})}catch(e){self.postMessage({id:n,success:!1,output:"",stderr:e.message||"Failed to load Python environment"})}}})();
+`);try{e.runPython(r)}catch(d){const g=e.runPython("sys.stderr.getvalue()"),y=e.runPython("sys.stdout.getvalue()");self.postMessage({id:t,success:!1,output:y||"",stderr:g||d.message});return}const w=e.runPython("sys.stdout.getvalue()"),a=e.runPython("sys.stderr.getvalue()");self.postMessage({id:t,success:!a,output:w||"",stderr:a||""})}catch(e){self.postMessage({id:t,success:!1,output:"",stderr:e.message||"Failed to load Python environment"})}}})();
