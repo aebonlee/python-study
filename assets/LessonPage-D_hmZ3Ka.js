@@ -1,4 +1,4 @@
-import{r as reactExports,u as useProgress,j as jsxRuntimeExports,c as useParams,l as lessons,L as Link,b as levelInfo}from"./index-B5kK9upR.js";const lessonContents={"hello-python":{sections:[{title:"print() 함수로 출력하기",content:`파이썬에서 가장 먼저 배우는 것은 화면에 텍스트를 출력하는 것입니다.
+import{r as reactExports,u as useProgress,j as jsxRuntimeExports,c as useParams,l as lessons,L as Link,b as levelInfo}from"./index-DFrQnUwo.js";const lessonContents={"hello-python":{sections:[{title:"print() 함수로 출력하기",content:`파이썬에서 가장 먼저 배우는 것은 화면에 텍스트를 출력하는 것입니다.
 print() 함수를 사용하면 원하는 내용을 콘솔에 출력할 수 있습니다.
 
 문자열은 작은따옴표(') 또는 큰따옴표(")로 감싸서 표현합니다.`,code:`# 첫 번째 파이썬 프로그램!
@@ -552,7 +552,318 @@ print(f"숫자들: {nums}")
 result = re.sub(r"\\d", "*", text)
 print(result)`,expectedOutput:`전화번호: 010-1234-5678
 숫자들: ['010', '1234', '5678']
-전화번호: ***-****-****, 이메일: test@email.com`,tip:"정규표현식 문자열 앞에 r을 붙이면(raw string) 이스케이프 문자 문제를 방지합니다."}]},decorators:{sections:[{title:"데코레이터 기초",content:`데코레이터는 함수를 감싸서 기능을 추가하는 패턴입니다.
+전화번호: ***-****-****, 이메일: test@email.com`,tip:"정규표현식 문자열 앞에 r을 붙이면(raw string) 이스케이프 문자 문제를 방지합니다."}]},"os-sys":{sections:[{title:"os 모듈 - 파일 시스템 제어",content:`os 모듈은 운영체제와 상호작용하는 기능을 제공합니다.
+파일/디렉토리 조작, 경로 처리, 환경 변수 접근 등이 가능합니다.
+
+os.path 하위 모듈은 경로 관련 유틸리티를 제공합니다.`,code:`import os
+
+# 현재 작업 디렉토리
+print(f"현재 디렉토리: {os.getcwd()}")
+
+# os.path 경로 처리
+path = "/home/user/documents/report.pdf"
+print(f"파일명: {os.path.basename(path)}")
+print(f"디렉토리: {os.path.dirname(path)}")
+print(f"확장자: {os.path.splitext(path)[1]}")
+print(f"경로 존재: {os.path.exists(path)}")
+
+# 경로 결합 (OS 독립적)
+full = os.path.join("home", "user", "data.csv")
+print(f"경로 결합: {full}")
+
+# 환경 변수
+print(f"\\nPATH 환경 변수 일부: {os.environ.get("PATH", "미설정")[:50]}...")
+print(f"HOME: {os.environ.get("HOME", os.environ.get("USERPROFILE", "미설정"))}")`,expectedOutput:`현재 디렉토리: /home/user
+파일명: report.pdf
+디렉토리: /home/user/documents
+확장자: .pdf
+경로 존재: False
+경로 결합: home/user/data.csv
+
+PATH 환경 변수 일부: /usr/local/bin:/usr/bin...
+HOME: /home/user`,tip:"os.path.join()은 운영체제에 맞는 경로 구분자(/ 또는 \\)를 자동으로 사용합니다."},{title:"sys 모듈 - 시스템 정보와 제어",content:`sys 모듈은 파이썬 인터프리터와 관련된 정보와 기능을 제공합니다.
+
+명령줄 인자(argv), 모듈 경로(path), 버전 정보 등을 다룹니다.`,code:`import sys
+
+# 파이썬 버전
+print(f"파이썬 버전: {sys.version}")
+print(f"버전 정보: {sys.version_info.major}.{sys.version_info.minor}")
+
+# 플랫폼
+print(f"플랫폼: {sys.platform}")
+
+# 정수 최대값
+print(f"정수 최대값: {sys.maxsize}")
+
+# 모듈 검색 경로 (처음 3개)
+print(f"\\n모듈 경로 (상위 3개):")
+for p in sys.path[:3]:
+    print(f"  {p}")
+
+# 명령줄 인자 예시
+print(f"\\n명령줄 인자: {sys.argv}")
+print("# python script.py arg1 arg2 → ['script.py', 'arg1', 'arg2']")`,expectedOutput:`파이썬 버전: 3.12.0 (main, ...)
+버전 정보: 3.12
+플랫폼: linux
+정수 최대값: 9223372036854775807
+
+모듈 경로 (상위 3개):
+  
+  /usr/lib/python3.12
+  /usr/lib/python3.12/lib-dynload
+
+명령줄 인자: ['']
+# python script.py arg1 arg2 → ['script.py', 'arg1', 'arg2']`,tip:"sys.exit()으로 프로그램을 종료할 수 있습니다. 0은 정상 종료, 다른 값은 에러를 의미합니다."}]},"math-cmath":{sections:[{title:"math 모듈 - 수학 함수",content:`math 모듈은 C 표준 라이브러리의 수학 함수에 대한 접근을 제공합니다.
+
+상수: pi, e, inf, nan
+함수: sqrt, pow, log, sin, cos, tan, ceil, floor, factorial 등`,code:`import math
+
+# 상수
+print(f"원주율 (pi): {math.pi:.6f}")
+print(f"자연 상수 (e): {math.e:.6f}")
+
+# 기본 수학 함수
+print(f"\\n√16 = {math.sqrt(16)}")
+print(f"2^10 = {math.pow(2, 10):.0f}")
+print(f"10! = {math.factorial(10)}")
+
+# 올림/내림/반올림
+print(f"\\nceil(3.2) = {math.ceil(3.2)}")
+print(f"floor(3.8) = {math.floor(3.8)}")
+
+# 로그
+print(f"\\nlog(100, 10) = {math.log(100, 10):.1f}")  # 상용 로그
+print(f"log2(1024) = {math.log2(1024):.1f}")
+print(f"ln(e) = {math.log(math.e):.1f}")  # 자연 로그
+
+# 삼각함수
+angle = math.radians(30)  # 30도를 라디안으로
+print(f"\\nsin(30°) = {math.sin(angle):.4f}")
+print(f"cos(30°) = {math.cos(angle):.4f}")`,expectedOutput:`원주율 (pi): 3.141593
+자연 상수 (e): 2.718282
+
+√16 = 4.0
+2^10 = 1024
+10! = 3628800
+
+ceil(3.2) = 4
+floor(3.8) = 3
+
+log(100, 10) = 2.0
+log2(1024) = 10.0
+ln(e) = 1.0
+
+sin(30°) = 0.5000
+cos(30°) = 0.8660`,tip:"math.isclose(a, b)로 부동소수점 비교를 안전하게 할 수 있습니다. == 대신 사용하세요."},{title:"cmath 모듈 - 복소수 연산",content:`cmath 모듈은 복소수에 대한 수학 함수를 제공합니다.
+파이썬에서 복소수는 j(허수단위)를 사용하여 표현합니다.
+
+실수부: .real, 허수부: .imag, 절대값: abs()`,code:`import cmath
+import math
+
+# 복소수 기초
+z1 = 3 + 4j
+z2 = 1 - 2j
+
+print(f"z1 = {z1}")
+print(f"실수부: {z1.real}, 허수부: {z1.imag}")
+print(f"절대값(크기): {abs(z1)}")  # √(3²+4²) = 5
+print(f"켤레 복소수: {z1.conjugate()}")
+
+# 복소수 연산
+print(f"\\nz1 + z2 = {z1 + z2}")
+print(f"z1 * z2 = {z1 * z2}")
+
+# cmath 함수
+print(f"\\n위상각(phase): {cmath.phase(z1):.4f} 라디안")
+print(f"위상각(도): {math.degrees(cmath.phase(z1)):.2f}°")
+
+# 극좌표 변환
+r, phi = cmath.polar(z1)
+print(f"\\n극좌표: r={r:.2f}, θ={math.degrees(phi):.2f}°")
+print(f"직교좌표 복원: {cmath.rect(r, phi)}")`,expectedOutput:`z1 = (3+4j)
+실수부: 3.0, 허수부: 4.0
+절대값(크기): 5.0
+켤레 복소수: (3-4j)
+
+z1 + z2 = (4+2j)
+z1 * z2 = (11-2j)
+
+위상각(phase): 0.9273 라디안
+위상각(도): 53.13°
+
+극좌표: r=5.00, θ=53.13°
+직교좌표 복원: (3.0000000000000004+3.9999999999999996j)`,tip:"복소수의 절대값(abs)은 원점에서의 거리, 위상각(phase)은 실수축과의 각도를 의미합니다."}]},"json-module":{sections:[{title:"JSON 직렬화/역직렬화",content:`JSON(JavaScript Object Notation)은 데이터 교환의 표준 형식입니다.
+
+json.dumps(): 파이썬 객체 → JSON 문자열 (직렬화)
+json.loads(): JSON 문자열 → 파이썬 객체 (역직렬화)
+json.dump(): 파일에 쓰기
+json.load(): 파일에서 읽기`,code:`import json
+
+# 파이썬 객체 → JSON 문자열
+data = {
+    "이름": "김파이",
+    "나이": 25,
+    "취미": ["코딩", "독서", "게임"],
+    "졸업": True,
+    "주소": None
+}
+
+# dumps: 직렬화 (문자열로)
+json_str = json.dumps(data, ensure_ascii=False, indent=2)
+print("=== JSON 직렬화 ===")
+print(json_str)
+
+# loads: 역직렬화 (파이썬 객체로)
+parsed = json.loads(json_str)
+print(f"\\n=== 역직렬화 결과 ===")
+print(f"이름: {parsed['이름']}")
+print(f"취미: {parsed['취미']}")
+print(f"타입: {type(parsed)}")`,expectedOutput:`=== JSON 직렬화 ===
+{
+  "이름": "김파이",
+  "나이": 25,
+  "취미": [
+    "코딩",
+    "독서",
+    "게임"
+  ],
+  "졸업": true,
+  "주소": null
+}
+
+=== 역직렬화 결과 ===
+이름: 김파이
+취미: ['코딩', '독서', '게임']
+타입: <class 'dict'>`,tip:"ensure_ascii=False로 한글을 그대로 출력하고, indent로 가독성을 높일 수 있습니다."},{title:"JSON 활용 - API 응답 처리",content:`실제로 JSON은 웹 API에서 데이터를 주고받을 때 가장 많이 사용됩니다.
+
+파이썬 ↔ JSON 타입 매핑:
+- dict ↔ object, list ↔ array
+- str ↔ string, int/float ↔ number
+- True/False ↔ true/false, None ↔ null`,code:`import json
+
+# API 응답 시뮬레이션
+api_response = '''{
+    "status": "success",
+    "data": {
+        "users": [
+            {"id": 1, "name": "Alice", "active": true},
+            {"id": 2, "name": "Bob", "active": false},
+            {"id": 3, "name": "Charlie", "active": true}
+        ],
+        "total": 3
+    }
+}'''
+
+# JSON 파싱
+result = json.loads(api_response)
+
+print(f"상태: {result['status']}")
+print(f"총 사용자: {result['data']['total']}명\\n")
+
+# 활성 사용자만 필터링
+active_users = [
+    user['name'] 
+    for user in result['data']['users'] 
+    if user['active']
+]
+print(f"활성 사용자: {active_users}")
+
+# 타입 매핑 확인
+print(f"\\n=== 타입 매핑 ===")
+print(f"Python dict  → JSON object")
+print(f"Python list  → JSON array")
+print(f"Python True  → JSON true")
+print(f"Python None  → JSON null")`,expectedOutput:`상태: success
+총 사용자: 3명
+
+활성 사용자: ['Alice', 'Charlie']
+
+=== 타입 매핑 ===
+Python dict  → JSON object
+Python list  → JSON array
+Python True  → JSON true
+Python None  → JSON null`,tip:"json.loads()는 문자열을, json.load()는 파일 객체를 받습니다. s가 붙으면 string!"}]},"datetime-module":{sections:[{title:"날짜와 시간 생성",content:`datetime 모듈은 날짜와 시간을 다루는 클래스를 제공합니다.
+
+주요 클래스:
+- date: 날짜 (년, 월, 일)
+- time: 시간 (시, 분, 초)
+- datetime: 날짜 + 시간
+- timedelta: 시간 차이`,code:`from datetime import datetime, date, time, timedelta
+
+# 현재 날짜/시간
+now = datetime.now()
+print(f"현재: {now}")
+print(f"날짜: {now.date()}")
+print(f"시간: {now.time()}")
+
+# 특정 날짜 생성
+birthday = date(2000, 5, 15)
+print(f"\\n생일: {birthday}")
+print(f"년: {birthday.year}, 월: {birthday.month}, 일: {birthday.day}")
+print(f"요일: {birthday.strftime("%A")}")
+
+# 특정 시간 생성
+meeting = datetime(2026, 3, 20, 14, 30, 0)
+print(f"\\n회의: {meeting}")
+
+# 오늘 날짜
+today = date.today()
+print(f"\\n오늘: {today}")
+print(f"생일로부터: {(today - birthday).days}일 경과")`,expectedOutput:`현재: 2026-03-18 15:30:00.123456
+날짜: 2026-03-18
+시간: 15:30:00.123456
+
+생일: 2000-05-15
+년: 2000, 월: 5, 일: 15
+요일: Monday
+
+회의: 2026-03-20 14:30:00
+
+오늘: 2026-03-18
+생일로부터: 9438일 경과`,tip:"datetime.now()은 로컬 시간, datetime.utcnow()은 UTC 시간을 반환합니다."},{title:"날짜 포매팅과 연산",content:`strftime()으로 날짜를 원하는 형식의 문자열로 변환합니다.
+strptime()으로 문자열을 datetime 객체로 파싱합니다.
+
+timedelta로 날짜 간 계산을 수행합니다.`,code:`from datetime import datetime, timedelta
+
+now = datetime.now()
+
+# strftime: datetime → 문자열
+print("=== 날짜 포매팅 (strftime) ===")
+print(f"기본:  {now.strftime("%Y-%m-%d %H:%M:%S")}")
+print(f"한국:  {now.strftime("%Y년 %m월 %d일")}")
+print(f"시간:  {now.strftime("%p %I:%M")}")
+print(f"요일:  {now.strftime("%A, %B %d")}")
+
+# strptime: 문자열 → datetime
+date_str = "2026-03-18 14:30:00"
+parsed = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+print(f"\\n파싱 결과: {parsed}")
+
+# timedelta: 날짜 연산
+print("\\n=== 날짜 연산 (timedelta) ===")
+tomorrow = now + timedelta(days=1)
+next_week = now + timedelta(weeks=1)
+print(f"내일: {tomorrow.strftime("%Y-%m-%d")}")
+print(f"다음 주: {next_week.strftime("%Y-%m-%d")}")
+print(f"100일 후: {(now + timedelta(days=100)).strftime("%Y-%m-%d")}")
+
+# 두 날짜 간 차이
+start = datetime(2026, 1, 1)
+diff = now - start
+print(f"\\n올해 경과: {diff.days}일")`,expectedOutput:`=== 날짜 포매팅 (strftime) ===
+기본:  2026-03-18 15:30:00
+한국:  2026년 03월 18일
+시간:  PM 03:30
+요일:  Wednesday, March 18
+
+파싱 결과: 2026-03-18 14:30:00
+
+=== 날짜 연산 (timedelta) ===
+내일: 2026-03-19
+다음 주: 2026-03-25
+100일 후: 2026-06-26
+
+올해 경과: 76일`,tip:"%Y=4자리 연도, %m=2자리 월, %d=2자리 일, %H=24시, %I=12시, %M=분, %S=초, %A=요일, %B=월이름"}]},decorators:{sections:[{title:"데코레이터 기초",content:`데코레이터는 함수를 감싸서 기능을 추가하는 패턴입니다.
 @기호를 사용하여 함수 위에 적용합니다.
 
 데코레이터는 본질적으로 함수를 인자로 받아 새 함수를 반환하는 함수입니다.`,code:`def timer(func):
@@ -1377,6 +1688,6 @@ Epoch  6/10 - Loss: 0.4423 - Accuracy: 80.42%
 Epoch  8/10 - Loss: 0.2609 - Accuracy: 89.85%
 Epoch 10/10 - Loss: 0.1484 - Accuracy: 98.71%`,tip:"TensorFlow는 프로덕션 배포에, PyTorch는 연구/프로토타이핑에 많이 사용됩니다. 최근에는 두 프레임워크 모두 기능이 비슷해지고 있습니다."}]}};function CodeEditor({initialCode="",expectedOutput="",lessonId=""}){const[code,setCode]=reactExports.useState(initialCode),[output,setOutput]=reactExports.useState(""),[isRunning,setIsRunning]=reactExports.useState(!1),[showHint,setShowHint]=reactExports.useState(!1),textareaRef=reactExports.useRef(null),{incrementCodeRuns}=useProgress(),simulatePythonExecution=code=>{let result=[];const lines=code.split(`
 `),variables={};try{for(let line of lines){if(line=line.trim(),!line||line.startsWith("#"))continue;const printMatch=line.match(/^print\s*\((.+)\)$/);if(printMatch){let content=printMatch[1].trim();if(content.startsWith('f"')||content.startsWith("f'")){const quote=content[1],str=content.slice(2,-1),resolved=str.replace(/\{([^}]+)\}/g,(_,expr)=>{if(expr=expr.trim(),expr in variables)return variables[expr];try{return eval(expr)}catch{return`{${expr}}`}});result.push(resolved);continue}if(content.startsWith('"')&&content.endsWith('"')||content.startsWith("'")&&content.endsWith("'")){result.push(content.slice(1,-1));continue}if(content.includes(",")){const args=content.split(",").map(a=>{if(a=a.trim(),a.startsWith('"')&&a.endsWith('"')||a.startsWith("'")&&a.endsWith("'"))return a.slice(1,-1);if(a in variables)return String(variables[a]);try{return String(eval(a))}catch{return a}});result.push(args.join(" "));continue}if(content in variables){result.push(String(variables[content]));continue}try{result.push(String(eval(content)))}catch{result.push(content)}continue}const assignMatch=line.match(/^(\w+)\s*=\s*(.+)$/);if(assignMatch){const[,name,value]=assignMatch;let val=value.trim();if(val.startsWith('"')&&val.endsWith('"')||val.startsWith("'")&&val.endsWith("'"))variables[name]=val.slice(1,-1);else if(val.startsWith("[")&&val.endsWith("]"))try{variables[name]=JSON.parse(val)}catch{variables[name]=val}else{let expr=val;for(const[n,t]of Object.entries(variables))expr=expr.replace(new RegExp(`\\b${n}\\b`,"g"),typeof t=="string"?`"${t}"`:t);try{variables[name]=eval(expr)}catch{variables[name]=val}}continue}const forMatch=line.match(/^for\s+(\w+)\s+in\s+range\((\d+)(?:,\s*(\d+))?\)\s*:/);if(forMatch){const[,varName,startOrEnd,end]=forMatch,start=end?parseInt(startOrEnd):0,limit=parseInt(end||startOrEnd),loopBodyIdx=lines.indexOf(line),bodyLines=[];for(let n=loopBodyIdx+1;n<lines.length&&(lines[n].startsWith("    ")||lines[n].startsWith("	"));n++)bodyLines.push(lines[n].trim());for(let k=start;k<Math.min(limit,100);k++){variables[varName]=k;for(const bLine of bodyLines){const bPrint=bLine.match(/^print\s*\((.+)\)$/);if(bPrint){let c=bPrint[1].trim();if(c.startsWith('f"')||c.startsWith("f'")){const str=c.slice(2,-1);result.push(str.replace(/\{([^}]+)\}/g,(_,e)=>{if(e=e.trim(),e in variables)return variables[e];try{return eval(e)}catch{return`{${e}}`}}))}else if(c in variables)result.push(String(variables[c]));else{let expr=c;for(const[n,t]of Object.entries(variables))expr=expr.replace(new RegExp(`\\b${n}\\b`,"g"),typeof t=="string"?`"${t}"`:t);try{result.push(String(eval(expr)))}catch{result.push(c)}}}}}}}return result.length>0?result.join(`
-`):"(출력 없음)"}catch(n){return`Error: ${n.message}`}},handleRun=()=>{setIsRunning(!0),setOutput(""),setTimeout(()=>{const n=simulatePythonExecution(code);setOutput(n),setIsRunning(!1),incrementCodeRuns()},500)},handleReset=()=>{setCode(initialCode),setOutput("")},handleKeyDown=n=>{if(n.key==="Tab"){n.preventDefault();const t=n.target.selectionStart,x=n.target.selectionEnd,m=code.substring(0,t)+"    "+code.substring(x);setCode(m),setTimeout(()=>{n.target.selectionStart=n.target.selectionEnd=t+4},0)}(n.ctrlKey||n.metaKey)&&n.key==="Enter"&&handleRun()},lineCount=code.split(`
-`).length;return jsxRuntimeExports.jsxs("div",{className:"code-editor",children:[jsxRuntimeExports.jsxs("div",{className:"editor-toolbar",children:[jsxRuntimeExports.jsxs("div",{className:"editor-title",children:[jsxRuntimeExports.jsxs("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("polyline",{points:"16 18 22 12 16 6"}),jsxRuntimeExports.jsx("polyline",{points:"8 6 2 12 8 18"})]}),jsxRuntimeExports.jsx("span",{children:"Python Editor"})]}),jsxRuntimeExports.jsxs("div",{className:"editor-actions",children:[jsxRuntimeExports.jsx("button",{className:"editor-btn hint-btn",onClick:()=>setShowHint(!showHint),title:"힌트",children:jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("circle",{cx:"12",cy:"12",r:"10"}),jsxRuntimeExports.jsx("path",{d:"M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"}),jsxRuntimeExports.jsx("line",{x1:"12",y1:"17",x2:"12.01",y2:"17"})]})}),jsxRuntimeExports.jsx("button",{className:"editor-btn reset-btn",onClick:handleReset,title:"초기화",children:jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("polyline",{points:"1 4 1 10 7 10"}),jsxRuntimeExports.jsx("path",{d:"M3.51 15a9 9 0 102.13-9.36L1 10"})]})}),jsxRuntimeExports.jsxs("button",{className:"editor-btn run-btn",onClick:handleRun,disabled:isRunning,title:"실행 (Ctrl+Enter)",children:[isRunning?jsxRuntimeExports.jsx("div",{className:"loading-spinner-small"}):jsxRuntimeExports.jsx("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"currentColor",children:jsxRuntimeExports.jsx("polygon",{points:"5 3 19 12 5 21 5 3"})}),jsxRuntimeExports.jsx("span",{children:isRunning?"실행 중...":"실행"})]})]})]}),jsxRuntimeExports.jsxs("div",{className:"editor-body",children:[jsxRuntimeExports.jsx("div",{className:"line-numbers",children:Array.from({length:lineCount},(n,t)=>jsxRuntimeExports.jsx("span",{children:t+1},t+1))}),jsxRuntimeExports.jsx("textarea",{ref:textareaRef,className:"code-input",value:code,onChange:n=>setCode(n.target.value),onKeyDown:handleKeyDown,spellCheck:!1,placeholder:"# 파이썬 코드를 입력하세요..."})]}),showHint&&expectedOutput&&jsxRuntimeExports.jsxs("div",{className:"editor-hint",children:[jsxRuntimeExports.jsx("strong",{children:"예상 출력:"})," ",jsxRuntimeExports.jsx("code",{children:expectedOutput})]}),output&&jsxRuntimeExports.jsxs("div",{className:"editor-output",children:[jsxRuntimeExports.jsxs("div",{className:"output-header",children:[jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("rect",{x:"2",y:"3",width:"20",height:"14",rx:"2"}),jsxRuntimeExports.jsx("line",{x1:"8",y1:"21",x2:"16",y2:"21"}),jsxRuntimeExports.jsx("line",{x1:"12",y1:"17",x2:"12",y2:"21"})]}),jsxRuntimeExports.jsx("span",{children:"출력 결과"}),expectedOutput&&output.trim()===expectedOutput.trim()&&jsxRuntimeExports.jsx("span",{className:"output-correct",children:"정답!"})]}),jsxRuntimeExports.jsx("pre",{className:"output-content",children:output})]})]})}function LessonPage(){const{level:n,lessonId:t}=useParams(),{completedLessons:x,completeLesson:m}=useProgress(),[i,y]=reactExports.useState(0),u=levelInfo[n],l=lessons[n]||[],s=l.find(p=>p.id===t),j=lessonContents[t],g=x.has(t),d=l.findIndex(p=>p.id===t),f=d>0?l[d-1]:null,h=d<l.length-1?l[d+1]:null;if(!s||!u)return jsxRuntimeExports.jsx("div",{className:"not-found-page",children:jsxRuntimeExports.jsxs("div",{className:"not-found-content",children:[jsxRuntimeExports.jsx("div",{className:"not-found-code",children:"404"}),jsxRuntimeExports.jsx("h2",{className:"not-found-title",children:"레슨을 찾을 수 없습니다"}),jsxRuntimeExports.jsx(Link,{to:`/${n}`,className:"btn btn-primary",children:"목록으로 돌아가기"})]})});const o=j?.sections||[{title:s.title,content:`이 레슨에서는 ${s.description}에 대해 학습합니다.`,code:`# 예제 코드
-print("Hello, Python!")`,expectedOutput:"Hello, Python!"}];return jsxRuntimeExports.jsxs("div",{className:"lesson-page",children:[jsxRuntimeExports.jsx("section",{className:"page-header",style:{background:`linear-gradient(135deg, ${u.color}, ${u.color}dd)`},children:jsxRuntimeExports.jsxs("div",{className:"container",children:[jsxRuntimeExports.jsxs("div",{className:"breadcrumb",children:[jsxRuntimeExports.jsx(Link,{to:"/",children:"홈"}),jsxRuntimeExports.jsx("span",{children:"/"}),jsxRuntimeExports.jsxs(Link,{to:`/${n}`,children:[u.title," 과정"]}),jsxRuntimeExports.jsx("span",{children:"/"}),jsxRuntimeExports.jsx("span",{children:s.title})]}),jsxRuntimeExports.jsxs("div",{className:"page-header-content",children:[jsxRuntimeExports.jsx("span",{className:"page-header-icon",children:jsxRuntimeExports.jsx("i",{className:s.icon})}),jsxRuntimeExports.jsx("h1",{children:s.title}),jsxRuntimeExports.jsx("p",{children:s.description}),jsxRuntimeExports.jsxs("div",{className:"lesson-meta-bar",children:[jsxRuntimeExports.jsxs("span",{children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-clock"})," 약 ",s.estimatedTime,"분"]}),jsxRuntimeExports.jsxs("span",{children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-clipboard"})," ",s.topics?.length||0,"개 주제"]}),jsxRuntimeExports.jsx("span",{children:Array.from({length:3},(p,r)=>jsxRuntimeExports.jsx("i",{className:r<s.difficulty?"fa-solid fa-star":"fa-regular fa-star"},r))})]})]})]})}),jsxRuntimeExports.jsxs("div",{className:"lesson-layout container",children:[jsxRuntimeExports.jsxs("aside",{className:"lesson-sidebar",children:[jsxRuntimeExports.jsx("h3",{children:"학습 목차"}),jsxRuntimeExports.jsx("ul",{className:"lesson-toc",children:o.map((p,r)=>jsxRuntimeExports.jsx("li",{children:jsxRuntimeExports.jsxs("button",{className:`toc-item${i===r?" active":""}`,onClick:()=>y(r),children:[jsxRuntimeExports.jsx("span",{className:"toc-number",children:r+1}),jsxRuntimeExports.jsx("span",{className:"toc-title",children:p.title})]})},r))}),s.topics&&jsxRuntimeExports.jsxs("div",{className:"lesson-topics-list",children:[jsxRuntimeExports.jsx("h4",{children:"학습 주제"}),s.topics.map((p,r)=>jsxRuntimeExports.jsx("span",{className:"topic-tag",children:p},r))]})]}),jsxRuntimeExports.jsxs("main",{className:"lesson-content",children:[jsxRuntimeExports.jsxs("div",{className:"lesson-section",children:[jsxRuntimeExports.jsx("h2",{children:o[i]?.title}),jsxRuntimeExports.jsx("div",{className:"lesson-text",dangerouslySetInnerHTML:{__html:o[i]?.content?.replace(/\n/g,"<br/>")}}),o[i]?.code&&jsxRuntimeExports.jsxs("div",{className:"lesson-practice",children:[jsxRuntimeExports.jsx("h3",{children:"직접 실습해보세요"}),jsxRuntimeExports.jsx(CodeEditor,{initialCode:o[i].code,expectedOutput:o[i].expectedOutput||"",lessonId:t})]}),o[i]?.tip&&jsxRuntimeExports.jsxs("div",{className:"lesson-tip",children:[jsxRuntimeExports.jsx("span",{className:"tip-icon",children:jsxRuntimeExports.jsx("i",{className:"fa-solid fa-lightbulb"})}),jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("strong",{children:"팁:"})," ",o[i].tip]})]})]}),jsxRuntimeExports.jsxs("div",{className:"lesson-nav",children:[jsxRuntimeExports.jsx("div",{className:"lesson-nav-left",children:f&&jsxRuntimeExports.jsxs(Link,{to:`/${n}/${f.id}`,className:"lesson-nav-btn prev",children:[jsxRuntimeExports.jsx("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:jsxRuntimeExports.jsx("polyline",{points:"15 18 9 12 15 6"})}),jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("span",{className:"nav-label",children:"이전 레슨"}),jsxRuntimeExports.jsx("span",{className:"nav-title",children:f.title})]})]})}),!g&&jsxRuntimeExports.jsxs("button",{className:"btn btn-accent complete-btn",onClick:()=>m(t),children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-check"})," 학습 완료"]}),g&&jsxRuntimeExports.jsxs("span",{className:"completed-badge-inline",children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-check"})," 완료됨"]}),jsxRuntimeExports.jsx("div",{className:"lesson-nav-right",children:h&&jsxRuntimeExports.jsxs(Link,{to:`/${n}/${h.id}`,className:"lesson-nav-btn next",children:[jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("span",{className:"nav-label",children:"다음 레슨"}),jsxRuntimeExports.jsx("span",{className:"nav-title",children:h.title})]}),jsxRuntimeExports.jsx("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:jsxRuntimeExports.jsx("polyline",{points:"9 18 15 12 9 6"})})]})})]})]})]})]})}export{LessonPage as default};
+`):"(출력 없음)"}catch(n){return`Error: ${n.message}`}},handleRun=()=>{setIsRunning(!0),setOutput(""),setTimeout(()=>{const n=simulatePythonExecution(code);setOutput(n),setIsRunning(!1),incrementCodeRuns()},500)},handleReset=()=>{setCode(initialCode),setOutput("")},handleKeyDown=n=>{if(n.key==="Tab"){n.preventDefault();const t=n.target.selectionStart,m=n.target.selectionEnd,x=code.substring(0,t)+"    "+code.substring(m);setCode(x),setTimeout(()=>{n.target.selectionStart=n.target.selectionEnd=t+4},0)}(n.ctrlKey||n.metaKey)&&n.key==="Enter"&&handleRun()},lineCount=code.split(`
+`).length;return jsxRuntimeExports.jsxs("div",{className:"code-editor",children:[jsxRuntimeExports.jsxs("div",{className:"editor-toolbar",children:[jsxRuntimeExports.jsxs("div",{className:"editor-title",children:[jsxRuntimeExports.jsxs("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("polyline",{points:"16 18 22 12 16 6"}),jsxRuntimeExports.jsx("polyline",{points:"8 6 2 12 8 18"})]}),jsxRuntimeExports.jsx("span",{children:"Python Editor"})]}),jsxRuntimeExports.jsxs("div",{className:"editor-actions",children:[jsxRuntimeExports.jsx("button",{className:"editor-btn hint-btn",onClick:()=>setShowHint(!showHint),title:"힌트",children:jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("circle",{cx:"12",cy:"12",r:"10"}),jsxRuntimeExports.jsx("path",{d:"M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"}),jsxRuntimeExports.jsx("line",{x1:"12",y1:"17",x2:"12.01",y2:"17"})]})}),jsxRuntimeExports.jsx("button",{className:"editor-btn reset-btn",onClick:handleReset,title:"초기화",children:jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("polyline",{points:"1 4 1 10 7 10"}),jsxRuntimeExports.jsx("path",{d:"M3.51 15a9 9 0 102.13-9.36L1 10"})]})}),jsxRuntimeExports.jsxs("button",{className:"editor-btn run-btn",onClick:handleRun,disabled:isRunning,title:"실행 (Ctrl+Enter)",children:[isRunning?jsxRuntimeExports.jsx("div",{className:"loading-spinner-small"}):jsxRuntimeExports.jsx("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"currentColor",children:jsxRuntimeExports.jsx("polygon",{points:"5 3 19 12 5 21 5 3"})}),jsxRuntimeExports.jsx("span",{children:isRunning?"실행 중...":"실행"})]})]})]}),jsxRuntimeExports.jsxs("div",{className:"editor-body",children:[jsxRuntimeExports.jsx("div",{className:"line-numbers",children:Array.from({length:lineCount},(n,t)=>jsxRuntimeExports.jsx("span",{children:t+1},t+1))}),jsxRuntimeExports.jsx("textarea",{ref:textareaRef,className:"code-input",value:code,onChange:n=>setCode(n.target.value),onKeyDown:handleKeyDown,spellCheck:!1,placeholder:"# 파이썬 코드를 입력하세요..."})]}),showHint&&expectedOutput&&jsxRuntimeExports.jsxs("div",{className:"editor-hint",children:[jsxRuntimeExports.jsx("strong",{children:"예상 출력:"})," ",jsxRuntimeExports.jsx("code",{children:expectedOutput})]}),output&&jsxRuntimeExports.jsxs("div",{className:"editor-output",children:[jsxRuntimeExports.jsxs("div",{className:"output-header",children:[jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("rect",{x:"2",y:"3",width:"20",height:"14",rx:"2"}),jsxRuntimeExports.jsx("line",{x1:"8",y1:"21",x2:"16",y2:"21"}),jsxRuntimeExports.jsx("line",{x1:"12",y1:"17",x2:"12",y2:"21"})]}),jsxRuntimeExports.jsx("span",{children:"출력 결과"}),expectedOutput&&output.trim()===expectedOutput.trim()&&jsxRuntimeExports.jsx("span",{className:"output-correct",children:"정답!"})]}),jsxRuntimeExports.jsx("pre",{className:"output-content",children:output})]})]})}function LessonPage(){const{level:n,lessonId:t}=useParams(),{completedLessons:m,completeLesson:x}=useProgress(),[i,g]=reactExports.useState(0),d=levelInfo[n],l=lessons[n]||[],s=l.find(p=>p.id===t),j=lessonContents[t],y=m.has(t),u=l.findIndex(p=>p.id===t),f=u>0?l[u-1]:null,h=u<l.length-1?l[u+1]:null;if(!s||!d)return jsxRuntimeExports.jsx("div",{className:"not-found-page",children:jsxRuntimeExports.jsxs("div",{className:"not-found-content",children:[jsxRuntimeExports.jsx("div",{className:"not-found-code",children:"404"}),jsxRuntimeExports.jsx("h2",{className:"not-found-title",children:"레슨을 찾을 수 없습니다"}),jsxRuntimeExports.jsx(Link,{to:`/${n}`,className:"btn btn-primary",children:"목록으로 돌아가기"})]})});const o=j?.sections||[{title:s.title,content:`이 레슨에서는 ${s.description}에 대해 학습합니다.`,code:`# 예제 코드
+print("Hello, Python!")`,expectedOutput:"Hello, Python!"}];return jsxRuntimeExports.jsxs("div",{className:"lesson-page",children:[jsxRuntimeExports.jsx("section",{className:"page-header",style:{background:`linear-gradient(135deg, ${d.color}, ${d.color}dd)`},children:jsxRuntimeExports.jsxs("div",{className:"container",children:[jsxRuntimeExports.jsxs("div",{className:"breadcrumb",children:[jsxRuntimeExports.jsx(Link,{to:"/",children:"홈"}),jsxRuntimeExports.jsx("span",{children:"/"}),jsxRuntimeExports.jsxs(Link,{to:`/${n}`,children:[d.title," 과정"]}),jsxRuntimeExports.jsx("span",{children:"/"}),jsxRuntimeExports.jsx("span",{children:s.title})]}),jsxRuntimeExports.jsxs("div",{className:"page-header-content",children:[jsxRuntimeExports.jsx("span",{className:"page-header-icon",children:jsxRuntimeExports.jsx("i",{className:s.icon})}),jsxRuntimeExports.jsx("h1",{children:s.title}),jsxRuntimeExports.jsx("p",{children:s.description}),jsxRuntimeExports.jsxs("div",{className:"lesson-meta-bar",children:[jsxRuntimeExports.jsxs("span",{children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-clock"})," 약 ",s.estimatedTime,"분"]}),jsxRuntimeExports.jsxs("span",{children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-clipboard"})," ",s.topics?.length||0,"개 주제"]}),jsxRuntimeExports.jsx("span",{children:Array.from({length:3},(p,r)=>jsxRuntimeExports.jsx("i",{className:r<s.difficulty?"fa-solid fa-star":"fa-regular fa-star"},r))})]})]})]})}),jsxRuntimeExports.jsxs("div",{className:"lesson-layout container",children:[jsxRuntimeExports.jsxs("aside",{className:"lesson-sidebar",children:[jsxRuntimeExports.jsx("h3",{children:"학습 목차"}),jsxRuntimeExports.jsx("ul",{className:"lesson-toc",children:o.map((p,r)=>jsxRuntimeExports.jsx("li",{children:jsxRuntimeExports.jsxs("button",{className:`toc-item${i===r?" active":""}`,onClick:()=>g(r),children:[jsxRuntimeExports.jsx("span",{className:"toc-number",children:r+1}),jsxRuntimeExports.jsx("span",{className:"toc-title",children:p.title})]})},r))}),s.topics&&jsxRuntimeExports.jsxs("div",{className:"lesson-topics-list",children:[jsxRuntimeExports.jsx("h4",{children:"학습 주제"}),s.topics.map((p,r)=>jsxRuntimeExports.jsx("span",{className:"topic-tag",children:p},r))]})]}),jsxRuntimeExports.jsxs("main",{className:"lesson-content",children:[jsxRuntimeExports.jsxs("div",{className:"lesson-section",children:[jsxRuntimeExports.jsx("h2",{children:o[i]?.title}),jsxRuntimeExports.jsx("div",{className:"lesson-text",dangerouslySetInnerHTML:{__html:o[i]?.content?.replace(/\n/g,"<br/>")}}),o[i]?.code&&jsxRuntimeExports.jsxs("div",{className:"lesson-practice",children:[jsxRuntimeExports.jsx("h3",{children:"직접 실습해보세요"}),jsxRuntimeExports.jsx(CodeEditor,{initialCode:o[i].code,expectedOutput:o[i].expectedOutput||"",lessonId:t})]}),o[i]?.tip&&jsxRuntimeExports.jsxs("div",{className:"lesson-tip",children:[jsxRuntimeExports.jsx("span",{className:"tip-icon",children:jsxRuntimeExports.jsx("i",{className:"fa-solid fa-lightbulb"})}),jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("strong",{children:"팁:"})," ",o[i].tip]})]})]}),jsxRuntimeExports.jsxs("div",{className:"lesson-nav",children:[jsxRuntimeExports.jsx("div",{className:"lesson-nav-left",children:f&&jsxRuntimeExports.jsxs(Link,{to:`/${n}/${f.id}`,className:"lesson-nav-btn prev",children:[jsxRuntimeExports.jsx("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:jsxRuntimeExports.jsx("polyline",{points:"15 18 9 12 15 6"})}),jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("span",{className:"nav-label",children:"이전 레슨"}),jsxRuntimeExports.jsx("span",{className:"nav-title",children:f.title})]})]})}),!y&&jsxRuntimeExports.jsxs("button",{className:"btn btn-accent complete-btn",onClick:()=>x(t),children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-check"})," 학습 완료"]}),y&&jsxRuntimeExports.jsxs("span",{className:"completed-badge-inline",children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-check"})," 완료됨"]}),jsxRuntimeExports.jsx("div",{className:"lesson-nav-right",children:h&&jsxRuntimeExports.jsxs(Link,{to:`/${n}/${h.id}`,className:"lesson-nav-btn next",children:[jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("span",{className:"nav-label",children:"다음 레슨"}),jsxRuntimeExports.jsx("span",{className:"nav-title",children:h.title})]}),jsxRuntimeExports.jsx("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:jsxRuntimeExports.jsx("polyline",{points:"9 18 15 12 9 6"})})]})})]})]})]})]})}export{LessonPage as default};
