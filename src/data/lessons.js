@@ -20,7 +20,7 @@ export const levelInfo = {
   },
   applied: {
     title: '응용',
-    description: 'NumPy, Pandas를 활용한 데이터 분석 실습',
+    description: 'NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow 등 데이터 과학 실습',
     icon: 'fa-solid fa-microscope',
     color: '#D4A017'
   }
@@ -280,6 +280,33 @@ export const lessons = {
       estimatedTime: 45,
       difficulty: 3,
       topics: ['데이터 로딩', '탐색적 분석', '데이터 정제', '통계 분석', '결과 해석']
+    },
+    {
+      id: 'matplotlib-seaborn',
+      title: 'Matplotlib & Seaborn',
+      description: '데이터 시각화의 핵심, 다양한 그래프와 차트 작성법',
+      icon: 'fa-solid fa-chart-pie',
+      estimatedTime: 40,
+      difficulty: 2,
+      topics: ['plt.plot', 'plt.bar', 'plt.scatter', 'subplot', 'seaborn', 'heatmap']
+    },
+    {
+      id: 'scikit-learn',
+      title: 'Scikit-learn 머신러닝',
+      description: '분류, 회귀, 클러스터링 등 머신러닝 모델 구현',
+      icon: 'fa-solid fa-brain',
+      estimatedTime: 45,
+      difficulty: 3,
+      topics: ['train_test_split', '분류', '회귀', 'KNN', '결정트리', '모델 평가']
+    },
+    {
+      id: 'tensorflow-pytorch',
+      title: 'TensorFlow & PyTorch',
+      description: '딥러닝 프레임워크의 기초와 신경망 구현',
+      icon: 'fa-solid fa-network-wired',
+      estimatedTime: 45,
+      difficulty: 3,
+      topics: ['텐서', '신경망', 'Sequential', 'Layer', '학습 루프', '손실 함수']
     }
   ]
 }

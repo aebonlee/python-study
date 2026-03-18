@@ -383,6 +383,54 @@ export const quizzes = {
         options: ['[True, True, True, True]', '[6 7 8 9]', '[5 6 7 8 9]', '에러 발생'],
         correct: 1,
         explanation: 'a > 5는 불리언 마스크를 생성하고, 이를 인덱싱에 사용하면 조건을 만족하는 요소만 추출합니다.'
+      },
+      {
+        question: 'Matplotlib에서 선 그래프를 그리는 함수는?',
+        options: ['plt.bar()', 'plt.plot()', 'plt.scatter()', 'plt.line()'],
+        correct: 1,
+        explanation: 'plt.plot()은 선 그래프를 그리는 기본 함수입니다. x, y 데이터를 전달하여 사용합니다.'
+      },
+      {
+        question: 'Seaborn에서 상관관계를 색상으로 시각화하는 차트는?',
+        options: ['sns.barplot()', 'sns.boxplot()', 'sns.heatmap()', 'sns.pairplot()'],
+        correct: 2,
+        explanation: 'sns.heatmap()은 행렬 데이터를 색상으로 시각화하며, 상관관계 분석에 자주 사용됩니다.'
+      },
+      {
+        question: 'Scikit-learn에서 데이터를 학습/테스트로 나누는 함수는?',
+        code: 'from sklearn.model_selection import ???',
+        options: ['data_split', 'train_test_split', 'split_data', 'cross_validate'],
+        correct: 1,
+        explanation: 'train_test_split()은 데이터를 학습용과 테스트용으로 분리하는 함수입니다.'
+      },
+      {
+        question: '머신러닝에서 모델이 학습 데이터에만 너무 맞춰지는 현상은?',
+        options: ['과소적합 (Underfitting)', '과적합 (Overfitting)', '정규화 (Normalization)', '교차검증 (Cross-validation)'],
+        correct: 1,
+        explanation: '과적합(Overfitting)은 모델이 학습 데이터를 "암기"하여 새로운 데이터에 대한 일반화 능력이 떨어지는 현상입니다.'
+      },
+      {
+        question: 'TensorFlow/Keras에서 Sequential 모델에 층을 추가하는 올바른 코드는?',
+        options: [
+          'model.add(keras.layers.Dense(128))',
+          'model.layer(Dense(128))',
+          'model.append(Layer(128))',
+          'model.insert(Dense(128))'
+        ],
+        correct: 0,
+        explanation: 'Sequential 모델은 model.add()로 층을 하나씩 추가하거나, 리스트로 한번에 전달할 수 있습니다.'
+      },
+      {
+        question: 'PyTorch에서 역전파(Backpropagation)를 수행하는 메서드는?',
+        options: ['loss.backward()', 'loss.backprop()', 'model.backward()', 'optimizer.backward()'],
+        correct: 0,
+        explanation: 'loss.backward()는 손실값에서 역전파를 수행하여 각 파라미터의 기울기(gradient)를 계산합니다.'
+      },
+      {
+        question: '딥러닝에서 가장 많이 사용되는 은닉층 활성화 함수는?',
+        options: ['Sigmoid', 'Tanh', 'ReLU', 'Softmax'],
+        correct: 2,
+        explanation: 'ReLU(Rectified Linear Unit)는 max(0, x)로 계산이 빠르고 기울기 소실 문제를 해결하여 은닉층에서 가장 많이 사용됩니다.'
       }
     ]
   }

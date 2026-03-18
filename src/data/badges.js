@@ -125,6 +125,22 @@ export const badges = [
     condition: { type: 'specific_lessons', lessonIds: ['numpy-basics', 'numpy-advanced', 'pandas-basics', 'pandas-manipulation'] }
   },
   {
+    id: 'ml-master',
+    title: 'ML 마스터',
+    description: 'Scikit-learn과 데이터 시각화 레슨을 완료하세요',
+    icon: 'fa-solid fa-brain',
+    tier: 'gold',
+    condition: { type: 'specific_lessons', lessonIds: ['matplotlib-seaborn', 'scikit-learn'] }
+  },
+  {
+    id: 'dl-explorer',
+    title: '딥러닝 탐험가',
+    description: 'TensorFlow/PyTorch 레슨을 완료하세요',
+    icon: 'fa-solid fa-network-wired',
+    tier: 'gold',
+    condition: { type: 'specific_lessons', lessonIds: ['tensorflow-pytorch'] }
+  },
+  {
     id: 'perfect-basics',
     title: '기초 만점왕',
     description: '기초 퀴즈에서 만점을 받으세요',

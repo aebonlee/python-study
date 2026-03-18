@@ -32,8 +32,13 @@ export default function Navbar() {
     { to: '/intermediate', label: '중급' },
     { to: '/advanced', label: '고급' },
     { to: '/applied', label: '응용' },
-    { to: '/applied/numpy-basics', label: 'NumPy' },
-    { to: '/applied/pandas-basics', label: 'Pandas' },
+    { label: '라이브러리', children: [
+      { to: '/applied/numpy-basics', label: 'NumPy', icon: 'fa-solid fa-calculator' },
+      { to: '/applied/pandas-basics', label: 'Pandas', icon: 'fa-solid fa-table' },
+      { to: '/applied/matplotlib-seaborn', label: 'Matplotlib', icon: 'fa-solid fa-chart-pie' },
+      { to: '/applied/scikit-learn', label: 'Scikit-learn', icon: 'fa-solid fa-brain' },
+      { to: '/applied/tensorflow-pytorch', label: 'TensorFlow', icon: 'fa-solid fa-network-wired' },
+    ]},
     { to: '/quiz', label: '퀴즈' },
     { to: '/badges', label: '도장깨기' },
   ]
