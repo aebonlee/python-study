@@ -1,6 +1,6 @@
 # PyMaster - 기능 점검 결과서
 
-## 점검 일자: 2026-03-18 (최종 업데이트)
+## 점검 일자: 2026-03-19 (최종 업데이트)
 
 ### 기능 점검 항목 (18개)
 
@@ -49,6 +49,7 @@
 | 파이썬 실습 (Pyodide) | 완료 | 12단계, Pyodide Worker, turtle SVG, input() |
 | Navbar 메뉴 확장 | 완료 | 파이썬 학습 + 파이썬 실습 추가 |
 | 실습 데이터 13개 파일 | 완료 | step1~10, stepAdvanced, stepAdvanced2 |
+| CSS 감사 및 수정 | 완료 | 누락 클래스 2건, 다크모드 27셀렉터, 480px 반응형 추가 |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정

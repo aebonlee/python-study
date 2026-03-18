@@ -284,3 +284,51 @@
 - PythonPractice 12KB, step 데이터 각 2~22KB 개별 청크
 - index.css: 60KB (CSS 14개), index.js: 439KB
 - GitHub Pages 배포 완료
+
+---
+
+## 2026-03-19 (Day 2) - CSS 감사 및 수정
+
+### CSS 감사 (3개 파일 병렬 점검)
+- **python-learning.css**, **practice.css**, **base.css** 전수 감사
+- JSX에서 사용하는 모든 className과 CSS 정의 대조 확인
+
+### 발견 및 수정 사항
+
+#### 누락 클래스 정의 (2건)
+- **base.css**: `.section { padding: 40px 0; }` 추가
+  - PythonLearning.jsx, PythonPractice.jsx 등에서 `<section className="section">` 사용 중이었으나 미정의
+- **practice.css**: `.practice-output-content.has-error` 추가
+  - PythonPractice.jsx에서 에러 상태 시 `has-error` 클래스 적용 중이었으나 미정의
+
+#### 다크모드 보완 (27개 셀렉터)
+- **python-learning.css** (16개 셀렉터 추가):
+  - `.python-learning-page .page-header-section` 배경 다크 대응
+  - `.python-table td` 보더, `.python-table tr:hover td` hover 배경
+  - `.python-info-box.tip`, `.python-info-box.warning` 배경/보더 다크 대응
+  - `.python-output-block` 배경 + `pre` 텍스트 컬러
+  - `.python-lesson-section h2` 보더 다크 대응
+  - `.python-lesson-nav` 보더 + `a` 호버 다크 대응
+  - `.python-lesson-detail .page-header-section` 배경
+  - `.python-lesson-detail .lesson-body h2` 보더
+  - `.python-lesson-detail .lesson-nav` 보더
+- **practice.css** (11개 셀렉터 추가):
+  - `.practice-page .page-header-section` 배경 다크 대응
+  - `.practice-example-sidebar`, `.practice-sidebar-header` 배경
+  - `.practice-example-item.active`, `:hover` 배경
+  - `.practice-step-runner`, `.practice-output-content` 배경
+  - `.practice-output-content.has-error` 에러 배경
+  - `.practice-stderr` 색상 (#DC2626 → #F87171 부드러운 빨강)
+  - `.practice-toolbar`, `.practice-runner-empty` 배경/보더
+
+#### 반응형 보완
+- **python-learning.css**: 480px 브레이크포인트 추가
+  - 허브 페이지: 헤더 패딩/폰트 축소, 카드 패딩 축소, 아이콘 축소
+  - 레슨 콘텐츠: 패딩/폰트/테이블 축소
+  - 레슨 상세: 헤더/본문 폰트 축소, callout 패딩 축소
+- `.python-lesson-nav` 768px 반응형: 세로 스택, 버튼 가운데 정렬
+
+### 빌드 결과
+- CSS 총 63.41KB (기존 대비 +약 2KB)
+- 빌드 성공, 커밋 d4189f7
+- GitHub Pages 배포 완료
