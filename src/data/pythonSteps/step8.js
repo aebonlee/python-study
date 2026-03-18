@@ -1,270 +1,346 @@
-// === 8단계: 함수와 매개변수 ===
+// === 8단계: 반복문 (While / For) ===
 const step8 = [
   {
-    name: 'func1',
-    title: '기본 함수 (매개변수 없음)',
-    desc: 'print_address() 정의·호출',
-    code: `# === 기본 함수 (매개변수 없음) ===
-# 함수를 정의(def)하고 호출하는 가장 기본적인 예제입니다.
+    name: 'forloop',
+    title: 'for 루프 기본',
+    desc: '리스트 순회 반복 출력',
+    code: `# === for 루프 기본 ===
+# 리스트의 각 요소를 하나씩 꺼내 반복합니다.
 
-def print_address():
-    """주소를 출력하는 함수 (매개변수 없음)"""
-    print("서울 특별시 종로구 1번지")
-    print("파이썬 빌딩 7층")
-    print("홍길동")
-
-# 함수 호출
-print_address()`
+for i in [1, 2, 3, 4, 5]:       # 리스트의 요소를 순회
+    print("방문을 환영합니다.")   # 5번 출력됨`
   },
   {
-    name: 'func2',
-    title: '매개변수 있는 함수',
-    desc: 'print_address(name)',
-    code: `# === 매개변수 있는 함수 ===
-# 매개변수(parameter)를 통해 함수에 값을 전달합니다.
+    name: 'forloop1',
+    title: 'for 루프 변수 출력',
+    desc: '반복 변수 i 값 출력',
+    code: `# === for 루프 변수 출력 ===
+# 반복 변수 i가 리스트의 각 값을 순서대로 갖습니다.
 
-def print_address(name):
-    """이름을 매개변수로 받아 주소를 출력하는 함수"""
-    print("서울 특별시 종로구 1번지")
-    print("파이썬 빌딩 7층")
-    print(name)  # 전달받은 이름 출력
-
-# "홍길동"을 인수(argument)로 전달하여 호출
-print_address("홍길동")`
+for i in [1, 2, 3, 4, 5]:
+    print("i=", i)   # i가 1, 2, 3, 4, 5로 변화`
   },
   {
-    name: 'func3',
-    title: '반환값 있는 함수',
-    desc: '원의 넓이 계산 + return',
-    code: `# === 반환값 있는 함수 ===
-# return 키워드로 계산 결과를 반환합니다.
+    name: 'forloop2',
+    title: '9의 배수 출력',
+    desc: 'for 루프로 구구단 일부',
+    code: `# === 9의 배수 출력 ===
+# for 루프로 9×1부터 9×5까지 출력합니다.
 
-def calculate_area(radius):
-    """반지름을 받아 원의 넓이를 반환하는 함수"""
-    area = 3.14 * radius ** 2   # 원의 넓이 = π × r²
-    return area                  # 계산 결과 반환
-
-# 반지름 5.0으로 함수 호출, 반환값 출력
-result = calculate_area(5.0)
-print("원의 넓이:", result)`
+for i in [1, 2, 3, 4, 5]:
+    print("9*", i, "=", 9 * i)  # 9×i 계산 결과 출력`
   },
   {
-    name: 'paddr1',
-    title: '주소 출력 함수',
-    desc: '매개변수로 이름 전달',
-    code: `# === 주소 출력 함수 ===
-# func2.py와 동일한 패턴: 매개변수로 이름을 전달합니다.
+    name: 'range1',
+    title: 'range() 기본',
+    desc: 'range(5)로 5번 반복',
+    code: `# === range() 기본 ===
+# range(n)은 0부터 n-1까지의 숫자를 생성합니다.
 
-def print_address(name):
-    """이름을 받아 주소와 함께 출력"""
-    print("서울 특별시 종로구 1번지")
-    print("파이썬 빌딩 7층")
-    print(name)
-
-print_address("홍길동")`
+for i in range(5):               # 0, 1, 2, 3, 4
+    print("방문을 환영합니다!")    # 5번 반복 출력`
   },
   {
-    name: 'get_sum',
-    title: '범위 합산 함수',
-    desc: 'get_sum(start, end) 정의',
-    code: `# === 범위 합산 함수 ===
-# start부터 end까지의 합을 계산하여 반환합니다.
+    name: 'range',
+    title: 'range() 변형',
+    desc: '시작·끝·증감 다양한 range()',
+    code: `# === range() 변형 ===
+# range(시작, 끝): 시작부터 끝-1까지
+# range(시작, 끝, 증감): 증감값만큼 변화
 
-def get_sum(start, end):
-    """start부터 end까지의 합을 계산하는 함수"""
-    sum = 0
-    for i in range(start, end + 1):  # start ~ end 반복
-        sum += i                      # 누적 합산
-    return sum
+for i in range(5, 10):           # 5, 6, 7, 8, 9
+    print(f"변수 i의 값={i}")
+print()
 
-# 1부터 10까지의 합: 55
-print("1~10의 합:", get_sum(1, 10))
-print("1~100의 합:", get_sum(1, 100))`
+for i in range(1, 10, 3):       # 1, 4, 7 (3씩 증가)
+    print(f"변수 i의 값={i}")
+print()
+
+for i in range(10, 7, -1):      # 10, 9, 8 (1씩 감소)
+    print(f"변수 i의 값={i}")`
   },
   {
-    name: 'default',
-    title: '기본값 매개변수',
-    desc: 'msg 기본값 지정 함수',
-    code: `# === 기본값 매개변수 ===
-# 매개변수에 기본값을 지정하면, 인수를 생략할 수 있습니다.
+    name: 'while1',
+    title: '1~10 합 (while)',
+    desc: 'while 루프로 합산',
+    code: `# === 1부터 10까지 합 (while) ===
+# while 루프: 조건이 참인 동안 반복합니다.
 
-def greet(name, msg="별일없죠?"):
-    """인사 함수: msg를 생략하면 기본값 사용"""
-    print("안녕", name + ', ' + msg)
+count = 1    # 카운터 초기값
+sum = 0      # 합계 초기값
 
-greet("영희")                    # msg 생략 → 기본값 "별일없죠?" 사용
-greet("철수", "오늘 뭐해?")     # msg에 "오늘 뭐해?" 전달`
+while count <= 10:       # count가 10 이하인 동안 반복
+    sum = sum + count    # 합계에 count 더하기
+    count = count + 1    # count 1 증가
+
+print("합계는", sum)     # 1+2+...+10 = 55`
   },
   {
-    name: 'max3',
-    title: '세 수 최대값 함수',
-    desc: '기본값 매개변수로 최대값',
-    code: `# === 세 수 최대값 함수 ===
-# 기본값 매개변수를 활용한 최대값 함수입니다.
+    name: 'while2',
+    title: '1~10 합 (while 변형)',
+    desc: '동일 로직 while 변형',
+    code: `# === 1부터 10까지 합 (while 변형) ===
+# while1.py와 동일한 로직의 변형입니다.
 
-def getMax(a, b, c=-10000):
-    """최대 3개의 수 중 최대값을 반환 (c는 선택)"""
-    if (a >= b) and (a >= c):
-        largest = a
-    elif (b >= a) and (b >= c):
-        largest = b
+count = 1
+sum = 0
+
+while count <= 10:
+    sum = sum + count     # 누적 합산
+    count = count + 1     # 카운터 증가
+
+print("합계는", sum)      # 결과: 55`
+  },
+  {
+    name: 'while3',
+    title: 'while로 사각형 그리기',
+    desc: 'while+turtle 사각형',
+    code: `# === while로 사각형 그리기 ===
+# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
+# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
+
+import turtle
+t = turtle.Turtle()
+
+i = 0
+while i < 4:            # 4번 반복
+    t.forward(100)      # 100픽셀 전진
+    t.right(90)         # 오른쪽 90도 회전
+    i = i + 1           # 카운터 증가
+
+turtle.done()`
+  },
+  {
+    name: 'inf_loop',
+    title: '무한 루프 + break',
+    desc: "'blue' 입력 시 탈출",
+    code: `# === 무한 루프 + break ===
+# while True는 무한 루프이며, break로 탈출합니다.
+
+# 브라우저에서는 input()을 사용할 수 없으므로
+# 시뮬레이션 데이터를 사용합니다.
+
+lights = ["red", "green", "yellow", "blue"]  # 시뮬레이션 데이터
+
+for light in lights:
+    print(f"신호등 색상: {light}")
+    if light == 'blue':     # 'blue'이면 탈출
+        break
+
+print('전진!!')`
+  },
+  {
+    name: 'mtable',
+    title: '구구단 출력',
+    desc: 'for range(1,10) 구구단',
+    code: `# === 구구단 출력 ===
+# 입력한 단의 구구단을 출력합니다.
+
+# dan = int(input("원하는 단은: "))
+dan = 7  # 구구단 단 (직접 수정하여 테스트해보세요)
+
+for i in range(1, 10, 1):      # 1부터 9까지 반복
+    print(f"{dan}*{i}={dan*i}")  # f-string으로 포맷팅`
+  },
+  {
+    name: 'mquiz',
+    title: '랜덤 덧셈 퀴즈',
+    desc: 'while True 반복 퀴즈',
+    code: `# === 랜덤 덧셈 퀴즈 ===
+# 랜덤 덧셈 문제를 풀어봅니다.
+# 원래는 while True 무한 반복이지만, 3문제로 제한합니다.
+
+import random
+
+for _ in range(3):              # 3문제 출제
+    x = random.randint(1, 100)  # 1~100 랜덤 정수
+    y = random.randint(1, 100)
+
+    answer = x + y              # 정답 자동 계산
+    print(f"{x} + {y} = {answer}")
+
+    if answer == x + y:
+        print("잘했어요!!")
     else:
-        largest = c
-    return largest
-
-print(f"(10, 20, 50) 중에서 최대값: {getMax(10, 20, 50)}")
-print(f"(10, 20) 중에서 최대값: {getMax(10, 20)}")  # c 생략`
+        print("다음번에는 잘할 수 있죠?")`
   },
   {
-    name: 'keyword',
-    title: '키워드 인수',
-    desc: '순서와 무관한 인수 전달',
-    code: `# === 키워드 인수 ===
-# 키워드 인수를 사용하면 매개변수 이름으로 전달하여 순서가 달라도 됩니다.
+    name: 'login',
+    title: '비밀번호 반복 입력',
+    desc: '올바른 입력까지 while 반복',
+    code: `# === 비밀번호 반복 입력 ===
+# 올바른 비밀번호를 입력할 때까지 반복합니다.
+# 브라우저에서는 input()을 사용할 수 없으므로 시뮬레이션합니다.
 
-def calc(x, y, z):
-    """세 수의 합을 반환하는 함수"""
-    return x + y + z
+correct_password = "pythonisfun"
 
-# 키워드 인수: 순서가 달라도 이름으로 매칭됨
-result = calc(y=20, x=10, z=30)
-print("결과:", result)  # 10 + 20 + 30 = 60`
+# 시뮬레이션: 비밀번호 시도 목록
+attempts = ["hello", "python", "pythonisfun"]
+
+for password in attempts:
+    print(f"입력한 암호: {password}")
+    if password == correct_password:
+        print("로그인 성공")
+        break
+    else:
+        print("틀렸습니다. 다시 입력하세요.")`
   },
   {
-    name: 'global',
-    title: '전역변수 접근',
-    desc: '함수 내 전역변수 r 참조',
-    code: `# === 전역변수 접근 ===
-# 함수 안에서 전역변수를 읽을 수 있습니다 (수정은 불가).
+    name: 'guess',
+    title: '숫자 맞추기 게임',
+    desc: '1~100 높음/낮음 힌트',
+    code: `# === 숫자 맞추기 게임 ===
+# 1~100 사이의 랜덤 숫자를 맞추는 게임입니다.
+# 브라우저에서는 input()을 사용할 수 없으므로 시뮬레이션합니다.
 
-def calculate_area():
-    """전역변수 r을 사용하여 원의 넓이를 계산"""
-    result = 3.14 * r ** 2   # 전역변수 r 참조
-    return result
+import random
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름 (직접 수정하여 테스트해보세요)
+answer = random.randint(1, 100)  # 정답: 1~100 랜덤
+tries = 0
 
-area = calculate_area()
-print("원의 넓이:", area)`
+print("1부터 100 사이의 숫자를 맞추시오")
+print(f"(정답 힌트: {answer})")   # 테스트용 힌트
+
+# 시뮬레이션: 이진 탐색으로 맞추기
+low, high = 1, 100
+while True:
+    guess = (low + high) // 2    # 중간값 추측
+    tries += 1
+    print(f"추측: {guess}")
+
+    if guess < answer:
+        print("낮음!")
+        low = guess + 1
+    elif guess > answer:
+        print("높음!")
+        high = guess - 1
+    else:
+        print(f"축하합니다! 시도횟수= {tries}")
+        break`
   },
   {
-    name: 'global1',
-    title: '지역/전역 변수 혼동',
-    desc: 'return 없는 오류 예제',
-    code: `# === 지역/전역 변수 혼동 ===
-# 함수 내에서 area에 값을 저장해도 전역변수 area는 변하지 않습니다.
+    name: 'timer',
+    title: '카운트다운 타이머',
+    desc: 'for+sleep 카운트다운',
+    code: `# === 카운트다운 타이머 ===
+# time.sleep()으로 1초 간격 카운트다운합니다.
+# [참고] winsound는 Windows 전용이므로 제외합니다.
 
-def calculate_area(radius):
-    area = 3.14 * radius ** 2   # 이것은 지역변수 area!
-    # return이 없으므로 None을 반환
-    return
+import time
 
-area = 0  # 전역변수 area
+# seconds = int(input("초단위의 시간을 입력하시오: "))
+seconds = 5  # 카운트다운 초 (직접 수정하여 테스트해보세요)
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름
+for i in range(seconds, 0, -1):    # 역순 반복
+    print(f"{i}초 남았습니다.")
+    time.sleep(1)                   # 1초 대기
 
-calculate_area(r)
-print("area =", area)  # 0 출력 (전역변수는 변하지 않음!)`
+print("시간 종료!")`
   },
   {
-    name: 'global2',
-    title: 'global 키워드',
-    desc: 'global 선언으로 전역변수 수정',
-    code: `# === global 키워드 ===
-# global 키워드를 사용하면 함수 안에서 전역변수를 수정할 수 있습니다.
+    name: 'encrypt',
+    title: '문자 코드 암호화',
+    desc: '코드값 +1로 암호문 생성',
+    code: `# === 문자 코드 암호화 (시저 암호) ===
+# 각 문자의 유니코드 값을 1씩 증가시켜 암호화합니다.
 
-def calculate_area(radius):
-    global area                   # 전역변수 area를 사용하겠다고 선언
-    area = 3.14 * radius ** 2    # 전역변수 area가 변경됨
-    return
+plain_text = "Love will find a way."  # 평문
 
-area = 0  # 전역변수 area
+encrypted_text = ""                    # 암호문 (빈 문자열로 시작)
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름
+for c in plain_text:                   # 평문의 모든 글자에 대해 반복
+    x = ord(c)                         # 글자의 유니코드 값을 구함
+    x = x + 1                          # 코드값을 1 증가
+    cc = chr(x)                        # 증가된 코드값의 문자를 구함
+    encrypted_text = encrypted_text + cc  # 암호문에 추가
 
-calculate_area(r)
-print("area =", area)  # 78.5 출력 (전역변수가 변경됨!)`
+print("평문:", plain_text)
+print("암호문:", encrypted_text)`
   },
   {
-    name: 'var1',
-    title: '지역변수 접근 오류',
-    desc: 'NameError 발생 예제',
-    code: `# === 지역변수 접근 오류 ===
-# 함수 안의 지역변수는 함수 밖에서 접근할 수 없습니다.
+    name: 'decrypt',
+    title: '문자 코드 복호화',
+    desc: '코드값 -1로 평문 복원',
+    code: `# === 문자 코드 복호화 ===
+# 암호문의 각 문자 코드값을 1 감소시켜 원래 문장을 복원합니다.
 
-def calculate_area(radius):
-    result = 3.14 * radius ** 2  # result는 지역변수
-    return result
+encrypted_text = "Mpwf!xjmm!gjoe!b!xbz/"  # 암호문
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름
+plain_text = ""                             # 복호화된 평문
 
-area = calculate_area(r)
-print("area =", area)     # 정상 출력: 78.5
+for c in encrypted_text:                    # 암호문의 모든 글자에 대해 반복
+    x = ord(c)                              # 글자의 유니코드 값
+    x = x - 1                               # 코드값을 1 감소
+    cc = chr(x)                             # 감소된 코드값의 문자
+    plain_text = plain_text + cc            # 평문에 추가
 
-# 아래 줄은 NameError를 발생시킵니다!
-# result는 함수 안의 지역변수이므로 함수 밖에서 접근 불가
-# print(result)  # NameError: name 'result' is not defined
-print("# print(result) → NameError 발생!")`
+print("암호문:", encrypted_text)
+print("복호화:", plain_text)`
   },
   {
-    name: 'var2',
-    title: '전역변수 참조 함수',
-    desc: '전역 r로 원 넓이 계산',
-    code: `# === 전역변수 참조 함수 ===
-# 함수 안에서 전역변수를 읽어 사용하는 예제입니다.
+    name: 'count',
+    title: '모음 개수 세기',
+    desc: '문자열에서 a,e,i,o,u 카운트',
+    code: `# === 모음 개수 세기 ===
+# 문자열에서 영어 모음(a, e, i, o, u)의 개수를 셉니다.
 
-def calculate_area():
-    """전역변수 r을 참조하여 원의 넓이 계산"""
-    result = 3.14 * r ** 2  # 전역변수 r 참조 (읽기만 가능)
-    return result
+def countVowel(string):
+    """문자열에서 모음의 개수를 반환하는 함수"""
+    count = 0
+    for ch in string:                     # 문자열의 각 문자를 순회
+        if ch in ['a', 'e', 'i', 'o', 'u']:  # 모음인지 확인
+            count += 1                    # 모음이면 카운트 증가
+    return count
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름 (직접 수정하여 테스트해보세요)
+# s = input("문자열을 입력하시오: ")
+s = "Hello Python Programming"  # 문자열 (직접 수정하여 테스트해보세요)
 
-area = calculate_area()
-print("원의 넓이:", area)`
+n = countVowel(s)
+print(f"입력 문자열: {s}")
+print(f"모음의 개수는 {n}개입니다.")`
   },
   {
-    name: 'var3',
-    title: '전역변수 미수정 예제',
-    desc: 'return 없이 지역변수만 변경',
-    code: `# === 전역변수 미수정 예제 ===
-# global 없이 함수 안에서 area에 값을 대입하면 지역변수가 됩니다.
+    name: 'remove_words',
+    title: '단어 리스트 제거',
+    desc: 'for 루프로 특정 단어 제거',
+    code: `# === 단어 리스트 제거 ===
+# 문자열에서 특정 단어를 제거합니다.
 
-def calculate_area(radius):
-    area = 3.14 * radius ** 2  # 지역변수 area (전역변수와 별개!)
-    # return 없음 → None 반환
+s = "You said some winds blow forever and I didn't understand"
+list1 = s.split()  # 공백 기준으로 분리하여 리스트로 변환
 
-area = 0  # 전역변수 area
+remove_words = ['some', 'forever']  # 제거할 단어 목록
 
-# r = float(input("원의 반지름: "))
-r = 5.0
+print("입력 문자열:")
+print(s)
+print("삭제 단어들:")
+print(remove_words)
 
-calculate_area(r)
-print("area =", area)  # 0 출력 (전역변수 area는 그대로)`
+# 삭제 단어를 제외한 새 리스트 생성
+result = [word for word in list1 if word not in remove_words]
+
+print("삭제 후 남은 단어들:")
+print(result)`
   },
   {
-    name: 'var4',
-    title: 'global로 전역 수정',
-    desc: 'global area로 직접 수정',
-    code: `# === global로 전역변수 수정 ===
-# global 키워드로 함수 안에서 전역변수를 직접 수정합니다.
+    name: 'lotto',
+    title: '로또 번호 생성기',
+    desc: '중복 없이 6개 번호 뽑기',
+    code: `# === 로또 번호 생성기 ===
+# 1~45 사이에서 중복 없이 6개의 번호를 뽑습니다.
 
-def calculate_area(radius):
-    global area                   # 전역변수 area 사용 선언
-    area = 3.14 * radius ** 2    # 전역변수 area 수정
+import random
 
-area = 0  # 전역변수 area
+def getLotto():
+    """중복 없는 6개의 로또 번호를 생성하는 함수"""
+    numbers = []
+    while len(numbers) < 6:                 # 6개가 될 때까지 반복
+        n = random.randint(1, 45)           # 1~45 랜덤 정수
+        if n not in numbers:                # 중복 검사
+            numbers.append(n)               # 중복이 아니면 추가
+    return numbers
 
-# r = float(input("원의 반지름: "))
-r = 5.0
-
-calculate_area(r)
-print("area =", area)  # 78.5 출력 (global 덕분에 수정됨)`
+print(f"생성된 로또번호: {getLotto()}")`
   },
 ];
 export default step8;

@@ -408,7 +408,22 @@ export default function PythonPractice() {
               ))}
             </div>
             <div className="practice-tab-row">
-              {stepMeta.filter(s => s.step > 6).map(s => (
+              {stepMeta.filter(s => s.step > 6 && s.step <= 11).map(s => (
+                <button
+                  key={s.step}
+                  className={`practice-tab${activeStep === s.step ? ' active' : ''}`}
+                  onClick={() => setActiveStep(s.step)}
+                >
+                  <span className="practice-tab-icon"><i className={s.icon} /></span>
+                  <span className="practice-tab-label">
+                    <span className="practice-tab-step">{`${s.step}단계`}</span>
+                    <span className="practice-tab-title">{s.title}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+            <div className="practice-tab-row">
+              {stepMeta.filter(s => s.step >= 98).map(s => (
                 <button
                   key={s.step}
                   className={`practice-tab${activeStep === s.step ? ' active' : ''}`}

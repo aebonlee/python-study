@@ -1,333 +1,356 @@
-// === 10단계: 리스트와 딕셔너리 ===
+// === 10단계: 예외처리와 파일 I/O ===
+// [참고] 파일 I/O 관련 코드는 브라우저에서 직접 실행할 수 없습니다.
+// io.StringIO로 대체하거나 경고 주석을 포함합니다.
 const step10 = [
   {
-    name: 'list',
-    title: '리스트 기초',
-    desc: '생성, append, 인덱싱, in 연산자',
-    code: `# === 리스트 기초 ===
-# 리스트는 여러 값을 하나의 변수에 저장하는 자료구조입니다.
+    name: 'file1',
+    title: '파일 전체 읽기 (read)',
+    desc: 'read()로 phones.txt 읽기',
+    code: `# === 파일 전체 읽기 (read) ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# io.StringIO를 사용하여 가상 파일로 시뮬레이션합니다.
 
-slist = ['영어', '수학', '사회', '과학']  # 문자열 리스트
+import io
 
-print("과목 리스트:", slist)
-print("첫 번째 과목:", slist[0])   # 인덱싱 (0부터 시작)
-print("마지막 과목:", slist[-1])   # 음수 인덱스 (뒤에서부터)
-print("과목 수:", len(slist))      # 리스트 길이`
+# 가상 파일 데이터 (원래는 phones.txt 파일)
+file_content = """홍길동 010-1234-5678
+김철수 010-1234-5679
+김영희 010-1234-5680"""
+
+# io.StringIO로 가상 파일 객체 생성
+infile = io.StringIO(file_content)
+
+# read()로 파일 전체 읽기
+lines = infile.read()
+print(lines)`
   },
   {
-    name: 'list1',
-    title: '리스트 연산 모음',
-    desc: '인덱싱, len(), in/not in',
-    code: `# === 리스트 연산 모음 ===
-# 리스트의 다양한 연산을 알아봅니다.
+    name: 'file2',
+    title: '줄 단위 읽기 (readlines)',
+    desc: 'readlines()로 리스트 반환',
+    code: `# === 줄 단위 읽기 (readlines) ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# io.StringIO를 사용하여 가상 파일로 시뮬레이션합니다.
 
-list1 = [1, 2, 3, 4, 5]       # 정수 리스트
-list2 = ["a", "b", "c", "d"]  # 문자열 리스트
+import io
 
-# 빈 리스트에 요소 추가 (append)
-mylist = []
-mylist.append(1)
-mylist.append(2)
-mylist.append(6)
-mylist.append(3)
-print("append 결과:", mylist)  # [1, 2, 6, 3]`
+file_content = """홍길동 010-1234-5678
+김철수 010-1234-5679
+김영희 010-1234-5680"""
+
+infile = io.StringIO(file_content)
+
+# readlines()는 각 줄을 요소로 갖는 리스트를 반환합니다.
+lines = infile.readlines()
+print(lines)  # ['홍길동 010-1234-5678\\n', ...]`
   },
   {
-    name: 'list2',
-    title: '리스트 메서드',
-    desc: 'append, insert, remove, pop',
-    code: `# === 리스트 메서드 ===
-# 리스트의 주요 메서드를 알아봅니다.
+    name: 'readline',
+    title: '한 줄씩 읽기 (readline)',
+    desc: 'while+readline() 반복',
+    code: `# === 한 줄씩 읽기 (readline) ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
 
-slist = ['영어', '수학', '사회', '과학']
-print("원본:", slist)
+import io
 
-# 인덱싱
-print("slist[0]:", slist[0])          # 첫 번째 요소
+file_content = """홍길동 010-1234-5678
+김철수 010-1234-5679
+김영희 010-1234-5680"""
 
-# len() - 리스트 길이
-numbers = [1, 2, 3, 4, 5, 6]
-print("numbers 길이:", len(numbers))
+infile = io.StringIO(file_content)
 
-# in / not in - 포함 여부
-print("6 in numbers:", 6 in numbers)       # True
-print("10 in numbers:", 10 in numbers)     # False
-print("10 not in numbers:", 10 not in numbers)  # True
+# readline()으로 한 줄씩 읽기
+line = infile.readline().rstrip()   # 오른쪽 공백/줄바꿈 제거
+while line != "":
+    print(line)
+    line = infile.readline().rstrip()
 
-# 문자열에서도 in 사용 가능
-print("'e' in 'Hello':", 'e' in 'Hello')  # True`
+infile.close()`
   },
   {
-    name: 'list3',
-    title: '리스트 슬라이싱·집계',
-    desc: '+, *, min/max/sum',
-    code: `# === 리스트 슬라이싱·집계 ===
-# 리스트 조작 메서드와 집계 함수를 알아봅니다.
+    name: 'file6',
+    title: '파일 쓰기 (write)',
+    desc: 'write()로 전화번호 기록',
+    code: `# === 파일 쓰기 (write) ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# io.StringIO로 가상 파일에 쓰기를 시뮬레이션합니다.
 
-myList = ["우유", "사과", "두부", "소고기"]
+import io
 
-# for 루프로 순회
-for item in myList:
-    print(item)
+outfile = io.StringIO()  # 가상 출력 파일
 
-# 인덱스로 순회
-print("\\n인덱스로 순회:")
-for i in range(len(myList)):
-    print(f"  [{i}] {myList[i]}")
+outfile.write("홍길동 010-1234-5678\\n")
+outfile.write("김철수 010-1234-5679\\n")
+outfile.write("김영희 010-1234-5680\\n")
 
-# 요소 수정
-myList[1] = '커피'          # 인덱스 1 요소 변경
-print("\\n수정 후:", myList)
+# 쓴 내용 확인
+print("파일에 기록된 내용:")
+print(outfile.getvalue())   # StringIO의 내용 출력
 
-# append, insert, remove, pop
-myList.append("케이크")      # 맨 뒤에 추가
-print("append 후:", myList)
-
-myList.insert(1, "빵")       # 인덱스 1에 삽입
-print("insert 후:", myList)
-
-myList.remove("두부")        # 값으로 삭제
-print("remove 후:", myList)
-
-item = myList.pop(0)         # 인덱스 0 삭제 및 반환
-print(f"pop(0) → '{item}', 남은 리스트:", myList)`
+outfile.close()`
   },
   {
-    name: 'list4',
-    title: '리스트 정렬',
-    desc: 'sort(), sorted(), reverse',
-    code: `# === 리스트 정렬 ===
-# 리스트 연산(+, *), 슬라이싱, 집계 함수
+    name: 'fwrite',
+    title: '파일 쓰기 예제',
+    desc: 'phones1.txt에 데이터 기록',
+    code: `# === 파일 쓰기 예제 ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
 
-# 리스트 연결 (+)
-myList = ["우유", "사과"]
-yourList = ["두부", "소고기"]
-print("+ 연산:", myList + yourList)
+import io
 
-# 리스트 반복 (*)
-print("* 연산:", myList * 2)
+outfile = io.StringIO()
 
-# 슬라이싱
-letters = ['A', 'B', 'C', 'D', 'E', 'F']
-print("letters[0:3]:", letters[0:3])  # ['A', 'B', 'C']
-print("letters[:3]:", letters[:3])    # ['A', 'B', 'C']
-print("letters[3:]:", letters[3:])    # ['D', 'E', 'F']
+# write() 메서드로 데이터 기록
+outfile.write("홍길동 010-1234-5678\\n")
+outfile.write("김철수 010-1234-5679\\n")
+outfile.write("김영희 010-1234-5680\\n")
 
-# 집계 함수: min, max, sum
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-print("\\nmin:", min(numbers))   # 최솟값: 1
-print("max:", max(numbers))     # 최댓값: 9
-print("sum:", sum(numbers))     # 합계: 45
-
-# 문자열/리스트에서도 min 사용 가능
-print("min('abc..z'):", min("abcdefghijklmnopqrstuvwxyz"))
-print("min(['dog','cat','tiger']):", min(["dog", "cat", "tiger"]))`
+print("파일에 기록된 내용:")
+print(outfile.getvalue())
+outfile.close()`
   },
   {
-    name: 'dict1',
-    title: '딕셔너리 기초',
-    desc: '키로 값 조회·수정',
-    code: `# === 리스트 정렬 ===
-# sort(), sorted(), reverse 메서드
+    name: 'fappend',
+    title: '파일 추가 모드',
+    desc: "'a' 모드로 데이터 추가",
+    code: `# === 파일 추가 모드 ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# 'a' 모드: 기존 내용 뒤에 새 데이터를 추가합니다.
 
-numbers = [9, 6, 7, 1, 8, 4, 5, 3, 2]
+import io
 
-# sort() - 원본 리스트 변경 (오름차순)
-numbers.sort()
-print("sort() 후:", numbers)
+# 기존 파일 내용 시뮬레이션
+existing = "홍길동 010-1234-5678\\n김철수 010-1234-5679\\n"
+outfile = io.StringIO(existing)
+outfile.seek(0, 2)  # 파일 끝으로 이동 (append 모드 시뮬레이션)
 
-# sorted() - 새 리스트 반환 (원본 유지)
-numbers = [9, 6, 7, 1, 8, 4, 5, 3, 2]
-new_list = sorted(numbers)
-print("sorted():", new_list)
+# 새 데이터 추가
+outfile.write("강감찬 010-1234-5681\\n")
+outfile.write("김유신 010-1234-5682\\n")
+outfile.write("정약용 010-1234-5683\\n")
 
-# 내림차순 정렬
-numbers = [9, 6, 7, 1, 8, 4, 5, 3, 2]
-new_list = sorted(numbers, reverse=True)
-print("내림차순:", new_list)`
+print("추가 후 전체 내용:")
+print(outfile.getvalue())
+outfile.close()`
   },
   {
-    name: 'dict2',
-    title: '딕셔너리 생성·keys/values',
-    desc: 'keys(), values() 메서드',
-    code: `# === 딕셔너리 기초 ===
-# 딕셔너리는 {키: 값} 쌍으로 데이터를 저장합니다.
+    name: 'fcopy',
+    title: '파일 복사 프로그램',
+    desc: '입출력 파일명 받아 복사',
+    code: `# === 파일 복사 프로그램 ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# io.StringIO로 시뮬레이션합니다.
 
-phone_book = {'홍길동': '1234', '이순신': '1235', '강감찬': '1236'}
+import io
 
-# 키로 값 조회
-print("강감찬의 번호:", phone_book["강감찬"])
+# 원본 파일 시뮬레이션
+original = """첫 번째 줄입니다.
+두 번째 줄입니다.
+세 번째 줄입니다."""
 
-# 값 수정
-phone_book["강감찬"] = '9999'
-print("수정 후:", phone_book["강감찬"])`
+infile = io.StringIO(original)   # 입력 파일
+outfile = io.StringIO()          # 출력 파일
+
+# 파일 전체를 읽어서 복사
+s = infile.read()
+outfile.write(s)
+
+print("원본 파일 내용:")
+print(original)
+print("\\n복사된 파일 내용:")
+print(outfile.getvalue())
+
+infile.close()
+outfile.close()`
   },
   {
-    name: 'dict3',
-    title: '딕셔너리 순회·삭제',
-    desc: 'sorted(), pop(), clear()',
-    code: `# === 딕셔너리 생성·keys/values ===
-# 빈 딕셔너리에 항목을 추가하고, keys(), values() 사용법
+    name: 'grep',
+    title: '파일 키워드 검색',
+    desc: '텍스트 파일에서 Python 검색',
+    code: `# === 파일 키워드 검색 ===
+# [주의] 파일 I/O와 os.listdir()는 브라우저에서 실행할 수 없습니다.
+# 가상 데이터로 시뮬레이션합니다.
 
-phone_book = {}  # 빈 딕셔너리
-
-# 항목 추가 (딕셔너리[키] = 값)
-phone_book["홍길동"] = '1234'
-phone_book["이순신"] = '1235'
-phone_book["강감찬"] = '1236'
-print("전화번호부:", phone_book)
-
-# keys() - 모든 키 반환
-print("키 목록:", phone_book.keys())
-
-# values() - 모든 값 반환
-print("값 목록:", phone_book.values())`
-  },
-  {
-    name: 'eng_dict',
-    title: '영어 사전 검색',
-    desc: '딕셔너리로 영한 사전 구현',
-    code: `# === 영어 사전 검색 ===
-# 딕셔너리로 간단한 영한 사전을 구현합니다.
-
-english_dict = {}
-
-# 단어 등록
-english_dict['one'] = '하나'
-english_dict['two'] = '둘'
-english_dict['three'] = '셋'
-english_dict['four'] = '넷'
-english_dict['five'] = '다섯'
-
-# 검색할 단어 목록 (원래는 input()으로 반복 입력)
-words_to_search = ["one", "three", "five"]
-
-for word in words_to_search:
-    if word in english_dict:
-        print(f"{word} → {english_dict[word]}")
-    else:
-        print(f"{word} → 사전에 없는 단어입니다.")`
-  },
-  {
-    name: 'schedule',
-    title: '일정 관리',
-    desc: '날짜-일정 딕셔너리 관리',
-    code: `# === 일정 관리 프로그램 ===
-# 딕셔너리로 날짜별 일정을 관리합니다.
-
-mydict = {}
-
-# 일정 데이터 (원래는 input()으로 반복 입력)
-schedules = [
-    ("3/15", "프로젝트 발표"),
-    ("3/20", "중간고사"),
-    ("4/01", "과제 제출"),
-]
-
-for date, job in schedules:
-    if date not in mydict:
-        mydict[date] = job           # 새 일정 추가
-        print(f"일정 추가: {date} → {job}")
-    else:
-        print(f"오류: {date}에 이미 일정이 있습니다.")
-
-print("\\n전체 일정:")
-print(mydict)`
-  },
-  {
-    name: 'stocks',
-    title: '재고 검색',
-    desc: '물건 재고 딕셔너리 조회',
-    code: `# === 재고 검색 프로그램 ===
-# 딕셔너리로 물건의 재고를 관리하고 조회합니다.
-
-items = {
-    "커피음료": 7,
-    "펜": 3,
-    "종이컵": 2,
-    "우유": 1,
-    "콜라": 4,
-    "책": 5
+# 가상 파일 데이터
+files = {
+    "readme.txt": "Welcome to Python programming!\\nPython is easy to learn.",
+    "notes.txt": "Java and C++ are also popular.\\nBut Python is my favorite.",
+    "data.txt": "This file has no keyword."
 }
 
-# item = input("물건의 이름을 입력하시오: ")
-search_items = ["콜라", "펜", "노트"]  # 검색할 목록
+keyword = "Python"  # 검색할 키워드
 
-for item in search_items:
-    if item in items:
-        print(f"{item}의 재고: {items[item]}개")
-    else:
-        print(f"{item}: 등록되지 않은 물건입니다.")`
+# 각 파일에서 키워드 검색
+for filename, content in files.items():
+    for line in content.split("\\n"):
+        if keyword in line:
+            print(f"{filename} : {line}")`
   },
   {
-    name: 'stats',
-    title: 'statistics 모듈',
-    desc: 'mean, median, mode, stdev',
-    code: `# === statistics 모듈 ===
-# 통계 함수로 평균, 중간값, 최빈값, 표준편차를 구합니다.
+    name: 'split',
+    title: '파일 검색 (split)',
+    desc: 'split() 활용 키워드 검색',
+    code: `# === 파일 검색 (split 활용) ===
+# [주의] 파일 I/O는 브라우저에서 실행할 수 없습니다.
 
-import statistics
+# 가상 파일 데이터
+files = {
+    "readme.txt": "Welcome to Python programming!\\nPython is easy.",
+    "notes.txt": "Java and C++ are popular.\\nPython is my favorite."
+}
 
-sample = [2, 3, 3, 4, 5, 5, 5, 5, 6, 6, 6, 7]
+keyword = "Python"
 
-print(f"입력 리스트={sample}")
-print(f"평균={statistics.mean(sample)}")          # 산술 평균
-print(f"중간값={statistics.median(sample)}")       # 중간값 (중앙값)
-print(f"최빈값={statistics.mode(sample)}")         # 가장 자주 나오는 값
-print(f"표준편차={statistics.stdev(sample):.4f}")  # 표본 표준편차`
+for filename, content in files.items():
+    for line in content.split("\\n"):
+        line = line.rstrip()       # 오른쪽 공백 제거
+        if keyword in line:
+            print(f"{filename} : {line}")`
   },
   {
-    name: 'hangman',
-    title: '행맨 게임',
-    desc: '리스트로 글자 맞히기 게임',
-    code: `# === 행맨 게임 ===
-# 숨겨진 단어의 글자를 하나씩 맞히는 게임입니다.
-# 원래는 input()으로 반복 입력하지만, 시뮬레이션합니다.
+    name: 'cipher',
+    title: '시저 암호화 (파일)',
+    desc: '파일 읽어 3칸 이동 암호화',
+    code: `# === 시저 암호화 ===
+# 알파벳을 n칸 이동시켜 암호화합니다. (시저 암호)
 
-import random
+key = 'abcdefghijklmnopqrstuvwxyz'  # 알파벳 키
 
-# 단어 목록 (원래는 words.txt 파일에서 읽음)
-words = ["python", "programming", "computer", "algorithm", "database"]
-word = random.choice(words)
+def encrypt(n, plaintext):
+    """n칸 이동 시저 암호화 함수"""
+    result = ''
+    for l in plaintext.lower():      # 소문자로 변환 후 처리
+        try:
+            i = (key.index(l) + n) % 26  # 알파벳 인덱스 + n
+            result += key[i]
+        except ValueError:
+            result += l                   # 알파벳이 아니면 그대로
+    return result.lower()
 
-guesses = ''   # 추측한 글자들
-turns = 10     # 남은 기회
+# 원래는 파일에서 읽지만, 문자열로 대체합니다.
+s = "hello python world"
 
-# 시뮬레이션: 자동으로 글자 추측
-all_letters = list("abcdefghijklmnopqrstuvwxyz")
-random.shuffle(all_letters)
+encrypted = encrypt(3, s)         # 3칸 이동 암호화
+print('평문:', s)
+print('암호문:', encrypted)
 
-print(f"단어 길이: {len(word)}글자")
-print(f"(테스트용 힌트: {word})\\n")
+# 복호화: -3칸 이동
+decrypted = encrypt(-3, encrypted)
+print('복호화:', decrypted)`
+  },
+  {
+    name: 'fzip',
+    title: 'gzip 파일 압축',
+    desc: 'gzip 모듈로 압축·읽기',
+    code: `# === gzip 파일 압축 ===
+# [주의] 파일 I/O는 브라우저에서 실행할 수 없습니다.
+# gzip 모듈의 사용법을 보여주는 코드입니다.
 
-for guess in all_letters:
-    if turns <= 0:
-        break
+# gzip 모듈은 파일 시스템 접근이 필요하므로 코드만 확인하세요.
+# 아래는 gzip의 기본 사용법입니다.
 
-    # 현재 상태 표시
-    display = ""
-    failed = 0
-    for char in word:
-        if char in guesses:
-            display += char + " "
-        else:
-            display += "_ "
-            failed += 1
+data = """You said some winds blow forever
+And I didn't understand
+But you saw my eyes were asking
+And smiling you took my hand
+So we walked along the seaside"""
 
-    if failed == 0:
-        print(f"\\n정답: {display}")
-        print("사용자 승리!")
-        break
+print("원본 데이터:")
+print(data)
+print(f"\\n원본 크기: {len(data.encode('UTF-8'))} bytes")
 
-    guesses += guess
-    if guess not in word:
-        turns -= 1
-        print(f"추측: '{guess}' → 틀렸음! (남은 기회: {turns})")
-    else:
-        print(f"추측: '{guess}' → 맞았음! 현재: {display}")
+# 실제 gzip 사용법 (파일 시스템 필요):
+# import gzip
+# f = gzip.open('data.gz', 'wb')
+# f.write(data.encode('UTF-8'))
+# f.close()
+#
+# f = gzip.open('data.gz', 'rb')
+# result = f.read().decode('UTF-8')
+# print(result)
+# f.close()`
+  },
+  {
+    name: 'csv1',
+    title: 'CSV 읽기 (기본)',
+    desc: 'csv.reader()로 전체 출력',
+    code: `# === CSV 읽기 (기본) ===
+# csv 모듈로 CSV 형식 데이터를 읽습니다.
+# io.StringIO를 사용하여 가상 CSV 파일을 시뮬레이션합니다.
 
-if turns <= 0:
-    print(f"\\n사용자 패배! 정답은 '{word}'")`
+import csv
+import io
+
+# 가상 CSV 데이터 (weather.csv 시뮬레이션)
+csv_data = """날짜,최고기온,최저기온,평균기온
+2024-01-01,5.2,-2.1,1.5
+2024-01-02,3.8,-3.5,0.2
+2024-01-03,7.1,-1.0,3.1
+2024-01-04,2.5,-4.2,-0.9"""
+
+f = io.StringIO(csv_data)
+data = csv.reader(f)             # csv.reader()로 읽기
+
+for row in data:
+    print(row)                    # 각 행을 리스트로 출력
+
+f.close()`
+  },
+  {
+    name: 'csv2',
+    title: 'CSV 읽기 (헤더 제거)',
+    desc: 'next()로 헤더 건너뛰기',
+    code: `# === CSV 읽기 (헤더 제거) ===
+# next()로 첫 행(헤더)을 건너뛰고 데이터만 읽습니다.
+
+import csv
+import io
+
+csv_data = """날짜,최고기온,최저기온,평균기온
+2024-01-01,5.2,-2.1,1.5
+2024-01-02,3.8,-3.5,0.2
+2024-01-03,7.1,-1.0,3.1
+2024-01-04,2.5,-4.2,-0.9"""
+
+f = io.StringIO(csv_data)
+data = csv.reader(f)
+
+header = next(data)               # 첫 행(헤더) 건너뛰기
+print("헤더:", header)
+
+for row in data:                  # 데이터 행만 출력
+    print(row)
+
+f.close()`
+  },
+  {
+    name: 'csv3',
+    title: 'CSV 최솟값 찾기',
+    desc: 'float 변환 후 최솟값 분석',
+    code: `# === CSV 최솟값 찾기 ===
+# CSV 데이터에서 특정 열의 최솟값을 찾습니다.
+
+import csv
+import io
+
+csv_data = """날짜,최고기온,최저기온,평균기온
+2024-01-01,5.2,-2.1,1.5
+2024-01-02,3.8,-3.5,0.2
+2024-01-03,7.1,-1.0,3.1
+2024-01-04,2.5,-4.2,-0.9"""
+
+f = io.StringIO(csv_data)
+data = csv.reader(f)
+header = next(data)               # 헤더 건너뛰기
+
+temp = 1000                        # 최솟값 초기값 (충분히 큰 수)
+for row in data:
+    if temp > float(row[3]):      # 평균기온(4번째 열)과 비교
+        temp = float(row[3])
+
+print(f"평균기온 최솟값: {temp}")
+
+f.close()`
   },
 ];
 export default step10;
