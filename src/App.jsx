@@ -40,7 +40,7 @@ function AppLayout() {
 
 export default function App() {
   return (
-    <BrowserRouter basename="/python-study">
+    <BrowserRouter>
       <ThemeProvider>
         <ProgressProvider>
           <BadgeProvider>
