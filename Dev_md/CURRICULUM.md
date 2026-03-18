@@ -1,7 +1,7 @@
 # PyMaster - 커리큘럼 문서
 
 ## 개요
-총 **35개 레슨**, **4개 단계**, **48개 퀴즈 문제**, **25개 배지**
+총 **35개 레슨** (4단계), **11개 파이썬 학습**, **12단계 파이썬 실습**, **48개 퀴즈 문제**, **25개 배지**
 
 ---
 
@@ -76,17 +76,59 @@
 
 ---
 
+## 파이썬 학습 (Python Learning) - 11개 레슨
+
+| # | 레슨 | 주요 내용 | 경로 |
+|---|------|-----------|------|
+| 01 | 파이썬 및 실습환경 안내 | 컴퓨팅 사고, Python 설치, IDLE, VS Code | /python-learning/01 |
+| 02 | 입출력과 변수 | print(), input(), 변수, f-string | /python-learning/02 |
+| 03 | Data Type과 산술연산 | 정수, 소수, 문자, 형변환, 연산자 | /python-learning/03 |
+| 04 | 입력-처리-출력 개념 | PDC 작성, IPO 구조 설계 | /python-learning/04 |
+| 05 | Turtle과 함수(def) | Turtle 그래픽, 기능 단위 묶기 | /python-learning/05 |
+| 06 | Flowgorithm 순서도 | 논리적 사고, 순서도 그리기 | /python-learning/06 |
+| 07 | IF 조건문 | if, elif, else, 비교/논리 연산자 | /python-learning/07 |
+| 08 | While/For 반복문 | while, for, break, continue | /python-learning/08 |
+| 09 | 함수와 매개변수 | def, 매개변수, return | /python-learning/09 |
+| 10 | Try-Except 예외처리 | 오류 유형, try-except-finally | /python-learning/10 |
+| 11 | 2차원, 3차원 리스트 | 다차원 리스트, 정보 모델링 | /python-learning/11 |
+
+---
+
+## 파이썬 실습 (Python Practice) - 12단계
+
+| 단계 | 제목 | 예제 수 |
+|------|------|---------|
+| Step 1 | 출력과 입력 | 기본 예제 |
+| Step 2 | 변수와 자료형 | 다수 예제 |
+| Step 3 | 연산자와 조건문 | 다수 예제 |
+| Step 4 | 반복문 | 기본 예제 |
+| Step 5 | 함수 | 다수 예제 |
+| Step 6 | 리스트와 튜플 | 다수 예제 |
+| Step 7 | 딕셔너리와 집합 | 다수 예제 |
+| Step 8 | 문자열 처리 | 다수 예제 |
+| Step 9 | 파일 입출력 | 다수 예제 |
+| Step 10 | 클래스와 OOP | 다수 예제 |
+| 심화 1 | 고급 문법 | 다수 예제 |
+| 심화 2 | 알고리즘/패턴 | 다수 예제 |
+
+**실행 엔진**: Pyodide v0.27.0 (Python WebAssembly, Web Worker)
+**특별 기능**: input() 대화형 입력, Turtle SVG 모의 렌더링
+
+---
+
 ## 전체 요약
 
 | 항목 | 수량 |
 |------|------|
-| 총 레슨 수 | 35개 |
-| 총 학습 시간 | 약 1045분 (17시간 25분) |
+| 단계별 레슨 수 | 35개 (기초 9 + 중급 13 + 고급 5 + 응용 8) |
+| 파이썬 학습 레슨 | 11개 (01~11) |
+| 파이썬 실습 단계 | 12단계 (step1~10 + 심화 2) |
+| 총 학습 시간 | 약 1045분 (17시간 25분) - 단계별 레슨 기준 |
 | 퀴즈 문제 | 48문제 (4개 단계) |
 | 배지 | 25개 (4개 티어) |
-| 코드 실습 | 40개 이상 |
-| input() 지원 | CodeEditor 입력 패널 |
-| Turtle SVG 렌더러 | 브라우저 내 SVG 시각화 |
+| 코드 실습 | 40개 이상 (레슨 내) + 100개 이상 (실습 데이터) |
+| input() 지원 | CodeEditor 입력 패널 + Pyodide 대화형 입력 |
+| Turtle SVG 렌더러 | TurtleCanvas (레슨) + Pyodide Worker (실습) |
 
 ---
 

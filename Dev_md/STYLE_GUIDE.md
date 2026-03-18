@@ -143,6 +143,44 @@
 .dropdown-header        /* 카테고리 구분 라벨 (소문자, 구분선) */
 ```
 
+### 파이썬 학습 허브 (python-learning.css)
+```css
+.python-learning-page .page-header-section  /* 허브 페이지 헤더 */
+.python-lesson-grid      /* 3열 레슨 카드 그리드 */
+.python-lesson-card      /* 레슨 카드 (번호, 아이콘, 제목, 설명) */
+```
+
+### 파이썬 학습 레슨 상세 (python-learning.css)
+```css
+.python-lesson-detail    /* 레슨 페이지 래퍼 (margin-top: nav-height) */
+.python-lesson-detail .page-header  /* 파란 그라디언트 헤더 */
+.python-lesson-detail .lesson-body  /* 본문 컨테이너 (max-width: 800px) */
+.python-lesson-detail .callout-box  /* 학습목표/핵심정리 박스 (파란 좌측 보더) */
+.python-lesson-detail .code-block   /* 코드 블록 (어두운 배경) */
+.python-lesson-detail .code-header  /* 코드 블록 헤더 (파일명/설명) */
+.python-lesson-detail .lesson-table /* 데이터 테이블 */
+.python-lesson-detail .exercise-box /* 실습 과제 박스 */
+.python-lesson-detail .lesson-nav   /* 이전/다음 네비게이션 */
+.python-lesson-detail .lesson-nav-btn.prev  /* 이전 버튼 (회색) */
+.python-lesson-detail .lesson-nav-btn.next  /* 다음 버튼 (파란) */
+```
+
+### 파이썬 실습 (practice.css)
+```css
+.practice-page .page-header-section  /* 실습 페이지 헤더 */
+.practice-step-tabs      /* 단계 탭 컨테이너 */
+.practice-tab            /* 개별 탭 버튼 */
+.practice-step-layout    /* 사이드바 + 러너 레이아웃 */
+.practice-example-sidebar /* 예제 목록 사이드바 (sticky) */
+.practice-step-runner    /* 코드 러너 패널 (파란 보더) */
+.practice-runner-header  /* 러너 헤더 (파란 배경, 파일명) */
+.practice-mode-tabs      /* 기본값/직접입력 모드 탭 */
+.practice-editor-body    /* 라인넘버 + 코드 입력 */
+.practice-output         /* 실행 결과 출력 */
+.practice-turtle-svg     /* Turtle SVG 렌더링 영역 */
+.practice-input-form     /* input() 입력 폼 */
+```
+
 ## 버튼 스타일
 - `.btn-primary`: Python Blue 그라디언트, 흰색 텍스트
 - `.btn-secondary`: 투명 배경, 보더

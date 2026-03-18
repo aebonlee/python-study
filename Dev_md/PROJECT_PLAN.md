@@ -16,7 +16,22 @@
 - **고급 (Advanced)**: 데코레이터, 제너레이터, 동시성 등 5개 레슨
 - **응용 (Applied)**: NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow/PyTorch 등 8개 레슨
 
-### 2. 실습 코드 에디터
+### 2. 파이썬 학습 (Python Learning)
+- 11개 단계별 레슨 (01~11) - 한국공학대학교 Python 강의 기반
+- 파이썬 설치/환경 → 입출력/변수 → 자료형 → IPO → Turtle → 순서도 → 조건문 → 반복문 → 함수 → 예외처리 → 리스트
+- 레슨 간 이전/다음 네비게이션
+- 코드 블록, 테이블, 실습 과제, 핵심 정리 박스
+
+### 3. 파이썬 실습 (Python Practice)
+- **Pyodide** (Python WebAssembly) 기반 브라우저 내 실제 Python 실행
+- Web Worker로 메인 스레드 블로킹 방지
+- 12단계 실습 (step1~10, stepAdvanced, stepAdvanced2)
+- input() 함수 대화형 입력 지원
+- Turtle Graphics SVG 모의 렌더링
+- 코드 에디터 (라인 넘버, 복사, 다운로드)
+- 기본값/직접입력 모드 전환
+
+### 4. 레슨별 코드 에디터
 - 브라우저 내 파이썬 코드 에디터
 - 라인 넘버 표시, Tab 키 지원
 - 코드 실행 시뮬레이션 (print, 변수, f-string, for loop)
@@ -24,30 +39,30 @@
 - **Turtle Graphics SVG 렌더러**: turtle 명령어를 파싱하여 SVG로 실시간 시각화
 - 예상 출력과 비교 기능, 힌트 제공
 
-### 3. 도장깨기 배지 시스템
+### 5. 도장깨기 배지 시스템
 - 25개 배지 (브론즈 5, 실버 6, 골드 10, 플래티넘 4)
 - 자동 배지 획득 평가, 배지 알림 팝업
 - 배지 컬렉션 페이지
 
-### 4. 퀴즈 센터
+### 6. 퀴즈 센터
 - 4개 단계별 퀴즈 (각 10문제)
 - 타이머, 해설, 점수 기록 및 재도전
 
-### 5. 진도 관리
+### 7. 진도 관리
 - 레슨 완료 체크, 단계별 진도율
 - 연속 학습일 (스트릭)
 - localStorage 기반 데이터 저장 + Supabase 동기화 준비
 
-### 6. 사용자 인증
+### 8. 사용자 인증
 - Supabase Auth 기반 Google/Kakao OAuth 로그인
 - AuthContext로 전역 인증 상태 관리
 - 로그인 페이지 (/login), Navbar 유저 UI
 
-### 7. 안정성 기능
+### 9. 안정성 기능
 - Error Boundary (런타임 에러 복구 UI)
 - React.lazy + Suspense (코드 스플리팅)
 
-### 8. SNS 공유
+### 10. SNS 공유
 - Open Graph 메타태그 (Kakao, Facebook, Twitter)
 - 자동 생성 OG 이미지 (1200x630)
 
@@ -76,6 +91,7 @@
 14. ~~Navbar 라이브러리 드롭다운 메뉴~~ ✅
 15. ~~표준 라이브러리 + Turtle Graphics 과정 추가~~ ✅
 16. ~~input() 지원, Turtle SVG 렌더러, 라이브러리 카테고리화~~ ✅
-17. 학습 데이터 클라우드 동기화 - 예정
-18. 프로필 페이지 - 예정
-19. 수료증 발급 - 예정
+17. ~~파이썬 학습 (11개 레슨) + 파이썬 실습 (Pyodide) 추가~~ ✅
+18. 학습 데이터 클라우드 동기화 - 예정
+19. 프로필 페이지 - 예정
+20. 수료증 발급 - 예정

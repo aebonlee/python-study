@@ -37,7 +37,11 @@ D:\python-study\
 ├── src/
 │   ├── main.jsx               # React 엔트리 포인트
 │   ├── App.jsx                # 라우터 + Provider + ErrorBoundary + Lazy
-│   ├── index.css              # CSS 임포트 허브 (12개 CSS)
+│   ├── index.css              # CSS 임포트 허브 (14개 CSS)
+│   ├── hooks/
+│   │   └── useCodeRunner.js   # Pyodide Web Worker 실행 훅
+│   ├── workers/
+│   │   └── pyodide.worker.js  # Pyodide WASM Worker (turtle SVG 모의 포함)
 │   ├── components/
 │   │   ├── layout/
 │   │   │   ├── Navbar.jsx     # 상단 네비게이션 (1열 메뉴 + 인증 UI)
@@ -60,16 +64,37 @@ D:\python-study\
 │   │   ├── lessons.js         # 레슨 메타데이터 (FA 아이콘 클래스)
 │   │   ├── lessonContents.js  # 레슨 교육 컨텐츠
 │   │   ├── badges.js          # 배지 정의 (FA 아이콘 클래스)
-│   │   └── quizzes.js         # 퀴즈 문제
+│   │   ├── quizzes.js         # 퀴즈 문제
+│   │   └── pythonSteps/       # 파이썬 실습 데이터 (13개 파일)
+│   │       ├── index.js       # stepMeta + stepLoaders (동적 임포트)
+│   │       ├── step1~10.js    # 단계별 실습 예제
+│   │       ├── stepAdvanced.js  # 심화 실습 1
+│   │       └── stepAdvanced2.js # 심화 실습 2
 │   ├── pages/
 │   │   ├── Home.jsx           # 메인 페이지
 │   │   ├── Login.jsx          # 로그인 페이지 (Google/Kakao)
 │   │   ├── LevelPage.jsx      # 단계별 레슨 목록
 │   │   ├── LessonPage.jsx     # 레슨 상세/학습
 │   │   ├── BadgeCollection.jsx # 배지 컬렉션
-│   │   └── QuizCenter.jsx     # 퀴즈 센터
-│   └── styles/                # CSS 12개 파일
-│       └── auth.css           # 로그인 페이지 + Navbar 인증 UI
+│   │   ├── QuizCenter.jsx     # 퀴즈 센터
+│   │   ├── PythonLearning.jsx # 파이썬 학습 허브 (11개 레슨 카드)
+│   │   ├── PythonPractice.jsx # 파이썬 실습 (Pyodide 코드 러너)
+│   │   └── python-learning/   # 파이썬 학습 개별 레슨 (11개)
+│   │       ├── PythonLesson01.jsx  # 파이썬 및 실습환경 안내
+│   │       ├── PythonLesson02.jsx  # 입출력과 변수
+│   │       ├── PythonLesson03.jsx  # Data Type과 산술연산
+│   │       ├── PythonLesson04.jsx  # 입력-처리-출력 개념
+│   │       ├── PythonLesson05.jsx  # Turtle과 함수(def)
+│   │       ├── PythonLesson06.jsx  # Flowgorithm 순서도
+│   │       ├── PythonLesson07.jsx  # IF 조건문
+│   │       ├── PythonLesson08.jsx  # While/For 반복문
+│   │       ├── PythonLesson09.jsx  # 함수와 매개변수
+│   │       ├── PythonLesson10.jsx  # Try-Except 예외처리
+│   │       └── PythonLesson11.jsx  # 2차원, 3차원 리스트
+│   └── styles/                # CSS 14개 파일
+│       ├── auth.css           # 로그인 페이지 + Navbar 인증 UI
+│       ├── practice.css       # 파이썬 실습 페이지 스타일
+│       └── python-learning.css # 파이썬 학습 허브 + 레슨 스타일
 └── Dev_md/                    # 개발 문서
 ```
 
@@ -120,6 +145,9 @@ App
 |------|--------|------|
 | `/` | Home | lazy |
 | `/login` | Login | lazy |
+| `/python-learning` | PythonLearning | lazy |
+| `/python-learning/01~11` | PythonLesson01~11 | lazy |
+| `/python-practice` | PythonPractice | lazy |
 | `/:level` | LevelPage | lazy |
 | `/:level/:lessonId` | LessonPage | lazy |
 | `/badges` | BadgeCollection | lazy |
@@ -137,7 +165,7 @@ App
 
 ### Navbar 구조 (1열 + 라이브러리 드롭다운 3카테고리)
 ```
-기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 퀴즈 | 도장깨기 | [진도] [테마] [로그인/아바타]
+파이썬 학습 | 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 파이썬 실습 | 퀴즈 | 도장깨기 | [진도] [테마] [로그인/아바타]
                            └→ [기본 내장/표준 라이브러리]
                               os/sys / math/cmath / json / datetime
                               [교육용·그래픽 라이브러리]
@@ -177,10 +205,26 @@ App
 빌드 결과 (React.lazy + Suspense):
 | 청크 | 크기 | 내용 |
 |------|------|------|
-| index.js | 437KB | React, Router, Contexts, Supabase |
+| index.js | 439KB | React, Router, Contexts, Supabase |
 | LessonPage.js | 107KB | 레슨 페이지 + 컨텐츠 + TurtleCanvas (35개 레슨) |
+| PythonLesson03.js | 53KB | 파이썬 학습 03: Data Type (최대) |
+| PythonLesson07.js | 50KB | 파이썬 학습 07: IF 조건문 |
+| PythonLesson04.js | 47KB | 파이썬 학습 04: 입력-처리-출력 |
+| PythonLesson08.js | 44KB | 파이썬 학습 08: 반복문 |
+| PythonLesson09.js | 44KB | 파이썬 학습 09: 함수 |
+| PythonLesson06.js | 44KB | 파이썬 학습 06: 순서도 |
+| PythonLesson10.js | 38KB | 파이썬 학습 10: 예외처리 |
+| PythonLesson01.js | 38KB | 파이썬 학습 01: 실습환경 |
+| PythonLesson05.js | 35KB | 파이썬 학습 05: Turtle |
+| PythonLesson02.js | 35KB | 파이썬 학습 02: 입출력 |
+| PythonLesson11.js | 32KB | 파이썬 학습 11: 리스트 |
 | QuizCenter.js | 23KB | 퀴즈 센터 + 문제 데이터 (48문제) |
+| step5.js | 22KB | 파이썬 실습 step5 (최대 데이터) |
+| pyodide.worker.js | 15KB | Pyodide WASM Worker |
+| PythonPractice.js | 12KB | 파이썬 실습 페이지 |
+| stepAdvanced2.js | 12KB | 실습 심화 데이터 2 |
 | Home.js | 7KB | 홈 페이지 |
 | BadgeCollection.js | 4KB | 배지 컬렉션 |
 | LevelPage.js | 3KB | 레벨 페이지 |
+| PythonLearning.js | 3KB | 파이썬 학습 허브 |
 | Login.js | 2KB | 로그인 페이지 |

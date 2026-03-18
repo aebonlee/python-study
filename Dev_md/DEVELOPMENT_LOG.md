@@ -225,3 +225,62 @@
 ### 빌드 결과
 - LessonPage.js: 93KB → 107KB (+14KB, TurtleCanvas + 확충 예제)
 - 빌드 성공, GitHub Pages 배포 완료
+
+---
+
+## 2026-03-18 (Day 1 추가 5) - 파이썬 학습 + 파이썬 실습 추가
+
+### 파이썬 학습 (Python Learning) - 11개 레슨 추가
+- **PythonLearning.jsx**: 허브 페이지 (11개 레슨 카드 그리드)
+- **PythonLesson01~11.jsx**: 한국공학대학교 Python 강의 내용 기반 개별 레슨 페이지
+  - 01: 파이썬 및 실습환경 안내 (컴퓨팅 사고, 설치, IDLE, VS Code)
+  - 02: 입출력과 변수 (print, input, 변수, f-string)
+  - 03: Data Type과 산술연산 (정수, 소수, 문자, 형변환, 연산자)
+  - 04: 입력-처리-출력 개념 (PDC, IPO 구조 설계)
+  - 05: Turtle과 함수(def) (Turtle 그래픽, 함수 정의)
+  - 06: Flowgorithm 순서도 (논리적 사고, 순서도 그리기)
+  - 07: IF 조건문 (if, elif, else, 비교/논리 연산자)
+  - 08: While/For 반복문 (while, for, break, continue)
+  - 09: 함수와 매개변수 (def, 매개변수, return)
+  - 10: Try-Except 예외처리 (오류 유형, try-except-finally)
+  - 11: 2차원, 3차원 리스트 (다차원 리스트, 정보 모델링)
+- koreatech PythonWeek1~11 → PythonLesson01~11 리네이밍, 경로/네비게이션 재매핑
+
+### 파이썬 실습 (Python Practice) - Pyodide 기반 실행
+- **PythonPractice.jsx**: 브라우저 내 실제 Python 실행 페이지
+  - 12단계 실습 탭 (2행 배치), 각 단계별 예제 사이드바
+  - 코드 에디터 (라인 넘버, 복사, 다운로드)
+  - 기본값/직접입력 모드 전환 (정규식 기반 자동 변환)
+  - input() 대화형 입력 폼, Turtle SVG 출력
+  - 지원불가 모듈 감지 (tkinter, matplotlib, pygame)
+- **useCodeRunner.js**: Pyodide Web Worker 관리 훅
+  - 싱글톤 Worker 패턴, 메시지 ID 기반 동시 요청
+  - status: idle → loading → running → done/error
+- **pyodide.worker.js**: Pyodide v0.27.0 CDN 로드
+  - Python WASM 실행 환경
+  - turtle 모의 구현 (~400줄): Turtle/Screen 클래스, SVG 생성
+  - stdin 주입 (input() 지원), stdout/stderr 분리 캡처
+- **pythonSteps/**: 13개 실습 데이터 파일
+  - index.js: stepMeta (12단계 메타데이터) + stepLoaders (동적 임포트)
+  - step1~10, stepAdvanced, stepAdvanced2: 예제 배열 (name, title, desc, code)
+
+### Navbar 메뉴 업데이트
+- 기존: 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 퀴즈 | 도장깨기
+- 변경: **파이썬 학습** | 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | **파이썬 실습** | 퀴즈 | 도장깨기
+
+### CSS 추가
+- **practice.css**: 실습 페이지 전체 스타일 (탭, 사이드바, 에디터, 출력, 다크모드, 반응형)
+- **python-learning.css**: 학습 허브 + 레슨 상세 스타일 (카드 그리드, page-header, lesson-body, callout-box, code-block, lesson-table, exercise-box, lesson-nav, 다크모드, 반응형)
+- **index.css**: 2개 CSS 임포트 추가 (총 14개)
+
+### App.jsx 라우팅 업데이트
+- 13개 Route 추가: /python-learning, /python-learning/01~11, /python-practice
+- 모두 React.lazy + Suspense 적용
+- 와일드카드 `/:level` 라우트 앞에 배치 (라우팅 충돌 방지)
+
+### 빌드 결과
+- 33개 파일 추가 (15,101줄), 빌드 성공
+- PythonLesson 11개 각각 32~53KB 코드 스플리팅
+- PythonPractice 12KB, step 데이터 각 2~22KB 개별 청크
+- index.css: 60KB (CSS 14개), index.js: 439KB
+- GitHub Pages 배포 완료

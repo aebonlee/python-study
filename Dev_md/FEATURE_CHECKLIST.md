@@ -2,7 +2,7 @@
 
 ## 점검 일자: 2026-03-18 (최종 업데이트)
 
-### 기능 점검 항목 (15개)
+### 기능 점검 항목 (18개)
 
 | # | 기능 | 상태 | 비고 |
 |---|------|------|------|
@@ -19,15 +19,18 @@
 | 11 | 학습 완료 버튼 | 완료 | LessonPage.jsx 하단 "학습 완료" 버튼 |
 | 12 | 시험 성적 기록 | 완료 | ProgressContext.saveQuizScore - 최고 점수 자동 저장 |
 | 13 | Navbar 인증 UI | 완료 | 로그인 버튼 / 유저 아바타 + 드롭다운 메뉴 |
-| 14 | CSS 추가 | 완료 | auth.css 추가, 총 12개 CSS 파일 |
-| 15 | 다크모드/반응형 보강 | 완료 | auth.css 포함 전체 다크모드/반응형 대응 |
+| 14 | CSS 추가 | 완료 | auth.css + practice.css + python-learning.css, 총 14개 CSS 파일 |
+| 15 | 다크모드/반응형 보강 | 완료 | 전체 다크모드/반응형 대응 (14개 CSS) |
+| 16 | 파이썬 학습 | 완료 | PythonLearning 허브 + PythonLesson01~11 (11개 레슨) |
+| 17 | 파이썬 실습 | 완료 | Pyodide 기반 브라우저 Python 실행, 12단계 실습 |
+| 18 | Pyodide Worker | 완료 | Web Worker + turtle 모의 SVG + input() 지원 |
 
 ### 추가 개선 사항 (자체 점검)
 | 항목 | 상태 | 비고 |
 |------|------|------|
 | OG 메타태그 | 완료 | Kakao/Facebook/Twitter 공유 미리보기 |
 | OG 이미지 | 완료 | sharp로 1200x630 자동 생성 |
-| 코드 스플리팅 | 완료 | 437KB 메인 + 7개 청크 분리 (Login 포함) |
+| 코드 스플리팅 | 완료 | 439KB 메인 + 30+ 청크 분리 (레슨/실습/데이터) |
 | Font Awesome 6 | 완료 | 모든 이모지 → FA 아이콘 교체 (12개 파일) |
 | 아이콘 메인 컬러 | 완료 | var(--primary) 적용, 다크모드 자동 대응 |
 | 컬러 통일 | 완료 | Python Blue/Yellow 팔레트 |
@@ -42,6 +45,10 @@
 | json 모듈 과정 | 완료 | JSON 직렬화, API 응답, 고급 활용 (3개 섹션) |
 | datetime 모듈 과정 | 완료 | 날짜/시간, 포매팅, 실전 활용 (3개 섹션) |
 | Turtle Graphics 과정 | 완료 | SVG 렌더러 호환 예제 (6개 섹션) |
+| 파이썬 학습 11개 레슨 | 완료 | PythonLesson01~11, 허브 페이지 |
+| 파이썬 실습 (Pyodide) | 완료 | 12단계, Pyodide Worker, turtle SVG, input() |
+| Navbar 메뉴 확장 | 완료 | 파이썬 학습 + 파이썬 실습 추가 |
+| 실습 데이터 13개 파일 | 완료 | step1~10, stepAdvanced, stepAdvanced2 |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정
