@@ -74,7 +74,7 @@ export function useCommunity() {
       setPost(data)
 
       // 조회수 증가 (비로그인도 가능 - RPC)
-      supabase.rpc('increment_view_count', { p_post_id: postId }).catch(() => {})
+      supabase.rpc('pymaster_increment_view_count', { p_post_id: postId }).catch(() => {})
     } catch (err) {
       setError(err.message)
       setPost(null)

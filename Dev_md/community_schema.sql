@@ -46,20 +46,20 @@ CREATE TABLE pymaster_community_likes (
 -- ============================================================
 
 -- 카테고리 + 최신순 정렬
-CREATE INDEX idx_posts_category_created ON pymaster_community_posts(category, created_at DESC);
+CREATE INDEX pymaster_idx_posts_category_created ON pymaster_community_posts(category, created_at DESC);
 
 -- 태그 검색 (GIN)
-CREATE INDEX idx_posts_tags ON pymaster_community_posts USING GIN(tags);
+CREATE INDEX pymaster_idx_posts_tags ON pymaster_community_posts USING GIN(tags);
 
 -- 풀텍스트 검색 (GIN)
-CREATE INDEX idx_posts_search ON pymaster_community_posts
+CREATE INDEX pymaster_idx_posts_search ON pymaster_community_posts
   USING GIN(to_tsvector('simple', coalesce(title, '') || ' ' || coalesce(content, '')));
 
 -- 댓글: post_id 기준 조회
-CREATE INDEX idx_comments_post ON pymaster_community_comments(post_id, created_at ASC);
+CREATE INDEX pymaster_idx_comments_post ON pymaster_community_comments(post_id, created_at ASC);
 
 -- 좋아요: post_id + user_id
-CREATE INDEX idx_likes_post_user ON pymaster_community_likes(post_id, user_id);
+CREATE INDEX pymaster_idx_likes_post_user ON pymaster_community_likes(post_id, user_id);
 
 -- ============================================================
 -- RLS (Row Level Security)
@@ -70,27 +70,27 @@ ALTER TABLE pymaster_community_comments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pymaster_community_likes ENABLE ROW LEVEL SECURITY;
 
 -- Posts: 누구나 읽기, 작성자만 쓰기/수정/삭제
-CREATE POLICY "posts_select" ON pymaster_community_posts FOR SELECT USING (true);
-CREATE POLICY "posts_insert" ON pymaster_community_posts FOR INSERT WITH CHECK (auth.uid() = author_id);
-CREATE POLICY "posts_update" ON pymaster_community_posts FOR UPDATE USING (auth.uid() = author_id);
-CREATE POLICY "posts_delete" ON pymaster_community_posts FOR DELETE USING (auth.uid() = author_id);
+CREATE POLICY "pymaster_posts_select" ON pymaster_community_posts FOR SELECT USING (true);
+CREATE POLICY "pymaster_posts_insert" ON pymaster_community_posts FOR INSERT WITH CHECK (auth.uid() = author_id);
+CREATE POLICY "pymaster_posts_update" ON pymaster_community_posts FOR UPDATE USING (auth.uid() = author_id);
+CREATE POLICY "pymaster_posts_delete" ON pymaster_community_posts FOR DELETE USING (auth.uid() = author_id);
 
 -- Comments: 누구나 읽기, 작성자만 쓰기/삭제
-CREATE POLICY "comments_select" ON pymaster_community_comments FOR SELECT USING (true);
-CREATE POLICY "comments_insert" ON pymaster_community_comments FOR INSERT WITH CHECK (auth.uid() = author_id);
-CREATE POLICY "comments_delete" ON pymaster_community_comments FOR DELETE USING (auth.uid() = author_id);
+CREATE POLICY "pymaster_comments_select" ON pymaster_community_comments FOR SELECT USING (true);
+CREATE POLICY "pymaster_comments_insert" ON pymaster_community_comments FOR INSERT WITH CHECK (auth.uid() = author_id);
+CREATE POLICY "pymaster_comments_delete" ON pymaster_community_comments FOR DELETE USING (auth.uid() = author_id);
 
 -- Likes: 누구나 읽기, 본인만 추가/삭제
-CREATE POLICY "likes_select" ON pymaster_community_likes FOR SELECT USING (true);
-CREATE POLICY "likes_insert" ON pymaster_community_likes FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "likes_delete" ON pymaster_community_likes FOR DELETE USING (auth.uid() = user_id);
+CREATE POLICY "pymaster_likes_select" ON pymaster_community_likes FOR SELECT USING (true);
+CREATE POLICY "pymaster_likes_insert" ON pymaster_community_likes FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "pymaster_likes_delete" ON pymaster_community_likes FOR DELETE USING (auth.uid() = user_id);
 
 -- ============================================================
 -- 트리거: like_count / comment_count 자동 동기화
 -- ============================================================
 
 -- 좋아요 카운트 동기화
-CREATE OR REPLACE FUNCTION sync_like_count() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION pymaster_sync_like_count() RETURNS TRIGGER AS $$
 BEGIN
   IF TG_OP = 'INSERT' THEN
     UPDATE pymaster_community_posts SET like_count = like_count + 1 WHERE id = NEW.post_id;
@@ -102,12 +102,12 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
-CREATE TRIGGER trg_like_count
+CREATE TRIGGER pymaster_trg_like_count
 AFTER INSERT OR DELETE ON pymaster_community_likes
-FOR EACH ROW EXECUTE FUNCTION sync_like_count();
+FOR EACH ROW EXECUTE FUNCTION pymaster_sync_like_count();
 
 -- 댓글 카운트 동기화
-CREATE OR REPLACE FUNCTION sync_comment_count() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION pymaster_sync_comment_count() RETURNS TRIGGER AS $$
 BEGIN
   IF TG_OP = 'INSERT' THEN
     UPDATE pymaster_community_posts SET comment_count = comment_count + 1 WHERE id = NEW.post_id;
@@ -119,15 +119,15 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
-CREATE TRIGGER trg_comment_count
+CREATE TRIGGER pymaster_trg_comment_count
 AFTER INSERT OR DELETE ON pymaster_community_comments
-FOR EACH ROW EXECUTE FUNCTION sync_comment_count();
+FOR EACH ROW EXECUTE FUNCTION pymaster_sync_comment_count();
 
 -- ============================================================
 -- RPC: 조회수 증가 (비로그인도 가능)
 -- ============================================================
 
-CREATE OR REPLACE FUNCTION increment_view_count(p_post_id UUID)
+CREATE OR REPLACE FUNCTION pymaster_increment_view_count(p_post_id UUID)
 RETURNS VOID AS $$
 BEGIN
   UPDATE pymaster_community_posts
@@ -140,13 +140,13 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- updated_at 자동 갱신 트리거
 -- ============================================================
 
-CREATE OR REPLACE FUNCTION update_updated_at() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION pymaster_update_updated_at() RETURNS TRIGGER AS $$
 BEGIN
   NEW.updated_at = now();
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trg_posts_updated_at
+CREATE TRIGGER pymaster_trg_posts_updated_at
 BEFORE UPDATE ON pymaster_community_posts
-FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+FOR EACH ROW EXECUTE FUNCTION pymaster_update_updated_at();
