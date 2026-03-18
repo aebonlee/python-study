@@ -13,6 +13,9 @@ export const TABLES = {
   BADGES: `${TABLE_PREFIX}badges`,
   QUIZ_SCORES: `${TABLE_PREFIX}quiz_scores`,
   STREAKS: `${TABLE_PREFIX}streaks`,
+  COMMUNITY_POSTS: `${TABLE_PREFIX}community_posts`,
+  COMMUNITY_COMMENTS: `${TABLE_PREFIX}community_comments`,
+  COMMUNITY_LIKES: `${TABLE_PREFIX}community_likes`,
 }
 
 // Supabase 클라이언트 (URL/KEY 없으면 null - localStorage만 사용)

@@ -49,6 +49,7 @@ export default function Navbar() {
       { to: '/applied/tensorflow-pytorch', label: 'TensorFlow', icon: 'fa-solid fa-network-wired' },
     ]},
     { to: '/python-practice', label: '파이썬 실습' },
+    { to: '/community', label: '커뮤니티' },
     { to: '/quiz', label: '퀴즈' },
     { to: '/badges', label: '도장깨기' },
   ]

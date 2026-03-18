@@ -7,6 +7,7 @@ const quickLinks = [
   { path: '/intermediate', label: '중급 과정' },
   { path: '/advanced', label: '고급 과정' },
   { path: '/applied', label: '응용 과정' },
+  { path: '/community', label: '커뮤니티' },
   { path: '/quiz', label: '퀴즈 센터' },
   { path: '/badges', label: '도장깨기' },
 ]

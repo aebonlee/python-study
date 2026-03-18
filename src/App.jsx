@@ -16,6 +16,9 @@ const QuizCenter = lazy(() => import('./pages/QuizCenter'))
 const Login = lazy(() => import('./pages/Login'))
 const PythonLearning = lazy(() => import('./pages/PythonLearning'))
 const PythonPractice = lazy(() => import('./pages/PythonPractice'))
+const Community = lazy(() => import('./pages/community/Community'))
+const CommunityPost = lazy(() => import('./pages/community/CommunityPost'))
+const CommunityWrite = lazy(() => import('./pages/community/CommunityWrite'))
 const PythonLesson01 = lazy(() => import('./pages/python-learning/PythonLesson01'))
 const PythonLesson02 = lazy(() => import('./pages/python-learning/PythonLesson02'))
 const PythonLesson03 = lazy(() => import('./pages/python-learning/PythonLesson03'))
@@ -67,6 +70,9 @@ function AppLayout() {
           <Route path="/python-learning/10" element={<LazyRoute element={<PythonLesson10 />} />} />
           <Route path="/python-learning/11" element={<LazyRoute element={<PythonLesson11 />} />} />
           <Route path="/python-practice" element={<LazyRoute element={<PythonPractice />} />} />
+          <Route path="/community" element={<LazyRoute element={<Community />} />} />
+          <Route path="/community/write" element={<LazyRoute element={<CommunityWrite />} />} />
+          <Route path="/community/:postId" element={<LazyRoute element={<CommunityPost />} />} />
           <Route path="/:level" element={<LazyRoute element={<LevelPage />} />} />
           <Route path="/:level/:lessonId" element={<LazyRoute element={<LessonPage />} />} />
           <Route path="/badges" element={<LazyRoute element={<BadgeCollection />} />} />
