@@ -14,6 +14,19 @@ const LessonPage = lazy(() => import('./pages/LessonPage'))
 const BadgeCollection = lazy(() => import('./pages/BadgeCollection'))
 const QuizCenter = lazy(() => import('./pages/QuizCenter'))
 const Login = lazy(() => import('./pages/Login'))
+const PythonLearning = lazy(() => import('./pages/PythonLearning'))
+const PythonPractice = lazy(() => import('./pages/PythonPractice'))
+const PythonLesson01 = lazy(() => import('./pages/python-learning/PythonLesson01'))
+const PythonLesson02 = lazy(() => import('./pages/python-learning/PythonLesson02'))
+const PythonLesson03 = lazy(() => import('./pages/python-learning/PythonLesson03'))
+const PythonLesson04 = lazy(() => import('./pages/python-learning/PythonLesson04'))
+const PythonLesson05 = lazy(() => import('./pages/python-learning/PythonLesson05'))
+const PythonLesson06 = lazy(() => import('./pages/python-learning/PythonLesson06'))
+const PythonLesson07 = lazy(() => import('./pages/python-learning/PythonLesson07'))
+const PythonLesson08 = lazy(() => import('./pages/python-learning/PythonLesson08'))
+const PythonLesson09 = lazy(() => import('./pages/python-learning/PythonLesson09'))
+const PythonLesson10 = lazy(() => import('./pages/python-learning/PythonLesson10'))
+const PythonLesson11 = lazy(() => import('./pages/python-learning/PythonLesson11'))
 
 function PageLoader() {
   return (
@@ -41,6 +54,19 @@ function AppLayout() {
         <Routes>
           <Route path="/" element={<LazyRoute element={<Home />} />} />
           <Route path="/login" element={<LazyRoute element={<Login />} />} />
+          <Route path="/python-learning" element={<LazyRoute element={<PythonLearning />} />} />
+          <Route path="/python-learning/01" element={<LazyRoute element={<PythonLesson01 />} />} />
+          <Route path="/python-learning/02" element={<LazyRoute element={<PythonLesson02 />} />} />
+          <Route path="/python-learning/03" element={<LazyRoute element={<PythonLesson03 />} />} />
+          <Route path="/python-learning/04" element={<LazyRoute element={<PythonLesson04 />} />} />
+          <Route path="/python-learning/05" element={<LazyRoute element={<PythonLesson05 />} />} />
+          <Route path="/python-learning/06" element={<LazyRoute element={<PythonLesson06 />} />} />
+          <Route path="/python-learning/07" element={<LazyRoute element={<PythonLesson07 />} />} />
+          <Route path="/python-learning/08" element={<LazyRoute element={<PythonLesson08 />} />} />
+          <Route path="/python-learning/09" element={<LazyRoute element={<PythonLesson09 />} />} />
+          <Route path="/python-learning/10" element={<LazyRoute element={<PythonLesson10 />} />} />
+          <Route path="/python-learning/11" element={<LazyRoute element={<PythonLesson11 />} />} />
+          <Route path="/python-practice" element={<LazyRoute element={<PythonPractice />} />} />
           <Route path="/:level" element={<LazyRoute element={<LevelPage />} />} />
           <Route path="/:level/:lessonId" element={<LazyRoute element={<LessonPage />} />} />
           <Route path="/badges" element={<LazyRoute element={<BadgeCollection />} />} />

@@ -28,6 +28,7 @@ export default function Navbar() {
   const totalProgress = getTotalProgress()
 
   const navItems = [
+    { to: '/python-learning', label: '파이썬 학습' },
     { to: '/basics', label: '기초' },
     { to: '/intermediate', label: '중급' },
     { to: '/advanced', label: '고급' },
@@ -47,6 +48,7 @@ export default function Navbar() {
       { to: '/applied/scikit-learn', label: 'Scikit-learn', icon: 'fa-solid fa-brain' },
       { to: '/applied/tensorflow-pytorch', label: 'TensorFlow', icon: 'fa-solid fa-network-wired' },
     ]},
+    { to: '/python-practice', label: '파이썬 실습' },
     { to: '/quiz', label: '퀴즈' },
     { to: '/badges', label: '도장깨기' },
   ]
