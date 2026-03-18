@@ -177,3 +177,51 @@
   - 색상과 채우기: color, fillcolor, begin_fill/end_fill, pensize
   - 재귀 프랙탈: 코흐 눈송이, 프랙탈 나무, 시에르핀스키 삼각형
 - **Navbar.jsx**: 라이브러리 드롭다운에 turtle 추가 (총 10개 항목)
+
+---
+
+## 2026-03-18 (Day 1 추가 4) - input() 지원 + Turtle SVG 렌더러 + 카테고리화
+
+### CodeEditor input() 함수 지원
+- **CodeEditor.jsx**: input() 호출 자동 감지 (regex 기반 useMemo)
+  - 코드 내 `input("프롬프트")` 패턴 감지 → 입력 패널 UI 표시
+  - 사용자 입력값을 input() 호출에 대입하여 시뮬레이션 실행
+  - `int(input(...))`, `float(input(...))` 변환 지원
+  - Enter 키로 바로 실행, 취소/실행 버튼 제공
+  - 에디터 툴바에 `input()` 뱃지 표시
+
+### TurtleCanvas SVG 렌더러 (신규 컴포넌트)
+- **TurtleCanvas.jsx**: Python turtle 명령어를 SVG로 시각화
+  - `parseTurtleCommands()`: turtle 코드를 명령 배열로 파싱
+  - `executeTurtleCommands()`: 명령을 실행하여 SVG 경로/도형 생성
+  - **지원 명령어**: forward/fd, backward/bk, left/lt, right/rt, penup/pu, pendown/pd, goto, setx, sety, setheading/seth, home, circle, dot, pensize/width, pencolor, fillcolor, color, begin_fill, end_fill, speed, hideturtle/ht, showturtle/st
+  - for 루프 + range() 지원, 함수 정의/호출 지원
+  - SVG 그리드 배경, 원점 십자선, 터틀 화살표 표시
+  - 확대/축소 컨트롤 (+/- 버튼, 1:1 리셋)
+  - 20+ 색상 이름 → HEX 변환 맵
+  - begin_fill/end_fill 폴리곤 채우기 지원
+  - 뷰포트 자동 계산 (그림 영역에 맞게)
+
+### Navbar 라이브러리 드롭다운 3카테고리 분류
+- **Navbar.jsx**: 드롭다운 메뉴에 `{ type: 'header' }` 항목 추가
+  - **기본 내장/표준 라이브러리**: os/sys, math/cmath, json, datetime
+  - **교육용·그래픽 라이브러리**: Turtle
+  - **데이터 분석·AI 라이브러리**: NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow
+- **navbar.css**: `.dropdown-header` 스타일 (소문자 라벨, 구분선)
+
+### 라이브러리 예제 대폭 확충
+- **os-sys**: 3개 섹션 (기존 2 → +1 "os 모듈 실전 활용": os.walk, rename, remove, stat)
+- **math-cmath**: 3개 섹션 (기존 2 → +1 "삼각함수와 기하 계산": 삼각함수 표, 피타고라스, 원 넓이, GCD/LCM)
+- **json-module**: 3개 섹션 (기존 2 → +1 "JSON 고급 활용": 서점 데이터 처리)
+- **datetime-module**: 3개 섹션 (기존 2 → +1 "datetime 실전 활용": D-Day, 나이 계산, 달력)
+- **turtle-graphics**: 6개 섹션 (기존 4 → 완전 리라이트) - SVG 렌더러 호환 예제
+  1. 정사각형 그리기, 2. 정다각형, 3. 별, 4. 무지개 나선, 5. 동심원/꽃 패턴, 6. 집 그리기
+- **variables**: +1 섹션 "input() 함수로 입력받기" (인터랙티브 입력 예제)
+
+### CSS 업데이트
+- **editor.css**: 입력 패널 UI, Turtle 캔버스, 에디터 뱃지, 다크모드 오버라이드 추가
+- **navbar.css**: 드롭다운 헤더 스타일 추가
+
+### 빌드 결과
+- LessonPage.js: 93KB → 107KB (+14KB, TurtleCanvas + 확충 예제)
+- 빌드 성공, GitHub Pages 배포 완료

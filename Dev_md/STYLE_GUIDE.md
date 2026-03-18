@@ -117,6 +117,32 @@
 <i className="fa-solid fa-clock" /> 약 15분
 ```
 
+## 에디터 확장 스타일
+
+### input() 입력 패널
+```css
+.editor-input-panel     /* 입력 패널 컨테이너 (primary 상단 보더) */
+.input-panel-header     /* 패널 헤더 (키보드 아이콘 + "입력값을 입력하세요") */
+.input-panel-body       /* 입력 필드 컨테이너 */
+.input-field            /* 개별 입력 필드 (label + input) */
+.input-panel-actions    /* 취소/실행 버튼 영역 */
+.editor-badge           /* 에디터 툴바 뱃지 (input() 표시) */
+.turtle-badge           /* Turtle 뱃지 (초록색 변형) */
+```
+
+### Turtle SVG 캔버스
+```css
+.turtle-canvas-wrapper  /* Turtle 캔버스 컨테이너 (초록 상단 보더) */
+.turtle-canvas-header   /* 캔버스 헤더 (아이콘 + "Turtle 결과") */
+.turtle-zoom            /* 확대/축소 컨트롤 (+/- 버튼) */
+.turtle-canvas-body     /* SVG 렌더링 영역 */
+```
+
+### Navbar 드롭다운 헤더
+```css
+.dropdown-header        /* 카테고리 구분 라벨 (소문자, 구분선) */
+```
+
 ## 버튼 스타일
 - `.btn-primary`: Python Blue 그라디언트, 흰색 텍스트
 - `.btn-secondary`: 투명 배경, 보더

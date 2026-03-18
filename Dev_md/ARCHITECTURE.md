@@ -43,7 +43,8 @@ D:\python-study\
 │   │   │   ├── Navbar.jsx     # 상단 네비게이션 (1열 메뉴 + 인증 UI)
 │   │   │   └── Footer.jsx     # 하단 푸터
 │   │   ├── ErrorBoundary.jsx  # 런타임 에러 복구 UI
-│   │   ├── CodeEditor.jsx     # Python 코드 에디터
+│   │   ├── CodeEditor.jsx     # Python 코드 에디터 (input() 지원)
+│   │   ├── TurtleCanvas.jsx   # Turtle SVG 렌더러 (turtle 명령어 → SVG)
 │   │   ├── BadgeCard.jsx      # 배지 카드 (FA 아이콘)
 │   │   ├── LessonCard.jsx     # 레슨 카드 (FA 아이콘)
 │   │   ├── ProgressBar.jsx    # 진도율 바
@@ -134,10 +135,14 @@ App
 - 색상: CSS에서 `var(--primary)` (#306998) 적용
 - 다크모드: CSS 변수 기반 자동 전환
 
-### Navbar 구조 (1열 + 라이브러리 드롭다운)
+### Navbar 구조 (1열 + 라이브러리 드롭다운 3카테고리)
 ```
 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 퀴즈 | 도장깨기 | [진도] [테마] [로그인/아바타]
-                           └→ os/sys / math / json / datetime / turtle
+                           └→ [기본 내장/표준 라이브러리]
+                              os/sys / math/cmath / json / datetime
+                              [교육용·그래픽 라이브러리]
+                              Turtle
+                              [데이터 분석·AI 라이브러리]
                               NumPy / Pandas / Matplotlib / Scikit-learn / TensorFlow
 ```
 
@@ -172,8 +177,8 @@ App
 빌드 결과 (React.lazy + Suspense):
 | 청크 | 크기 | 내용 |
 |------|------|------|
-| index.js | 436KB | React, Router, Contexts, Supabase |
-| LessonPage.js | 93KB | 레슨 페이지 + 컨텐츠 (35개 레슨) |
+| index.js | 437KB | React, Router, Contexts, Supabase |
+| LessonPage.js | 107KB | 레슨 페이지 + 컨텐츠 + TurtleCanvas (35개 레슨) |
 | QuizCenter.js | 23KB | 퀴즈 센터 + 문제 데이터 (48문제) |
 | Home.js | 7KB | 홈 페이지 |
 | BadgeCollection.js | 4KB | 배지 컬렉션 |

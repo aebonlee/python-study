@@ -27,19 +27,21 @@
 |------|------|------|
 | OG 메타태그 | 완료 | Kakao/Facebook/Twitter 공유 미리보기 |
 | OG 이미지 | 완료 | sharp로 1200x630 자동 생성 |
-| 코드 스플리팅 | 완료 | 435KB 메인 + 7개 청크 분리 (Login 포함) |
+| 코드 스플리팅 | 완료 | 437KB 메인 + 7개 청크 분리 (Login 포함) |
 | Font Awesome 6 | 완료 | 모든 이모지 → FA 아이콘 교체 (12개 파일) |
 | 아이콘 메인 컬러 | 완료 | var(--primary) 적용, 다크모드 자동 대응 |
 | 컬러 통일 | 완료 | Python Blue/Yellow 팔레트 |
-| Navbar 라이브러리 드롭다운 | 완료 | os/sys/math/json/datetime/turtle/NumPy/Pandas/Matplotlib/Scikit-learn/TensorFlow |
+| Navbar 라이브러리 드롭다운 | 완료 | 3카테고리 분류 (표준/교육용/데이터·AI) |
+| input() 함수 지원 | 완료 | CodeEditor에서 input() 자동 감지 + 입력 패널 UI |
+| Turtle SVG 렌더러 | 완료 | TurtleCanvas.jsx - turtle 코드 → SVG 시각화 |
 | Matplotlib/Seaborn 과정 | 완료 | 데이터 시각화 레슨 (3개 섹션) |
 | Scikit-learn 과정 | 완료 | 머신러닝 레슨 (3개 섹션) |
 | TensorFlow/PyTorch 과정 | 완료 | 딥러닝 레슨 (3개 섹션) |
-| os/sys 모듈 과정 | 완료 | 파일 시스템, 시스템 정보 (2개 섹션) |
-| math/cmath 모듈 과정 | 완료 | 수학 함수, 복소수 (2개 섹션) |
-| json 모듈 과정 | 완료 | JSON 직렬화, API 응답 (2개 섹션) |
-| datetime 모듈 과정 | 완료 | 날짜/시간, 포매팅 (2개 섹션) |
-| Turtle Graphics 과정 | 완료 | 거북이 그래픽 레슨 (4개 섹션) |
+| os/sys 모듈 과정 | 완료 | 파일 시스템, 시스템 정보 (3개 섹션) |
+| math/cmath 모듈 과정 | 완료 | 수학 함수, 삼각함수, 복소수 (3개 섹션) |
+| json 모듈 과정 | 완료 | JSON 직렬화, API 응답, 고급 활용 (3개 섹션) |
+| datetime 모듈 과정 | 완료 | 날짜/시간, 포매팅, 실전 활용 (3개 섹션) |
+| Turtle Graphics 과정 | 완료 | SVG 렌더러 호환 예제 (6개 섹션) |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정
