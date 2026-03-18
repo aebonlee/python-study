@@ -14,7 +14,7 @@
 | 6 | 로그인 페이지 | 완료 | Login.jsx - Google/Kakao 버튼 + 비로그인 시작 |
 | 7 | 프로필 페이지 | 예정 | 인증 시스템 완성됨, 프로필 UI 구현 예정 |
 | 8 | 학습 현황 페이지 | 완료 | Home.jsx 진도 현황 섹션 (로그인 없이 작동) |
-| 9 | 배지 시스템 | 완료 | 23개 배지, 4티어, 자동 평가, 알림 팝업 |
+| 9 | 배지 시스템 | 완료 | 25개 배지, 4티어, 자동 평가, 알림 팝업 |
 | 10 | 수료증 발급 | 예정 | 모의고사 합격 시 PDF/PNG 다운로드 구현 예정 |
 | 11 | 학습 완료 버튼 | 완료 | LessonPage.jsx 하단 "학습 완료" 버튼 |
 | 12 | 시험 성적 기록 | 완료 | ProgressContext.saveQuizScore - 최고 점수 자동 저장 |
@@ -27,11 +27,14 @@
 |------|------|------|
 | OG 메타태그 | 완료 | Kakao/Facebook/Twitter 공유 미리보기 |
 | OG 이미지 | 완료 | sharp로 1200x630 자동 생성 |
-| 코드 스플리팅 | 완료 | 433KB 메인 + 7개 청크 분리 (Login 포함) |
+| 코드 스플리팅 | 완료 | 435KB 메인 + 7개 청크 분리 (Login 포함) |
 | Font Awesome 6 | 완료 | 모든 이모지 → FA 아이콘 교체 (12개 파일) |
 | 아이콘 메인 컬러 | 완료 | var(--primary) 적용, 다크모드 자동 대응 |
 | 컬러 통일 | 완료 | Python Blue/Yellow 팔레트 |
-| Navbar 1열 메뉴 | 완료 | 드롭다운 제거, 8개 개별 메뉴 항목 |
+| Navbar 라이브러리 드롭다운 | 완료 | NumPy/Pandas/Matplotlib/Scikit-learn/TensorFlow |
+| Matplotlib/Seaborn 과정 | 완료 | 데이터 시각화 레슨 (3개 섹션) |
+| Scikit-learn 과정 | 완료 | 머신러닝 레슨 (3개 섹션) |
+| TensorFlow/PyTorch 과정 | 완료 | 딥러닝 레슨 (3개 섹션) |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정

@@ -134,9 +134,10 @@ App
 - 색상: CSS에서 `var(--primary)` (#306998) 적용
 - 다크모드: CSS 변수 기반 자동 전환
 
-### Navbar 구조 (1열 평탄 메뉴)
+### Navbar 구조 (1열 + 라이브러리 드롭다운)
 ```
-기초 | 중급 | 고급 | 응용 | NumPy | Pandas | 퀴즈 | 도장깨기 | [진도] [테마] [로그인/아바타]
+기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 퀴즈 | 도장깨기 | [진도] [테마] [로그인/아바타]
+                           └→ NumPy / Pandas / Matplotlib / Scikit-learn / TensorFlow
 ```
 
 ## 디자인 시스템
@@ -170,9 +171,9 @@ App
 빌드 결과 (React.lazy + Suspense):
 | 청크 | 크기 | 내용 |
 |------|------|------|
-| index.js | 433KB | React, Router, Contexts, Supabase |
-| LessonPage.js | 49KB | 레슨 페이지 + 컨텐츠 |
-| QuizCenter.js | 21KB | 퀴즈 센터 + 문제 데이터 |
+| index.js | 435KB | React, Router, Contexts, Supabase |
+| LessonPage.js | 70KB | 레슨 페이지 + 컨텐츠 (30개 레슨) |
+| QuizCenter.js | 23KB | 퀴즈 센터 + 문제 데이터 (48문제) |
 | Home.js | 7KB | 홈 페이지 |
 | BadgeCollection.js | 4KB | 배지 컬렉션 |
 | LevelPage.js | 3KB | 레벨 페이지 |

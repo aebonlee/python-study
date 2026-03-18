@@ -128,3 +128,25 @@
 | 11 | 학습 완료 버튼 | 완료 |
 | 12 | 시험 성적 기록 | 완료 |
 | 13 | Navbar 인증 UI | 완료 (로그인 버튼/아바타) |
+
+---
+
+## 2026-03-18 (Day 1 추가) - 응용 과정 확장
+
+### Matplotlib/Seaborn, Scikit-learn, TensorFlow/PyTorch 과정 추가
+- **lessons.js**: 응용 과정에 3개 새 레슨 추가 (총 30개 레슨)
+  - `matplotlib-seaborn`: Matplotlib 기본 그래프, 막대/히스토그램, Seaborn 통계 시각화
+  - `scikit-learn`: 머신러닝 기초, KNN/결정트리, 모델 평가 (정확도/정밀도/재현율/F1)
+  - `tensorflow-pytorch`: 신경망 기초, TensorFlow/Keras Sequential 모델, PyTorch 학습 루프
+- **lessonContents.js**: 각 레슨별 2~3개 섹션, 코드 예제, 실행 결과, 학습 팁
+- **quizzes.js**: 응용 퀴즈에 8문제 추가 (총 48문제) - Matplotlib, Seaborn, Scikit-learn, TensorFlow, PyTorch
+- **badges.js**: ML 마스터, 딥러닝 탐험가 배지 2개 추가 (총 25개 배지)
+
+### Navbar 라이브러리 드롭다운
+- NumPy + Pandas + 새 3개 레슨을 "라이브러리" 드롭다운으로 묶음
+- 구조: 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 퀴즈 | 도장깨기
+
+### Home 페이지 업데이트
+- 히어로 설명: "데이터 분석, 머신러닝, 딥러닝까지"
+- features: "데이터 과학" 항목으로 업데이트 (NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow)
+- levelInfo.applied 설명 업데이트

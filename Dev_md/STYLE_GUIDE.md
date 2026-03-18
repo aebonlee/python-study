@@ -88,6 +88,9 @@
 | OOP | `fa-solid fa-cubes` |
 | NumPy | `fa-solid fa-calculator` |
 | Pandas | `fa-solid fa-table` |
+| Matplotlib | `fa-solid fa-chart-pie` |
+| Scikit-learn | `fa-solid fa-brain` |
+| TensorFlow | `fa-solid fa-network-wired` |
 
 ### 배지 티어 아이콘
 | 티어 | FA 클래스 | 색상 |
