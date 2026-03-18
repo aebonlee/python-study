@@ -61,6 +61,24 @@ pre code { background: none; color: inherit; padding: 0; }
 .not-found-title { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
 .not-found-desc { font-size: 15px; color: var(--text-secondary); margin-bottom: 32px; }
 
+/* Font Awesome Icon Colors */
+.feature-icon i { color: var(--primary); }
+.lesson-icon i { color: var(--primary); }
+.badge-icon i { color: var(--primary); }
+.badge-group-icon i { color: var(--primary); }
+.badge-notification-icon i { color: var(--accent); }
+.tip-icon i { color: var(--accent); }
+.quiz-card-meta i { color: var(--primary); margin-right: 4px; }
+.lesson-meta-bar i { margin-right: 4px; }
+.lesson-card-level i { font-size: 11px; margin-right: 1px; }
+.lesson-meta-bar .fa-star { color: rgba(255,255,255,0.9); font-size: 13px; }
+.completed-badge-inline i { color: var(--success); }
+.review-item i { font-size: 12px; }
+.badge-tier i { margin-right: 4px; }
+.quiz-card-score i { margin-right: 2px; }
+.dropdown-menu a i { color: var(--primary); margin-right: 6px; width: 16px; text-align: center; }
+.nav-menu a i { color: var(--primary); margin-right: 6px; width: 16px; text-align: center; }
+
 ::selection { background: rgba(48,105,152,0.2); }
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-light); }
