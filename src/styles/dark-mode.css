@@ -1,0 +1,45 @@
+/* Dark Mode */
+[data-theme="dark"] {
+  --bg-white: #111827; --bg-light: #1F2937; --bg-medium: #374151;
+  --text-primary: #F9FAFB; --text-secondary: #D1D5DB; --text-light: #9CA3AF;
+  --border-light: #374151; --border-medium: #4B5563;
+  --glass-bg: rgba(17,24,39,0.85);
+  --primary: #4B8BBE; --primary-dark: #306998; --primary-light: #93C5FD;
+  --accent: #FFE873; --accent-dark: #FFD43B;
+}
+[data-theme="dark"] .navbar { background: rgba(17,24,39,0.85); border-bottom-color: rgba(255,255,255,0.06); }
+[data-theme="dark"] .navbar.scrolled { background: rgba(17,24,39,0.95); }
+[data-theme="dark"] .dropdown-menu { background: rgba(31,41,55,0.95); border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .dropdown-menu li a:hover { background: rgba(75,139,190,0.1); }
+[data-theme="dark"] .footer { background: linear-gradient(180deg, #0F172A 0%, #030712 100%); }
+[data-theme="dark"] .feature-card, [data-theme="dark"] .path-card, [data-theme="dark"] .overview-card, [data-theme="dark"] .lesson-card, [data-theme="dark"] .quiz-card, [data-theme="dark"] .quiz-container { background: var(--bg-light); border-color: var(--border-medium); }
+[data-theme="dark"] .badge-card { background: var(--bg-light); border-color: var(--border-medium); }
+[data-theme="dark"] .badge-notification-content { background: #1F2937; border-color: var(--accent); }
+[data-theme="dark"] .code-input { background: #0F172A; color: #E2E8F0; }
+[data-theme="dark"] .line-numbers { background: #1E293B; }
+[data-theme="dark"] .editor-toolbar, [data-theme="dark"] .output-header { background: var(--bg-medium); }
+[data-theme="dark"] .output-content { background: var(--bg-light); color: var(--text-primary); }
+[data-theme="dark"] .editor-hint { background: rgba(255,212,59,0.05); }
+[data-theme="dark"] .quiz-option { background: var(--bg-light); border-color: var(--border-medium); }
+[data-theme="dark"] .quiz-option:hover:not(:disabled) { border-color: var(--primary); }
+[data-theme="dark"] .quiz-timer { background: var(--bg-medium); }
+[data-theme="dark"] .question-code { background: #0F172A; }
+[data-theme="dark"] .lesson-tip { background: rgba(255,212,59,0.05); border-color: rgba(255,212,59,0.15); }
+[data-theme="dark"] .toc-item:hover { background: var(--bg-medium); }
+[data-theme="dark"] .toc-item.active { background: rgba(75,139,190,0.12); }
+[data-theme="dark"] .toc-number { background: var(--bg-medium); }
+[data-theme="dark"] .topic-tag { background: rgba(75,139,190,0.1); }
+[data-theme="dark"] .stats-section { background: var(--bg-light); border-bottom-color: var(--border-medium); }
+[data-theme="dark"] .path-section { background: #0D1117; }
+[data-theme="dark"] .lesson-nav-btn { border-color: var(--border-medium); }
+[data-theme="dark"] .lesson-nav-btn:hover { border-color: var(--primary); }
+[data-theme="dark"] .badge-tier.tier-bronze { background: #78350F; color: #FCD34D; }
+[data-theme="dark"] .badge-tier.tier-silver { background: #374151; color: #D1D5DB; }
+[data-theme="dark"] .badge-tier.tier-gold { background: #78350F; color: #FCD34D; }
+[data-theme="dark"] .badge-tier.tier-platinum { background: #4C1D95; color: #C4B5FD; }
+[data-theme="dark"] .quiz-card-score.passed { background: #064E3B; color: #6EE7B7; }
+[data-theme="dark"] .quiz-card-score.failed { background: #7F1D1D; color: #FCA5A5; }
+[data-theme="dark"] .quiz-explanation { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.15); }
+[data-theme="dark"] .cta-section { background: linear-gradient(135deg, #1E4F72 0%, #0D2137 100%); }
+[data-theme="dark"] .not-found-code { color: var(--primary-light); }
+[data-theme="dark"] .progress-track { background: rgba(255,255,255,0.1); }
