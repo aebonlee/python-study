@@ -30,7 +30,7 @@
 .python-lesson-detail .page-header p { font-size: 1.05rem; opacity: 0.85; margin: 0; font-weight: 400; }
 
 /* Lesson Content & Body */
-.python-lesson-detail .lesson-content { padding-bottom: 3rem; }
+.python-lesson-detail .lesson-content { max-width: none; padding-bottom: 3rem; }
 .python-lesson-detail .lesson-body { max-width: 800px; margin: 0 auto; }
 .python-lesson-detail .lesson-body h2 { font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 1rem; padding-bottom: 8px; border-bottom: 2px solid var(--primary); color: var(--text-primary); }
 .python-lesson-detail .lesson-body h2:first-child { margin-top: 0; }
