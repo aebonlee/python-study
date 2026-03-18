@@ -27,7 +27,7 @@
 .lesson-card-level { display: inline-block; padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; }
 
 /* Lesson Detail */
-.lesson-layout { display: grid; grid-template-columns: 260px 1fr; gap: 40px; padding: 48px 24px; }
+.lesson-layout { display: grid; grid-template-columns: 260px 1fr; gap: 40px; padding: 48px 24px; max-width: 1160px; margin: 0 auto; }
 .lesson-sidebar { position: sticky; top: calc(var(--nav-height) + 24px); height: fit-content; }
 .lesson-sidebar h3 { font-size: 14px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
 .lesson-toc { display: flex; flex-direction: column; gap: 4px; }
