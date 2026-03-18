@@ -1,4 +1,4 @@
-import{r as reactExports,u as useProgress,j as jsxRuntimeExports,c as useParams,l as lessons,L as Link,b as levelInfo}from"./index-DFrQnUwo.js";const lessonContents={"hello-python":{sections:[{title:"print() 함수로 출력하기",content:`파이썬에서 가장 먼저 배우는 것은 화면에 텍스트를 출력하는 것입니다.
+import{r as reactExports,u as useProgress,j as jsxRuntimeExports,c as useParams,l as lessons,L as Link,b as levelInfo}from"./index-CeyYU55m.js";const lessonContents={"hello-python":{sections:[{title:"print() 함수로 출력하기",content:`파이썬에서 가장 먼저 배우는 것은 화면에 텍스트를 출력하는 것입니다.
 print() 함수를 사용하면 원하는 내용을 콘솔에 출력할 수 있습니다.
 
 문자열은 작은따옴표(') 또는 큰따옴표(")로 감싸서 표현합니다.`,code:`# 첫 번째 파이썬 프로그램!
@@ -863,7 +863,353 @@ print(f"\\n올해 경과: {diff.days}일")`,expectedOutput:`=== 날짜 포매팅
 다음 주: 2026-03-25
 100일 후: 2026-06-26
 
-올해 경과: 76일`,tip:"%Y=4자리 연도, %m=2자리 월, %d=2자리 일, %H=24시, %I=12시, %M=분, %S=초, %A=요일, %B=월이름"}]},decorators:{sections:[{title:"데코레이터 기초",content:`데코레이터는 함수를 감싸서 기능을 추가하는 패턴입니다.
+올해 경과: 76일`,tip:"%Y=4자리 연도, %m=2자리 월, %d=2자리 일, %H=24시, %I=12시, %M=분, %S=초, %A=요일, %B=월이름"}]},"turtle-graphics":{sections:[{title:"Turtle 기본 명령어",content:`turtle 모듈은 파이썬의 거북이 그래픽 라이브러리입니다.
+화면 위의 거북이를 움직여 다양한 도형과 패턴을 그릴 수 있습니다.
+
+기본 명령어:
+- forward(거리): 앞으로 이동
+- backward(거리): 뒤로 이동
+- left(각도): 왼쪽 회전
+- right(각도): 오른쪽 회전
+- penup(): 펜 올리기 (이동만)
+- pendown(): 펜 내리기 (그리기)`,code:`import turtle
+
+# Turtle 기본 명령어 안내
+print("=== Turtle Graphics 기본 명령어 ===")
+commands = {
+    "forward(100)": "앞으로 100픽셀 이동",
+    "backward(50)": "뒤로 50픽셀 이동",
+    "left(90)": "왼쪽으로 90도 회전",
+    "right(45)": "오른쪽으로 45도 회전",
+    "penup()": "펜 올리기 (선 안 그림)",
+    "pendown()": "펜 내리기 (선 그림)",
+    "goto(x, y)": "좌표 (x, y)로 이동",
+    "home()": "원점 (0, 0)으로 이동",
+    "circle(50)": "반지름 50인 원 그리기",
+    "dot(10)": "크기 10인 점 찍기",
+}
+
+for cmd, desc in commands.items():
+    print(f"  {cmd:20s} → {desc}")
+
+print("\\n=== 정사각형 그리기 예제 ===")
+print("import turtle")
+print("t = turtle.Turtle()")
+print()
+print("for i in range(4):")
+print("    t.forward(100)   # 100픽셀 전진")
+print("    t.right(90)      # 오른쪽 90도 회전")
+print()
+print("turtle.done()        # 창 유지")
+
+# 정사각형의 둘레와 면적
+side = 100
+print(f"\\n정사각형 둘레: {side * 4}px")
+print(f"정사각형 면적: {side ** 2}px²")`,expectedOutput:`=== Turtle Graphics 기본 명령어 ===
+  forward(100)         → 앞으로 100픽셀 이동
+  backward(50)         → 뒤로 50픽셀 이동
+  left(90)             → 왼쪽으로 90도 회전
+  right(45)            → 오른쪽으로 45도 회전
+  penup()              → 펜 올리기 (선 안 그림)
+  pendown()            → 펜 내리기 (선 그림)
+  goto(x, y)           → 좌표 (x, y)로 이동
+  home()               → 원점 (0, 0)으로 이동
+  circle(50)           → 반지름 50인 원 그리기
+  dot(10)              → 크기 10인 점 찍기
+
+=== 정사각형 그리기 예제 ===
+import turtle
+t = turtle.Turtle()
+
+for i in range(4):
+    t.forward(100)   # 100픽셀 전진
+    t.right(90)      # 오른쪽 90도 회전
+
+turtle.done()        # 창 유지
+
+정사각형 둘레: 400px
+정사각형 면적: 10000px²`,tip:"turtle.done()을 호출하면 그래픽 창이 닫히지 않고 유지됩니다. 파이썬 설치 후 로컬에서 실행해보세요!"},{title:"정다각형과 별 그리기",content:`정다각형은 반복문과 회전 각도 계산으로 쉽게 그릴 수 있습니다.
+
+정n각형의 외각 = 360 / n
+별(n꼭지)의 회전 각도 = 180 - (180 / n)
+
+circle(반지름, 각도, 변수)로 정다각형을 간편하게 그릴 수도 있습니다.`,code:`import math
+
+# 정다각형 그리기 코드
+print("=== 정다각형 그리기 ===")
+for n in [3, 4, 5, 6, 8]:
+    angle = 360 / n
+    names = {3:"삼각형", 4:"사각형", 5:"오각형", 6:"육각형", 8:"팔각형"}
+    print(f"정{names[n]} (n={n}): 외각 = {angle:.1f}°")
+
+print("\\n# 코드:")
+print("def polygon(t, n, size):")
+print("    angle = 360 / n")
+print("    for i in range(n):")
+print("        t.forward(size)")
+print("        t.right(angle)")
+
+print("\\n=== 별 그리기 ===")
+for n in [5, 6, 8]:
+    angle = 180 - 180/n
+    inner = 180 - 2*angle if n == 5 else 360/n
+    print(f"{n}꼭지 별: 회전각 = {180 - 180/n:.1f}°")
+
+print("\\n# 오각별 코드:")
+print("def star(t, size):")
+print("    for i in range(5):")
+print("        t.forward(size)")
+print("        t.right(144)  # 180 - 36 = 144°")
+
+print("\\n=== 동심원 그리기 ===")
+print("# 코드:")
+print("for r in range(20, 120, 20):")
+print("    t.penup()")
+print("    t.goto(0, -r)     # 원의 아래쪽에서 시작")
+print("    t.pendown()")
+print("    t.circle(r)       # 원 그리기")
+for r in range(20, 120, 20):
+    circumference = 2 * math.pi * r
+    print(f"  반지름 {r:3d}px → 둘레 {circumference:.1f}px")`,expectedOutput:`=== 정다각형 그리기 ===
+정삼각형 (n=3): 외각 = 120.0°
+정사각형 (n=4): 외각 = 90.0°
+정오각형 (n=5): 외각 = 72.0°
+정육각형 (n=6): 외각 = 60.0°
+정팔각형 (n=8): 외각 = 45.0°
+
+# 코드:
+def polygon(t, n, size):
+    angle = 360 / n
+    for i in range(n):
+        t.forward(size)
+        t.right(angle)
+
+=== 별 그리기 ===
+5꼭지 별: 회전각 = 144.0°
+6꼭지 별: 회전각 = 150.0°
+8꼭지 별: 회전각 = 157.5°
+
+# 오각별 코드:
+def star(t, size):
+    for i in range(5):
+        t.forward(size)
+        t.right(144)  # 180 - 36 = 144°
+
+=== 동심원 그리기 ===
+# 코드:
+for r in range(20, 120, 20):
+    t.penup()
+    t.goto(0, -r)     # 원의 아래쪽에서 시작
+    t.pendown()
+    t.circle(r)       # 원 그리기
+  반지름  20px → 둘레 125.7px
+  반지름  40px → 둘레 251.3px
+  반지름  60px → 둘레 376.9px
+  반지름  80px → 둘레 502.7px
+  반지름 100px → 둘레 628.3px`,tip:"정n각형의 외각 합은 항상 360°입니다. 따라서 회전 각도 = 360/n 으로 모든 정다각형을 그릴 수 있습니다."},{title:"색상과 채우기",content:`turtle에서 다양한 색상을 사용하여 화려한 그림을 그릴 수 있습니다.
+
+색상 설정:
+- pencolor("red"): 펜 색상
+- fillcolor("yellow"): 채우기 색상
+- color("red", "yellow"): 펜+채우기 동시 설정
+
+begin_fill() / end_fill()로 도형을 색칠합니다.`,code:`# Turtle 색상 및 채우기 예제 코드
+print("=== 색상 지원 ===")
+colors = [
+    ("red", "빨강"), ("blue", "파랑"), ("green", "초록"),
+    ("yellow", "노랑"), ("purple", "보라"), ("orange", "주황"),
+    ("cyan", "청록"), ("magenta", "자홍"), ("gold", "금색"),
+]
+for eng, kor in colors:
+    bar = "█" * 8
+    print(f"  {kor:4s} ({eng:8s}): {bar}")
+
+print("\\n=== 채우기 사각형 코드 ===")
+print("t.color('black', 'red')  # 펜:검정, 채우기:빨강")
+print("t.begin_fill()")
+print("for i in range(4):")
+print("    t.forward(100)")
+print("    t.right(90)")
+print("t.end_fill()")
+
+print("\\n=== 무지개 나선 코드 ===")
+print("import turtle")
+print("t = turtle.Turtle()")
+print("t.speed(0)  # 가장 빠른 속도")
+print("colors = ['red', 'orange', 'yellow',") 
+print("          'green', 'blue', 'purple']")
+print()
+print("for i in range(180):")
+print("    t.pencolor(colors[i % 6])")
+print("    t.forward(i * 0.5)")
+print("    t.right(59)  # 약간 비틀어진 각도")
+
+print("\\n=== 태극 무늬 코드 ===")
+print("def yin_yang(t, r):")
+print("    t.color('red', 'red')")
+print("    t.begin_fill()")
+print("    t.circle(r/2, 180)    # 큰 반원")
+print("    t.circle(r, 180)")
+print("    t.circle(-r/2, 180)   # 작은 역반원")
+print("    t.end_fill()")
+
+print("\\n# 실행하면 태극 무늬가 그려집니다!")`,expectedOutput:`=== 색상 지원 ===
+  빨강 (red     ): ████████
+  파랑 (blue    ): ████████
+  초록 (green   ): ████████
+  노랑 (yellow  ): ████████
+  보라 (purple  ): ████████
+  주황 (orange  ): ████████
+  청록 (cyan    ): ████████
+  자홍 (magenta ): ████████
+  금색 (gold    ): ████████
+
+=== 채우기 사각형 코드 ===
+t.color('black', 'red')  # 펜:검정, 채우기:빨강
+t.begin_fill()
+for i in range(4):
+    t.forward(100)
+    t.right(90)
+t.end_fill()
+
+=== 무지개 나선 코드 ===
+import turtle
+t = turtle.Turtle()
+t.speed(0)  # 가장 빠른 속도
+colors = ['red', 'orange', 'yellow',
+          'green', 'blue', 'purple']
+
+for i in range(180):
+    t.pencolor(colors[i % 6])
+    t.forward(i * 0.5)
+    t.right(59)  # 약간 비틀어진 각도
+
+=== 태극 무늬 코드 ===
+def yin_yang(t, r):
+    t.color('red', 'red')
+    t.begin_fill()
+    t.circle(r/2, 180)    # 큰 반원
+    t.circle(r, 180)
+    t.circle(-r/2, 180)   # 작은 역반원
+    t.end_fill()
+
+# 실행하면 태극 무늬가 그려집니다!`,tip:"speed(0)은 가장 빠른 속도, speed(1)은 가장 느린 속도입니다. 복잡한 패턴은 speed(0)으로 설정하세요."},{title:"재귀 프랙탈 그리기",content:`재귀 함수를 활용하면 프랙탈(fractal) 도형을 그릴 수 있습니다.
+
+대표적인 프랙탈:
+- 코흐 눈송이(Koch Snowflake)
+- 시어핀스키 삼각형(Sierpinski Triangle)
+- 드래곤 커브(Dragon Curve)
+- 프랙탈 나무(Fractal Tree)`,code:`# 프랙탈 도형 코드 모음
+print("=== 1. 코흐 눈송이 (Koch Snowflake) ===")
+print("def koch(t, length, depth):")
+print("    if depth == 0:")
+print("        t.forward(length)")
+print("    else:")
+print("        for angle in [60, -120, 60, 0]:")
+print("            koch(t, length/3, depth-1)")
+print("            t.left(angle)")
+print()
+print("# 눈송이 실행:")
+print("for i in range(3):")
+print("    koch(t, 300, 4)  # depth=4")
+print("    t.right(120)")
+
+print("\\n=== 2. 프랙탈 나무 (Fractal Tree) ===")
+print("def tree(t, length, depth):")
+print("    if depth == 0:")
+print("        return")
+print("    t.forward(length)")
+print("    t.left(30)           # 왼쪽 가지")
+print("    tree(t, length*0.7, depth-1)")
+print("    t.right(60)          # 오른쪽 가지")
+print("    tree(t, length*0.7, depth-1)")
+print("    t.left(30)           # 원래 방향")
+print("    t.backward(length)   # 되돌아오기")
+print()
+print("# 나무 실행:")
+print("t.left(90)   # 위를 향하도록")
+print("tree(t, 100, 8)")
+
+print("\\n=== 3. 시어핀스키 삼각형 ===")
+print("def sierpinski(t, length, depth):")
+print("    if depth == 0:")
+print("        for _ in range(3):")
+print("            t.forward(length)")
+print("            t.left(120)")
+print("    else:")
+print("        sierpinski(t, length/2, depth-1)")
+print("        t.forward(length/2)")
+print("        sierpinski(t, length/2, depth-1)")
+print("        t.backward(length/2)")
+print("        t.left(60)")
+print("        t.forward(length/2)")
+print("        t.right(60)")
+print("        sierpinski(t, length/2, depth-1)")
+print("        t.left(60)")
+print("        t.backward(length/2)")
+print("        t.right(60)")
+
+# 재귀 깊이와 도형 복잡도
+print("\\n=== 재귀 깊이별 복잡도 ===")
+for d in range(7):
+    segments = 4 ** d  # 코흐 곡선
+    print(f"  depth={d}: 코흐 선분 {segments:>6}개, 나무 가지 {2**d:>4}개")`,expectedOutput:`=== 1. 코흐 눈송이 (Koch Snowflake) ===
+def koch(t, length, depth):
+    if depth == 0:
+        t.forward(length)
+    else:
+        for angle in [60, -120, 60, 0]:
+            koch(t, length/3, depth-1)
+            t.left(angle)
+
+# 눈송이 실행:
+for i in range(3):
+    koch(t, 300, 4)  # depth=4
+    t.right(120)
+
+=== 2. 프랙탈 나무 (Fractal Tree) ===
+def tree(t, length, depth):
+    if depth == 0:
+        return
+    t.forward(length)
+    t.left(30)           # 왼쪽 가지
+    tree(t, length*0.7, depth-1)
+    t.right(60)          # 오른쪽 가지
+    tree(t, length*0.7, depth-1)
+    t.left(30)           # 원래 방향
+    t.backward(length)   # 되돌아오기
+
+# 나무 실행:
+t.left(90)   # 위를 향하도록
+tree(t, 100, 8)
+
+=== 3. 시어핀스키 삼각형 ===
+def sierpinski(t, length, depth):
+    if depth == 0:
+        for _ in range(3):
+            t.forward(length)
+            t.left(120)
+    else:
+        sierpinski(t, length/2, depth-1)
+        t.forward(length/2)
+        sierpinski(t, length/2, depth-1)
+        t.backward(length/2)
+        t.left(60)
+        t.forward(length/2)
+        t.right(60)
+        sierpinski(t, length/2, depth-1)
+        t.left(60)
+        t.backward(length/2)
+        t.right(60)
+
+=== 재귀 깊이별 복잡도 ===
+  depth=0: 코흐 선분      1개, 나무 가지    1개
+  depth=1: 코흐 선분      4개, 나무 가지    2개
+  depth=2: 코흐 선분     16개, 나무 가지    4개
+  depth=3: 코흐 선분     64개, 나무 가지    8개
+  depth=4: 코흐 선분    256개, 나무 가지   16개
+  depth=5: 코흐 선분   1024개, 나무 가지   32개
+  depth=6: 코흐 선분   4096개, 나무 가지   64개`,tip:"파이썬을 로컬에 설치하고 이 코드들을 .py 파일로 저장하여 실행해보세요! python fractal.py로 아름다운 프랙탈을 직접 볼 수 있습니다."}]},decorators:{sections:[{title:"데코레이터 기초",content:`데코레이터는 함수를 감싸서 기능을 추가하는 패턴입니다.
 @기호를 사용하여 함수 위에 적용합니다.
 
 데코레이터는 본질적으로 함수를 인자로 받아 새 함수를 반환하는 함수입니다.`,code:`def timer(func):
@@ -1688,6 +2034,6 @@ Epoch  6/10 - Loss: 0.4423 - Accuracy: 80.42%
 Epoch  8/10 - Loss: 0.2609 - Accuracy: 89.85%
 Epoch 10/10 - Loss: 0.1484 - Accuracy: 98.71%`,tip:"TensorFlow는 프로덕션 배포에, PyTorch는 연구/프로토타이핑에 많이 사용됩니다. 최근에는 두 프레임워크 모두 기능이 비슷해지고 있습니다."}]}};function CodeEditor({initialCode="",expectedOutput="",lessonId=""}){const[code,setCode]=reactExports.useState(initialCode),[output,setOutput]=reactExports.useState(""),[isRunning,setIsRunning]=reactExports.useState(!1),[showHint,setShowHint]=reactExports.useState(!1),textareaRef=reactExports.useRef(null),{incrementCodeRuns}=useProgress(),simulatePythonExecution=code=>{let result=[];const lines=code.split(`
 `),variables={};try{for(let line of lines){if(line=line.trim(),!line||line.startsWith("#"))continue;const printMatch=line.match(/^print\s*\((.+)\)$/);if(printMatch){let content=printMatch[1].trim();if(content.startsWith('f"')||content.startsWith("f'")){const quote=content[1],str=content.slice(2,-1),resolved=str.replace(/\{([^}]+)\}/g,(_,expr)=>{if(expr=expr.trim(),expr in variables)return variables[expr];try{return eval(expr)}catch{return`{${expr}}`}});result.push(resolved);continue}if(content.startsWith('"')&&content.endsWith('"')||content.startsWith("'")&&content.endsWith("'")){result.push(content.slice(1,-1));continue}if(content.includes(",")){const args=content.split(",").map(a=>{if(a=a.trim(),a.startsWith('"')&&a.endsWith('"')||a.startsWith("'")&&a.endsWith("'"))return a.slice(1,-1);if(a in variables)return String(variables[a]);try{return String(eval(a))}catch{return a}});result.push(args.join(" "));continue}if(content in variables){result.push(String(variables[content]));continue}try{result.push(String(eval(content)))}catch{result.push(content)}continue}const assignMatch=line.match(/^(\w+)\s*=\s*(.+)$/);if(assignMatch){const[,name,value]=assignMatch;let val=value.trim();if(val.startsWith('"')&&val.endsWith('"')||val.startsWith("'")&&val.endsWith("'"))variables[name]=val.slice(1,-1);else if(val.startsWith("[")&&val.endsWith("]"))try{variables[name]=JSON.parse(val)}catch{variables[name]=val}else{let expr=val;for(const[n,t]of Object.entries(variables))expr=expr.replace(new RegExp(`\\b${n}\\b`,"g"),typeof t=="string"?`"${t}"`:t);try{variables[name]=eval(expr)}catch{variables[name]=val}}continue}const forMatch=line.match(/^for\s+(\w+)\s+in\s+range\((\d+)(?:,\s*(\d+))?\)\s*:/);if(forMatch){const[,varName,startOrEnd,end]=forMatch,start=end?parseInt(startOrEnd):0,limit=parseInt(end||startOrEnd),loopBodyIdx=lines.indexOf(line),bodyLines=[];for(let n=loopBodyIdx+1;n<lines.length&&(lines[n].startsWith("    ")||lines[n].startsWith("	"));n++)bodyLines.push(lines[n].trim());for(let k=start;k<Math.min(limit,100);k++){variables[varName]=k;for(const bLine of bodyLines){const bPrint=bLine.match(/^print\s*\((.+)\)$/);if(bPrint){let c=bPrint[1].trim();if(c.startsWith('f"')||c.startsWith("f'")){const str=c.slice(2,-1);result.push(str.replace(/\{([^}]+)\}/g,(_,e)=>{if(e=e.trim(),e in variables)return variables[e];try{return eval(e)}catch{return`{${e}}`}}))}else if(c in variables)result.push(String(variables[c]));else{let expr=c;for(const[n,t]of Object.entries(variables))expr=expr.replace(new RegExp(`\\b${n}\\b`,"g"),typeof t=="string"?`"${t}"`:t);try{result.push(String(eval(expr)))}catch{result.push(c)}}}}}}}return result.length>0?result.join(`
-`):"(출력 없음)"}catch(n){return`Error: ${n.message}`}},handleRun=()=>{setIsRunning(!0),setOutput(""),setTimeout(()=>{const n=simulatePythonExecution(code);setOutput(n),setIsRunning(!1),incrementCodeRuns()},500)},handleReset=()=>{setCode(initialCode),setOutput("")},handleKeyDown=n=>{if(n.key==="Tab"){n.preventDefault();const t=n.target.selectionStart,m=n.target.selectionEnd,x=code.substring(0,t)+"    "+code.substring(m);setCode(x),setTimeout(()=>{n.target.selectionStart=n.target.selectionEnd=t+4},0)}(n.ctrlKey||n.metaKey)&&n.key==="Enter"&&handleRun()},lineCount=code.split(`
-`).length;return jsxRuntimeExports.jsxs("div",{className:"code-editor",children:[jsxRuntimeExports.jsxs("div",{className:"editor-toolbar",children:[jsxRuntimeExports.jsxs("div",{className:"editor-title",children:[jsxRuntimeExports.jsxs("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("polyline",{points:"16 18 22 12 16 6"}),jsxRuntimeExports.jsx("polyline",{points:"8 6 2 12 8 18"})]}),jsxRuntimeExports.jsx("span",{children:"Python Editor"})]}),jsxRuntimeExports.jsxs("div",{className:"editor-actions",children:[jsxRuntimeExports.jsx("button",{className:"editor-btn hint-btn",onClick:()=>setShowHint(!showHint),title:"힌트",children:jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("circle",{cx:"12",cy:"12",r:"10"}),jsxRuntimeExports.jsx("path",{d:"M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"}),jsxRuntimeExports.jsx("line",{x1:"12",y1:"17",x2:"12.01",y2:"17"})]})}),jsxRuntimeExports.jsx("button",{className:"editor-btn reset-btn",onClick:handleReset,title:"초기화",children:jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("polyline",{points:"1 4 1 10 7 10"}),jsxRuntimeExports.jsx("path",{d:"M3.51 15a9 9 0 102.13-9.36L1 10"})]})}),jsxRuntimeExports.jsxs("button",{className:"editor-btn run-btn",onClick:handleRun,disabled:isRunning,title:"실행 (Ctrl+Enter)",children:[isRunning?jsxRuntimeExports.jsx("div",{className:"loading-spinner-small"}):jsxRuntimeExports.jsx("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"currentColor",children:jsxRuntimeExports.jsx("polygon",{points:"5 3 19 12 5 21 5 3"})}),jsxRuntimeExports.jsx("span",{children:isRunning?"실행 중...":"실행"})]})]})]}),jsxRuntimeExports.jsxs("div",{className:"editor-body",children:[jsxRuntimeExports.jsx("div",{className:"line-numbers",children:Array.from({length:lineCount},(n,t)=>jsxRuntimeExports.jsx("span",{children:t+1},t+1))}),jsxRuntimeExports.jsx("textarea",{ref:textareaRef,className:"code-input",value:code,onChange:n=>setCode(n.target.value),onKeyDown:handleKeyDown,spellCheck:!1,placeholder:"# 파이썬 코드를 입력하세요..."})]}),showHint&&expectedOutput&&jsxRuntimeExports.jsxs("div",{className:"editor-hint",children:[jsxRuntimeExports.jsx("strong",{children:"예상 출력:"})," ",jsxRuntimeExports.jsx("code",{children:expectedOutput})]}),output&&jsxRuntimeExports.jsxs("div",{className:"editor-output",children:[jsxRuntimeExports.jsxs("div",{className:"output-header",children:[jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("rect",{x:"2",y:"3",width:"20",height:"14",rx:"2"}),jsxRuntimeExports.jsx("line",{x1:"8",y1:"21",x2:"16",y2:"21"}),jsxRuntimeExports.jsx("line",{x1:"12",y1:"17",x2:"12",y2:"21"})]}),jsxRuntimeExports.jsx("span",{children:"출력 결과"}),expectedOutput&&output.trim()===expectedOutput.trim()&&jsxRuntimeExports.jsx("span",{className:"output-correct",children:"정답!"})]}),jsxRuntimeExports.jsx("pre",{className:"output-content",children:output})]})]})}function LessonPage(){const{level:n,lessonId:t}=useParams(),{completedLessons:m,completeLesson:x}=useProgress(),[i,g]=reactExports.useState(0),d=levelInfo[n],l=lessons[n]||[],s=l.find(p=>p.id===t),j=lessonContents[t],y=m.has(t),u=l.findIndex(p=>p.id===t),f=u>0?l[u-1]:null,h=u<l.length-1?l[u+1]:null;if(!s||!d)return jsxRuntimeExports.jsx("div",{className:"not-found-page",children:jsxRuntimeExports.jsxs("div",{className:"not-found-content",children:[jsxRuntimeExports.jsx("div",{className:"not-found-code",children:"404"}),jsxRuntimeExports.jsx("h2",{className:"not-found-title",children:"레슨을 찾을 수 없습니다"}),jsxRuntimeExports.jsx(Link,{to:`/${n}`,className:"btn btn-primary",children:"목록으로 돌아가기"})]})});const o=j?.sections||[{title:s.title,content:`이 레슨에서는 ${s.description}에 대해 학습합니다.`,code:`# 예제 코드
-print("Hello, Python!")`,expectedOutput:"Hello, Python!"}];return jsxRuntimeExports.jsxs("div",{className:"lesson-page",children:[jsxRuntimeExports.jsx("section",{className:"page-header",style:{background:`linear-gradient(135deg, ${d.color}, ${d.color}dd)`},children:jsxRuntimeExports.jsxs("div",{className:"container",children:[jsxRuntimeExports.jsxs("div",{className:"breadcrumb",children:[jsxRuntimeExports.jsx(Link,{to:"/",children:"홈"}),jsxRuntimeExports.jsx("span",{children:"/"}),jsxRuntimeExports.jsxs(Link,{to:`/${n}`,children:[d.title," 과정"]}),jsxRuntimeExports.jsx("span",{children:"/"}),jsxRuntimeExports.jsx("span",{children:s.title})]}),jsxRuntimeExports.jsxs("div",{className:"page-header-content",children:[jsxRuntimeExports.jsx("span",{className:"page-header-icon",children:jsxRuntimeExports.jsx("i",{className:s.icon})}),jsxRuntimeExports.jsx("h1",{children:s.title}),jsxRuntimeExports.jsx("p",{children:s.description}),jsxRuntimeExports.jsxs("div",{className:"lesson-meta-bar",children:[jsxRuntimeExports.jsxs("span",{children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-clock"})," 약 ",s.estimatedTime,"분"]}),jsxRuntimeExports.jsxs("span",{children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-clipboard"})," ",s.topics?.length||0,"개 주제"]}),jsxRuntimeExports.jsx("span",{children:Array.from({length:3},(p,r)=>jsxRuntimeExports.jsx("i",{className:r<s.difficulty?"fa-solid fa-star":"fa-regular fa-star"},r))})]})]})]})}),jsxRuntimeExports.jsxs("div",{className:"lesson-layout container",children:[jsxRuntimeExports.jsxs("aside",{className:"lesson-sidebar",children:[jsxRuntimeExports.jsx("h3",{children:"학습 목차"}),jsxRuntimeExports.jsx("ul",{className:"lesson-toc",children:o.map((p,r)=>jsxRuntimeExports.jsx("li",{children:jsxRuntimeExports.jsxs("button",{className:`toc-item${i===r?" active":""}`,onClick:()=>g(r),children:[jsxRuntimeExports.jsx("span",{className:"toc-number",children:r+1}),jsxRuntimeExports.jsx("span",{className:"toc-title",children:p.title})]})},r))}),s.topics&&jsxRuntimeExports.jsxs("div",{className:"lesson-topics-list",children:[jsxRuntimeExports.jsx("h4",{children:"학습 주제"}),s.topics.map((p,r)=>jsxRuntimeExports.jsx("span",{className:"topic-tag",children:p},r))]})]}),jsxRuntimeExports.jsxs("main",{className:"lesson-content",children:[jsxRuntimeExports.jsxs("div",{className:"lesson-section",children:[jsxRuntimeExports.jsx("h2",{children:o[i]?.title}),jsxRuntimeExports.jsx("div",{className:"lesson-text",dangerouslySetInnerHTML:{__html:o[i]?.content?.replace(/\n/g,"<br/>")}}),o[i]?.code&&jsxRuntimeExports.jsxs("div",{className:"lesson-practice",children:[jsxRuntimeExports.jsx("h3",{children:"직접 실습해보세요"}),jsxRuntimeExports.jsx(CodeEditor,{initialCode:o[i].code,expectedOutput:o[i].expectedOutput||"",lessonId:t})]}),o[i]?.tip&&jsxRuntimeExports.jsxs("div",{className:"lesson-tip",children:[jsxRuntimeExports.jsx("span",{className:"tip-icon",children:jsxRuntimeExports.jsx("i",{className:"fa-solid fa-lightbulb"})}),jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("strong",{children:"팁:"})," ",o[i].tip]})]})]}),jsxRuntimeExports.jsxs("div",{className:"lesson-nav",children:[jsxRuntimeExports.jsx("div",{className:"lesson-nav-left",children:f&&jsxRuntimeExports.jsxs(Link,{to:`/${n}/${f.id}`,className:"lesson-nav-btn prev",children:[jsxRuntimeExports.jsx("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:jsxRuntimeExports.jsx("polyline",{points:"15 18 9 12 15 6"})}),jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("span",{className:"nav-label",children:"이전 레슨"}),jsxRuntimeExports.jsx("span",{className:"nav-title",children:f.title})]})]})}),!y&&jsxRuntimeExports.jsxs("button",{className:"btn btn-accent complete-btn",onClick:()=>x(t),children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-check"})," 학습 완료"]}),y&&jsxRuntimeExports.jsxs("span",{className:"completed-badge-inline",children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-check"})," 완료됨"]}),jsxRuntimeExports.jsx("div",{className:"lesson-nav-right",children:h&&jsxRuntimeExports.jsxs(Link,{to:`/${n}/${h.id}`,className:"lesson-nav-btn next",children:[jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("span",{className:"nav-label",children:"다음 레슨"}),jsxRuntimeExports.jsx("span",{className:"nav-title",children:h.title})]}),jsxRuntimeExports.jsx("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:jsxRuntimeExports.jsx("polyline",{points:"9 18 15 12 9 6"})})]})})]})]})]})]})}export{LessonPage as default};
+`):"(출력 없음)"}catch(n){return`Error: ${n.message}`}},handleRun=()=>{setIsRunning(!0),setOutput(""),setTimeout(()=>{const n=simulatePythonExecution(code);setOutput(n),setIsRunning(!1),incrementCodeRuns()},500)},handleReset=()=>{setCode(initialCode),setOutput("")},handleKeyDown=n=>{if(n.key==="Tab"){n.preventDefault();const t=n.target.selectionStart,m=n.target.selectionEnd,f=code.substring(0,t)+"    "+code.substring(m);setCode(f),setTimeout(()=>{n.target.selectionStart=n.target.selectionEnd=t+4},0)}(n.ctrlKey||n.metaKey)&&n.key==="Enter"&&handleRun()},lineCount=code.split(`
+`).length;return jsxRuntimeExports.jsxs("div",{className:"code-editor",children:[jsxRuntimeExports.jsxs("div",{className:"editor-toolbar",children:[jsxRuntimeExports.jsxs("div",{className:"editor-title",children:[jsxRuntimeExports.jsxs("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("polyline",{points:"16 18 22 12 16 6"}),jsxRuntimeExports.jsx("polyline",{points:"8 6 2 12 8 18"})]}),jsxRuntimeExports.jsx("span",{children:"Python Editor"})]}),jsxRuntimeExports.jsxs("div",{className:"editor-actions",children:[jsxRuntimeExports.jsx("button",{className:"editor-btn hint-btn",onClick:()=>setShowHint(!showHint),title:"힌트",children:jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("circle",{cx:"12",cy:"12",r:"10"}),jsxRuntimeExports.jsx("path",{d:"M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"}),jsxRuntimeExports.jsx("line",{x1:"12",y1:"17",x2:"12.01",y2:"17"})]})}),jsxRuntimeExports.jsx("button",{className:"editor-btn reset-btn",onClick:handleReset,title:"초기화",children:jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("polyline",{points:"1 4 1 10 7 10"}),jsxRuntimeExports.jsx("path",{d:"M3.51 15a9 9 0 102.13-9.36L1 10"})]})}),jsxRuntimeExports.jsxs("button",{className:"editor-btn run-btn",onClick:handleRun,disabled:isRunning,title:"실행 (Ctrl+Enter)",children:[isRunning?jsxRuntimeExports.jsx("div",{className:"loading-spinner-small"}):jsxRuntimeExports.jsx("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"currentColor",children:jsxRuntimeExports.jsx("polygon",{points:"5 3 19 12 5 21 5 3"})}),jsxRuntimeExports.jsx("span",{children:isRunning?"실행 중...":"실행"})]})]})]}),jsxRuntimeExports.jsxs("div",{className:"editor-body",children:[jsxRuntimeExports.jsx("div",{className:"line-numbers",children:Array.from({length:lineCount},(n,t)=>jsxRuntimeExports.jsx("span",{children:t+1},t+1))}),jsxRuntimeExports.jsx("textarea",{ref:textareaRef,className:"code-input",value:code,onChange:n=>setCode(n.target.value),onKeyDown:handleKeyDown,spellCheck:!1,placeholder:"# 파이썬 코드를 입력하세요..."})]}),showHint&&expectedOutput&&jsxRuntimeExports.jsxs("div",{className:"editor-hint",children:[jsxRuntimeExports.jsx("strong",{children:"예상 출력:"})," ",jsxRuntimeExports.jsx("code",{children:expectedOutput})]}),output&&jsxRuntimeExports.jsxs("div",{className:"editor-output",children:[jsxRuntimeExports.jsxs("div",{className:"output-header",children:[jsxRuntimeExports.jsxs("svg",{width:"14",height:"14",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:[jsxRuntimeExports.jsx("rect",{x:"2",y:"3",width:"20",height:"14",rx:"2"}),jsxRuntimeExports.jsx("line",{x1:"8",y1:"21",x2:"16",y2:"21"}),jsxRuntimeExports.jsx("line",{x1:"12",y1:"17",x2:"12",y2:"21"})]}),jsxRuntimeExports.jsx("span",{children:"출력 결과"}),expectedOutput&&output.trim()===expectedOutput.trim()&&jsxRuntimeExports.jsx("span",{className:"output-correct",children:"정답!"})]}),jsxRuntimeExports.jsx("pre",{className:"output-content",children:output})]})]})}function LessonPage(){const{level:n,lessonId:t}=useParams(),{completedLessons:m,completeLesson:f}=useProgress(),[s,y]=reactExports.useState(0),d=levelInfo[n],l=lessons[n]||[],r=l.find(p=>p.id===t),j=lessonContents[t],g=m.has(t),u=l.findIndex(p=>p.id===t),x=u>0?l[u-1]:null,h=u<l.length-1?l[u+1]:null;if(!r||!d)return jsxRuntimeExports.jsx("div",{className:"not-found-page",children:jsxRuntimeExports.jsxs("div",{className:"not-found-content",children:[jsxRuntimeExports.jsx("div",{className:"not-found-code",children:"404"}),jsxRuntimeExports.jsx("h2",{className:"not-found-title",children:"레슨을 찾을 수 없습니다"}),jsxRuntimeExports.jsx(Link,{to:`/${n}`,className:"btn btn-primary",children:"목록으로 돌아가기"})]})});const o=j?.sections||[{title:r.title,content:`이 레슨에서는 ${r.description}에 대해 학습합니다.`,code:`# 예제 코드
+print("Hello, Python!")`,expectedOutput:"Hello, Python!"}];return jsxRuntimeExports.jsxs("div",{className:"lesson-page",children:[jsxRuntimeExports.jsx("section",{className:"page-header",style:{background:`linear-gradient(135deg, ${d.color}, ${d.color}dd)`},children:jsxRuntimeExports.jsxs("div",{className:"container",children:[jsxRuntimeExports.jsxs("div",{className:"breadcrumb",children:[jsxRuntimeExports.jsx(Link,{to:"/",children:"홈"}),jsxRuntimeExports.jsx("span",{children:"/"}),jsxRuntimeExports.jsxs(Link,{to:`/${n}`,children:[d.title," 과정"]}),jsxRuntimeExports.jsx("span",{children:"/"}),jsxRuntimeExports.jsx("span",{children:r.title})]}),jsxRuntimeExports.jsxs("div",{className:"page-header-content",children:[jsxRuntimeExports.jsx("span",{className:"page-header-icon",children:jsxRuntimeExports.jsx("i",{className:r.icon})}),jsxRuntimeExports.jsx("h1",{children:r.title}),jsxRuntimeExports.jsx("p",{children:r.description}),jsxRuntimeExports.jsxs("div",{className:"lesson-meta-bar",children:[jsxRuntimeExports.jsxs("span",{children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-clock"})," 약 ",r.estimatedTime,"분"]}),jsxRuntimeExports.jsxs("span",{children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-clipboard"})," ",r.topics?.length||0,"개 주제"]}),jsxRuntimeExports.jsx("span",{children:Array.from({length:3},(p,i)=>jsxRuntimeExports.jsx("i",{className:i<r.difficulty?"fa-solid fa-star":"fa-regular fa-star"},i))})]})]})]})}),jsxRuntimeExports.jsxs("div",{className:"lesson-layout container",children:[jsxRuntimeExports.jsxs("aside",{className:"lesson-sidebar",children:[jsxRuntimeExports.jsx("h3",{children:"학습 목차"}),jsxRuntimeExports.jsx("ul",{className:"lesson-toc",children:o.map((p,i)=>jsxRuntimeExports.jsx("li",{children:jsxRuntimeExports.jsxs("button",{className:`toc-item${s===i?" active":""}`,onClick:()=>y(i),children:[jsxRuntimeExports.jsx("span",{className:"toc-number",children:i+1}),jsxRuntimeExports.jsx("span",{className:"toc-title",children:p.title})]})},i))}),r.topics&&jsxRuntimeExports.jsxs("div",{className:"lesson-topics-list",children:[jsxRuntimeExports.jsx("h4",{children:"학습 주제"}),r.topics.map((p,i)=>jsxRuntimeExports.jsx("span",{className:"topic-tag",children:p},i))]})]}),jsxRuntimeExports.jsxs("main",{className:"lesson-content",children:[jsxRuntimeExports.jsxs("div",{className:"lesson-section",children:[jsxRuntimeExports.jsx("h2",{children:o[s]?.title}),jsxRuntimeExports.jsx("div",{className:"lesson-text",dangerouslySetInnerHTML:{__html:o[s]?.content?.replace(/\n/g,"<br/>")}}),o[s]?.code&&jsxRuntimeExports.jsxs("div",{className:"lesson-practice",children:[jsxRuntimeExports.jsx("h3",{children:"직접 실습해보세요"}),jsxRuntimeExports.jsx(CodeEditor,{initialCode:o[s].code,expectedOutput:o[s].expectedOutput||"",lessonId:t})]}),o[s]?.tip&&jsxRuntimeExports.jsxs("div",{className:"lesson-tip",children:[jsxRuntimeExports.jsx("span",{className:"tip-icon",children:jsxRuntimeExports.jsx("i",{className:"fa-solid fa-lightbulb"})}),jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("strong",{children:"팁:"})," ",o[s].tip]})]})]}),jsxRuntimeExports.jsxs("div",{className:"lesson-nav",children:[jsxRuntimeExports.jsx("div",{className:"lesson-nav-left",children:x&&jsxRuntimeExports.jsxs(Link,{to:`/${n}/${x.id}`,className:"lesson-nav-btn prev",children:[jsxRuntimeExports.jsx("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:jsxRuntimeExports.jsx("polyline",{points:"15 18 9 12 15 6"})}),jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("span",{className:"nav-label",children:"이전 레슨"}),jsxRuntimeExports.jsx("span",{className:"nav-title",children:x.title})]})]})}),!g&&jsxRuntimeExports.jsxs("button",{className:"btn btn-accent complete-btn",onClick:()=>f(t),children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-check"})," 학습 완료"]}),g&&jsxRuntimeExports.jsxs("span",{className:"completed-badge-inline",children:[jsxRuntimeExports.jsx("i",{className:"fa-solid fa-check"})," 완료됨"]}),jsxRuntimeExports.jsx("div",{className:"lesson-nav-right",children:h&&jsxRuntimeExports.jsxs(Link,{to:`/${n}/${h.id}`,className:"lesson-nav-btn next",children:[jsxRuntimeExports.jsxs("div",{children:[jsxRuntimeExports.jsx("span",{className:"nav-label",children:"다음 레슨"}),jsxRuntimeExports.jsx("span",{className:"nav-title",children:h.title})]}),jsxRuntimeExports.jsx("svg",{width:"16",height:"16",viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:"2",children:jsxRuntimeExports.jsx("polyline",{points:"9 18 15 12 9 6"})})]})})]})]})]})]})}export{LessonPage as default};
