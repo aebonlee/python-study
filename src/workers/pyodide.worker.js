@@ -407,6 +407,30 @@ _atexit.register(_render_svg)
 
 const TURTLE_IMPORT_RE = /^\s*(import\s+turtle|from\s+turtle\s+import)/m;
 
+/* Pyodide built-in packages that need loadPackage() */
+const LOADABLE_PACKAGES = [
+  'numpy', 'pandas', 'scipy', 'matplotlib', 'sympy',
+  'scikit-learn', 'statsmodels', 'networkx', 'pillow',
+  'regex', 'pyyaml', 'jsonschema', 'lxml', 'beautifulsoup4',
+  'html5lib', 'sqlalchemy', 'micropip'
+];
+
+/* Detect imports that need loading */
+function detectPackages(code) {
+  const needed = new Set();
+  const importRe = /^\s*(?:import\s+([\w]+)|from\s+([\w]+)\s+import)/gm;
+  let m;
+  while ((m = importRe.exec(code)) !== null) {
+    const mod = (m[1] || m[2]).toLowerCase();
+    if (mod === 'sklearn') needed.add('scikit-learn');
+    else if (mod === 'bs4') needed.add('beautifulsoup4');
+    else if (mod === 'PIL') needed.add('pillow');
+    else if (mod === 'yaml') needed.add('pyyaml');
+    else if (LOADABLE_PACKAGES.includes(mod)) needed.add(mod);
+  }
+  return [...needed];
+}
+
 async function loadPyodideRuntime() {
   if (pyodide) return pyodide;
   if (loading) {
@@ -442,6 +466,12 @@ sys.stderr = io.StringIO()
     if (inputs && inputs.length > 0) {
       const stdinData = inputs.join('\n') + '\n';
       py.runPython(`sys.stdin = io.StringIO(${JSON.stringify(stdinData)})`);
+    }
+
+    /* Auto-load packages (numpy, pandas, etc.) */
+    const pkgs = detectPackages(code);
+    if (pkgs.length > 0) {
+      await py.loadPackage(pkgs);
     }
 
     /* If code uses turtle, inject the SVG mock module */
