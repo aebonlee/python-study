@@ -3,8 +3,13 @@
    — viewport-fit: no page scroll
    ============================================ */
 
-/* Full-viewport layout */
+/* Full-viewport layout — hide global footer, use full height */
 .practice-page { display: flex; flex-direction: column; height: calc(100vh - var(--nav-height)); overflow: hidden; }
+.main-content:has(.practice-page) + .footer { display: none; }
+.main-content:has(.practice-page) { min-height: auto; }
+
+/* Compact mini-footer inside practice page */
+.practice-mini-footer { flex-shrink: 0; padding: 4px 16px; text-align: center; font-size: 11px; color: var(--text-light); border-top: 1px solid var(--border-light); background: var(--bg-light); }
 
 /* Page Header — compact */
 .practice-page .page-header-section { flex-shrink: 0; padding: 16px 0 10px; text-align: center; background: linear-gradient(135deg, rgba(48,105,152,0.08) 0%, rgba(255,212,59,0.05) 100%); border-bottom: 1px solid var(--border-light); }
@@ -122,6 +127,7 @@
 [data-theme="dark"] .practice-runner-empty { border-color: var(--border-medium); }
 [data-theme="dark"] .practice-unsupported { background: rgba(245,158,11,0.12); }
 [data-theme="dark"] .practice-output-header { background: var(--bg-medium); }
+[data-theme="dark"] .practice-mini-footer { background: var(--bg-medium); border-color: var(--border-medium); }
 
 /* Responsive */
 @media (max-width: 1024px) {
