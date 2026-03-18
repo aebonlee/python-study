@@ -150,3 +150,16 @@
 - 히어로 설명: "데이터 분석, 머신러닝, 딥러닝까지"
 - features: "데이터 과학" 항목으로 업데이트 (NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow)
 - levelInfo.applied 설명 업데이트
+
+---
+
+## 2026-03-18 (Day 1 추가 2) - 표준 라이브러리 과정 확장
+
+### os/sys, math/cmath, json, datetime 4개 레슨 추가
+- **lessons.js**: 중급 과정에 4개 표준 라이브러리 레슨 추가 (중급 총 12개, 전체 34개)
+  - `os-sys`: os.path, os.listdir, sys.argv, sys.path, 환경 변수
+  - `math-cmath`: sqrt, pi, log, 삼각함수, 복소수, 극좌표
+  - `json-module`: dumps/loads, dump/load, API 응답 처리
+  - `datetime-module`: date, time, datetime, timedelta, strftime/strptime
+- **lessonContents.js**: 각 레슨 2개 섹션, 코드 예제, 실행 결과, 학습 팁
+- **Navbar.jsx**: 라이브러리 드롭다운에 os/sys, math, json, datetime 추가 (총 9개 항목)

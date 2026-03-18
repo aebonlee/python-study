@@ -33,6 +33,10 @@ export default function Navbar() {
     { to: '/advanced', label: '고급' },
     { to: '/applied', label: '응용' },
     { label: '라이브러리', children: [
+      { to: '/intermediate/os-sys', label: 'os/sys', icon: 'fa-solid fa-terminal' },
+      { to: '/intermediate/math-cmath', label: 'math', icon: 'fa-solid fa-square-root-variable' },
+      { to: '/intermediate/json-module', label: 'json', icon: 'fa-solid fa-code' },
+      { to: '/intermediate/datetime-module', label: 'datetime', icon: 'fa-solid fa-calendar-days' },
       { to: '/applied/numpy-basics', label: 'NumPy', icon: 'fa-solid fa-calculator' },
       { to: '/applied/pandas-basics', label: 'Pandas', icon: 'fa-solid fa-table' },
       { to: '/applied/matplotlib-seaborn', label: 'Matplotlib', icon: 'fa-solid fa-chart-pie' },

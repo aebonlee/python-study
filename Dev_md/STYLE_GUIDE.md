@@ -88,6 +88,10 @@
 | OOP | `fa-solid fa-cubes` |
 | NumPy | `fa-solid fa-calculator` |
 | Pandas | `fa-solid fa-table` |
+| os/sys | `fa-solid fa-terminal` |
+| math | `fa-solid fa-square-root-variable` |
+| json | `fa-solid fa-code` |
+| datetime | `fa-solid fa-calendar-days` |
 | Matplotlib | `fa-solid fa-chart-pie` |
 | Scikit-learn | `fa-solid fa-brain` |
 | TensorFlow | `fa-solid fa-network-wired` |

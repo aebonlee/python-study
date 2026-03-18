@@ -35,6 +35,10 @@
 | Matplotlib/Seaborn 과정 | 완료 | 데이터 시각화 레슨 (3개 섹션) |
 | Scikit-learn 과정 | 완료 | 머신러닝 레슨 (3개 섹션) |
 | TensorFlow/PyTorch 과정 | 완료 | 딥러닝 레슨 (3개 섹션) |
+| os/sys 모듈 과정 | 완료 | 파일 시스템, 시스템 정보 (2개 섹션) |
+| math/cmath 모듈 과정 | 완료 | 수학 함수, 복소수 (2개 섹션) |
+| json 모듈 과정 | 완료 | JSON 직렬화, API 응답 (2개 섹션) |
+| datetime 모듈 과정 | 완료 | 날짜/시간, 포매팅 (2개 섹션) |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정

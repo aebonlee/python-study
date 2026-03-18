@@ -137,7 +137,8 @@ App
 ### Navbar 구조 (1열 + 라이브러리 드롭다운)
 ```
 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 퀴즈 | 도장깨기 | [진도] [테마] [로그인/아바타]
-                           └→ NumPy / Pandas / Matplotlib / Scikit-learn / TensorFlow
+                           └→ os/sys / math / json / datetime
+                              NumPy / Pandas / Matplotlib / Scikit-learn / TensorFlow
 ```
 
 ## 디자인 시스템

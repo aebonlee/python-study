@@ -324,6 +324,82 @@ export const lessonContents = {
     ]
   },
 
+  'os-sys': {
+    sections: [
+      {
+        title: 'os 모듈 - 파일 시스템 제어',
+        content: `os 모듈은 운영체제와 상호작용하는 기능을 제공합니다.\n파일/디렉토리 조작, 경로 처리, 환경 변수 접근 등이 가능합니다.\n\nos.path 하위 모듈은 경로 관련 유틸리티를 제공합니다.`,
+        code: 'import os\n\n# 현재 작업 디렉토리\nprint(f"현재 디렉토리: {os.getcwd()}")\n\n# os.path 경로 처리\npath = "/home/user/documents/report.pdf"\nprint(f"파일명: {os.path.basename(path)}")\nprint(f"디렉토리: {os.path.dirname(path)}")\nprint(f"확장자: {os.path.splitext(path)[1]}")\nprint(f"경로 존재: {os.path.exists(path)}")\n\n# 경로 결합 (OS 독립적)\nfull = os.path.join("home", "user", "data.csv")\nprint(f"경로 결합: {full}")\n\n# 환경 변수\nprint(f"\\nPATH 환경 변수 일부: {os.environ.get(\"PATH\", \"미설정\")[:50]}...")\nprint(f"HOME: {os.environ.get(\"HOME\", os.environ.get(\"USERPROFILE\", \"미설정\"))}")',
+        expectedOutput: '현재 디렉토리: /home/user\n파일명: report.pdf\n디렉토리: /home/user/documents\n확장자: .pdf\n경로 존재: False\n경로 결합: home/user/data.csv\n\nPATH 환경 변수 일부: /usr/local/bin:/usr/bin...\nHOME: /home/user',
+        tip: 'os.path.join()은 운영체제에 맞는 경로 구분자(/ 또는 \\)를 자동으로 사용합니다.'
+      },
+      {
+        title: 'sys 모듈 - 시스템 정보와 제어',
+        content: `sys 모듈은 파이썬 인터프리터와 관련된 정보와 기능을 제공합니다.\n\n명령줄 인자(argv), 모듈 경로(path), 버전 정보 등을 다룹니다.`,
+        code: 'import sys\n\n# 파이썬 버전\nprint(f"파이썬 버전: {sys.version}")\nprint(f"버전 정보: {sys.version_info.major}.{sys.version_info.minor}")\n\n# 플랫폼\nprint(f"플랫폼: {sys.platform}")\n\n# 정수 최대값\nprint(f"정수 최대값: {sys.maxsize}")\n\n# 모듈 검색 경로 (처음 3개)\nprint(f"\\n모듈 경로 (상위 3개):")\nfor p in sys.path[:3]:\n    print(f"  {p}")\n\n# 명령줄 인자 예시\nprint(f"\\n명령줄 인자: {sys.argv}")\nprint("# python script.py arg1 arg2 → [\'script.py\', \'arg1\', \'arg2\']")',
+        expectedOutput: '파이썬 버전: 3.12.0 (main, ...)\n버전 정보: 3.12\n플랫폼: linux\n정수 최대값: 9223372036854775807\n\n모듈 경로 (상위 3개):\n  \n  /usr/lib/python3.12\n  /usr/lib/python3.12/lib-dynload\n\n명령줄 인자: [\'\']\n# python script.py arg1 arg2 → [\'script.py\', \'arg1\', \'arg2\']',
+        tip: 'sys.exit()으로 프로그램을 종료할 수 있습니다. 0은 정상 종료, 다른 값은 에러를 의미합니다.'
+      }
+    ]
+  },
+
+  'math-cmath': {
+    sections: [
+      {
+        title: 'math 모듈 - 수학 함수',
+        content: `math 모듈은 C 표준 라이브러리의 수학 함수에 대한 접근을 제공합니다.\n\n상수: pi, e, inf, nan\n함수: sqrt, pow, log, sin, cos, tan, ceil, floor, factorial 등`,
+        code: 'import math\n\n# 상수\nprint(f"원주율 (pi): {math.pi:.6f}")\nprint(f"자연 상수 (e): {math.e:.6f}")\n\n# 기본 수학 함수\nprint(f"\\n√16 = {math.sqrt(16)}")\nprint(f"2^10 = {math.pow(2, 10):.0f}")\nprint(f"10! = {math.factorial(10)}")\n\n# 올림/내림/반올림\nprint(f"\\nceil(3.2) = {math.ceil(3.2)}")\nprint(f"floor(3.8) = {math.floor(3.8)}")\n\n# 로그\nprint(f"\\nlog(100, 10) = {math.log(100, 10):.1f}")  # 상용 로그\nprint(f"log2(1024) = {math.log2(1024):.1f}")\nprint(f"ln(e) = {math.log(math.e):.1f}")  # 자연 로그\n\n# 삼각함수\nangle = math.radians(30)  # 30도를 라디안으로\nprint(f"\\nsin(30°) = {math.sin(angle):.4f}")\nprint(f"cos(30°) = {math.cos(angle):.4f}")',
+        expectedOutput: '원주율 (pi): 3.141593\n자연 상수 (e): 2.718282\n\n√16 = 4.0\n2^10 = 1024\n10! = 3628800\n\nceil(3.2) = 4\nfloor(3.8) = 3\n\nlog(100, 10) = 2.0\nlog2(1024) = 10.0\nln(e) = 1.0\n\nsin(30°) = 0.5000\ncos(30°) = 0.8660',
+        tip: 'math.isclose(a, b)로 부동소수점 비교를 안전하게 할 수 있습니다. == 대신 사용하세요.'
+      },
+      {
+        title: 'cmath 모듈 - 복소수 연산',
+        content: `cmath 모듈은 복소수에 대한 수학 함수를 제공합니다.\n파이썬에서 복소수는 j(허수단위)를 사용하여 표현합니다.\n\n실수부: .real, 허수부: .imag, 절대값: abs()`,
+        code: 'import cmath\nimport math\n\n# 복소수 기초\nz1 = 3 + 4j\nz2 = 1 - 2j\n\nprint(f"z1 = {z1}")\nprint(f"실수부: {z1.real}, 허수부: {z1.imag}")\nprint(f"절대값(크기): {abs(z1)}")  # √(3²+4²) = 5\nprint(f"켤레 복소수: {z1.conjugate()}")\n\n# 복소수 연산\nprint(f"\\nz1 + z2 = {z1 + z2}")\nprint(f"z1 * z2 = {z1 * z2}")\n\n# cmath 함수\nprint(f"\\n위상각(phase): {cmath.phase(z1):.4f} 라디안")\nprint(f"위상각(도): {math.degrees(cmath.phase(z1)):.2f}°")\n\n# 극좌표 변환\nr, phi = cmath.polar(z1)\nprint(f"\\n극좌표: r={r:.2f}, θ={math.degrees(phi):.2f}°")\nprint(f"직교좌표 복원: {cmath.rect(r, phi)}")',
+        expectedOutput: 'z1 = (3+4j)\n실수부: 3.0, 허수부: 4.0\n절대값(크기): 5.0\n켤레 복소수: (3-4j)\n\nz1 + z2 = (4+2j)\nz1 * z2 = (11-2j)\n\n위상각(phase): 0.9273 라디안\n위상각(도): 53.13°\n\n극좌표: r=5.00, θ=53.13°\n직교좌표 복원: (3.0000000000000004+3.9999999999999996j)',
+        tip: '복소수의 절대값(abs)은 원점에서의 거리, 위상각(phase)은 실수축과의 각도를 의미합니다.'
+      }
+    ]
+  },
+
+  'json-module': {
+    sections: [
+      {
+        title: 'JSON 직렬화/역직렬화',
+        content: `JSON(JavaScript Object Notation)은 데이터 교환의 표준 형식입니다.\n\njson.dumps(): 파이썬 객체 → JSON 문자열 (직렬화)\njson.loads(): JSON 문자열 → 파이썬 객체 (역직렬화)\njson.dump(): 파일에 쓰기\njson.load(): 파일에서 읽기`,
+        code: 'import json\n\n# 파이썬 객체 → JSON 문자열\ndata = {\n    "이름": "김파이",\n    "나이": 25,\n    "취미": ["코딩", "독서", "게임"],\n    "졸업": True,\n    "주소": None\n}\n\n# dumps: 직렬화 (문자열로)\njson_str = json.dumps(data, ensure_ascii=False, indent=2)\nprint("=== JSON 직렬화 ===")\nprint(json_str)\n\n# loads: 역직렬화 (파이썬 객체로)\nparsed = json.loads(json_str)\nprint(f"\\n=== 역직렬화 결과 ===")\nprint(f"이름: {parsed[\'이름\']}")\nprint(f"취미: {parsed[\'취미\']}")\nprint(f"타입: {type(parsed)}")',
+        expectedOutput: '=== JSON 직렬화 ===\n{\n  "이름": "김파이",\n  "나이": 25,\n  "취미": [\n    "코딩",\n    "독서",\n    "게임"\n  ],\n  "졸업": true,\n  "주소": null\n}\n\n=== 역직렬화 결과 ===\n이름: 김파이\n취미: [\'코딩\', \'독서\', \'게임\']\n타입: <class \'dict\'>',
+        tip: 'ensure_ascii=False로 한글을 그대로 출력하고, indent로 가독성을 높일 수 있습니다.'
+      },
+      {
+        title: 'JSON 활용 - API 응답 처리',
+        content: `실제로 JSON은 웹 API에서 데이터를 주고받을 때 가장 많이 사용됩니다.\n\n파이썬 ↔ JSON 타입 매핑:\n- dict ↔ object, list ↔ array\n- str ↔ string, int/float ↔ number\n- True/False ↔ true/false, None ↔ null`,
+        code: 'import json\n\n# API 응답 시뮬레이션\napi_response = \'\'\'{\n    "status": "success",\n    "data": {\n        "users": [\n            {"id": 1, "name": "Alice", "active": true},\n            {"id": 2, "name": "Bob", "active": false},\n            {"id": 3, "name": "Charlie", "active": true}\n        ],\n        "total": 3\n    }\n}\'\'\'\n\n# JSON 파싱\nresult = json.loads(api_response)\n\nprint(f"상태: {result[\'status\']}")\nprint(f"총 사용자: {result[\'data\'][\'total\']}명\\n")\n\n# 활성 사용자만 필터링\nactive_users = [\n    user[\'name\'] \n    for user in result[\'data\'][\'users\'] \n    if user[\'active\']\n]\nprint(f"활성 사용자: {active_users}")\n\n# 타입 매핑 확인\nprint(f"\\n=== 타입 매핑 ===")\nprint(f"Python dict  → JSON object")\nprint(f"Python list  → JSON array")\nprint(f"Python True  → JSON true")\nprint(f"Python None  → JSON null")',
+        expectedOutput: '상태: success\n총 사용자: 3명\n\n활성 사용자: [\'Alice\', \'Charlie\']\n\n=== 타입 매핑 ===\nPython dict  → JSON object\nPython list  → JSON array\nPython True  → JSON true\nPython None  → JSON null',
+        tip: 'json.loads()는 문자열을, json.load()는 파일 객체를 받습니다. s가 붙으면 string!'
+      }
+    ]
+  },
+
+  'datetime-module': {
+    sections: [
+      {
+        title: '날짜와 시간 생성',
+        content: `datetime 모듈은 날짜와 시간을 다루는 클래스를 제공합니다.\n\n주요 클래스:\n- date: 날짜 (년, 월, 일)\n- time: 시간 (시, 분, 초)\n- datetime: 날짜 + 시간\n- timedelta: 시간 차이`,
+        code: 'from datetime import datetime, date, time, timedelta\n\n# 현재 날짜/시간\nnow = datetime.now()\nprint(f"현재: {now}")\nprint(f"날짜: {now.date()}")\nprint(f"시간: {now.time()}")\n\n# 특정 날짜 생성\nbirthday = date(2000, 5, 15)\nprint(f"\\n생일: {birthday}")\nprint(f"년: {birthday.year}, 월: {birthday.month}, 일: {birthday.day}")\nprint(f"요일: {birthday.strftime(\"%A\")}")\n\n# 특정 시간 생성\nmeeting = datetime(2026, 3, 20, 14, 30, 0)\nprint(f"\\n회의: {meeting}")\n\n# 오늘 날짜\ntoday = date.today()\nprint(f"\\n오늘: {today}")\nprint(f"생일로부터: {(today - birthday).days}일 경과")',
+        expectedOutput: '현재: 2026-03-18 15:30:00.123456\n날짜: 2026-03-18\n시간: 15:30:00.123456\n\n생일: 2000-05-15\n년: 2000, 월: 5, 일: 15\n요일: Monday\n\n회의: 2026-03-20 14:30:00\n\n오늘: 2026-03-18\n생일로부터: 9438일 경과',
+        tip: 'datetime.now()은 로컬 시간, datetime.utcnow()은 UTC 시간을 반환합니다.'
+      },
+      {
+        title: '날짜 포매팅과 연산',
+        content: `strftime()으로 날짜를 원하는 형식의 문자열로 변환합니다.\nstrptime()으로 문자열을 datetime 객체로 파싱합니다.\n\ntimedelta로 날짜 간 계산을 수행합니다.`,
+        code: 'from datetime import datetime, timedelta\n\nnow = datetime.now()\n\n# strftime: datetime → 문자열\nprint("=== 날짜 포매팅 (strftime) ===")\nprint(f"기본:  {now.strftime(\"%Y-%m-%d %H:%M:%S\")}")\nprint(f"한국:  {now.strftime(\"%Y년 %m월 %d일\")}")\nprint(f"시간:  {now.strftime(\"%p %I:%M\")}")\nprint(f"요일:  {now.strftime(\"%A, %B %d\")}")\n\n# strptime: 문자열 → datetime\ndate_str = "2026-03-18 14:30:00"\nparsed = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")\nprint(f"\\n파싱 결과: {parsed}")\n\n# timedelta: 날짜 연산\nprint("\\n=== 날짜 연산 (timedelta) ===")\ntomorrow = now + timedelta(days=1)\nnext_week = now + timedelta(weeks=1)\nprint(f"내일: {tomorrow.strftime(\"%Y-%m-%d\")}")\nprint(f"다음 주: {next_week.strftime(\"%Y-%m-%d\")}")\nprint(f"100일 후: {(now + timedelta(days=100)).strftime(\"%Y-%m-%d\")}")\n\n# 두 날짜 간 차이\nstart = datetime(2026, 1, 1)\ndiff = now - start\nprint(f"\\n올해 경과: {diff.days}일")',
+        expectedOutput: '=== 날짜 포매팅 (strftime) ===\n기본:  2026-03-18 15:30:00\n한국:  2026년 03월 18일\n시간:  PM 03:30\n요일:  Wednesday, March 18\n\n파싱 결과: 2026-03-18 14:30:00\n\n=== 날짜 연산 (timedelta) ===\n내일: 2026-03-19\n다음 주: 2026-03-25\n100일 후: 2026-06-26\n\n올해 경과: 76일',
+        tip: '%Y=4자리 연도, %m=2자리 월, %d=2자리 일, %H=24시, %I=12시, %M=분, %S=초, %A=요일, %B=월이름'
+      }
+    ]
+  },
+
   // ==================== 고급 과정 ====================
   'decorators': {
     sections: [

@@ -184,6 +184,42 @@ export const lessons = {
       estimatedTime: 30,
       difficulty: 3,
       topics: ['re.match', 're.search', 're.findall', '패턴 문법', '그룹', 're.sub']
+    },
+    {
+      id: 'os-sys',
+      title: 'os/sys 모듈',
+      description: '운영체제 기능, 파일 시스템 제어, 시스템 정보',
+      icon: 'fa-solid fa-terminal',
+      estimatedTime: 25,
+      difficulty: 2,
+      topics: ['os.path', 'os.listdir', 'os.makedirs', 'sys.argv', 'sys.path', '환경 변수']
+    },
+    {
+      id: 'math-cmath',
+      title: 'math/cmath 모듈',
+      description: '수학 연산, 삼각함수, 로그, 복소수 처리',
+      icon: 'fa-solid fa-square-root-variable',
+      estimatedTime: 20,
+      difficulty: 2,
+      topics: ['math.sqrt', 'math.pi', 'math.log', '삼각함수', 'cmath', '복소수']
+    },
+    {
+      id: 'json-module',
+      title: 'json 모듈',
+      description: 'JSON 데이터 파싱, 생성, 파일 입출력',
+      icon: 'fa-solid fa-code',
+      estimatedTime: 20,
+      difficulty: 2,
+      topics: ['json.dumps', 'json.loads', 'json.dump', 'json.load', 'indent', 'ensure_ascii']
+    },
+    {
+      id: 'datetime-module',
+      title: 'datetime 모듈',
+      description: '날짜와 시간 생성, 포매팅, 연산, 타임존',
+      icon: 'fa-solid fa-calendar-days',
+      estimatedTime: 25,
+      difficulty: 2,
+      topics: ['datetime.now', 'date', 'time', 'timedelta', 'strftime', 'strptime']
     }
   ],
 
