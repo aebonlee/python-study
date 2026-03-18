@@ -7,7 +7,7 @@ import CodeEditor from '../components/CodeEditor'
 
 export default function LessonPage() {
   const { level, lessonId } = useParams()
-  const { completedLessons, completeLesson } = useProgress()
+  const { completedLessons, completeLesson, uncompleteLesson } = useProgress()
   const [activeSection, setActiveSection] = useState(0)
 
   const info = levelInfo[level]
@@ -111,6 +111,7 @@ export default function LessonPage() {
               <div className="lesson-practice">
                 <h3>직접 실습해보세요</h3>
                 <CodeEditor
+                  key={`${lessonId}-${activeSection}`}
                   initialCode={sections[activeSection].code}
                   expectedOutput={sections[activeSection].expectedOutput || ''}
                   lessonId={lessonId}
@@ -150,7 +151,9 @@ export default function LessonPage() {
               </button>
             )}
             {isCompleted && (
-              <span className="completed-badge-inline"><i className="fa-solid fa-check" /> 완료됨</span>
+              <button className="btn btn-outline complete-toggle-btn" onClick={() => uncompleteLesson(lessonId)}>
+                <i className="fa-solid fa-rotate-left" /> 완료 취소
+              </button>
             )}
 
             <div className="lesson-nav-right">

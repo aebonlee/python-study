@@ -58,3 +58,7 @@
 .nav-title { display: block; font-size: 14px; font-weight: 600; color: var(--text-primary); }
 .complete-btn { font-size: 16px; }
 .completed-badge-inline { display: inline-flex; align-items: center; gap: 4px; color: var(--success); font-weight: 600; font-size: 15px; }
+.complete-toggle-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius-md); border: 1px solid var(--success); color: var(--success); background: transparent; font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+.complete-toggle-btn:hover { background: rgba(16,185,129,0.08); border-color: var(--error); color: var(--error); }
+[data-theme="dark"] .complete-toggle-btn { border-color: var(--success); color: var(--success); }
+[data-theme="dark"] .complete-toggle-btn:hover { background: rgba(239,68,68,0.1); border-color: var(--error); color: var(--error); }

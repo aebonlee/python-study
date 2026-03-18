@@ -50,11 +50,11 @@
 .python-lesson-detail .callout-box li { margin-bottom: 4px; color: var(--text-primary); }
 .python-lesson-detail .callout-box p { margin: 0.3rem 0; color: var(--text-primary); }
 
-/* Code Block */
-.python-lesson-detail .code-block { margin: 1.5rem 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-light); }
-.python-lesson-detail .code-header { background: #2d3748; color: #e2e8f0; padding: 8px 16px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
-.python-lesson-detail .code-block pre { background: #1a202c; color: #e2e8f0; padding: 16px; margin: 0; overflow-x: auto; font-size: 0.9rem; line-height: 1.6; border-radius: 0; }
-.python-lesson-detail .code-block code { font-family: var(--font-code); white-space: pre; background: none; padding: 0; color: #e2e8f0; }
+/* Code Block - matches CodeEditor style */
+.python-lesson-detail .code-block { margin: 1.5rem 0; border-radius: var(--radius-md); overflow: hidden; border: 2px solid var(--primary); }
+.python-lesson-detail .code-header { background: var(--primary); color: white; padding: 10px 16px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+.python-lesson-detail .code-block pre { background: #0F172A; color: #E2E8F0; padding: 16px; margin: 0; overflow-x: auto; font-size: 0.9rem; line-height: 1.7; border-radius: 0; }
+.python-lesson-detail .code-block code { font-family: var(--font-code); white-space: pre; background: none; padding: 0; color: #E2E8F0; }
 
 /* Lesson Table */
 .python-lesson-detail .lesson-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
@@ -150,8 +150,9 @@
 [data-theme="dark"] .python-lesson-detail .callout-box { background: rgba(75,139,190,0.1); border-left-color: rgba(75,139,190,0.6); }
 [data-theme="dark"] .python-lesson-detail .callout-box li,
 [data-theme="dark"] .python-lesson-detail .callout-box p { color: var(--text-primary); }
-[data-theme="dark"] .python-lesson-detail .code-header { background: #0F172A; }
-[data-theme="dark"] .python-lesson-detail .code-block pre { background: #0d1117; }
+[data-theme="dark"] .python-lesson-detail .code-block { border-color: var(--primary-light); }
+[data-theme="dark"] .python-lesson-detail .code-header { background: var(--primary); }
+[data-theme="dark"] .python-lesson-detail .code-block pre { background: #020617; }
 [data-theme="dark"] .python-lesson-detail .lesson-table th { background: rgba(75,139,190,0.12); }
 [data-theme="dark"] .python-lesson-detail .lesson-table td { border-color: var(--border-medium); }
 [data-theme="dark"] .python-lesson-detail .lesson-table td code { background: rgba(75,139,190,0.15); }

@@ -57,6 +57,14 @@ export function ProgressProvider({ children }) {
     })
   }, [])
 
+  const uncompleteLesson = useCallback((lessonId) => {
+    setState(prev => {
+      const newCompleted = new Set(prev.completedLessons)
+      newCompleted.delete(lessonId)
+      return { ...prev, completedLessons: newCompleted }
+    })
+  }, [])
+
   const saveQuizScore = useCallback((quizId, score) => {
     setState(prev => {
       const prevScore = prev.quizScores[quizId] || 0
@@ -99,6 +107,7 @@ export function ProgressProvider({ children }) {
       codeRuns: state.codeRuns,
       streak: state.streak,
       completeLesson,
+      uncompleteLesson,
       saveQuizScore,
       incrementCodeRuns,
       getTotalProgress,

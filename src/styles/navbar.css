@@ -30,3 +30,14 @@
 .mobile-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
 .mobile-toggle.active span:nth-child(2) { opacity: 0; }
 .mobile-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* Dropdown category groups */
+.dropdown-group { padding: 2px 0; }
+.dropdown-group + .dropdown-group { border-top: 1px solid var(--border-light); }
+.dropdown-group .dropdown-header { border-top: none; margin-top: 0; }
+.dropdown-group.group-standard { background: rgba(48,105,152,0.04); }
+.dropdown-group.group-education { background: rgba(255,212,59,0.06); }
+.dropdown-group.group-data { background: rgba(16,185,129,0.04); }
+[data-theme="dark"] .dropdown-group.group-standard { background: rgba(75,139,190,0.08); }
+[data-theme="dark"] .dropdown-group.group-education { background: rgba(255,212,59,0.06); }
+[data-theme="dark"] .dropdown-group.group-data { background: rgba(16,185,129,0.08); }
