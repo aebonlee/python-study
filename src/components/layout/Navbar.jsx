@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useProgress } from '../../contexts/ProgressContext'
+import { useAuth } from '../../contexts/AuthContext'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -9,7 +10,9 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const { theme, toggleTheme } = useTheme()
   const { getTotalProgress } = useProgress()
+  const { user, isAuthenticated, signOut } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -25,15 +28,10 @@ export default function Navbar() {
   const totalProgress = getTotalProgress()
 
   const navItems = [
-    {
-      label: '학습 경로',
-      children: [
-        { to: '/basics', icon: 'fa-solid fa-seedling', label: '기초 과정' },
-        { to: '/intermediate', icon: 'fa-solid fa-rocket', label: '중급 과정' },
-        { to: '/advanced', icon: 'fa-solid fa-bolt', label: '고급 과정' },
-        { to: '/applied', icon: 'fa-solid fa-microscope', label: '응용 과정' },
-      ]
-    },
+    { to: '/basics', label: '기초' },
+    { to: '/intermediate', label: '중급' },
+    { to: '/advanced', label: '고급' },
+    { to: '/applied', label: '응용' },
     {
       label: '실습',
       children: [
@@ -45,6 +43,9 @@ export default function Navbar() {
     { to: '/quiz', label: '퀴즈' },
     { to: '/badges', label: '도장깨기' },
   ]
+
+  const userAvatar = user?.user_metadata?.avatar_url || user?.user_metadata?.picture
+  const userName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0]
 
   return (
     <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
@@ -121,6 +122,32 @@ export default function Navbar() {
               </svg>
             )}
           </button>
+
+          {/* Auth UI */}
+          {isAuthenticated ? (
+            <div className="nav-user-menu">
+              {userAvatar ? (
+                <img src={userAvatar} alt={userName} className="nav-user-avatar" />
+              ) : (
+                <div className="nav-user-avatar" style={{ background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 14, fontWeight: 700 }}>
+                  {userName?.charAt(0)?.toUpperCase()}
+                </div>
+              )}
+              <div className="nav-user-dropdown">
+                <div className="nav-user-info">
+                  <div className="nav-user-name">{userName}</div>
+                  <div className="nav-user-email">{user?.email}</div>
+                </div>
+                <button onClick={() => { signOut(); navigate('/') }}>
+                  <i className="fa-solid fa-right-from-bracket" /> 로그아웃
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button className="nav-login-btn" onClick={() => navigate('/login')}>
+              <i className="fa-solid fa-user" /> 로그인
+            </button>
+          )}
 
           <button
             className={`mobile-toggle${mobileOpen ? ' active' : ''}`}

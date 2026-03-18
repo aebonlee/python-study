@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { ProgressProvider } from './contexts/ProgressContext'
 import { BadgeProvider } from './contexts/BadgeContext'
+import { AuthProvider } from './contexts/AuthContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
@@ -12,6 +13,7 @@ const LevelPage = lazy(() => import('./pages/LevelPage'))
 const LessonPage = lazy(() => import('./pages/LessonPage'))
 const BadgeCollection = lazy(() => import('./pages/BadgeCollection'))
 const QuizCenter = lazy(() => import('./pages/QuizCenter'))
+const Login = lazy(() => import('./pages/Login'))
 
 function PageLoader() {
   return (
@@ -38,6 +40,7 @@ function AppLayout() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<LazyRoute element={<Home />} />} />
+          <Route path="/login" element={<LazyRoute element={<Login />} />} />
           <Route path="/:level" element={<LazyRoute element={<LevelPage />} />} />
           <Route path="/:level/:lessonId" element={<LazyRoute element={<LessonPage />} />} />
           <Route path="/badges" element={<LazyRoute element={<BadgeCollection />} />} />
@@ -63,13 +66,15 @@ export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <ProgressProvider>
-          <BadgeProvider>
-            <ErrorBoundary>
-              <AppLayout />
-            </ErrorBoundary>
-          </BadgeProvider>
-        </ProgressProvider>
+        <AuthProvider>
+          <ProgressProvider>
+            <BadgeProvider>
+              <ErrorBoundary>
+                <AppLayout />
+              </ErrorBoundary>
+            </BadgeProvider>
+          </ProgressProvider>
+        </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>
   )
