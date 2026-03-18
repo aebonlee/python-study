@@ -3,11 +3,7 @@
    — normal scrolling page (same as other pages)
    ============================================ */
 
-/* Page Header — matches python-learning-page */
-.practice-page .page-header-section { padding: 40px 0 24px; text-align: center; background: linear-gradient(135deg, rgba(48,105,152,0.08) 0%, rgba(255,212,59,0.05) 100%); border-bottom: 1px solid var(--border-light); }
-.practice-page .page-title { font-size: 32px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
-.practice-page .page-title i { color: var(--primary); margin-right: 8px; }
-.practice-page .page-subtitle { font-size: 16px; color: var(--text-secondary); }
+/* Page Header — uses unified .page-header from course.css */
 
 /* Step Tabs */
 .practice-step-tabs { background: rgba(48,105,152,0.04); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 8px 12px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 4px; }
@@ -96,7 +92,6 @@
 .practice-output-content.has-error { background: rgba(239,68,68,0.04); }
 
 /* Dark mode */
-[data-theme="dark"] .practice-page .page-header-section { background: linear-gradient(135deg, rgba(75,139,190,0.12) 0%, rgba(255,212,59,0.06) 100%); }
 [data-theme="dark"] .practice-step-tabs { background: rgba(75,139,190,0.08); }
 [data-theme="dark"] .practice-tab { background: var(--bg-medium); border-color: var(--border-light); }
 [data-theme="dark"] .practice-example-sidebar { background: var(--bg-medium); }

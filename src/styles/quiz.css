@@ -1,6 +1,6 @@
 /* Quiz Styles */
 .quiz-page { min-height: 100vh; }
-.quiz-header { background: var(--gradient-hero); }
+/* quiz-header inherits .page-header gradient */
 .quiz-content-wrapper { padding: 48px 0; max-width: 800px; margin: 0 auto; }
 .quiz-list-section { padding: 64px 0; }
 .quiz-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
@@ -56,4 +56,3 @@
 .review-item { display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; }
 .review-item.correct { background: var(--success-light); color: var(--success-dark); }
 .review-item.wrong { background: var(--error-light); color: var(--error-dark); }
-.quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }

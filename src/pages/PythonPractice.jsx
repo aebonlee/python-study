@@ -382,10 +382,17 @@ export default function PythonPractice() {
 
   return (
     <div className="practice-page">
-      <section className="page-header-section">
+      <section className="page-header">
         <div className="container">
-          <h1 className="page-title"><i className="fa-solid fa-laptop-code" /> 파이썬 실습</h1>
-          <p className="page-subtitle">소스 코드를 확인하고 편집하여 직접 실행해 보세요</p>
+          <div className="page-header-content">
+            <div className="page-header-title-row">
+              <span className="page-header-icon"><i className="fa-solid fa-laptop-code" /></span>
+              <div>
+                <h1>파이썬 실습</h1>
+                <p>소스 코드를 확인하고 편집하여 직접 실행해 보세요</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

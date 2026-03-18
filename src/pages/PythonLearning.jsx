@@ -17,10 +17,17 @@ const lessons = [
 export default function PythonLearning() {
   return (
     <div className="python-learning-page">
-      <section className="page-header-section">
+      <section className="page-header">
         <div className="container">
-          <h1 className="page-title"><i className="fa-brands fa-python" /> 파이썬 학습</h1>
-          <p className="page-subtitle">단계별로 파이썬 프로그래밍의 기초부터 심화까지 학습합니다</p>
+          <div className="page-header-content">
+            <div className="page-header-title-row">
+              <span className="page-header-icon"><i className="fa-brands fa-python" /></span>
+              <div>
+                <h1>파이썬 학습</h1>
+                <p>단계별로 파이썬 프로그래밍의 기초부터 심화까지 학습합니다</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

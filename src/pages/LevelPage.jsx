@@ -24,12 +24,16 @@ export default function LevelPage() {
 
   return (
     <div className="level-page">
-      <section className="page-header" style={{ background: `linear-gradient(135deg, ${info.color}, ${info.color}dd)` }}>
+      <section className="page-header">
         <div className="container">
           <div className="page-header-content">
-            <span className="page-header-icon"><i className={info.icon} /></span>
-            <h1>{info.title} 과정</h1>
-            <p>{info.description}</p>
+            <div className="page-header-title-row">
+              <span className="page-header-icon"><i className={info.icon} /></span>
+              <div>
+                <h1>{info.title} 과정</h1>
+                <p>{info.description}</p>
+              </div>
+            </div>
             <div className="page-header-progress">
               <ProgressBar value={progress} color="#ffffff" showPercent={true} size="lg" />
               <span className="progress-detail">{levelLessons.filter(l => false).length} / {levelLessons.length} 완료</span>

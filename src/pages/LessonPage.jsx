@@ -45,7 +45,7 @@ export default function LessonPage() {
   return (
     <div className="lesson-page">
       {/* Page Header */}
-      <section className="page-header" style={{ background: `linear-gradient(135deg, ${info.color}, ${info.color}dd)` }}>
+      <section className="page-header">
         <div className="container">
           <div className="breadcrumb">
             <Link to="/">홈</Link>
@@ -55,17 +55,21 @@ export default function LessonPage() {
             <span>{lesson.title}</span>
           </div>
           <div className="page-header-content">
-            <span className="page-header-icon"><i className={lesson.icon} /></span>
-            <h1>{lesson.title}</h1>
-            <p>{lesson.description}</p>
-            <div className="lesson-meta-bar">
-              <span><i className="fa-solid fa-clock" /> 약 {lesson.estimatedTime}분</span>
-              <span><i className="fa-solid fa-clipboard" /> {lesson.topics?.length || 0}개 주제</span>
-              <span>
-                {Array.from({ length: 3 }, (_, i) => (
-                  <i key={i} className={i < lesson.difficulty ? 'fa-solid fa-star' : 'fa-regular fa-star'} />
-                ))}
-              </span>
+            <div className="page-header-title-row">
+              <span className="page-header-icon"><i className={lesson.icon} /></span>
+              <div>
+                <h1>{lesson.title}</h1>
+                <p>{lesson.description}</p>
+                <div className="lesson-meta-bar">
+                  <span><i className="fa-solid fa-clock" /> 약 {lesson.estimatedTime}분</span>
+                  <span><i className="fa-solid fa-clipboard" /> {lesson.topics?.length || 0}개 주제</span>
+                  <span>
+                    {Array.from({ length: 3 }, (_, i) => (
+                      <i key={i} className={i < lesson.difficulty ? 'fa-solid fa-star' : 'fa-regular fa-star'} />
+                    ))}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 /* Badge System */
 .badge-page { min-height: 100vh; }
-.badge-header { background: var(--gradient-hero); }
+/* badge-header inherits .page-header gradient */
 .badge-overview-stats { display: flex; gap: 32px; margin-top: 24px; }
 .badge-stat { text-align: center; }
 .badge-stat-num { display: block; font-size: 32px; font-weight: 800; color: white; }

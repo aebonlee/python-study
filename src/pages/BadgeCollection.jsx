@@ -21,9 +21,13 @@ export default function BadgeCollection() {
       <section className="page-header badge-header">
         <div className="container">
           <div className="page-header-content">
-            <span className="page-header-icon"><i className="fa-solid fa-trophy" /></span>
-            <h1>도장깨기</h1>
-            <p>학습 성과를 배지로 수집하세요. 모든 배지를 모아 파이썬 마스터가 되어보세요!</p>
+            <div className="page-header-title-row">
+              <span className="page-header-icon"><i className="fa-solid fa-trophy" /></span>
+              <div>
+                <h1>도장깨기</h1>
+                <p>학습 성과를 배지로 수집하세요. 모든 배지를 모아 파이썬 마스터가 되어보세요!</p>
+              </div>
+            </div>
             <div className="badge-overview-stats">
               <div className="badge-stat">
                 <span className="badge-stat-num">{earned.length}</span>

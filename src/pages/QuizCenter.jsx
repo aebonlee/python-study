@@ -27,8 +27,12 @@ export default function QuizCenter() {
                 </svg>
                 퀴즈 목록
               </button>
-              <h1>{quiz.title}</h1>
-              <p>{quiz.description}</p>
+              <div className="page-header-title-row">
+                <div>
+                  <h1>{quiz.title}</h1>
+                  <p>{quiz.description}</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -44,9 +48,13 @@ export default function QuizCenter() {
       <section className="page-header quiz-header">
         <div className="container">
           <div className="page-header-content">
-            <span className="page-header-icon"><i className="fa-solid fa-pen-nib" /></span>
-            <h1>퀴즈 센터</h1>
-            <p>단계별 테스트로 파이썬 실력을 검증하세요</p>
+            <div className="page-header-title-row">
+              <span className="page-header-icon"><i className="fa-solid fa-pen-nib" /></span>
+              <div>
+                <h1>퀴즈 센터</h1>
+                <p>단계별 테스트로 파이썬 실력을 검증하세요</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
