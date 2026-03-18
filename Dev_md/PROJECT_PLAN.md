@@ -12,7 +12,7 @@
 
 ### 1. 단계별 학습 시스템
 - **기초 (Basics)**: 변수, 자료형, 조건문, 반복문, 리스트, 함수 등 9개 레슨
-- **중급 (Intermediate)**: OOP, 예외 처리, 파일 I/O, 정규표현식 등 8개 레슨
+- **중급 (Intermediate)**: OOP, 예외 처리, 정규표현식, 표준 라이브러리, Turtle 등 13개 레슨
 - **고급 (Advanced)**: 데코레이터, 제너레이터, 동시성 등 5개 레슨
 - **응용 (Applied)**: NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow/PyTorch 등 8개 레슨
 
@@ -72,6 +72,7 @@
 12. ~~Navbar 메뉴 개별화 (1열 평탄 구조)~~ ✅
 13. ~~Matplotlib/Seaborn, Scikit-learn, TensorFlow/PyTorch 과정 추가~~ ✅
 14. ~~Navbar 라이브러리 드롭다운 메뉴~~ ✅
-15. 학습 데이터 클라우드 동기화 - 예정
-16. 프로필 페이지 - 예정
-17. 수료증 발급 - 예정
+15. ~~표준 라이브러리 + Turtle Graphics 과정 추가~~ ✅
+16. 학습 데이터 클라우드 동기화 - 예정
+17. 프로필 페이지 - 예정
+18. 수료증 발급 - 예정

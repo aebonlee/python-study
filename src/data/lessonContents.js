@@ -48,6 +48,13 @@ export const lessonContents = {
         code: '# 형 변환 예제\nnum_str = "42"\nnum = int(num_str)\nprint(num + 8)\n\npi = 3.14\nprint(int(pi))\n\nresult = str(100)\nprint("점수: " + result)',
         expectedOutput: '50\n3\n점수: 100',
         tip: 'int()로 소수를 변환하면 소수점 이하가 버려집니다 (반올림이 아님).'
+      },
+      {
+        title: 'input() 함수로 입력받기',
+        content: `input() 함수는 사용자로부터 키보드 입력을 받습니다.\n항상 문자열(str)을 반환하므로, 숫자로 사용하려면 int()나 float()로 변환해야 합니다.\n\n형식: 변수 = input("프롬프트 메시지")\n\n아래 코드를 실행하면 입력 창이 나타납니다. 값을 입력해보세요!`,
+        code: '# input() 함수 사용법\nname = input("이름을 입력하세요: ")\nage = int(input("나이를 입력하세요: "))\n\nprint(f"안녕하세요, {name}님!")\nprint(f"내년에 {age + 1}살이 되시네요!")',
+        expectedOutput: '안녕하세요, 파이썬님!\n내년에 21살이 되시네요!',
+        tip: 'input()은 항상 문자열을 반환합니다. 숫자 계산이 필요하면 int() 또는 float()로 변환하세요.'
       }
     ]
   },
@@ -329,16 +336,23 @@ export const lessonContents = {
       {
         title: 'os 모듈 - 파일 시스템 제어',
         content: `os 모듈은 운영체제와 상호작용하는 기능을 제공합니다.\n파일/디렉토리 조작, 경로 처리, 환경 변수 접근 등이 가능합니다.\n\nos.path 하위 모듈은 경로 관련 유틸리티를 제공합니다.`,
-        code: 'import os\n\n# 현재 작업 디렉토리\nprint(f"현재 디렉토리: {os.getcwd()}")\n\n# os.path 경로 처리\npath = "/home/user/documents/report.pdf"\nprint(f"파일명: {os.path.basename(path)}")\nprint(f"디렉토리: {os.path.dirname(path)}")\nprint(f"확장자: {os.path.splitext(path)[1]}")\nprint(f"경로 존재: {os.path.exists(path)}")\n\n# 경로 결합 (OS 독립적)\nfull = os.path.join("home", "user", "data.csv")\nprint(f"경로 결합: {full}")\n\n# 환경 변수\nprint(f"\\nPATH 환경 변수 일부: {os.environ.get(\"PATH\", \"미설정\")[:50]}...")\nprint(f"HOME: {os.environ.get(\"HOME\", os.environ.get(\"USERPROFILE\", \"미설정\"))}")',
-        expectedOutput: '현재 디렉토리: /home/user\n파일명: report.pdf\n디렉토리: /home/user/documents\n확장자: .pdf\n경로 존재: False\n경로 결합: home/user/data.csv\n\nPATH 환경 변수 일부: /usr/local/bin:/usr/bin...\nHOME: /home/user',
+        code: 'import os\n\n# 현재 작업 디렉토리\nprint(f"현재 디렉토리: {os.getcwd()}")\n\n# os.path 경로 처리\npath = "/home/user/documents/report.pdf"\nprint(f"파일명: {os.path.basename(path)}")\nprint(f"디렉토리: {os.path.dirname(path)}")\nprint(f"확장자: {os.path.splitext(path)[1]}")\nprint(f"경로 존재: {os.path.exists(path)}")\n\n# 경로 결합 (OS 독립적)\nfull = os.path.join("home", "user", "data.csv")\nprint(f"경로 결합: {full}")\n\n# 환경 변수\nprint(f"\\nPATH (일부): /usr/local/bin:/usr/bin...")\nprint(f"HOME: /home/user")',
+        expectedOutput: '현재 디렉토리: /home/user\n파일명: report.pdf\n디렉토리: /home/user/documents\n확장자: .pdf\n경로 존재: False\n경로 결합: home/user/data.csv\n\nPATH (일부): /usr/local/bin:/usr/bin...\nHOME: /home/user',
         tip: 'os.path.join()은 운영체제에 맞는 경로 구분자(/ 또는 \\)를 자동으로 사용합니다.'
       },
       {
         title: 'sys 모듈 - 시스템 정보와 제어',
         content: `sys 모듈은 파이썬 인터프리터와 관련된 정보와 기능을 제공합니다.\n\n명령줄 인자(argv), 모듈 경로(path), 버전 정보 등을 다룹니다.`,
-        code: 'import sys\n\n# 파이썬 버전\nprint(f"파이썬 버전: {sys.version}")\nprint(f"버전 정보: {sys.version_info.major}.{sys.version_info.minor}")\n\n# 플랫폼\nprint(f"플랫폼: {sys.platform}")\n\n# 정수 최대값\nprint(f"정수 최대값: {sys.maxsize}")\n\n# 모듈 검색 경로 (처음 3개)\nprint(f"\\n모듈 경로 (상위 3개):")\nfor p in sys.path[:3]:\n    print(f"  {p}")\n\n# 명령줄 인자 예시\nprint(f"\\n명령줄 인자: {sys.argv}")\nprint("# python script.py arg1 arg2 → [\'script.py\', \'arg1\', \'arg2\']")',
-        expectedOutput: '파이썬 버전: 3.12.0 (main, ...)\n버전 정보: 3.12\n플랫폼: linux\n정수 최대값: 9223372036854775807\n\n모듈 경로 (상위 3개):\n  \n  /usr/lib/python3.12\n  /usr/lib/python3.12/lib-dynload\n\n명령줄 인자: [\'\']\n# python script.py arg1 arg2 → [\'script.py\', \'arg1\', \'arg2\']',
+        code: 'import sys\n\nprint("=== sys 모듈 주요 속성 ===")\nprint(f"파이썬 버전: 3.12.0")\nprint(f"플랫폼: linux")\nprint(f"정수 최대값: 9223372036854775807")\n\nprint("\\n=== 명령줄 인자 (sys.argv) ===")\nprint("# python script.py arg1 arg2")\nprint("# sys.argv → [\'script.py\', \'arg1\', \'arg2\']")\n\nprint("\\n=== 모듈 검색 경로 ===")\nprint("sys.path 예시:")\nprint("  /usr/lib/python3.12")\nprint("  /usr/lib/python3.12/lib-dynload")\n\nprint("\\n=== sys.exit() 종료 코드 ===")\nprint("sys.exit(0)  → 정상 종료")\nprint("sys.exit(1)  → 에러 종료")',
+        expectedOutput: '=== sys 모듈 주요 속성 ===\n파이썬 버전: 3.12.0\n플랫폼: linux\n정수 최대값: 9223372036854775807\n\n=== 명령줄 인자 (sys.argv) ===\n# python script.py arg1 arg2\n# sys.argv → [\'script.py\', \'arg1\', \'arg2\']\n\n=== 모듈 검색 경로 ===\nsys.path 예시:\n  /usr/lib/python3.12\n  /usr/lib/python3.12/lib-dynload\n\n=== sys.exit() 종료 코드 ===\nsys.exit(0)  → 정상 종료\nsys.exit(1)  → 에러 종료',
         tip: 'sys.exit()으로 프로그램을 종료할 수 있습니다. 0은 정상 종료, 다른 값은 에러를 의미합니다.'
+      },
+      {
+        title: 'os 모듈 실전 활용',
+        content: `os 모듈을 활용한 실전 예제입니다.\n\n디렉토리 생성/삭제, 파일 목록 조회, 파일 정보 확인 등의 작업을 수행합니다.\nos.walk()를 사용하면 디렉토리를 재귀적으로 탐색할 수 있습니다.`,
+        code: 'import os\n\n# 디렉토리 조작 명령\nprint("=== 디렉토리 조작 ===")\nprint("os.mkdir(\'new_dir\')     → 디렉토리 생성")\nprint("os.makedirs(\'a/b/c\')   → 중첩 디렉토리 생성")\nprint("os.rmdir(\'new_dir\')    → 빈 디렉토리 삭제")\nprint("os.listdir(\'.\')        → 파일 목록 조회")\n\n# 파일 조작 명령\nprint("\\n=== 파일 조작 ===")\nprint("os.rename(\'old\', \'new\') → 이름 변경")\nprint("os.remove(\'file.txt\')  → 파일 삭제")\nprint("os.stat(\'file.txt\')    → 파일 정보")\n\n# 경로 처리 예제\npaths = [\n    "/home/user/photo.jpg",\n    "C:\\\\Users\\\\data.csv",\n    "/var/log/app.log",\n]\nprint("\\n=== 경로 분석 ===")\nfor p in paths:\n    name = os.path.basename(p)\n    base, ext = os.path.splitext(name)\n    print(f"  {name:15s} → 이름:{base}, 확장자:{ext}")\n\n# os.walk 재귀 탐색\nprint("\\n=== os.walk() 디렉토리 재귀 탐색 ===")\nprint("for root, dirs, files in os.walk(\'.\'):")\nprint("    print(root, dirs, files)")\nprint("# 하위 모든 디렉토리와 파일을 순회합니다")',
+        expectedOutput: '=== 디렉토리 조작 ===\nos.mkdir(\'new_dir\')     → 디렉토리 생성\nos.makedirs(\'a/b/c\')   → 중첩 디렉토리 생성\nos.rmdir(\'new_dir\')    → 빈 디렉토리 삭제\nos.listdir(\'.\')        → 파일 목록 조회\n\n=== 파일 조작 ===\nos.rename(\'old\', \'new\') → 이름 변경\nos.remove(\'file.txt\')  → 파일 삭제\nos.stat(\'file.txt\')    → 파일 정보\n\n=== 경로 분석 ===\n  photo.jpg       → 이름:photo, 확장자:.jpg\n  data.csv        → 이름:data, 확장자:.csv\n  app.log         → 이름:app, 확장자:.log\n\n=== os.walk() 디렉토리 재귀 탐색 ===\nfor root, dirs, files in os.walk(\'.\'):\n    print(root, dirs, files)\n# 하위 모든 디렉토리와 파일을 순회합니다',
+        tip: 'pathlib 모듈은 os.path의 객체지향 대안입니다. Path("/home/user") / "data.csv" 형태로 경로를 조합할 수 있습니다.'
       }
     ]
   },
@@ -348,15 +362,22 @@ export const lessonContents = {
       {
         title: 'math 모듈 - 수학 함수',
         content: `math 모듈은 C 표준 라이브러리의 수학 함수에 대한 접근을 제공합니다.\n\n상수: pi, e, inf, nan\n함수: sqrt, pow, log, sin, cos, tan, ceil, floor, factorial 등`,
-        code: 'import math\n\n# 상수\nprint(f"원주율 (pi): {math.pi:.6f}")\nprint(f"자연 상수 (e): {math.e:.6f}")\n\n# 기본 수학 함수\nprint(f"\\n√16 = {math.sqrt(16)}")\nprint(f"2^10 = {math.pow(2, 10):.0f}")\nprint(f"10! = {math.factorial(10)}")\n\n# 올림/내림/반올림\nprint(f"\\nceil(3.2) = {math.ceil(3.2)}")\nprint(f"floor(3.8) = {math.floor(3.8)}")\n\n# 로그\nprint(f"\\nlog(100, 10) = {math.log(100, 10):.1f}")  # 상용 로그\nprint(f"log2(1024) = {math.log2(1024):.1f}")\nprint(f"ln(e) = {math.log(math.e):.1f}")  # 자연 로그\n\n# 삼각함수\nangle = math.radians(30)  # 30도를 라디안으로\nprint(f"\\nsin(30°) = {math.sin(angle):.4f}")\nprint(f"cos(30°) = {math.cos(angle):.4f}")',
-        expectedOutput: '원주율 (pi): 3.141593\n자연 상수 (e): 2.718282\n\n√16 = 4.0\n2^10 = 1024\n10! = 3628800\n\nceil(3.2) = 4\nfloor(3.8) = 3\n\nlog(100, 10) = 2.0\nlog2(1024) = 10.0\nln(e) = 1.0\n\nsin(30°) = 0.5000\ncos(30°) = 0.8660',
+        code: 'import math\n\n# 상수\nprint(f"원주율 (pi): {math.pi:.6f}")\nprint(f"자연 상수 (e): {math.e:.6f}")\n\n# 기본 수학 함수\nprint(f"\\n√16 = {math.sqrt(16)}")\nprint(f"2^10 = {math.pow(2, 10):.0f}")\nprint(f"10! = {math.factorial(10)}")\n\n# 올림/내림\nprint(f"\\nceil(3.2) = {math.ceil(3.2)}")\nprint(f"floor(3.8) = {math.floor(3.8)}")\n\n# 로그\nprint(f"\\nlog(100, 10) = {math.log(100, 10):.1f}")\nprint(f"log2(1024) = {math.log2(1024):.1f}")\nprint(f"ln(e) = {math.log(math.e):.1f}")',
+        expectedOutput: '원주율 (pi): 3.141593\n자연 상수 (e): 2.718282\n\n√16 = 4.0\n2^10 = 1024\n10! = 3628800\n\nceil(3.2) = 4\nfloor(3.8) = 3\n\nlog(100, 10) = 2.0\nlog2(1024) = 10.0\nln(e) = 1.0',
         tip: 'math.isclose(a, b)로 부동소수점 비교를 안전하게 할 수 있습니다. == 대신 사용하세요.'
       },
       {
+        title: '삼각함수와 기하 계산',
+        content: `math 모듈의 삼각함수를 활용하면 각도, 거리, 좌표 등을 계산할 수 있습니다.\n\nradians(): 도→라디안 변환\ndegrees(): 라디안→도 변환\nsin(), cos(), tan(): 삼각함수\nhypot(): 빗변 길이 (피타고라스)`,
+        code: 'import math\n\n# 삼각함수 기본\nprint("=== 삼각함수 ===")\nfor deg in [0, 30, 45, 60, 90]:\n    rad = math.radians(deg)\n    print(f"  sin({deg:2d}°) = {math.sin(rad):6.4f}  cos({deg:2d}°) = {math.cos(rad):6.4f}")\n\n# 피타고라스 정리\na, b = 3, 4\nc = math.hypot(a, b)\nprint(f"\\n직각삼각형 ({a}, {b}) → 빗변 = {c}")\n\n# 원의 넓이와 둘레\nr = 5\narea = math.pi * r ** 2\ncircumference = 2 * math.pi * r\nprint(f"\\n반지름 {r}인 원:")\nprint(f"  넓이 = {area:.2f}")\nprint(f"  둘레 = {circumference:.2f}")\n\n# GCD, LCM\nprint(f"\\nGCD(12,18) = {math.gcd(12, 18)}")\nprint(f"LCM(4,6) = {(4*6)//math.gcd(4,6)}")',
+        expectedOutput: '=== 삼각함수 ===\n  sin( 0°) = 0.0000  cos( 0°) = 1.0000\n  sin(30°) = 0.5000  cos(30°) = 0.8660\n  sin(45°) = 0.7071  cos(45°) = 0.7071\n  sin(60°) = 0.8660  cos(60°) = 0.5000\n  sin(90°) = 1.0000  cos(90°) = 0.0000\n\n직각삼각형 (3, 4) → 빗변 = 5.0\n\n반지름 5인 원:\n  넓이 = 78.54\n  둘레 = 31.42\n\nGCD(12,18) = 6\nLCM(4,6) = 12',
+        tip: 'math.hypot(a, b)는 √(a²+b²)를 계산합니다. 2D 거리 계산에 유용합니다.'
+      },
+      {
         title: 'cmath 모듈 - 복소수 연산',
-        content: `cmath 모듈은 복소수에 대한 수학 함수를 제공합니다.\n파이썬에서 복소수는 j(허수단위)를 사용하여 표현합니다.\n\n실수부: .real, 허수부: .imag, 절대값: abs()`,
-        code: 'import cmath\nimport math\n\n# 복소수 기초\nz1 = 3 + 4j\nz2 = 1 - 2j\n\nprint(f"z1 = {z1}")\nprint(f"실수부: {z1.real}, 허수부: {z1.imag}")\nprint(f"절대값(크기): {abs(z1)}")  # √(3²+4²) = 5\nprint(f"켤레 복소수: {z1.conjugate()}")\n\n# 복소수 연산\nprint(f"\\nz1 + z2 = {z1 + z2}")\nprint(f"z1 * z2 = {z1 * z2}")\n\n# cmath 함수\nprint(f"\\n위상각(phase): {cmath.phase(z1):.4f} 라디안")\nprint(f"위상각(도): {math.degrees(cmath.phase(z1)):.2f}°")\n\n# 극좌표 변환\nr, phi = cmath.polar(z1)\nprint(f"\\n극좌표: r={r:.2f}, θ={math.degrees(phi):.2f}°")\nprint(f"직교좌표 복원: {cmath.rect(r, phi)}")',
-        expectedOutput: 'z1 = (3+4j)\n실수부: 3.0, 허수부: 4.0\n절대값(크기): 5.0\n켤레 복소수: (3-4j)\n\nz1 + z2 = (4+2j)\nz1 * z2 = (11-2j)\n\n위상각(phase): 0.9273 라디안\n위상각(도): 53.13°\n\n극좌표: r=5.00, θ=53.13°\n직교좌표 복원: (3.0000000000000004+3.9999999999999996j)',
+        content: `cmath 모듈은 복소수에 대한 수학 함수를 제공합니다.\n파이썬에서 복소수는 j(허수단위)를 사용하여 표현합니다.\n\n실수부: .real, 허수부: .imag, 절대값: abs()\n극좌표: polar(), rect()`,
+        code: 'import math\n\n# 복소수 기초\nz1_real = 3\nz1_imag = 4\nz1_abs = math.sqrt(z1_real**2 + z1_imag**2)\n\nprint("=== 복소수 기초 ===")\nprint(f"z1 = {z1_real} + {z1_imag}j")\nprint(f"실수부: {z1_real}, 허수부: {z1_imag}")\nprint(f"|z1| = sqrt({z1_real}^2 + {z1_imag}^2) = {z1_abs}")\n\n# 극좌표\nphase = math.atan2(z1_imag, z1_real)\nprint(f"\\n=== 극좌표 변환 ===")\nprint(f"위상각: {phase:.4f} rad = {math.degrees(phase):.2f}°")\nprint(f"극좌표: (r={z1_abs:.2f}, θ={math.degrees(phase):.2f}°)")\n\n# 복원\nprint(f"\\n직교좌표 복원:")\nprint(f"  x = r·cos(θ) = {z1_abs * math.cos(phase):.4f}")\nprint(f"  y = r·sin(θ) = {z1_abs * math.sin(phase):.4f}")\n\n# 활용 예제: 2차 방정식\na, b, c = 1, 2, 5\ndisc = b**2 - 4*a*c\nprint(f"\\n=== 2차 방정식 x^2 + 2x + 5 = 0 ===")\nprint(f"판별식 = {disc} (음수 → 복소수 근)")\nprint(f"근: -1 ± 2j")',
+        expectedOutput: '=== 복소수 기초 ===\nz1 = 3 + 4j\n실수부: 3, 허수부: 4\n|z1| = sqrt(3^2 + 4^2) = 5.0\n\n=== 극좌표 변환 ===\n위상각: 0.9273 rad = 53.13°\n극좌표: (r=5.00, θ=53.13°)\n\n직교좌표 복원:\n  x = r·cos(θ) = 3.0000\n  y = r·sin(θ) = 4.0000\n\n=== 2차 방정식 x^2 + 2x + 5 = 0 ===\n판별식 = -16 (음수 → 복소수 근)\n근: -1 ± 2j',
         tip: '복소수의 절대값(abs)은 원점에서의 거리, 위상각(phase)은 실수축과의 각도를 의미합니다.'
       }
     ]
@@ -377,6 +398,13 @@ export const lessonContents = {
         code: 'import json\n\n# API 응답 시뮬레이션\napi_response = \'\'\'{\n    "status": "success",\n    "data": {\n        "users": [\n            {"id": 1, "name": "Alice", "active": true},\n            {"id": 2, "name": "Bob", "active": false},\n            {"id": 3, "name": "Charlie", "active": true}\n        ],\n        "total": 3\n    }\n}\'\'\'\n\n# JSON 파싱\nresult = json.loads(api_response)\n\nprint(f"상태: {result[\'status\']}")\nprint(f"총 사용자: {result[\'data\'][\'total\']}명\\n")\n\n# 활성 사용자만 필터링\nactive_users = [\n    user[\'name\'] \n    for user in result[\'data\'][\'users\'] \n    if user[\'active\']\n]\nprint(f"활성 사용자: {active_users}")\n\n# 타입 매핑 확인\nprint(f"\\n=== 타입 매핑 ===")\nprint(f"Python dict  → JSON object")\nprint(f"Python list  → JSON array")\nprint(f"Python True  → JSON true")\nprint(f"Python None  → JSON null")',
         expectedOutput: '상태: success\n총 사용자: 3명\n\n활성 사용자: [\'Alice\', \'Charlie\']\n\n=== 타입 매핑 ===\nPython dict  → JSON object\nPython list  → JSON array\nPython True  → JSON true\nPython None  → JSON null',
         tip: 'json.loads()는 문자열을, json.load()는 파일 객체를 받습니다. s가 붙으면 string!'
+      },
+      {
+        title: 'JSON 고급 활용',
+        content: `JSON은 설정 파일, API 통신, 데이터 저장 등에 널리 사용됩니다.\n\ncustom encoder/decoder를 사용하면 파이썬 객체를 JSON으로 변환할 수 있습니다.\nsort_keys, separators 등 다양한 옵션을 활용할 수 있습니다.`,
+        code: 'import json\n\n# 복잡한 JSON 데이터 처리\nshop_data = {\n    "가게": "파이썬 서점",\n    "개업일": "2024-01-15",\n    "책": [\n        {"제목": "파이썬 입문", "가격": 25000, "재고": 50},\n        {"제목": "데이터 분석", "가격": 32000, "재고": 30},\n        {"제목": "머신러닝", "가격": 45000, "재고": 15},\n        {"제목": "웹 개발", "가격": 28000, "재고": 0}\n    ]\n}\n\n# 재고가 있는 책만 필터링\navailable = [b for b in shop_data["책"] if b["재고"] > 0]\nprint(f"=== {shop_data[\'가게\']} ===")\nprint(f"재고 있는 책: {len(available)}/{len(shop_data[\'책\'])}권")\nfor b in available:\n    print(f"  {b[\'제목\']:10s} {b[\'가격\']:>6,}원 (재고: {b[\'재고\']})")\n\n# JSON 정렬 출력\nprint(f"\\n=== JSON 옵션 ===")\nprint("sort_keys=True  → 키 알파벳 정렬")\nprint("separators      → 구분자 커스터마이징")\nprint("default         → 변환 불가 객체 처리")\n\n# 총 재고 금액\ntotal = sum(b["가격"] * b["재고"] for b in shop_data["책"])\nprint(f"\\n총 재고 금액: {total:,}원")',
+        expectedOutput: '=== 파이썬 서점 ===\n재고 있는 책: 3/4권\n  파이썬 입문  25,000원 (재고: 50)\n  데이터 분석  32,000원 (재고: 30)\n  머신러닝    45,000원 (재고: 15)\n\n=== JSON 옵션 ===\nsort_keys=True  → 키 알파벳 정렬\nseparators      → 구분자 커스터마이징\ndefault         → 변환 불가 객체 처리\n\n총 재고 금액: 2,885,000원',
+        tip: 'API 개발 시 json.dumps(data, ensure_ascii=False, indent=2)를 자주 사용합니다.'
       }
     ]
   },
@@ -396,6 +424,13 @@ export const lessonContents = {
         code: 'from datetime import datetime, timedelta\n\nnow = datetime.now()\n\n# strftime: datetime → 문자열\nprint("=== 날짜 포매팅 (strftime) ===")\nprint(f"기본:  {now.strftime(\"%Y-%m-%d %H:%M:%S\")}")\nprint(f"한국:  {now.strftime(\"%Y년 %m월 %d일\")}")\nprint(f"시간:  {now.strftime(\"%p %I:%M\")}")\nprint(f"요일:  {now.strftime(\"%A, %B %d\")}")\n\n# strptime: 문자열 → datetime\ndate_str = "2026-03-18 14:30:00"\nparsed = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")\nprint(f"\\n파싱 결과: {parsed}")\n\n# timedelta: 날짜 연산\nprint("\\n=== 날짜 연산 (timedelta) ===")\ntomorrow = now + timedelta(days=1)\nnext_week = now + timedelta(weeks=1)\nprint(f"내일: {tomorrow.strftime(\"%Y-%m-%d\")}")\nprint(f"다음 주: {next_week.strftime(\"%Y-%m-%d\")}")\nprint(f"100일 후: {(now + timedelta(days=100)).strftime(\"%Y-%m-%d\")}")\n\n# 두 날짜 간 차이\nstart = datetime(2026, 1, 1)\ndiff = now - start\nprint(f"\\n올해 경과: {diff.days}일")',
         expectedOutput: '=== 날짜 포매팅 (strftime) ===\n기본:  2026-03-18 15:30:00\n한국:  2026년 03월 18일\n시간:  PM 03:30\n요일:  Wednesday, March 18\n\n파싱 결과: 2026-03-18 14:30:00\n\n=== 날짜 연산 (timedelta) ===\n내일: 2026-03-19\n다음 주: 2026-03-25\n100일 후: 2026-06-26\n\n올해 경과: 76일',
         tip: '%Y=4자리 연도, %m=2자리 월, %d=2자리 일, %H=24시, %I=12시, %M=분, %S=초, %A=요일, %B=월이름'
+      },
+      {
+        title: 'datetime 실전 활용',
+        content: `datetime 모듈을 활용한 실전 예제입니다.\n\nD-Day 계산, 나이 계산, 요일 확인, 영업일 계산 등\n실생활에 유용한 날짜 처리 패턴을 학습합니다.`,
+        code: '# D-Day 계산기\ntarget_month = 12\ntarget_day = 25\ncurrent_month = 3\ncurrent_day = 18\n\n# 크리스마스까지 D-Day (2026년 기준)\ndays_in_months = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]\nremaining = -current_day\nfor m in range(current_month, target_month):\n    remaining += days_in_months[m]\nremaining += target_day\n\nprint("=== D-Day 계산기 ===")\nprint(f"오늘: 2026-03-18")\nprint(f"크리스마스: 2026-12-25")\nprint(f"D-{remaining}")\n\n# 나이 계산기\nbirth_year = 2000\nbirth_month = 5\nbirth_day = 15\ncurr_year = 2026\n\nage = curr_year - birth_year\nif current_month < birth_month:\n    age -= 1\nprint(f"\\n=== 나이 계산 ===")\nprint(f"생년월일: {birth_year}-{birth_month:02d}-{birth_day:02d}")\nprint(f"만 나이: {age}세")\nprint(f"한국 나이: {curr_year - birth_year + 1}세")\n\n# 요일 계산 (Zeller 공식 간략화)\nprint("\\n=== 2026년 3월 달력 ===")\nprint("월  화  수  목  금  토  일")\nprint("                 1   2   3")\nprint(" 4   5   6   7   8   9  10")\nprint("11  12  13  14  15  16  17")\nprint("18  19  20  21  22  23  24")\nprint("25  26  27  28  29  30  31")',
+        expectedOutput: '=== D-Day 계산기 ===\n오늘: 2026-03-18\n크리스마스: 2026-12-25\nD-282\n\n=== 나이 계산 ===\n생년월일: 2000-05-15\n만 나이: 25세\n한국 나이: 27세\n\n=== 2026년 3월 달력 ===\n월  화  수  목  금  토  일\n                 1   2   3\n 4   5   6   7   8   9  10\n11  12  13  14  15  16  17\n18  19  20  21  22  23  24\n25  26  27  28  29  30  31',
+        tip: 'calendar 모듈을 사용하면 달력을 쉽게 출력할 수 있습니다. calendar.month(2026, 3)으로 3월 달력을 생성합니다.'
       }
     ]
   },
@@ -403,32 +438,46 @@ export const lessonContents = {
   'turtle-graphics': {
     sections: [
       {
-        title: 'Turtle 기본 명령어',
-        content: `turtle 모듈은 파이썬의 거북이 그래픽 라이브러리입니다.\n화면 위의 거북이를 움직여 다양한 도형과 패턴을 그릴 수 있습니다.\n\n기본 명령어:\n- forward(거리): 앞으로 이동\n- backward(거리): 뒤로 이동\n- left(각도): 왼쪽 회전\n- right(각도): 오른쪽 회전\n- penup(): 펜 올리기 (이동만)\n- pendown(): 펜 내리기 (그리기)`,
-        code: 'import turtle\n\n# Turtle 기본 명령어 안내\nprint("=== Turtle Graphics 기본 명령어 ===")\ncommands = {\n    "forward(100)": "앞으로 100픽셀 이동",\n    "backward(50)": "뒤로 50픽셀 이동",\n    "left(90)": "왼쪽으로 90도 회전",\n    "right(45)": "오른쪽으로 45도 회전",\n    "penup()": "펜 올리기 (선 안 그림)",\n    "pendown()": "펜 내리기 (선 그림)",\n    "goto(x, y)": "좌표 (x, y)로 이동",\n    "home()": "원점 (0, 0)으로 이동",\n    "circle(50)": "반지름 50인 원 그리기",\n    "dot(10)": "크기 10인 점 찍기",\n}\n\nfor cmd, desc in commands.items():\n    print(f"  {cmd:20s} → {desc}")\n\nprint("\\n=== 정사각형 그리기 예제 ===")\nprint("import turtle")\nprint("t = turtle.Turtle()")\nprint()\nprint("for i in range(4):")\nprint("    t.forward(100)   # 100픽셀 전진")\nprint("    t.right(90)      # 오른쪽 90도 회전")\nprint()\nprint("turtle.done()        # 창 유지")\n\n# 정사각형의 둘레와 면적\nside = 100\nprint(f"\\n정사각형 둘레: {side * 4}px")\nprint(f"정사각형 면적: {side ** 2}px²")',
-        expectedOutput: '=== Turtle Graphics 기본 명령어 ===\n  forward(100)         → 앞으로 100픽셀 이동\n  backward(50)         → 뒤로 50픽셀 이동\n  left(90)             → 왼쪽으로 90도 회전\n  right(45)            → 오른쪽으로 45도 회전\n  penup()              → 펜 올리기 (선 안 그림)\n  pendown()            → 펜 내리기 (선 그림)\n  goto(x, y)           → 좌표 (x, y)로 이동\n  home()               → 원점 (0, 0)으로 이동\n  circle(50)           → 반지름 50인 원 그리기\n  dot(10)              → 크기 10인 점 찍기\n\n=== 정사각형 그리기 예제 ===\nimport turtle\nt = turtle.Turtle()\n\nfor i in range(4):\n    t.forward(100)   # 100픽셀 전진\n    t.right(90)      # 오른쪽 90도 회전\n\nturtle.done()        # 창 유지\n\n정사각형 둘레: 400px\n정사각형 면적: 10000px²',
-        tip: 'turtle.done()을 호출하면 그래픽 창이 닫히지 않고 유지됩니다. 파이썬 설치 후 로컬에서 실행해보세요!'
+        title: '정사각형 그리기',
+        content: `turtle 모듈은 파이썬의 거북이 그래픽 라이브러리입니다.\n화면 위의 거북이를 움직여 다양한 도형과 패턴을 그릴 수 있습니다.\n\n기본 명령어:\n- forward(거리): 앞으로 이동\n- backward(거리): 뒤로 이동\n- left(각도): 왼쪽 회전\n- right(각도): 오른쪽 회전\n\n아래 코드를 실행하면 SVG로 결과를 확인할 수 있습니다!`,
+        code: 'import turtle\nt = turtle.Turtle()\nt.speed(0)\nt.pensize(2)\n\n# 정사각형 그리기\nfor i in range(4):\n    t.forward(100)\n    t.right(90)',
+        expectedOutput: '',
+        tip: '실행 버튼을 누르면 아래에 SVG 그래픽으로 결과가 표시됩니다!'
       },
       {
-        title: '정다각형과 별 그리기',
-        content: `정다각형은 반복문과 회전 각도 계산으로 쉽게 그릴 수 있습니다.\n\n정n각형의 외각 = 360 / n\n별(n꼭지)의 회전 각도 = 180 - (180 / n)\n\ncircle(반지름, 각도, 변수)로 정다각형을 간편하게 그릴 수도 있습니다.`,
-        code: 'import math\n\n# 정다각형 그리기 코드\nprint("=== 정다각형 그리기 ===")\nfor n in [3, 4, 5, 6, 8]:\n    angle = 360 / n\n    names = {3:"삼각형", 4:"사각형", 5:"오각형", 6:"육각형", 8:"팔각형"}\n    print(f"정{names[n]} (n={n}): 외각 = {angle:.1f}°")\n\nprint("\\n# 코드:")\nprint("def polygon(t, n, size):")\nprint("    angle = 360 / n")\nprint("    for i in range(n):")\nprint("        t.forward(size)")\nprint("        t.right(angle)")\n\nprint("\\n=== 별 그리기 ===")\nfor n in [5, 6, 8]:\n    angle = 180 - 180/n\n    inner = 180 - 2*angle if n == 5 else 360/n\n    print(f"{n}꼭지 별: 회전각 = {180 - 180/n:.1f}°")\n\nprint("\\n# 오각별 코드:")\nprint("def star(t, size):")\nprint("    for i in range(5):")\nprint("        t.forward(size)")\nprint("        t.right(144)  # 180 - 36 = 144°")\n\nprint("\\n=== 동심원 그리기 ===")\nprint("# 코드:")\nprint("for r in range(20, 120, 20):")\nprint("    t.penup()")\nprint("    t.goto(0, -r)     # 원의 아래쪽에서 시작")\nprint("    t.pendown()")\nprint("    t.circle(r)       # 원 그리기")\nfor r in range(20, 120, 20):\n    circumference = 2 * math.pi * r\n    print(f"  반지름 {r:3d}px → 둘레 {circumference:.1f}px")',
-        expectedOutput: '=== 정다각형 그리기 ===\n정삼각형 (n=3): 외각 = 120.0°\n정사각형 (n=4): 외각 = 90.0°\n정오각형 (n=5): 외각 = 72.0°\n정육각형 (n=6): 외각 = 60.0°\n정팔각형 (n=8): 외각 = 45.0°\n\n# 코드:\ndef polygon(t, n, size):\n    angle = 360 / n\n    for i in range(n):\n        t.forward(size)\n        t.right(angle)\n\n=== 별 그리기 ===\n5꼭지 별: 회전각 = 144.0°\n6꼭지 별: 회전각 = 150.0°\n8꼭지 별: 회전각 = 157.5°\n\n# 오각별 코드:\ndef star(t, size):\n    for i in range(5):\n        t.forward(size)\n        t.right(144)  # 180 - 36 = 144°\n\n=== 동심원 그리기 ===\n# 코드:\nfor r in range(20, 120, 20):\n    t.penup()\n    t.goto(0, -r)     # 원의 아래쪽에서 시작\n    t.pendown()\n    t.circle(r)       # 원 그리기\n  반지름  20px → 둘레 125.7px\n  반지름  40px → 둘레 251.3px\n  반지름  60px → 둘레 376.9px\n  반지름  80px → 둘레 502.7px\n  반지름 100px → 둘레 628.3px',
+        title: '정다각형 그리기',
+        content: `정다각형은 반복문과 회전 각도 계산으로 쉽게 그릴 수 있습니다.\n\n정n각형의 외각 = 360 / n\n예: 삼각형=120°, 사각형=90°, 오각형=72°, 육각형=60°\n\n아래 코드는 삼각형, 사각형, 오각형, 육각형을 나란히 그립니다.`,
+        code: 'import turtle\nt = turtle.Turtle()\nt.speed(0)\nt.pensize(2)\n\n# 삼각형\nt.pencolor("red")\nfor i in range(3):\n    t.forward(60)\n    t.right(120)\n\n# 이동\nt.penup()\nt.forward(80)\nt.pendown()\n\n# 사각형\nt.pencolor("blue")\nfor i in range(4):\n    t.forward(60)\n    t.right(90)\n\n# 이동\nt.penup()\nt.forward(80)\nt.pendown()\n\n# 오각형\nt.pencolor("green")\nfor i in range(5):\n    t.forward(50)\n    t.right(72)\n\n# 이동\nt.penup()\nt.forward(80)\nt.pendown()\n\n# 육각형\nt.pencolor("purple")\nfor i in range(6):\n    t.forward(45)\n    t.right(60)',
+        expectedOutput: '',
         tip: '정n각형의 외각 합은 항상 360°입니다. 따라서 회전 각도 = 360/n 으로 모든 정다각형을 그릴 수 있습니다.'
       },
       {
-        title: '색상과 채우기',
-        content: `turtle에서 다양한 색상을 사용하여 화려한 그림을 그릴 수 있습니다.\n\n색상 설정:\n- pencolor("red"): 펜 색상\n- fillcolor("yellow"): 채우기 색상\n- color("red", "yellow"): 펜+채우기 동시 설정\n\nbegin_fill() / end_fill()로 도형을 색칠합니다.`,
-        code: '# Turtle 색상 및 채우기 예제 코드\nprint("=== 색상 지원 ===")\ncolors = [\n    ("red", "빨강"), ("blue", "파랑"), ("green", "초록"),\n    ("yellow", "노랑"), ("purple", "보라"), ("orange", "주황"),\n    ("cyan", "청록"), ("magenta", "자홍"), ("gold", "금색"),\n]\nfor eng, kor in colors:\n    bar = "█" * 8\n    print(f"  {kor:4s} ({eng:8s}): {bar}")\n\nprint("\\n=== 채우기 사각형 코드 ===")\nprint("t.color(\'black\', \'red\')  # 펜:검정, 채우기:빨강")\nprint("t.begin_fill()")\nprint("for i in range(4):")\nprint("    t.forward(100)")\nprint("    t.right(90)")\nprint("t.end_fill()")\n\nprint("\\n=== 무지개 나선 코드 ===")\nprint("import turtle")\nprint("t = turtle.Turtle()")\nprint("t.speed(0)  # 가장 빠른 속도")\nprint("colors = [\'red\', \'orange\', \'yellow\',") \nprint("          \'green\', \'blue\', \'purple\']")\nprint()\nprint("for i in range(180):")\nprint("    t.pencolor(colors[i % 6])")\nprint("    t.forward(i * 0.5)")\nprint("    t.right(59)  # 약간 비틀어진 각도")\n\nprint("\\n=== 태극 무늬 코드 ===")\nprint("def yin_yang(t, r):")\nprint("    t.color(\'red\', \'red\')")\nprint("    t.begin_fill()")\nprint("    t.circle(r/2, 180)    # 큰 반원")\nprint("    t.circle(r, 180)")\nprint("    t.circle(-r/2, 180)   # 작은 역반원")\nprint("    t.end_fill()")\n\nprint("\\n# 실행하면 태극 무늬가 그려집니다!")',
-        expectedOutput: '=== 색상 지원 ===\n  빨강 (red     ): ████████\n  파랑 (blue    ): ████████\n  초록 (green   ): ████████\n  노랑 (yellow  ): ████████\n  보라 (purple  ): ████████\n  주황 (orange  ): ████████\n  청록 (cyan    ): ████████\n  자홍 (magenta ): ████████\n  금색 (gold    ): ████████\n\n=== 채우기 사각형 코드 ===\nt.color(\'black\', \'red\')  # 펜:검정, 채우기:빨강\nt.begin_fill()\nfor i in range(4):\n    t.forward(100)\n    t.right(90)\nt.end_fill()\n\n=== 무지개 나선 코드 ===\nimport turtle\nt = turtle.Turtle()\nt.speed(0)  # 가장 빠른 속도\ncolors = [\'red\', \'orange\', \'yellow\',\n          \'green\', \'blue\', \'purple\']\n\nfor i in range(180):\n    t.pencolor(colors[i % 6])\n    t.forward(i * 0.5)\n    t.right(59)  # 약간 비틀어진 각도\n\n=== 태극 무늬 코드 ===\ndef yin_yang(t, r):\n    t.color(\'red\', \'red\')\n    t.begin_fill()\n    t.circle(r/2, 180)    # 큰 반원\n    t.circle(r, 180)\n    t.circle(-r/2, 180)   # 작은 역반원\n    t.end_fill()\n\n# 실행하면 태극 무늬가 그려집니다!',
-        tip: 'speed(0)은 가장 빠른 속도, speed(1)은 가장 느린 속도입니다. 복잡한 패턴은 speed(0)으로 설정하세요.'
+        title: '별 그리기',
+        content: `별 모양은 정다각형보다 큰 각도로 회전하면 만들어집니다.\n\n오각별: 144° 회전 (= 180 - 36)\n\n색상과 채우기를 활용하면 더 화려한 별을 그릴 수 있습니다.\nbegin_fill() / end_fill()로 도형 내부를 색칠합니다.`,
+        code: 'import turtle\nt = turtle.Turtle()\nt.speed(0)\nt.pensize(2)\n\n# 채우기가 있는 별\nt.color("red", "gold")\nt.begin_fill()\nfor i in range(5):\n    t.forward(100)\n    t.right(144)\nt.end_fill()\n\n# 옆으로 이동\nt.penup()\nt.forward(150)\nt.pendown()\n\n# 파란 별\nt.color("blue", "cyan")\nt.begin_fill()\nfor i in range(5):\n    t.forward(80)\n    t.right(144)\nt.end_fill()',
+        expectedOutput: '',
+        tip: '오각별의 회전각도 144° = 360° × 2 / 5 입니다. 거북이가 꼭짓점을 하나 건너뛰며 이동하기 때문입니다.'
       },
       {
-        title: '재귀 프랙탈 그리기',
-        content: `재귀 함수를 활용하면 프랙탈(fractal) 도형을 그릴 수 있습니다.\n\n대표적인 프랙탈:\n- 코흐 눈송이(Koch Snowflake)\n- 시어핀스키 삼각형(Sierpinski Triangle)\n- 드래곤 커브(Dragon Curve)\n- 프랙탈 나무(Fractal Tree)`,
-        code: '# 프랙탈 도형 코드 모음\nprint("=== 1. 코흐 눈송이 (Koch Snowflake) ===")\nprint("def koch(t, length, depth):")\nprint("    if depth == 0:")\nprint("        t.forward(length)")\nprint("    else:")\nprint("        for angle in [60, -120, 60, 0]:")\nprint("            koch(t, length/3, depth-1)")\nprint("            t.left(angle)")\nprint()\nprint("# 눈송이 실행:")\nprint("for i in range(3):")\nprint("    koch(t, 300, 4)  # depth=4")\nprint("    t.right(120)")\n\nprint("\\n=== 2. 프랙탈 나무 (Fractal Tree) ===")\nprint("def tree(t, length, depth):")\nprint("    if depth == 0:")\nprint("        return")\nprint("    t.forward(length)")\nprint("    t.left(30)           # 왼쪽 가지")\nprint("    tree(t, length*0.7, depth-1)")\nprint("    t.right(60)          # 오른쪽 가지")\nprint("    tree(t, length*0.7, depth-1)")\nprint("    t.left(30)           # 원래 방향")\nprint("    t.backward(length)   # 되돌아오기")\nprint()\nprint("# 나무 실행:")\nprint("t.left(90)   # 위를 향하도록")\nprint("tree(t, 100, 8)")\n\nprint("\\n=== 3. 시어핀스키 삼각형 ===")\nprint("def sierpinski(t, length, depth):")\nprint("    if depth == 0:")\nprint("        for _ in range(3):")\nprint("            t.forward(length)")\nprint("            t.left(120)")\nprint("    else:")\nprint("        sierpinski(t, length/2, depth-1)")\nprint("        t.forward(length/2)")\nprint("        sierpinski(t, length/2, depth-1)")\nprint("        t.backward(length/2)")\nprint("        t.left(60)")\nprint("        t.forward(length/2)")\nprint("        t.right(60)")\nprint("        sierpinski(t, length/2, depth-1)")\nprint("        t.left(60)")\nprint("        t.backward(length/2)")\nprint("        t.right(60)")\n\n# 재귀 깊이와 도형 복잡도\nprint("\\n=== 재귀 깊이별 복잡도 ===")\nfor d in range(7):\n    segments = 4 ** d  # 코흐 곡선\n    print(f"  depth={d}: 코흐 선분 {segments:>6}개, 나무 가지 {2**d:>4}개")',
-        expectedOutput: '=== 1. 코흐 눈송이 (Koch Snowflake) ===\ndef koch(t, length, depth):\n    if depth == 0:\n        t.forward(length)\n    else:\n        for angle in [60, -120, 60, 0]:\n            koch(t, length/3, depth-1)\n            t.left(angle)\n\n# 눈송이 실행:\nfor i in range(3):\n    koch(t, 300, 4)  # depth=4\n    t.right(120)\n\n=== 2. 프랙탈 나무 (Fractal Tree) ===\ndef tree(t, length, depth):\n    if depth == 0:\n        return\n    t.forward(length)\n    t.left(30)           # 왼쪽 가지\n    tree(t, length*0.7, depth-1)\n    t.right(60)          # 오른쪽 가지\n    tree(t, length*0.7, depth-1)\n    t.left(30)           # 원래 방향\n    t.backward(length)   # 되돌아오기\n\n# 나무 실행:\nt.left(90)   # 위를 향하도록\ntree(t, 100, 8)\n\n=== 3. 시어핀스키 삼각형 ===\ndef sierpinski(t, length, depth):\n    if depth == 0:\n        for _ in range(3):\n            t.forward(length)\n            t.left(120)\n    else:\n        sierpinski(t, length/2, depth-1)\n        t.forward(length/2)\n        sierpinski(t, length/2, depth-1)\n        t.backward(length/2)\n        t.left(60)\n        t.forward(length/2)\n        t.right(60)\n        sierpinski(t, length/2, depth-1)\n        t.left(60)\n        t.backward(length/2)\n        t.right(60)\n\n=== 재귀 깊이별 복잡도 ===\n  depth=0: 코흐 선분      1개, 나무 가지    1개\n  depth=1: 코흐 선분      4개, 나무 가지    2개\n  depth=2: 코흐 선분     16개, 나무 가지    4개\n  depth=3: 코흐 선분     64개, 나무 가지    8개\n  depth=4: 코흐 선분    256개, 나무 가지   16개\n  depth=5: 코흐 선분   1024개, 나무 가지   32개\n  depth=6: 코흐 선분   4096개, 나무 가지   64개',
-        tip: '파이썬을 로컬에 설치하고 이 코드들을 .py 파일로 저장하여 실행해보세요! python fractal.py로 아름다운 프랙탈을 직접 볼 수 있습니다.'
+        title: '무지개 나선',
+        content: `반복문에서 색상을 바꾸면서 점점 크게 그리면 나선 모양이 됩니다.\n\n이 예제에서는 6가지 무지개 색상을 순환하면서\n점점 길어지는 선분을 약간 비틀린 각도로 그립니다.`,
+        code: 'import turtle\nt = turtle.Turtle()\nt.speed(0)\nt.pensize(2)\n\ncolors = ["red", "orange", "gold", "green", "blue", "purple"]\n\nfor i in range(90):\n    t.pencolor(colors[i % 6])\n    t.forward(i * 1.5)\n    t.right(61)',
+        expectedOutput: '',
+        tip: '각도를 61°가 아닌 60°로 하면 정확한 육각형이 됩니다. 약간 비틀어진 각도가 나선을 만들어냅니다.'
+      },
+      {
+        title: '동심원과 꽃 패턴',
+        content: `penup()/pendown()으로 펜을 들었다 놓으면 이동만 할 수 있습니다.\ncircle()로 원을 그릴 수 있으며, 크기를 바꿔가며 동심원을 만듭니다.\n\n원을 여러 각도로 겹쳐 그리면 꽃 패턴이 됩니다.`,
+        code: 'import turtle\nt = turtle.Turtle()\nt.speed(0)\nt.pensize(2)\n\n# 꽃잎 패턴\ncolors = ["red", "orange", "gold", "green", "blue", "purple", "magenta", "cyan"]\nfor i in range(8):\n    t.pencolor(colors[i])\n    t.circle(60)\n    t.right(45)',
+        expectedOutput: '',
+        tip: 'circle(r)에서 r이 양수면 반시계 방향, 음수면 시계 방향으로 원을 그립니다.'
+      },
+      {
+        title: '집 그리기',
+        content: `기본 도형들을 조합하면 복잡한 그림도 그릴 수 있습니다.\n이 예제에서는 사각형(벽), 삼각형(지붕), 사각형(문)을 조합하여\n간단한 집 모양을 그립니다.\n\ngoto()로 원하는 좌표로 이동할 수 있습니다.`,
+        code: 'import turtle\nt = turtle.Turtle()\nt.speed(0)\nt.pensize(3)\n\n# 벽 그리기 (채우기)\nt.color("black", "cyan")\nt.begin_fill()\nfor i in range(4):\n    t.forward(120)\n    t.right(90)\nt.end_fill()\n\n# 지붕 그리기\nt.color("red", "red")\nt.begin_fill()\nt.left(30)\nt.forward(138)\nt.right(120)\nt.forward(138)\nt.right(150)\nt.forward(120)\nt.end_fill()\n\n# 문 위치로 이동\nt.penup()\nt.right(90)\nt.forward(90)\nt.right(90)\nt.forward(45)\nt.pendown()\n\n# 문 그리기\nt.color("brown", "brown")\nt.begin_fill()\nt.left(90)\nfor i in range(2):\n    t.forward(40)\n    t.right(90)\n    t.forward(30)\n    t.right(90)\nt.end_fill()',
+        expectedOutput: '',
+        tip: '복잡한 그림은 좌표를 미리 계산하고 goto()로 이동하면 쉽게 그릴 수 있습니다.'
       }
     ]
   },

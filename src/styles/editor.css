@@ -1,7 +1,9 @@
 /* Code Editor */
 .code-editor { border: 1px solid var(--border-light); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-white); }
-.editor-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: var(--bg-light); border-bottom: 1px solid var(--border-light); }
+.editor-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: var(--bg-light); border-bottom: 1px solid var(--border-light); flex-wrap: wrap; gap: 8px; }
 .editor-title { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.editor-badge { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: var(--radius-full); background: rgba(48,105,152,0.1); color: var(--primary); }
+.turtle-badge { background: rgba(39,174,96,0.1); color: #27AE60; }
 .editor-actions { display: flex; gap: 8px; }
 .editor-btn { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; border: 1px solid var(--border-light); background: var(--bg-white); color: var(--text-secondary); transition: var(--transition); cursor: pointer; }
 .editor-btn:hover { border-color: var(--primary); color: var(--primary); }
@@ -18,3 +20,31 @@
 .output-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--bg-light); border-bottom: 1px solid var(--border-light); font-size: 13px; font-weight: 600; color: var(--text-secondary); }
 .output-correct { color: var(--success); margin-left: auto; font-size: 14px; }
 .output-content { padding: 16px; font-family: var(--font-code); font-size: 14px; line-height: 1.6; color: var(--text-primary); background: var(--bg-white); margin: 0; white-space: pre-wrap; }
+
+/* Input Panel */
+.editor-input-panel { border-top: 2px solid var(--primary); background: var(--bg-light); }
+.input-panel-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; font-size: 13px; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border-light); }
+.input-panel-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+.input-field { display: flex; flex-direction: column; gap: 4px; }
+.input-field label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.input-field input { padding: 8px 12px; border: 1px solid var(--border-medium); border-radius: var(--radius-sm); font-family: var(--font-code); font-size: 14px; background: var(--bg-white); color: var(--text-primary); outline: none; transition: var(--transition); }
+.input-field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(48,105,152,0.1); }
+.input-panel-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 8px 16px 12px; }
+
+/* Turtle Canvas */
+.turtle-canvas-wrapper { border-top: 2px solid #27AE60; }
+.turtle-canvas-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: rgba(39,174,96,0.06); border-bottom: 1px solid var(--border-light); font-size: 13px; font-weight: 700; color: #27AE60; }
+.turtle-zoom { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.turtle-zoom button { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: var(--bg-white); color: var(--text-secondary); font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+.turtle-zoom button:hover { border-color: #27AE60; color: #27AE60; }
+.turtle-zoom button:last-child { width: auto; padding: 0 8px; font-size: 11px; }
+.turtle-zoom span { font-size: 12px; font-weight: 600; color: var(--text-secondary); min-width: 36px; text-align: center; }
+.turtle-canvas-body { padding: 16px; background: var(--bg-white); overflow: auto; max-height: 450px; }
+.turtle-canvas-body svg { border: 1px solid var(--border-light); border-radius: var(--radius-sm); }
+
+/* Dark mode overrides */
+[data-theme="dark"] .editor-badge { background: rgba(75,139,190,0.2); color: #4B8BBE; }
+[data-theme="dark"] .turtle-badge { background: rgba(39,174,96,0.2); color: #2ECC71; }
+[data-theme="dark"] .turtle-canvas-header { background: rgba(39,174,96,0.08); }
+[data-theme="dark"] .turtle-canvas-body svg { background: #1a1a2e !important; }
+[data-theme="dark"] .input-field input { background: var(--bg-medium); border-color: var(--border-light); }

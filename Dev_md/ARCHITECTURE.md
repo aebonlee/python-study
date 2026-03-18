@@ -137,7 +137,7 @@ App
 ### Navbar 구조 (1열 + 라이브러리 드롭다운)
 ```
 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 퀴즈 | 도장깨기 | [진도] [테마] [로그인/아바타]
-                           └→ os/sys / math / json / datetime
+                           └→ os/sys / math / json / datetime / turtle
                               NumPy / Pandas / Matplotlib / Scikit-learn / TensorFlow
 ```
 
@@ -172,8 +172,8 @@ App
 빌드 결과 (React.lazy + Suspense):
 | 청크 | 크기 | 내용 |
 |------|------|------|
-| index.js | 435KB | React, Router, Contexts, Supabase |
-| LessonPage.js | 70KB | 레슨 페이지 + 컨텐츠 (30개 레슨) |
+| index.js | 436KB | React, Router, Contexts, Supabase |
+| LessonPage.js | 93KB | 레슨 페이지 + 컨텐츠 (35개 레슨) |
 | QuizCenter.js | 23KB | 퀴즈 센터 + 문제 데이터 (48문제) |
 | Home.js | 7KB | 홈 페이지 |
 | BadgeCollection.js | 4KB | 배지 컬렉션 |

@@ -33,11 +33,14 @@ export default function Navbar() {
     { to: '/advanced', label: '고급' },
     { to: '/applied', label: '응용' },
     { label: '라이브러리', children: [
+      { type: 'header', label: '기본 내장/표준 라이브러리' },
       { to: '/intermediate/os-sys', label: 'os/sys', icon: 'fa-solid fa-terminal' },
-      { to: '/intermediate/math-cmath', label: 'math', icon: 'fa-solid fa-square-root-variable' },
+      { to: '/intermediate/math-cmath', label: 'math/cmath', icon: 'fa-solid fa-square-root-variable' },
       { to: '/intermediate/json-module', label: 'json', icon: 'fa-solid fa-code' },
       { to: '/intermediate/datetime-module', label: 'datetime', icon: 'fa-solid fa-calendar-days' },
-      { to: '/intermediate/turtle-graphics', label: 'turtle', icon: 'fa-solid fa-pen-ruler' },
+      { type: 'header', label: '교육용·그래픽 라이브러리' },
+      { to: '/intermediate/turtle-graphics', label: 'Turtle', icon: 'fa-solid fa-pen-ruler' },
+      { type: 'header', label: '데이터 분석·AI 라이브러리' },
       { to: '/applied/numpy-basics', label: 'NumPy', icon: 'fa-solid fa-calculator' },
       { to: '/applied/pandas-basics', label: 'Pandas', icon: 'fa-solid fa-table' },
       { to: '/applied/matplotlib-seaborn', label: 'Matplotlib', icon: 'fa-solid fa-chart-pie' },
@@ -77,11 +80,15 @@ export default function Navbar() {
                   </svg>
                 </span>
                 <ul className={`dropdown-menu${activeDropdown === i ? ' active' : ''}`}>
-                  {item.children.map(child => (
-                    <li key={child.to}>
-                      <NavLink to={child.to}><i className={child.icon} /> {child.label}</NavLink>
-                    </li>
-                  ))}
+                  {item.children.map((child, ci) =>
+                    child.type === 'header' ? (
+                      <li key={`h-${ci}`} className="dropdown-header">{child.label}</li>
+                    ) : (
+                      <li key={child.to}>
+                        <NavLink to={child.to}><i className={child.icon} /> {child.label}</NavLink>
+                      </li>
+                    )
+                  )}
                 </ul>
               </li>
             ) : (

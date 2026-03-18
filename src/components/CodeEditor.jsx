@@ -1,23 +1,63 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { useProgress } from '../contexts/ProgressContext'
+import TurtleCanvas from './TurtleCanvas'
 
 export default function CodeEditor({ initialCode = '', expectedOutput = '', lessonId = '' }) {
   const [code, setCode] = useState(initialCode)
   const [output, setOutput] = useState('')
   const [isRunning, setIsRunning] = useState(false)
   const [showHint, setShowHint] = useState(false)
+  const [inputValues, setInputValues] = useState({})
+  const [showInputPanel, setShowInputPanel] = useState(false)
   const textareaRef = useRef(null)
   const { incrementCodeRuns } = useProgress()
 
-  const simulatePythonExecution = (code) => {
+  // Detect input() calls in code
+  const inputPrompts = useMemo(() => {
+    const prompts = []
+    const lines = code.split('\n')
+    let idx = 0
+    for (const line of lines) {
+      const matches = [...line.matchAll(/input\s*\(\s*(?:["']([^"']*)["']|([^)]*))\s*\)/g)]
+      for (const m of matches) {
+        const prompt = m[1] || m[2] || `입력 ${idx + 1}`
+        prompts.push({ index: idx, prompt: prompt.trim() || `입력 ${idx + 1}`, line: line.trim() })
+        idx++
+      }
+    }
+    return prompts
+  }, [code])
+
+  // Check if code uses turtle
+  const isTurtleCode = useMemo(() => {
+    return /import\s+turtle|from\s+turtle\s+import|turtle\.Turtle/.test(code)
+  }, [code])
+
+  const simulatePythonExecution = (code, inputs = {}) => {
     let result = []
     const lines = code.split('\n')
     const variables = {}
+    let inputIdx = 0
+
+    // Replace input() calls with provided values
+    const resolveInput = (expr) => {
+      return expr.replace(/input\s*\(\s*(?:["'][^"']*["']|[^)]*)\s*\)/g, () => {
+        const val = inputs[inputIdx] ?? ''
+        inputIdx++
+        return `"${val}"`
+      })
+    }
 
     try {
-      for (let line of lines) {
-        line = line.trim()
+      for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim()
         if (!line || line.startsWith('#')) continue
+        if (line.startsWith('import ') || line.startsWith('from ')) continue
+
+        // Resolve any input() in the line
+        if (line.includes('input(')) {
+          line = resolveInput(line)
+        }
 
         // Handle print statements
         const printMatch = line.match(/^print\s*\((.+)\)$/)
@@ -75,6 +115,33 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
         if (assignMatch) {
           const [, name, value] = assignMatch
           let val = value.trim()
+
+          // Handle int(), float() conversion
+          const intMatch = val.match(/^int\s*\((.+)\)$/)
+          const floatMatch = val.match(/^float\s*\((.+)\)$/)
+          if (intMatch) {
+            const inner = intMatch[1].trim()
+            if ((inner.startsWith('"') && inner.endsWith('"')) || (inner.startsWith("'") && inner.endsWith("'"))) {
+              variables[name] = parseInt(inner.slice(1, -1)) || 0
+            } else if (inner in variables) {
+              variables[name] = parseInt(variables[inner]) || 0
+            } else {
+              try { variables[name] = parseInt(eval(inner)) || 0 } catch { variables[name] = 0 }
+            }
+            continue
+          }
+          if (floatMatch) {
+            const inner = floatMatch[1].trim()
+            if ((inner.startsWith('"') && inner.endsWith('"')) || (inner.startsWith("'") && inner.endsWith("'"))) {
+              variables[name] = parseFloat(inner.slice(1, -1)) || 0
+            } else if (inner in variables) {
+              variables[name] = parseFloat(variables[inner]) || 0
+            } else {
+              try { variables[name] = parseFloat(eval(inner)) || 0 } catch { variables[name] = 0 }
+            }
+            continue
+          }
+
           if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
             variables[name] = val.slice(1, -1)
           } else if (val.startsWith('[') && val.endsWith(']')) {
@@ -96,9 +163,9 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
           const [, varName, startOrEnd, end] = forMatch
           const start = end ? parseInt(startOrEnd) : 0
           const limit = end ? parseInt(end) : parseInt(startOrEnd)
-          const loopBodyIdx = lines.indexOf(line)
+          const loopBodyIdx = lines.indexOf(lines[i])
           const bodyLines = []
-          for (let j = loopBodyIdx + 1; j < lines.length; j++) {
+          for (let j = i + 1; j < lines.length; j++) {
             if (lines[j].startsWith('    ') || lines[j].startsWith('\t')) {
               bodyLines.push(lines[j].trim())
             } else break
@@ -138,11 +205,37 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
   }
 
   const handleRun = () => {
+    // If code has input() calls and user hasn't provided values yet
+    if (inputPrompts.length > 0 && !showInputPanel) {
+      setShowInputPanel(true)
+      // Pre-fill empty values
+      const initial = {}
+      inputPrompts.forEach((p, i) => {
+        if (!(i in inputValues)) initial[i] = ''
+      })
+      setInputValues(prev => ({ ...initial, ...prev }))
+      return
+    }
+
     setIsRunning(true)
     setOutput('')
+    setShowInputPanel(false)
 
     setTimeout(() => {
-      const result = simulatePythonExecution(code)
+      const result = simulatePythonExecution(code, inputValues)
+      setOutput(result)
+      setIsRunning(false)
+      incrementCodeRuns()
+    }, 500)
+  }
+
+  const handleRunWithInputs = () => {
+    setIsRunning(true)
+    setOutput('')
+    setShowInputPanel(false)
+
+    setTimeout(() => {
+      const result = simulatePythonExecution(code, inputValues)
       setOutput(result)
       setIsRunning(false)
       incrementCodeRuns()
@@ -152,6 +245,8 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
   const handleReset = () => {
     setCode(initialCode)
     setOutput('')
+    setInputValues({})
+    setShowInputPanel(false)
   }
 
   const handleKeyDown = (e) => {
@@ -180,6 +275,12 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
             <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
           </svg>
           <span>Python Editor</span>
+          {inputPrompts.length > 0 && (
+            <span className="editor-badge">input()</span>
+          )}
+          {isTurtleCode && (
+            <span className="editor-badge turtle-badge">Turtle</span>
+          )}
         </div>
         <div className="editor-actions">
           <button className="editor-btn hint-btn" onClick={() => setShowHint(!showHint)} title="힌트">
@@ -222,6 +323,42 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
         />
       </div>
 
+      {/* Input Panel */}
+      {showInputPanel && inputPrompts.length > 0 && (
+        <div className="editor-input-panel">
+          <div className="input-panel-header">
+            <i className="fa-solid fa-keyboard" />
+            <span>입력값을 입력하세요</span>
+          </div>
+          <div className="input-panel-body">
+            {inputPrompts.map((p, i) => (
+              <div key={i} className="input-field">
+                <label>{p.prompt}</label>
+                <input
+                  type="text"
+                  value={inputValues[i] || ''}
+                  onChange={(e) => setInputValues(prev => ({ ...prev, [i]: e.target.value }))}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleRunWithInputs()
+                  }}
+                  placeholder={`값을 입력하세요...`}
+                  autoFocus={i === 0}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="input-panel-actions">
+            <button className="editor-btn" onClick={() => setShowInputPanel(false)}>취소</button>
+            <button className="editor-btn run-btn" onClick={handleRunWithInputs}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <span>실행</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {showHint && expectedOutput && (
         <div className="editor-hint">
           <strong>예상 출력:</strong> <code>{expectedOutput}</code>
@@ -242,6 +379,9 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
           <pre className="output-content">{output}</pre>
         </div>
       )}
+
+      {/* Turtle SVG Canvas */}
+      {isTurtleCode && <TurtleCanvas code={code} />}
     </div>
   )
 }

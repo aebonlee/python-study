@@ -47,9 +47,9 @@
 - **QuizCenter.jsx**: 퀴즈 선택 그리드, 점수 표시
 
 ### 데이터 파일 (4개)
-- **lessons.js**: 4단계 x 5~9 레슨 = 총 27개 레슨 정의
-- **badges.js**: 4티어 23개 배지, 조건 시스템
-- **quizzes.js**: 4개 퀴즈 x 10문제 = 40문제 (실제 Python 지식 기반)
+- **lessons.js**: 4단계 x 5~13 레슨 = 총 35개 레슨 정의
+- **badges.js**: 4티어 25개 배지, 조건 시스템
+- **quizzes.js**: 4개 퀴즈 x 10~13문제 = 48문제 (실제 Python 지식 기반)
 - **lessonContents.js**: 각 레슨별 교육 섹션 (설명, 코드 예제, 예상 출력, 팁)
 
 ### 배포
@@ -163,3 +163,17 @@
   - `datetime-module`: date, time, datetime, timedelta, strftime/strptime
 - **lessonContents.js**: 각 레슨 2개 섹션, 코드 예제, 실행 결과, 학습 팁
 - **Navbar.jsx**: 라이브러리 드롭다운에 os/sys, math, json, datetime 추가 (총 9개 항목)
+
+---
+
+## 2026-03-18 (Day 1 추가 3) - Turtle Graphics 과정 추가
+
+### Turtle Graphics 레슨 추가
+- **lessons.js**: 중급 과정에 turtle-graphics 레슨 추가 (중급 총 13개, 전체 35개)
+  - `turtle-graphics`: forward, left/right, circle, color, fill, 정다각형, 별, 나선, 프랙탈
+- **lessonContents.js**: 4개 섹션
+  - 기본 명령어: forward, backward, left, right, speed
+  - 도형 그리기: 정다각형, 별 그리기 반복문 활용
+  - 색상과 채우기: color, fillcolor, begin_fill/end_fill, pensize
+  - 재귀 프랙탈: 코흐 눈송이, 프랙탈 나무, 시에르핀스키 삼각형
+- **Navbar.jsx**: 라이브러리 드롭다운에 turtle 추가 (총 10개 항목)

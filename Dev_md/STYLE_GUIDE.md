@@ -94,6 +94,7 @@
 | datetime | `fa-solid fa-calendar-days` |
 | Matplotlib | `fa-solid fa-chart-pie` |
 | Scikit-learn | `fa-solid fa-brain` |
+| Turtle | `fa-solid fa-pen-ruler` |
 | TensorFlow | `fa-solid fa-network-wired` |
 
 ### 배지 티어 아이콘

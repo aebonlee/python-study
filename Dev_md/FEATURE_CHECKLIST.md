@@ -31,7 +31,7 @@
 | Font Awesome 6 | 완료 | 모든 이모지 → FA 아이콘 교체 (12개 파일) |
 | 아이콘 메인 컬러 | 완료 | var(--primary) 적용, 다크모드 자동 대응 |
 | 컬러 통일 | 완료 | Python Blue/Yellow 팔레트 |
-| Navbar 라이브러리 드롭다운 | 완료 | NumPy/Pandas/Matplotlib/Scikit-learn/TensorFlow |
+| Navbar 라이브러리 드롭다운 | 완료 | os/sys/math/json/datetime/turtle/NumPy/Pandas/Matplotlib/Scikit-learn/TensorFlow |
 | Matplotlib/Seaborn 과정 | 완료 | 데이터 시각화 레슨 (3개 섹션) |
 | Scikit-learn 과정 | 완료 | 머신러닝 레슨 (3개 섹션) |
 | TensorFlow/PyTorch 과정 | 완료 | 딥러닝 레슨 (3개 섹션) |
@@ -39,6 +39,7 @@
 | math/cmath 모듈 과정 | 완료 | 수학 함수, 복소수 (2개 섹션) |
 | json 모듈 과정 | 완료 | JSON 직렬화, API 응답 (2개 섹션) |
 | datetime 모듈 과정 | 완료 | 날짜/시간, 포매팅 (2개 섹션) |
+| Turtle Graphics 과정 | 완료 | 거북이 그래픽 레슨 (4개 섹션) |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정

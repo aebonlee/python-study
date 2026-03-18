@@ -15,7 +15,9 @@
 .nav-link-dropdown { cursor: default; }
 .dropdown-menu { position: absolute; top: 100%; left: 0; min-width: 200px; background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border: 1px solid var(--border-light); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); padding: 6px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s; }
 .nav-item-dropdown:hover .dropdown-menu, .dropdown-menu.active { opacity: 1; visibility: visible; transform: translateY(0); }
-.dropdown-menu li a { display: block; padding: 10px 20px; font-size: 14px; color: var(--text-primary); transition: all 0.2s; }
+.dropdown-header { padding: 8px 16px 4px; font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; pointer-events: none; border-top: 1px solid var(--border-light); margin-top: 2px; }
+.dropdown-header:first-child { border-top: none; margin-top: 0; padding-top: 6px; }
+.dropdown-menu li a { display: block; padding: 8px 20px; font-size: 14px; color: var(--text-primary); transition: all 0.2s; }
 .dropdown-menu li a:hover { background: rgba(48,105,152,0.06); color: var(--primary); }
 .nav-actions { display: flex; align-items: center; gap: 12px; }
 .nav-progress-badge { position: relative; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; }
