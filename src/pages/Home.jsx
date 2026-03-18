@@ -12,12 +12,12 @@ export default function Home() {
   const totalProgress = getTotalProgress()
 
   const features = [
-    { icon: '🌱', title: '기초부터 탄탄하게', desc: '변수, 자료형, 반복문 등 핵심 문법을 단계별로 학습' },
-    { icon: '🚀', title: '실력 향상', desc: '객체지향, 함수형 프로그래밍, 정규식 등 중급 과정' },
-    { icon: '⚡', title: '고급 테크닉', desc: '데코레이터, 메타클래스, 동시성 프로그래밍' },
-    { icon: '🔬', title: 'NumPy & Pandas', desc: '데이터 분석의 핵심 라이브러리 실습' },
-    { icon: '🏆', title: '도장깨기', desc: '배지 시스템으로 학습 성과를 확인하고 동기 부여' },
-    { icon: '✍️', title: '퀴즈 & 테스트', desc: '단계별 테스트로 이해도를 점검' },
+    { icon: 'fa-solid fa-seedling', title: '기초부터 탄탄하게', desc: '변수, 자료형, 반복문 등 핵심 문법을 단계별로 학습' },
+    { icon: 'fa-solid fa-rocket', title: '실력 향상', desc: '객체지향, 함수형 프로그래밍, 정규식 등 중급 과정' },
+    { icon: 'fa-solid fa-bolt', title: '고급 테크닉', desc: '데코레이터, 메타클래스, 동시성 프로그래밍' },
+    { icon: 'fa-solid fa-microscope', title: 'NumPy & Pandas', desc: '데이터 분석의 핵심 라이브러리 실습' },
+    { icon: 'fa-solid fa-trophy', title: '도장깨기', desc: '배지 시스템으로 학습 성과를 확인하고 동기 부여' },
+    { icon: 'fa-solid fa-pen-nib', title: '퀴즈 & 테스트', desc: '단계별 테스트로 이해도를 점검' },
   ]
 
   return (
@@ -104,7 +104,7 @@ export default function Home() {
           <div className="features-grid">
             {features.map((f, i) => (
               <div key={i} className="feature-card" style={{ animationDelay: `${i * 0.1}s` }}>
-                <span className="feature-icon">{f.icon}</span>
+                <span className="feature-icon"><i className={f.icon} /></span>
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
               </div>
@@ -127,7 +127,7 @@ export default function Home() {
               return (
                 <Link to={`/${key}`} key={key} className="path-card">
                   <div className="path-card-icon" style={{ background: `${info.color}15`, color: info.color }}>
-                    {info.icon}
+                    <i className={info.icon} />
                   </div>
                   <h3 className="path-card-title">{info.title} 과정</h3>
                   <p className="path-card-desc">{info.description}</p>

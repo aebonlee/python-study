@@ -28,18 +28,18 @@ export default function Navbar() {
     {
       label: '학습 경로',
       children: [
-        { to: '/basics', label: '🌱 기초 과정' },
-        { to: '/intermediate', label: '🚀 중급 과정' },
-        { to: '/advanced', label: '⚡ 고급 과정' },
-        { to: '/applied', label: '🔬 응용 과정' },
+        { to: '/basics', icon: 'fa-solid fa-seedling', label: '기초 과정' },
+        { to: '/intermediate', icon: 'fa-solid fa-rocket', label: '중급 과정' },
+        { to: '/advanced', icon: 'fa-solid fa-bolt', label: '고급 과정' },
+        { to: '/applied', icon: 'fa-solid fa-microscope', label: '응용 과정' },
       ]
     },
     {
       label: '실습',
       children: [
-        { to: '/applied/numpy-basics', label: '🧮 NumPy 실습' },
-        { to: '/applied/pandas-basics', label: '🐼 Pandas 실습' },
-        { to: '/applied/numpy-advanced', label: '📊 NumPy 연산' },
+        { to: '/applied/numpy-basics', icon: 'fa-solid fa-calculator', label: 'NumPy 실습' },
+        { to: '/applied/pandas-basics', icon: 'fa-solid fa-table', label: 'Pandas 실습' },
+        { to: '/applied/numpy-advanced', icon: 'fa-solid fa-chart-bar', label: 'NumPy 연산' },
       ]
     },
     { to: '/quiz', label: '퀴즈' },
@@ -74,7 +74,7 @@ export default function Navbar() {
                 <ul className={`dropdown-menu${activeDropdown === i ? ' active' : ''}`}>
                   {item.children.map(child => (
                     <li key={child.to}>
-                      <NavLink to={child.to}>{child.label}</NavLink>
+                      <NavLink to={child.to}><i className={child.icon} /> {child.label}</NavLink>
                     </li>
                   ))}
                 </ul>

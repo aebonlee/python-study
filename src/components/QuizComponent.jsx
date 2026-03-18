@@ -84,7 +84,7 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
             <div key={i} className={`review-item ${answers[i] === q.correct ? 'correct' : 'wrong'}`}>
               <span className="review-num">Q{i + 1}</span>
               <span className="review-status">
-                {answers[i] === q.correct ? '✓' : '✗'}
+                {answers[i] === q.correct ? <i className="fa-solid fa-check" /> : <i className="fa-solid fa-xmark" />}
               </span>
             </div>
           ))}

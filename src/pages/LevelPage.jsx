@@ -27,7 +27,7 @@ export default function LevelPage() {
       <section className="page-header" style={{ background: `linear-gradient(135deg, ${info.color}, ${info.color}dd)` }}>
         <div className="container">
           <div className="page-header-content">
-            <span className="page-header-icon">{info.icon}</span>
+            <span className="page-header-icon"><i className={info.icon} /></span>
             <h1>{info.title} 과정</h1>
             <p>{info.description}</p>
             <div className="page-header-progress">

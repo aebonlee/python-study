@@ -11,7 +11,7 @@ export default function LessonCard({ lesson, level }) {
   return (
     <Link to={`/${level}/${lesson.id}`} className={`lesson-card${isCompleted ? ' completed' : ''}`}>
       <div className="lesson-card-header">
-        <span className="lesson-icon">{lesson.icon}</span>
+        <span className="lesson-icon"><i className={lesson.icon} /></span>
         {isCompleted && (
           <span className="lesson-complete-badge">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -35,7 +35,9 @@ export default function LessonCard({ lesson, level }) {
       </div>
 
       <div className="lesson-card-level" style={{ background: `${color}15`, color }}>
-        {'★'.repeat(lesson.difficulty)}{'☆'.repeat(3 - lesson.difficulty)}
+        {Array.from({ length: 3 }, (_, i) => (
+          <i key={i} className={i < lesson.difficulty ? 'fa-solid fa-star' : 'fa-regular fa-star'} />
+        ))}
       </div>
     </Link>
   )

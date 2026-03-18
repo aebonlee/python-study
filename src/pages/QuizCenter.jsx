@@ -44,7 +44,7 @@ export default function QuizCenter() {
       <section className="page-header quiz-header">
         <div className="container">
           <div className="page-header-content">
-            <span className="page-header-icon">✍️</span>
+            <span className="page-header-icon"><i className="fa-solid fa-pen-nib" /></span>
             <h1>퀴즈 센터</h1>
             <p>단계별 테스트로 파이썬 실력을 검증하세요</p>
           </div>
@@ -60,19 +60,21 @@ export default function QuizCenter() {
               return (
                 <div key={quiz.id} className="quiz-card" onClick={() => setActiveQuiz(quiz.id)}>
                   <div className="quiz-card-header" style={{ background: quiz.info?.color || '#3B82F6' }}>
-                    <span className="quiz-card-icon">{quiz.info?.icon || '📝'}</span>
+                    <span className="quiz-card-icon">
+                      <i className={quiz.info?.icon || 'fa-solid fa-file-lines'} />
+                    </span>
                     <h3>{quiz.title}</h3>
                   </div>
                   <div className="quiz-card-body">
                     <p>{quiz.description}</p>
                     <div className="quiz-card-meta">
-                      <span>📝 {quiz.questions.length}문제</span>
-                      <span>⏱️ {Math.floor(quiz.timeLimit / 60)}분</span>
-                      <span>✅ {quiz.passingScore}점 이상</span>
+                      <span><i className="fa-solid fa-file-lines" /> {quiz.questions.length}문제</span>
+                      <span><i className="fa-solid fa-clock" /> {Math.floor(quiz.timeLimit / 60)}분</span>
+                      <span><i className="fa-solid fa-circle-check" /> {quiz.passingScore}점 이상</span>
                     </div>
                     {score !== undefined && (
                       <div className={`quiz-card-score ${passed ? 'passed' : 'failed'}`}>
-                        최고 점수: {score}점 {passed ? '✓ 통과' : '✗ 미통과'}
+                        최고 점수: {score}점 {passed ? <><i className="fa-solid fa-check" /> 통과</> : <><i className="fa-solid fa-xmark" /> 미통과</>}
                       </div>
                     )}
                   </div>

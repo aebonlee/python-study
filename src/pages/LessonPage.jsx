@@ -55,13 +55,17 @@ export default function LessonPage() {
             <span>{lesson.title}</span>
           </div>
           <div className="page-header-content">
-            <span className="page-header-icon">{lesson.icon}</span>
+            <span className="page-header-icon"><i className={lesson.icon} /></span>
             <h1>{lesson.title}</h1>
             <p>{lesson.description}</p>
             <div className="lesson-meta-bar">
-              <span>⏱️ 약 {lesson.estimatedTime}분</span>
-              <span>📋 {lesson.topics?.length || 0}개 주제</span>
-              <span>{'⭐'.repeat(lesson.difficulty)}</span>
+              <span><i className="fa-solid fa-clock" /> 약 {lesson.estimatedTime}분</span>
+              <span><i className="fa-solid fa-clipboard" /> {lesson.topics?.length || 0}개 주제</span>
+              <span>
+                {Array.from({ length: 3 }, (_, i) => (
+                  <i key={i} className={i < lesson.difficulty ? 'fa-solid fa-star' : 'fa-regular fa-star'} />
+                ))}
+              </span>
             </div>
           </div>
         </div>
@@ -116,7 +120,7 @@ export default function LessonPage() {
 
             {sections[activeSection]?.tip && (
               <div className="lesson-tip">
-                <span className="tip-icon">💡</span>
+                <span className="tip-icon"><i className="fa-solid fa-lightbulb" /></span>
                 <div>
                   <strong>팁:</strong> {sections[activeSection].tip}
                 </div>
@@ -142,11 +146,11 @@ export default function LessonPage() {
 
             {!isCompleted && (
               <button className="btn btn-accent complete-btn" onClick={() => completeLesson(lessonId)}>
-                ✓ 학습 완료
+                <i className="fa-solid fa-check" /> 학습 완료
               </button>
             )}
             {isCompleted && (
-              <span className="completed-badge-inline">✓ 완료됨</span>
+              <span className="completed-badge-inline"><i className="fa-solid fa-check" /> 완료됨</span>
             )}
 
             <div className="lesson-nav-right">
