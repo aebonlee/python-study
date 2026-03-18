@@ -430,9 +430,6 @@ export default function PythonPractice() {
         </div>
       </section>
 
-      <div className="practice-mini-footer">
-        &copy; 2026 PyMaster. 파이썬 학습을 위한 오픈소스 프로젝트
-      </div>
     </div>
   )
 }
