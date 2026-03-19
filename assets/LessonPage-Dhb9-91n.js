@@ -1,4 +1,4 @@
-import{r as d,u as A,j as n,c as R,l as q,L as j,b as X}from"./index-DDyT6IyG.js";import{u as B}from"./useCodeRunner-B1kL4Iu0.js";const U={"hello-python":{sections:[{title:"print() 함수로 출력하기",content:`파이썬에서 가장 먼저 배우는 것은 화면에 텍스트를 출력하는 것입니다.
+import{r as d,u as A,j as n,c as R,l as q,L as j,b as X}from"./index-CAHz3_Y8.js";import{u as B}from"./useCodeRunner-CaESSFX_.js";const U={"hello-python":{sections:[{title:"print() 함수로 출력하기",content:`파이썬에서 가장 먼저 배우는 것은 화면에 텍스트를 출력하는 것입니다.
 print() 함수를 사용하면 원하는 내용을 콘솔에 출력할 수 있습니다.
 
 문자열은 작은따옴표(') 또는 큰따옴표(")로 감싸서 표현합니다.`,code:`# 첫 번째 파이썬 프로그램!
