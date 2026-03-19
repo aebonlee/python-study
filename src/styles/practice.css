@@ -126,8 +126,16 @@
   .practice-tab { padding: 6px 10px; }
   .practice-tab-title { font-size: 11px; }
   .practice-tab-step { font-size: 9px; }
+  .practice-step-runner { border-radius: 0; border-left: none; border-right: none; margin-left: -16px; margin-right: -16px; }
   .practice-runner-header { flex-direction: column; align-items: flex-start; }
   .practice-runner-actions { width: 100%; justify-content: flex-end; }
+  .practice-editor-body { min-height: 280px; }
+  .practice-editor-body .code-input { font-size: 13px; padding: 12px; }
+  .practice-editor-body .line-numbers { font-size: 13px; min-width: 36px; }
+  .practice-runner-empty { min-height: 260px; }
+  .practice-output-content { padding: 10px 12px; }
+  .practice-turtle-svg { padding: 8px; }
+  .practice-turtle-svg svg { max-width: 100%; height: auto; }
 }
 
 @media (max-width: 480px) {
@@ -135,4 +143,7 @@
   .practice-tab-row { gap: 4px; }
   .practice-tab { padding: 6px 8px; gap: 6px; }
   .practice-tab-label { display: none; }
+  .practice-editor-body .code-input { font-size: 12px; padding: 10px 8px; }
+  .practice-editor-body .line-numbers { min-width: 32px; font-size: 12px; }
+  .practice-editor-body .line-numbers span { padding: 0 6px; }
 }

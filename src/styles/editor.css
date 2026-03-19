@@ -69,3 +69,22 @@
 [data-theme="dark"] .editor-turtle-svg { background: #161b22; }
 [data-theme="dark"] .editor-input-form { background: rgba(75,139,190,0.08); }
 [data-theme="dark"] .editor-input-field { background: var(--bg-medium); border-color: var(--border-light); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .code-editor { border-radius: 0; border-left: none; border-right: none; margin-left: -16px; margin-right: -16px; }
+  .editor-body { min-height: 180px; }
+  .code-input { font-size: 13px; padding: 12px; min-height: 180px; }
+  .line-numbers { font-size: 13px; min-width: 36px; }
+  .line-numbers span { padding: 0 8px; }
+  .editor-header { flex-direction: column; align-items: flex-start; }
+  .editor-header-actions { width: 100%; justify-content: flex-end; }
+  .editor-output-content { padding: 10px 12px; }
+  .editor-turtle-svg { padding: 8px; }
+  .editor-turtle-svg svg { max-width: 100%; height: auto; }
+}
+@media (max-width: 480px) {
+  .code-input { font-size: 12px; padding: 10px 8px; }
+  .line-numbers { min-width: 30px; font-size: 12px; }
+  .line-numbers span { padding: 0 6px; }
+}
