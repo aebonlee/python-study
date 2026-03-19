@@ -38,7 +38,7 @@
 .quiz-option.correct { border-color: var(--success); background: var(--success-light); }
 .quiz-option.wrong { border-color: var(--error); background: var(--error-light); }
 .option-letter { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-light); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
-.option-text { flex: 1; }
+.option-text { flex: 1; white-space: pre-line; }
 .option-icon { flex-shrink: 0; }
 .quiz-explanation { padding: 16px 20px; background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.2); border-radius: var(--radius-md); font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6; }
 .quiz-actions { display: flex; justify-content: center; }

@@ -557,9 +557,9 @@ export const quizzes = {
         question: 'turtle로 정사각형을 그리는 올바른 코드는?',
         code: 'import turtle\nt = turtle.Turtle()',
         options: [
-          'for i in range(4): t.forward(100); t.right(90)',
-          'for i in range(4): t.forward(100); t.right(60)',
-          'for i in range(4): t.forward(100); t.left(45)',
+          'for i in range(4):\n    t.forward(100)\n    t.right(90)',
+          'for i in range(4):\n    t.forward(100)\n    t.right(60)',
+          'for i in range(4):\n    t.forward(100)\n    t.left(45)',
           't.square(100)'
         ],
         correct: 0,
