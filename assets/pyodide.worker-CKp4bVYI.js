@@ -190,6 +190,9 @@ class Turtle:
         elif len(args) == 2:
             self._pen_color = args[0]
             self._fill_color = args[1]
+        elif len(args) == 3:
+            self._pen_color = args
+            self._fill_color = args
 
     def pencolor(self, *args):
         if args:

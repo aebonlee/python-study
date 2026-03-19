@@ -1,6 +1,4 @@
 const e=[{name:"race",title:"토끼와 거북이 경주",desc:"두 turtle 랜덤 이동 경주",code:`# === 토끼와 거북이 경주 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 import random
@@ -35,8 +33,6 @@ for _ in range(100):
         break
 
 turtle.done()`},{name:"randw",title:"거북이 랜덤 걷기",desc:"랜덤 거리·각도 이동",code:`# === 거북이 랜덤 걷기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 import random
@@ -52,8 +48,6 @@ for _ in range(100):
     t.forward(distance)
 
 turtle.done()`},{name:"randrect",title:"랜덤 사각형 30개",desc:"랜덤 위치·색상·크기",code:`# === 랜덤 사각형 30개 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 import random
@@ -83,8 +77,6 @@ for _ in range(30):
     t.end_fill()
 
 turtle.done()`},{name:"click",title:"클릭 위치에 사각형",desc:"onscreenclick 이벤트",code:`# === 클릭 위치에 사각형 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 
@@ -104,8 +96,6 @@ screen = turtle.Screen()
 screen.onscreenclick(draw_square)  # 클릭 이벤트 등록
 
 turtle.done()`},{name:"paint",title:"마우스로 선 그리기",desc:"클릭 이동 + 펜 Up/Down 키",code:`# === 마우스로 선 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 
@@ -131,8 +121,6 @@ screen.onkey(pen_down, "d")      # d 키 → 펜 내리기
 screen.listen()                   # 키보드 입력 대기
 
 turtle.done()`},{name:"robot",title:"키보드로 거북이 조종",desc:"l/r 입력으로 방향 전환",code:`# === 키보드로 거북이 조종 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -155,8 +143,6 @@ for cmd in commands:
         break
 
 turtle.done()`},{name:"maze",title:"도로 주행 게임",desc:"방향키로 turtle 조종",code:`# === 도로 주행 게임 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 
@@ -189,8 +175,6 @@ screen.onkey(go_right, "Right")
 screen.listen()
 
 turtle.done()`},{name:"angry",title:"포물선 발사 게임",desc:"각도·속도 조절 후 발사",code:`# === 포물선 발사 게임 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 import math
@@ -227,8 +211,6 @@ while y >= -150:
 
 print(f"착지 지점: x = {x:.0f}")
 turtle.done()`},{name:"fractal",title:"프랙탈 나무",desc:"재귀 함수로 가지 그리기",code:`# === 프랙탈 나무 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 
@@ -253,8 +235,6 @@ t.pendown()
 draw_tree(80)       # 초기 가지 길이: 80
 
 turtle.done()`},{name:"draw_tree",title:"크리스마스 트리",desc:"함수 조합으로 트리 완성",code:`# === 크리스마스 트리 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 
@@ -300,8 +280,6 @@ for _ in range(2):
 t.end_fill()
 
 turtle.done()`},{name:"bar_graph",title:"막대 그래프 (turtle)",desc:"drawBar() 함수로 그래프",code:`# === 막대 그래프 (turtle) ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 
@@ -334,8 +312,6 @@ for i in range(len(data)):
     t.forward(10)           # 막대 간 간격
 
 turtle.done()`},{name:"cookie",title:"과자 먹기 게임 (1개)",desc:"키보드로 강아지 이동해 과자 먹기",code:`# === 과자 먹기 게임 (1개) ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 import random
@@ -379,8 +355,6 @@ screen.onkey(go_right, "Right")
 screen.listen()
 
 turtle.done()`},{name:"cookie2",title:"과자 먹기 게임 (다중)",desc:"과자 10개 먹기 + 점수판",code:`# === 과자 먹기 게임 (다중) ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 import random

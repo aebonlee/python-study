@@ -1,6 +1,4 @@
 const t=[{name:"drawrect",title:"사각형 그리기",desc:"forward()와 right()로 정사각형",code:`# === 사각형 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()       # 거북이 객체 생성
@@ -18,8 +16,6 @@ t.forward(100)   # 네 번째 변
 t.right(90)
 
 turtle.done()    # 창 유지`},{name:"draw_cir",title:"원 3개 그리기",desc:"circle()로 원 연속 그리기",code:`# === 원 3개 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -29,8 +25,6 @@ t.circle(100)    # 반지름 100의 원
 t.circle(150)    # 반지름 150의 원
 
 turtle.done()`},{name:"circle",title:"채운 원 그리기",desc:"begin_fill/end_fill 색칠 원",code:`# === 채운 원 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -41,8 +35,6 @@ t.circle(100)         # 반지름 100의 원
 t.end_fill()          # 채우기 끝
 
 turtle.done()`},{name:"car",title:"자동차 그리기",desc:"사각형 몸체 + 원형 바퀴",code:`# === 자동차 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -77,8 +69,6 @@ t.circle(20)
 t.end_fill()
 
 turtle.done()`},{name:"house",title:"집 모양 그리기",desc:"삼각형 지붕 + 사각형 몸체",code:`# === 집 모양 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -102,8 +92,6 @@ t.forward(100)            # 지붕 오른쪽 변
 t.end_fill()
 
 turtle.done()`},{name:"draw_rect",title:"함수로 사각형 세 개",desc:"square() 함수 정의 후 호출",code:`# === 함수로 사각형 세 개 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -136,8 +124,6 @@ elif shape == "square":
         t.right(90)
 
 turtle.done()`},{name:"star",title:"별 모양 그리기",desc:"144도 회전으로 5각별",code:`# === 별 모양 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -150,8 +136,6 @@ for _ in range(5):
     t.right(144)      # 오른쪽 144도 회전
 
 turtle.done()`},{name:"spiral",title:"나선형 그리기 (간단)",desc:"색상 변화 나선형",code:`# === 나선형 그리기 (간단) ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -165,8 +149,6 @@ for i in range(100):
     t.right(91)               # 91도 회전 (나선 효과)
 
 turtle.done()`},{name:"spiral2",title:"나선형 그리기 (컬러)",desc:"검정 배경 6색 나선형",code:`# === 나선형 그리기 (컬러) ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 
@@ -184,8 +166,6 @@ for i in range(200):
     t.right(89)                # 89도 회전
 
 turtle.done()`},{name:"polygon_lab",title:"N각형 그리기",desc:"for 루프로 입력한 n각형",code:`# === N각형 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -201,8 +181,6 @@ for _ in range(n):
     t.right(angle)    # 외각만큼 회전
 
 turtle.done()`},{name:"olympic",title:"올림픽 오륜기",desc:"5색 원으로 올림픽 로고",code:`# === 올림픽 오륜기 그리기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
@@ -221,8 +199,6 @@ for i in range(5):
     t.circle(50)           # 반지름 50의 원
 
 turtle.done()`},{name:"anim",title:"랜덤 색상 애니메이션",desc:"랜덤 색 동심원 반복",code:`# === 랜덤 색상 애니메이션 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 import random
@@ -240,8 +216,6 @@ for i in range(50):
     t.right(15)           # 15도씩 회전
 
 turtle.done()`},{name:"ball_anim",title:"공 튀기기 애니메이션",desc:"중력·반발 물리 시뮬레이션",code:`# === 공 튀기기 애니메이션 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 
