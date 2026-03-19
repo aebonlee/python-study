@@ -76,9 +76,12 @@ export default function Navbar() {
                 onMouseEnter={() => setActiveDropdown(i)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <span className="nav-link nav-link-dropdown">
+                <span
+                  className="nav-link nav-link-dropdown"
+                  onClick={() => setActiveDropdown(activeDropdown === i ? null : i)}
+                >
                   {item.label}
-                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style={{marginLeft: 4}}>
+                  <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style={{marginLeft: 4, transition: 'transform 0.3s', transform: activeDropdown === i ? 'rotate(180deg)' : 'none'}}>
                     <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </span>
