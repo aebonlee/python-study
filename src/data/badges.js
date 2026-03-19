@@ -40,6 +40,14 @@ export const badges = [
     tier: 'bronze',
     condition: { type: 'quiz_passed', quizId: 'basics', minScore: 70 }
   },
+  {
+    id: 'lib-first-quiz',
+    title: '라이브러리 입문',
+    description: '표준 라이브러리 퀴즈를 통과하세요',
+    icon: 'fa-solid fa-terminal',
+    tier: 'bronze',
+    condition: { type: 'quiz_passed', quizId: 'lib-standard', minScore: 70 }
+  },
 
   // === Silver Tier (실버 - 단계별 성취) ===
   {
@@ -89,6 +97,22 @@ export const badges = [
     icon: 'fa-solid fa-bullseye',
     tier: 'silver',
     condition: { type: 'quiz_passed', quizId: 'intermediate', minScore: 70 }
+  },
+  {
+    id: 'turtle-quiz',
+    title: '거북이 마스터',
+    description: 'Turtle 그래픽 퀴즈를 통과하세요',
+    icon: 'fa-solid fa-pen-ruler',
+    tier: 'silver',
+    condition: { type: 'quiz_passed', quizId: 'lib-turtle', minScore: 70 }
+  },
+  {
+    id: 'lib-data-quiz',
+    title: '데이터 분석 도전자',
+    description: '데이터 분석 퀴즈를 통과하세요',
+    icon: 'fa-solid fa-chart-pie',
+    tier: 'silver',
+    condition: { type: 'quiz_passed', quizId: 'lib-data', minScore: 70 }
   },
 
   // === Gold Tier (골드 - 고급 성취) ===
@@ -172,6 +196,30 @@ export const badges = [
     tier: 'gold',
     condition: { type: 'code_runs', count: 100 }
   },
+  {
+    id: 'lib-ai-quiz',
+    title: 'AI 탐험가',
+    description: 'AI/머신러닝 퀴즈를 통과하세요',
+    icon: 'fa-solid fa-brain',
+    tier: 'gold',
+    condition: { type: 'quiz_passed', quizId: 'lib-ai', minScore: 70 }
+  },
+  {
+    id: 'lib-perfect-standard',
+    title: '표준 라이브러리 만점',
+    description: '표준 라이브러리 퀴즈에서 만점을 받으세요',
+    icon: 'fa-solid fa-terminal',
+    tier: 'gold',
+    condition: { type: 'quiz_perfect', quizId: 'lib-standard' }
+  },
+  {
+    id: 'lib-all-passed',
+    title: '라이브러리 정복자',
+    description: '라이브러리 퀴즈 4개를 모두 통과하세요',
+    icon: 'fa-solid fa-book-open',
+    tier: 'gold',
+    condition: { type: 'lib_quizzes_passed' }
+  },
 
   // === Platinum Tier (플래티넘 - 최고 성취) ===
   {
@@ -197,6 +245,14 @@ export const badges = [
     icon: 'fa-solid fa-gem',
     tier: 'platinum',
     condition: { type: 'all_quizzes_perfect' }
+  },
+  {
+    id: 'lib-all-perfect',
+    title: '라이브러리 퍼펙트',
+    description: '라이브러리 퀴즈 4개에서 모두 만점을 받으세요',
+    icon: 'fa-solid fa-award',
+    tier: 'platinum',
+    condition: { type: 'lib_quizzes_perfect' }
   },
   {
     id: 'streak-30',

@@ -23,6 +23,26 @@ export const levelInfo = {
     description: 'NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow 등 데이터 과학 실습',
     icon: 'fa-solid fa-microscope',
     color: '#D4A017'
+  },
+  'lib-standard': {
+    title: '표준 라이브러리',
+    icon: 'fa-solid fa-terminal',
+    color: '#6366F1'
+  },
+  'lib-turtle': {
+    title: 'Turtle 그래픽',
+    icon: 'fa-solid fa-pen-ruler',
+    color: '#14B8A6'
+  },
+  'lib-data': {
+    title: '데이터 분석',
+    icon: 'fa-solid fa-chart-pie',
+    color: '#F59E0B'
+  },
+  'lib-ai': {
+    title: 'AI/머신러닝',
+    icon: 'fa-solid fa-brain',
+    color: '#EC4899'
   }
 }
 

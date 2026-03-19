@@ -46,10 +46,16 @@ export function BadgeProvider({ children }) {
           earned = quizScores[condition.quizId] === 100
           break
         case 'all_quizzes_passed':
-          earned = Object.keys(quizScores).length >= 4 && Object.values(quizScores).every(s => s >= 70)
+          earned = Object.keys(quizScores).length >= 8 && Object.values(quizScores).every(s => s >= 70)
           break
         case 'all_quizzes_perfect':
-          earned = Object.keys(quizScores).length >= 4 && Object.values(quizScores).every(s => s === 100)
+          earned = Object.keys(quizScores).length >= 8 && Object.values(quizScores).every(s => s === 100)
+          break
+        case 'lib_quizzes_passed':
+          earned = ['lib-standard', 'lib-turtle', 'lib-data', 'lib-ai'].every(id => quizScores[id] !== undefined && quizScores[id] >= 70)
+          break
+        case 'lib_quizzes_perfect':
+          earned = ['lib-standard', 'lib-turtle', 'lib-data', 'lib-ai'].every(id => quizScores[id] === 100)
           break
         case 'code_runs':
           earned = codeRuns >= condition.count
