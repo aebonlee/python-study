@@ -90,31 +90,12 @@
 .login-footer p {
   font-size: 13px;
   color: var(--text-light);
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
-.login-skip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--primary);
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.login-skip:hover {
-  color: var(--primary-dark);
-}
-
-.login-skip i {
-  font-size: 12px;
-}
-
-/* Navbar Auth */
+/* ========================================
+   Navbar Auth - Balloon Tooltip Dropdown
+   ======================================== */
 .nav-user-avatar {
   width: 32px;
   height: 32px;
@@ -129,39 +110,73 @@
   box-shadow: 0 0 0 3px rgba(255, 212, 59, 0.3);
 }
 
+.nav-user-avatar-placeholder {
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .nav-user-menu {
   position: relative;
 }
 
-.nav-user-dropdown {
+.nav-user-trigger {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* Balloon tooltip dropdown */
+.nav-user-balloon {
   position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 8px;
+  top: calc(100% + 12px);
+  right: -8px;
   background: var(--bg-white);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  min-width: 180px;
-  padding: 8px;
-  z-index: 100;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  min-width: 200px;
+  padding: 0;
+  z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-8px);
-  transition: var(--transition);
+  transform: translateY(-6px) scale(0.97);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  overflow: hidden;
 }
 
-.nav-user-menu:hover .nav-user-dropdown,
-.nav-user-dropdown.active {
+.nav-user-balloon.active {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
-.nav-user-info {
-  padding: 8px 12px;
+/* Balloon arrow */
+.nav-balloon-arrow {
+  position: absolute;
+  top: -7px;
+  right: 16px;
+  width: 14px;
+  height: 14px;
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-bottom: none;
+  border-right: none;
+  transform: rotate(45deg);
+  z-index: 1;
+}
+
+.nav-user-balloon .nav-user-info {
+  padding: 14px 16px 12px;
   border-bottom: 1px solid var(--border-light);
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 
 .nav-user-name {
@@ -178,30 +193,62 @@
   white-space: nowrap;
 }
 
-.nav-user-dropdown button {
+/* Menu links */
+.nav-balloon-links {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.nav-balloon-link {
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 8px 12px;
+  gap: 10px;
+  padding: 9px 12px;
   font-size: 14px;
+  font-weight: 500;
   color: var(--text-secondary);
-  background: none;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
+  text-decoration: none;
+  border-radius: 8px;
   transition: var(--transition);
 }
 
-.nav-user-dropdown button:hover {
+.nav-balloon-link:hover {
   background: var(--bg-light);
   color: var(--text-primary);
 }
 
-.nav-user-dropdown button i {
-  width: 16px;
+.nav-balloon-link i {
+  width: 18px;
   text-align: center;
   color: var(--primary);
+  font-size: 14px;
+}
+
+/* Logout button */
+.nav-balloon-logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 20px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.nav-balloon-logout:hover {
+  background: rgba(231, 76, 60, 0.06);
+  color: #e74c3c;
+}
+
+.nav-balloon-logout i {
+  width: 18px;
+  text-align: center;
+  font-size: 14px;
 }
 
 .nav-login-btn {
@@ -229,7 +276,64 @@
   font-size: 12px;
 }
 
-/* Dark mode */
+/* ========================================
+   Session Warning Banner
+   ======================================== */
+.session-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border-bottom: 2px solid #f0c040;
+  padding: 10px 20px;
+  animation: slideDown 0.3s ease;
+}
+
+.session-warning-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 14px;
+  font-weight: 500;
+  color: #856404;
+}
+
+.session-warning-content i {
+  font-size: 16px;
+}
+
+.session-extend-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: #d4a017;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.session-extend-btn:hover {
+  background: #b8860b;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* ========================================
+   Dark mode
+   ======================================== */
 [data-theme="dark"] .login-card {
   background: var(--bg-light);
 }
@@ -246,13 +350,36 @@
   color: #3C1E1E;
 }
 
-[data-theme="dark"] .nav-user-dropdown {
+[data-theme="dark"] .nav-user-balloon {
   background: var(--bg-light);
   border-color: var(--border-medium);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .nav-balloon-arrow {
+  background: var(--bg-light);
+  border-color: var(--border-medium);
+}
+
+[data-theme="dark"] .nav-balloon-link:hover {
+  background: var(--bg-medium);
 }
 
 [data-theme="dark"] .nav-login-btn {
   background: rgba(75, 139, 190, 0.1);
   border-color: rgba(75, 139, 190, 0.3);
   color: var(--primary);
+}
+
+[data-theme="dark"] .session-warning {
+  background: linear-gradient(135deg, #433a10, #3d3510);
+  border-bottom-color: #6b5a1e;
+}
+
+[data-theme="dark"] .session-warning-content {
+  color: #ffd93d;
+}
+
+[data-theme="dark"] .session-extend-btn {
+  background: #b8860b;
 }

@@ -366,3 +366,48 @@
 ### 빌드 결과
 - 빌드 성공, 커밋 aa65123
 - GitHub Pages 배포 완료
+
+---
+
+## 2026-03-20 (Day 3) - 로그인 필수화 + 세션 관리 + 마이페이지 + 관리자 페이지
+
+### 로그인 필수화 + 30분 세션 관리
+- **AuthContext.jsx**: 30분 세션 타이머, 5분 전 경고 배너, 자동 로그아웃
+  - `SESSION_DURATION = 30 * 60 * 1000`, localStorage 기반 만료 시각 저장
+  - `extendSession()`: 30분 재설정
+  - `showSessionWarning`: 남은 시간 5분 이하 시 상단 노란 배너
+  - `isAdmin`: `ADMIN_EMAILS = ['aebon@kakao.com']` 체크
+- **App.jsx**: `ProtectedRoute`, `AdminRoute` 컴포넌트 추가
+  - `/login` 제외 모든 라우트를 `ProtectedRoute`로 래핑
+  - `/admin` 라우트를 `AdminRoute`로 래핑
+- **Login.jsx**: "로그인 없이 시작하기" 버튼 제거, "학습을 시작하려면 로그인이 필요합니다" 안내
+
+### 마이페이지 (MyPage.jsx) — 신규
+- 라우트: `/my`
+- 프로필 카드: 아바타, 이름, 이메일, 로그인 방식 (Google/Kakao)
+- 학습 통계: 완료 레슨/전체 레슨(진행률 바), 퀴즈 평균 점수, 코드 실행 수, 연속 학습일
+- 획득 배지 목록: `BadgeCard` 재사용, 획득한 배지만 표시
+- 퀴즈 성적표: 8개 퀴즈별 최고 점수, 통과 기준, 상태 테이블
+
+### 관리자 페이지 (AdminPage.jsx) — 신규
+- 라우트: `/admin` (관리자 이메일만 접근 가능)
+- 사이트 통계: 총 레슨/퀴즈/문제/배지 수 (데이터 파일 기반)
+- 콘텐츠 현황: 레벨별 레슨 수, 퀴즈별 문제 수/통과 기준/제한 시간 테이블
+- 커뮤니티 관리: Supabase 최근 20개 게시글 목록, 삭제 기능 (확인/취소)
+
+### Navbar 풍선 도움말 드롭다운
+- 기존 hover 드롭다운 → 클릭 기반 풍선(balloon) 도움말 스타일
+- 화살표 꼭지점 장식 포함
+- 마이페이지 + 관리자(관리자만) + 로그아웃 메뉴
+- 외부 클릭 시 닫힘 처리 (useRef + mousedown)
+
+### CSS 추가/수정
+- **auth.css**: 풍선 드롭다운 스타일 + 세션 경고 배너 + 다크모드
+- **mypage.css** (신규): 프로필 카드, 통계 그리드, 배지 목록, 성적표 + 다크모드 + 반응형
+- **admin.css** (신규): 대시보드, 통계 카드, 테이블, 커뮤니티 관리 + 다크모드 + 반응형
+- **index.css**: mypage.css, admin.css import 추가 (총 16개 CSS)
+
+### 빌드 결과
+- 빌드 성공, GitHub Pages 배포 완료
+- 신규 청크: MyPage (5.63KB), AdminPage (6.63KB)
+- CSS: 96.34KB (기존 대비 +약 6KB)

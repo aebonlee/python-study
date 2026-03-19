@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useProgress } from '../../contexts/ProgressContext'
@@ -10,7 +10,9 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const { theme, toggleTheme } = useTheme()
   const { getTotalProgress } = useProgress()
-  const { user, isAuthenticated, signOut } = useAuth()
+  const { user, isAuthenticated, isAdmin, signOut } = useAuth()
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const userMenuRef = useRef(null)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -23,7 +25,18 @@ export default function Navbar() {
   useEffect(() => {
     setMobileOpen(false)
     setActiveDropdown(null)
+    setUserMenuOpen(false)
   }, [location])
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const totalProgress = getTotalProgress()
 
@@ -161,22 +174,39 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Auth UI */}
+          {/* Auth UI - Balloon Tooltip Dropdown */}
           {isAuthenticated ? (
-            <div className="nav-user-menu">
-              {userAvatar ? (
-                <img src={userAvatar} alt={userName} className="nav-user-avatar" />
-              ) : (
-                <div className="nav-user-avatar" style={{ background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 14, fontWeight: 700 }}>
-                  {userName?.charAt(0)?.toUpperCase()}
-                </div>
-              )}
-              <div className="nav-user-dropdown">
+            <div className="nav-user-menu" ref={userMenuRef}>
+              <button
+                className="nav-user-trigger"
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                aria-label="사용자 메뉴"
+              >
+                {userAvatar ? (
+                  <img src={userAvatar} alt={userName} className="nav-user-avatar" />
+                ) : (
+                  <div className="nav-user-avatar nav-user-avatar-placeholder">
+                    {userName?.charAt(0)?.toUpperCase()}
+                  </div>
+                )}
+              </button>
+              <div className={`nav-user-balloon${userMenuOpen ? ' active' : ''}`}>
+                <div className="nav-balloon-arrow" />
                 <div className="nav-user-info">
                   <div className="nav-user-name">{userName}</div>
                   <div className="nav-user-email">{user?.email}</div>
                 </div>
-                <button onClick={() => { signOut(); navigate('/') }}>
+                <div className="nav-balloon-links">
+                  <Link to="/my" className="nav-balloon-link" onClick={() => setUserMenuOpen(false)}>
+                    <i className="fa-solid fa-user-circle" /> 마이페이지
+                  </Link>
+                  {isAdmin && (
+                    <Link to="/admin" className="nav-balloon-link" onClick={() => setUserMenuOpen(false)}>
+                      <i className="fa-solid fa-shield-halved" /> 관리자
+                    </Link>
+                  )}
+                </div>
+                <button className="nav-balloon-logout" onClick={() => { signOut(); setUserMenuOpen(false); navigate('/login') }}>
                   <i className="fa-solid fa-right-from-bracket" /> 로그아웃
                 </button>
               </div>

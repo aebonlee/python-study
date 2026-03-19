@@ -37,7 +37,7 @@ D:\python-study\
 ├── src/
 │   ├── main.jsx               # React 엔트리 포인트
 │   ├── App.jsx                # 라우터 + Provider + ErrorBoundary + Lazy
-│   ├── index.css              # CSS 임포트 허브 (14개 CSS)
+│   ├── index.css              # CSS 임포트 허브 (16개 CSS)
 │   ├── hooks/
 │   │   └── useCodeRunner.js   # Pyodide Web Worker 실행 훅
 │   ├── workers/
@@ -56,7 +56,7 @@ D:\python-study\
 │   ├── config/
 │   │   └── supabase.js        # Supabase 클라이언트 (pymaster_ 접두사)
 │   ├── contexts/
-│   │   ├── AuthContext.jsx    # 인증 상태 (Google/Kakao OAuth)
+│   │   ├── AuthContext.jsx    # 인증 + 세션 관리 + 관리자 판별
 │   │   ├── ThemeContext.jsx    # 다크모드 상태
 │   │   ├── ProgressContext.jsx # 학습 진도 상태
 │   │   └── BadgeContext.jsx   # 배지 상태
@@ -72,7 +72,9 @@ D:\python-study\
 │   │       └── stepAdvanced2.js # 심화 실습 2
 │   ├── pages/
 │   │   ├── Home.jsx           # 메인 페이지
-│   │   ├── Login.jsx          # 로그인 페이지 (Google/Kakao)
+│   │   ├── Login.jsx          # 로그인 페이지 (Google/Kakao, 필수)
+│   │   ├── MyPage.jsx         # 마이페이지 (프로필/통계/배지/성적)
+│   │   ├── AdminPage.jsx      # 관리자 페이지 (통계/콘텐츠/커뮤니티)
 │   │   ├── LevelPage.jsx      # 단계별 레슨 목록
 │   │   ├── LessonPage.jsx     # 레슨 상세/학습
 │   │   ├── BadgeCollection.jsx # 배지 컬렉션
@@ -91,8 +93,10 @@ D:\python-study\
 │   │       ├── PythonLesson09.jsx  # 함수와 매개변수
 │   │       ├── PythonLesson10.jsx  # Try-Except 예외처리
 │   │       └── PythonLesson11.jsx  # 2차원, 3차원 리스트
-│   └── styles/                # CSS 14개 파일
-│       ├── auth.css           # 로그인 페이지 + Navbar 인증 UI
+│   └── styles/                # CSS 16개 파일
+│       ├── auth.css           # 로그인 + 풍선 드롭다운 + 세션 경고
+│       ├── mypage.css         # 마이페이지 스타일
+│       ├── admin.css          # 관리자 페이지 스타일
 │       ├── practice.css       # 파이썬 실습 페이지 스타일
 │       └── python-learning.css # 파이썬 학습 허브 + 레슨 스타일
 └── Dev_md/                    # 개발 문서
@@ -117,7 +121,7 @@ App
 ```
 
 ### 데이터 흐름
-- **AuthContext**: Supabase OAuth 인증 (Google/Kakao), 유저 상태, 로그인/로그아웃
+- **AuthContext**: Supabase OAuth 인증 (Google/Kakao), 30분 세션 관리, isAdmin 판별
 - **ThemeContext**: light/dark 테마 토글, HTML data-theme 속성 제어
 - **ProgressContext**: 완료 레슨, 퀴즈 점수, 코드 실행 수, 스트릭 관리
 - **BadgeContext**: 배지 조건 평가, 획득 알림, 배지 목록 관리
@@ -128,6 +132,7 @@ App
 | `pymaster-theme` | 테마 설정 | localStorage |
 | `pymaster-progress` | 학습 진도 | localStorage (+Supabase 예정) |
 | `pymaster-badges` | 획득 배지 | localStorage (+Supabase 예정) |
+| `pymaster-session-expiry` | 세션 만료 시각 | localStorage |
 | Supabase Auth | 인증 세션 | Supabase (자동 관리) |
 
 ### Supabase 테이블 (접두사: pymaster_)

@@ -41,10 +41,7 @@ export default function Login() {
         </div>
 
         <div className="login-footer">
-          <p>로그인 없이도 학습이 가능합니다</p>
-          <button className="login-skip" onClick={() => navigate('/')}>
-            로그인 없이 시작하기 <i className="fa-solid fa-arrow-right" />
-          </button>
+          <p>학습을 시작하려면 로그인이 필요합니다</p>
         </div>
       </div>
     </div>

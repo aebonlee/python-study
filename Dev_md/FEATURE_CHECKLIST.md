@@ -1,6 +1,6 @@
 # PyMaster - 기능 점검 결과서
 
-## 점검 일자: 2026-03-19 (최종 업데이트)
+## 점검 일자: 2026-03-20 (최종 업데이트)
 
 ### 핵심 기능 (21개)
 
@@ -11,22 +11,26 @@
 | 3 | Supabase 연동 | 완료 | 클라이언트 설정 + .env 실제 연결 완료 |
 | 4 | 사용자 인증 | 완료 | AuthContext - Google/Kakao OAuth |
 | 5 | 학습 진도 추적 | 완료 | ProgressContext - localStorage 저장 |
-| 6 | 로그인 페이지 | 완료 | Login.jsx - Google/Kakao 버튼 + 비로그인 시작 |
-| 7 | 프로필 페이지 | 예정 | 인증 시스템 완성됨, 프로필 UI 구현 예정 |
+| 6 | 로그인 페이지 | 완료 | Login.jsx - Google/Kakao 버튼, 로그인 필수 |
+| 7 | 마이페이지 | 완료 | MyPage.jsx - 프로필/통계/배지/성적표 |
 | 8 | 학습 현황 페이지 | 완료 | Home.jsx 진도 현황 섹션 (로그인 없이 작동) |
 | 9 | 배지 시스템 | 완료 | 36개 배지, 4티어, 자동 평가, 알림 팝업 |
 | 10 | 수료증 발급 | 예정 | 모의고사 합격 시 PDF/PNG 다운로드 구현 예정 |
 | 11 | 학습 완료 버튼 | 완료 | LessonPage.jsx 하단 "학습 완료" 버튼 |
 | 12 | 학습 완료 취소 | 완료 | uncompleteLesson() - 완료 상태 되돌리기 |
 | 13 | 시험 성적 기록 | 완료 | ProgressContext.saveQuizScore - 최고 점수 자동 저장 |
-| 14 | Navbar 인증 UI | 완료 | 로그인 버튼 / 유저 아바타 + 드롭다운 메뉴 |
-| 15 | CSS 추가 | 완료 | auth.css + practice.css + python-learning.css, 총 14개 CSS |
+| 14 | Navbar 인증 UI | 완료 | 풍선 도움말 드롭다운 (마이페이지/관리자/로그아웃) |
+| 15 | CSS 추가 | 완료 | auth.css + mypage.css + admin.css 등, 총 16개 CSS |
 | 16 | 다크모드/반응형 보강 | 완료 | 전체 다크모드/반응형 대응 (14개 CSS) |
 | 17 | 파이썬 학습 | 완료 | PythonLearning 허브 + PythonLesson01~11 (11개 레슨) |
 | 18 | 파이썬 실습 | 완료 | Pyodide 기반 브라우저 Python 실행, 13단계 실습 |
 | 19 | Pyodide Worker | 완료 | Web Worker + turtle 모의 SVG + input() + 패키지 자동 로드 |
 | 20 | CodeEditor Pyodide 통합 | 완료 | 학습 레슨 CodeEditor도 Pyodide 실행 기반 |
 | 21 | 실습 뷰포트 레이아웃 | 완료 | 스크롤 없는 viewport-fit, 에디터 최대화 |
+| 22 | 로그인 필수화 | 완료 | ProtectedRoute - 비인증 시 /login 리디렉트 |
+| 23 | 30분 세션 관리 | 완료 | 세션 타이머 + 5분 전 경고 + 자동 로그아웃 |
+| 24 | 관리자 페이지 | 완료 | AdminPage.jsx - 통계/콘텐츠/커뮤니티 관리 |
+| 25 | 풍선 드롭다운 | 완료 | Navbar 클릭 기반 balloon tooltip 드롭다운 |
 
 ### 추가 개선 사항
 
@@ -64,9 +68,9 @@
 
 | 항목 | 수치 |
 |------|------|
-| 페이지 수 | 18개 (Home, Login, LevelPage, LessonPage, PythonLearning, PythonLesson01~11, PythonPractice, BadgeCollection, QuizCenter, 404) |
+| 페이지 수 | 20개 (Home, Login, MyPage, AdminPage, LevelPage, LessonPage, PythonLearning, PythonLesson01~11, PythonPractice, BadgeCollection, QuizCenter, Community, CommunityPost, CommunityWrite, 404) |
 | 컴포넌트 수 | 9개 (Navbar, Footer, CodeEditor, BadgeCard, LessonCard, ProgressBar, QuizComponent, ErrorBoundary, TurtleCanvas) |
-| CSS 파일 수 | 14개 |
+| CSS 파일 수 | 16개 |
 | Context 수 | 4개 (Theme, Progress, Badge, Auth) |
 | 학습 레슨 수 | 35개 (4단계) + 11개 (파이썬 학습) = 46개 |
 | 실습 예제 수 | 13단계 (step1~11 + advanced1~2) |
@@ -76,6 +80,5 @@
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정
-2. **프로필 페이지** - 배지, 수료증, 통계
-3. **학습 데이터 동기화** - localStorage ↔ Supabase
-4. **수료증 발급** - PDF/PNG 다운로드
+2. **학습 데이터 동기화** - localStorage ↔ Supabase
+3. **수료증 발급** - PDF/PNG 다운로드
