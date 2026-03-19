@@ -18,8 +18,8 @@
   .nav-link-dropdown { cursor: pointer; }
   .dropdown-menu { position: static; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transform: none; box-shadow: none; border: none; background: transparent; backdrop-filter: none; padding: 0; transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s ease; }
   .dropdown-menu.active { max-height: 600px; opacity: 1; visibility: visible; padding-top: 4px; padding-bottom: 4px; }
-  .dropdown-menu li a { text-align: center; padding: 6px 16px; }
-  .dropdown-group .dropdown-header { text-align: center; }
+  .dropdown-menu li a { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 16px; text-align: center; }
+  .dropdown-header { text-align: center; }
   .dropdown-group { background: transparent !important; }
   .mobile-toggle { display: flex; }
   .hero-title { font-size: 36px; }
