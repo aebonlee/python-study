@@ -68,6 +68,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     if (!isSupabaseEnabled()) {
+      console.warn('Supabase가 설정되지 않았습니다. VITE_SUPABASE_URL과 VITE_SUPABASE_ANON_KEY를 확인하세요.')
       setLoading(false)
       return
     }
@@ -86,6 +87,9 @@ export function AuthProvider({ children }) {
         }
         startSessionTimer()
       }
+      setLoading(false)
+    }).catch((err) => {
+      console.error('세션 확인 오류:', err)
       setLoading(false)
     })
 
