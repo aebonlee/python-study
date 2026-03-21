@@ -1,7 +1,9 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { badges } from '../data/badges'
 import { useProgress } from './ProgressContext'
+import { useAuth } from './AuthContext'
 import { lessons } from '../data/lessons'
+import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 
 const BadgeContext = createContext()
 
@@ -15,12 +17,30 @@ export function BadgeProvider({ children }) {
     } catch { return [] }
   })
   const [newBadge, setNewBadge] = useState(null)
+  const { user } = useAuth()
+  const syncTimerRef = useRef(null)
 
   const { completedLessons, quizScores, codeRuns, streak, isLevelCompleted, getQuizBestScore } = useProgress()
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(earnedBadges))
   }, [earnedBadges])
+
+  // Sync earned badges to Supabase (debounced)
+  useEffect(() => {
+    if (!user || !isSupabaseEnabled() || earnedBadges.length === 0) return
+    if (syncTimerRef.current) clearTimeout(syncTimerRef.current)
+    syncTimerRef.current = setTimeout(() => {
+      supabase.from(TABLES.USER_PROGRESS).upsert({
+        user_id: user.id,
+        earned_badges: earnedBadges,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' }).then(({ error }) => {
+        if (error) console.error('배지 동기화 오류:', error.message)
+      })
+    }, 2500)
+    return () => { if (syncTimerRef.current) clearTimeout(syncTimerRef.current) }
+  }, [user, earnedBadges])
 
   // Evaluate badge conditions
   useEffect(() => {

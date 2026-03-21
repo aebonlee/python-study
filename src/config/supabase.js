@@ -13,6 +13,7 @@ export const TABLES = {
   BADGES: `${TABLE_PREFIX}badges`,
   QUIZ_SCORES: `${TABLE_PREFIX}quiz_scores`,
   STREAKS: `${TABLE_PREFIX}streaks`,
+  USER_PROGRESS: `${TABLE_PREFIX}user_progress`,
   COMMUNITY_POSTS: `${TABLE_PREFIX}community_posts`,
   COMMUNITY_COMMENTS: `${TABLE_PREFIX}community_comments`,
   COMMUNITY_LIKES: `${TABLE_PREFIX}community_likes`,

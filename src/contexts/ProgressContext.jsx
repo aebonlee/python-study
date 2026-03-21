@@ -47,6 +47,7 @@ export function ProgressProvider({ children }) {
   const [state, setState] = useState(loadProgress)
   const quizScoresRef = useRef(state.quizScores)
   quizScoresRef.current = state.quizScores
+  const syncTimerRef = useRef(null)
 
   useEffect(() => {
     const data = {
@@ -57,6 +58,26 @@ export function ProgressProvider({ children }) {
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   }, [state])
+
+  // Sync progress to Supabase (debounced)
+  useEffect(() => {
+    if (!user || !isSupabaseEnabled()) return
+    if (syncTimerRef.current) clearTimeout(syncTimerRef.current)
+    syncTimerRef.current = setTimeout(() => {
+      supabase.from(TABLES.USER_PROGRESS).upsert({
+        user_id: user.id,
+        completed_lessons: Array.from(state.completedLessons),
+        code_runs: state.codeRuns,
+        streak_count: state.streak.count,
+        streak_last_date: state.streak.lastDate || null,
+        quiz_data: state.quizScores,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' }).then(({ error }) => {
+        if (error) console.error('진행 데이터 동기화 오류:', error.message)
+      })
+    }, 2000)
+    return () => { if (syncTimerRef.current) clearTimeout(syncTimerRef.current) }
+  }, [user, state])
 
   const completeLesson = useCallback((lessonId) => {
     setState(prev => {

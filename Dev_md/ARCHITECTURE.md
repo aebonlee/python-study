@@ -130,8 +130,8 @@ App
 | 키 | 용도 | 저장소 |
 |----|------|--------|
 | `pymaster-theme` | 테마 설정 | localStorage |
-| `pymaster-progress` | 학습 진도 | localStorage (+Supabase 예정) |
-| `pymaster-badges` | 획득 배지 | localStorage (+Supabase 예정) |
+| `pymaster-progress` | 학습 진도 | localStorage + Supabase 동기화 |
+| `pymaster-badges` | 획득 배지 | localStorage + Supabase 동기화 |
 | `pymaster-session-expiry` | 세션 만료 시각 | localStorage |
 | Supabase Auth | 인증 세션 | Supabase (자동 관리) |
 
@@ -139,10 +139,11 @@ App
 | 테이블 | 용도 |
 |--------|------|
 | `pymaster_users` | 사용자 정보 |
-| `pymaster_progress` | 학습 진도 동기화 |
-| `pymaster_badges` | 배지 획득 기록 |
-| `pymaster_quiz_scores` | 퀴즈 점수 |
-| `pymaster_streaks` | 연속 학습 기록 |
+| `pymaster_quiz_scores` | 퀴즈 최고 점수 |
+| `pymaster_user_progress` | 학습 진도 통합 동기화 (완료 레슨, 코드 실행 수, 스트릭, 배지, 퀴즈 시도 이력) |
+| `pymaster_community_posts` | 커뮤니티 게시글 |
+| `pymaster_community_comments` | 커뮤니티 댓글 |
+| `pymaster_community_likes` | 커뮤니티 좋아요 |
 
 ## 라우팅
 

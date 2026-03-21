@@ -3,6 +3,7 @@ import { lessons, levelInfo } from '../data/lessons'
 import { quizzes } from '../data/quizzes'
 import { badges } from '../data/badges'
 import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
+import BadgeCard from '../components/BadgeCard'
 
 const CATEGORY_LABELS = { qna: 'Q&A', free: '자유', code: '코드', review: '후기' }
 
@@ -41,9 +42,11 @@ export default function AdminPage() {
   // Member management state
   const [members, setMembers] = useState([])
   const [membersLoading, setMembersLoading] = useState(false)
-  const [expandedMember, setExpandedMember] = useState(null)
-  const [memberScores, setMemberScores] = useState({})
-  const [scoresLoading, setScoresLoading] = useState(null)
+
+  // Student detail modal state
+  const [selectedMember, setSelectedMember] = useState(null)
+  const [memberProgress, setMemberProgress] = useState(null)
+  const [memberProgressLoading, setMemberProgressLoading] = useState(false)
 
   // Static stats
   const totalLessons = Object.values(lessons).flat().length
@@ -106,25 +109,41 @@ export default function AdminPage() {
     }
   }, [])
 
-  const fetchMemberScores = useCallback(async (userId) => {
+  const fetchMemberProgress = useCallback(async (member) => {
     if (!isSupabaseEnabled()) return
-    if (memberScores[userId]) return // already loaded
-    setScoresLoading(userId)
+    setSelectedMember(member)
+    setMemberProgress(null)
+    setMemberProgressLoading(true)
     try {
       const { data, error } = await supabase
-        .from(TABLES.QUIZ_SCORES)
+        .from(TABLES.USER_PROGRESS)
         .select('*')
-        .eq('user_id', userId)
-        .order('updated_at', { ascending: false })
+        .eq('user_id', member.id)
+        .single()
 
-      if (error) throw error
-      setMemberScores(prev => ({ ...prev, [userId]: data || [] }))
+      if (error && error.code !== 'PGRST116') throw error
+      setMemberProgress(data || {
+        completed_lessons: [],
+        code_runs: 0,
+        streak_count: 0,
+        streak_last_date: null,
+        earned_badges: [],
+        quiz_data: {},
+      })
     } catch (err) {
-      console.error('성적 조회 오류:', err.message)
+      console.error('학생 데이터 조회 오류:', err.message)
+      setMemberProgress({
+        completed_lessons: [],
+        code_runs: 0,
+        streak_count: 0,
+        streak_last_date: null,
+        earned_badges: [],
+        quiz_data: {},
+      })
     } finally {
-      setScoresLoading(null)
+      setMemberProgressLoading(false)
     }
-  }, [memberScores])
+  }, [])
 
   useEffect(() => {
     if (activeTab === 'community') fetchCommunityPosts()
@@ -147,15 +166,6 @@ export default function AdminPage() {
     }
   }
 
-  const handleToggleMember = (userId) => {
-    if (expandedMember === userId) {
-      setExpandedMember(null)
-    } else {
-      setExpandedMember(userId)
-      fetchMemberScores(userId)
-    }
-  }
-
   const getProviderLabel = (provider) => {
     if (provider === 'google') return 'Google'
     if (provider === 'kakao') return 'Kakao'
@@ -168,12 +178,16 @@ export default function AdminPage() {
     return 'fa-solid fa-user'
   }
 
-  const getQuizTitle = (quizId) => {
-    return quizzes[quizId]?.title || quizId
-  }
-
-  const getPassingScore = (quizId) => {
-    return quizzes[quizId]?.passingScore || 70
+  // Build student quiz list from progress data
+  const getStudentQuizList = (progress) => {
+    const quizData = progress?.quiz_data || {}
+    return Object.entries(quizzes).map(([id, quiz]) => {
+      const data = quizData[id]
+      const bestScore = data?.bestScore
+      const attempts = data?.attempts || []
+      const passed = bestScore !== undefined && bestScore >= (quiz.passingScore || 70)
+      return { id, title: quiz.title, bestScore, attempts, passed, passingScore: quiz.passingScore || 70 }
+    })
   }
 
   return (
@@ -383,86 +397,29 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {members.map(member => (
-                      <Fragment key={member.id}>
-                        <tr
-                          className={`admin-member-row${expandedMember === member.id ? ' expanded' : ''}`}
-                          onClick={() => handleToggleMember(member.id)}
-                        >
-                          <td className="admin-member-avatar-cell">
-                            {member.avatar_url ? (
-                              <img src={member.avatar_url} alt="" className="admin-member-avatar" />
-                            ) : (
-                              <div className="admin-member-avatar admin-member-avatar-placeholder">
-                                {member.name?.charAt(0)?.toUpperCase() || '?'}
-                              </div>
-                            )}
-                          </td>
-                          <td className="admin-member-name">{member.name || '-'}</td>
-                          <td className="admin-member-email">{member.email || '-'}</td>
-                          <td>
-                            <span className="admin-provider-badge">
-                              <i className={getProviderIcon(member.provider)} /> {getProviderLabel(member.provider)}
-                            </span>
-                          </td>
-                          <td className="admin-member-date">{timeAgo(member.updated_at)}</td>
-                        </tr>
-                        {expandedMember === member.id && (
-                          <tr className="admin-member-scores-row">
-                            <td colSpan={5}>
-                              <div className="admin-member-scores">
-                                <h4><i className="fa-solid fa-clipboard-check" /> {member.name || '회원'}님의 퀴즈 성적</h4>
-                                {scoresLoading === member.id ? (
-                                  <div className="admin-loading" style={{ padding: '16px 0' }}>
-                                    <div className="loading-spinner-small" style={{ width: 20, height: 20, borderWidth: 2 }} />
-                                    <span>성적 불러오는 중...</span>
-                                  </div>
-                                ) : !memberScores[member.id] || memberScores[member.id].length === 0 ? (
-                                  <p className="admin-no-scores">응시한 퀴즈가 없습니다</p>
-                                ) : (
-                                  <table className="admin-scores-table">
-                                    <thead>
-                                      <tr>
-                                        <th>퀴즈</th>
-                                        <th>점수</th>
-                                        <th>상태</th>
-                                        <th>최종 응시일</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {memberScores[member.id].map(score => {
-                                        const passingScore = getPassingScore(score.quiz_id)
-                                        const passed = score.score >= passingScore
-                                        return (
-                                          <tr key={score.id}>
-                                            <td>{getQuizTitle(score.quiz_id)}</td>
-                                            <td>
-                                              <span className={`admin-score-value ${passed ? 'passed' : 'failed'}`}>
-                                                {score.score}점
-                                              </span>
-                                            </td>
-                                            <td>
-                                              {passed ? (
-                                                <span className="admin-score-status pass">
-                                                  <i className="fa-solid fa-circle-check" /> 통과
-                                                </span>
-                                              ) : (
-                                                <span className="admin-score-status fail">
-                                                  <i className="fa-solid fa-circle-xmark" /> 미통과
-                                                </span>
-                                              )}
-                                            </td>
-                                            <td>{formatDate(score.updated_at)}</td>
-                                          </tr>
-                                        )
-                                      })}
-                                    </tbody>
-                                  </table>
-                                )}
-                              </div>
-                            </td>
-                          </tr>
-                        )}
-                      </Fragment>
+                      <tr
+                        key={member.id}
+                        className="admin-member-row"
+                        onClick={() => fetchMemberProgress(member)}
+                      >
+                        <td className="admin-member-avatar-cell">
+                          {member.avatar_url ? (
+                            <img src={member.avatar_url} alt="" className="admin-member-avatar" />
+                          ) : (
+                            <div className="admin-member-avatar admin-member-avatar-placeholder">
+                              {member.name?.charAt(0)?.toUpperCase() || '?'}
+                            </div>
+                          )}
+                        </td>
+                        <td className="admin-member-name">{member.name || '-'}</td>
+                        <td className="admin-member-email">{member.email || '-'}</td>
+                        <td>
+                          <span className="admin-provider-badge">
+                            <i className={getProviderIcon(member.provider)} /> {getProviderLabel(member.provider)}
+                          </span>
+                        </td>
+                        <td className="admin-member-date">{timeAgo(member.updated_at)}</td>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
@@ -471,6 +428,167 @@ export default function AdminPage() {
           </section>
         )}
       </div>
+
+      {/* Student Detail Modal */}
+      {selectedMember && (
+        <div className="student-modal-overlay" onClick={() => setSelectedMember(null)}>
+          <div className="student-modal" onClick={e => e.stopPropagation()}>
+            <button className="student-modal-close" onClick={() => setSelectedMember(null)}>
+              <i className="fa-solid fa-xmark" />
+            </button>
+
+            {memberProgressLoading ? (
+              <div className="admin-loading" style={{ minHeight: 200 }}>
+                <div className="loading-spinner-small" style={{ width: 28, height: 28, borderWidth: 3 }} />
+                <span>학생 데이터 불러오는 중...</span>
+              </div>
+            ) : memberProgress && (() => {
+              const progress = memberProgress
+              const completedCount = progress.completed_lessons?.length || 0
+              const progressPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
+              const studentQuizList = getStudentQuizList(progress)
+              const takenQuizzes = studentQuizList.filter(q => q.bestScore !== undefined)
+              const quizAvg = takenQuizzes.length > 0
+                ? Math.round(takenQuizzes.reduce((sum, q) => sum + q.bestScore, 0) / takenQuizzes.length)
+                : 0
+              const earnedBadgeData = badges.filter(b => (progress.earned_badges || []).includes(b.id))
+
+              return (
+                <>
+                  {/* Profile Card */}
+                  <div className="mypage-profile-card">
+                    <div className="mypage-avatar-wrap">
+                      {selectedMember.avatar_url ? (
+                        <img src={selectedMember.avatar_url} alt={selectedMember.name} className="mypage-avatar" />
+                      ) : (
+                        <div className="mypage-avatar mypage-avatar-placeholder">
+                          {selectedMember.name?.charAt(0)?.toUpperCase() || '?'}
+                        </div>
+                      )}
+                    </div>
+                    <div className="mypage-profile-info">
+                      <h2 className="mypage-name">{selectedMember.name || '-'}</h2>
+                      <p className="mypage-email">{selectedMember.email || '-'}</p>
+                      <span className="mypage-provider">
+                        <i className={getProviderIcon(selectedMember.provider)} /> {getProviderLabel(selectedMember.provider)} 로그인
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Learning Stats */}
+                  <h2 className="mypage-section-title">
+                    <i className="fa-solid fa-chart-line" /> 학습 통계
+                  </h2>
+                  <div className="mypage-stats-grid">
+                    <div className="mypage-stat-card">
+                      <div className="mypage-stat-icon" style={{ background: 'rgba(75,139,190,0.12)', color: '#4B8BBE' }}>
+                        <i className="fa-solid fa-book-open" />
+                      </div>
+                      <div className="mypage-stat-value">{completedCount}<span className="mypage-stat-unit">/{totalLessons}</span></div>
+                      <div className="mypage-stat-label">완료 레슨</div>
+                      <div className="mypage-stat-bar">
+                        <div className="mypage-stat-bar-fill" style={{ width: `${progressPct}%`, background: '#4B8BBE' }} />
+                      </div>
+                    </div>
+                    <div className="mypage-stat-card">
+                      <div className="mypage-stat-icon" style={{ background: 'rgba(255,212,59,0.15)', color: '#D4A017' }}>
+                        <i className="fa-solid fa-trophy" />
+                      </div>
+                      <div className="mypage-stat-value">{quizAvg}<span className="mypage-stat-unit">점</span></div>
+                      <div className="mypage-stat-label">퀴즈 평균 점수</div>
+                    </div>
+                    <div className="mypage-stat-card">
+                      <div className="mypage-stat-icon" style={{ background: 'rgba(46,204,113,0.12)', color: '#2ecc71' }}>
+                        <i className="fa-solid fa-play" />
+                      </div>
+                      <div className="mypage-stat-value">{progress.code_runs || 0}<span className="mypage-stat-unit">회</span></div>
+                      <div className="mypage-stat-label">코드 실행 수</div>
+                    </div>
+                    <div className="mypage-stat-card">
+                      <div className="mypage-stat-icon" style={{ background: 'rgba(231,76,60,0.12)', color: '#e74c3c' }}>
+                        <i className="fa-solid fa-fire" />
+                      </div>
+                      <div className="mypage-stat-value">{progress.streak_count || 0}<span className="mypage-stat-unit">일</span></div>
+                      <div className="mypage-stat-label">연속 학습일</div>
+                    </div>
+                  </div>
+
+                  {/* Earned Badges */}
+                  <h2 className="mypage-section-title" style={{ marginTop: 28 }}>
+                    <i className="fa-solid fa-medal" /> 획득 배지 <span className="mypage-badge-count">{earnedBadgeData.length}개</span>
+                  </h2>
+                  {earnedBadgeData.length > 0 ? (
+                    <div className="mypage-badge-grid">
+                      {earnedBadgeData.map(badge => (
+                        <BadgeCard key={badge.id} badge={badge} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="mypage-empty">
+                      <i className="fa-solid fa-lock" />
+                      <p>아직 획득한 배지가 없습니다.</p>
+                    </div>
+                  )}
+
+                  {/* Quiz Scores */}
+                  <h2 className="mypage-section-title" style={{ marginTop: 28 }}>
+                    <i className="fa-solid fa-clipboard-check" /> 퀴즈 성적표
+                  </h2>
+                  <div className="mypage-quiz-table-wrap">
+                    <table className="mypage-quiz-table">
+                      <thead>
+                        <tr>
+                          <th>퀴즈</th>
+                          <th>1회차</th>
+                          <th>2회차</th>
+                          <th>3회차</th>
+                          <th>최종 상태</th>
+                          <th>최초 응시일</th>
+                          <th>최종 응시일</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {studentQuizList.map(q => {
+                          const recent3 = q.attempts.slice(-3)
+                          const firstDate = q.attempts.length > 0 ? q.attempts[0].date : null
+                          const lastDate = q.attempts.length > 0 ? q.attempts[q.attempts.length - 1].date : null
+                          return (
+                            <tr key={q.id}>
+                              <td className="quiz-name-cell">{q.title}</td>
+                              {[0, 1, 2].map(i => (
+                                <td key={i} className="quiz-attempt-cell">
+                                  {recent3[i] ? (
+                                    <span className={`quiz-attempt-score ${recent3[i].score >= q.passingScore ? 'passed' : 'failed'}`}>
+                                      {recent3[i].score}점
+                                    </span>
+                                  ) : (
+                                    <span className="quiz-attempt-score none">-</span>
+                                  )}
+                                </td>
+                              ))}
+                              <td className="quiz-status-cell">
+                                {q.bestScore === undefined ? (
+                                  <span className="quiz-status not-taken">미응시</span>
+                                ) : q.passed ? (
+                                  <span className="quiz-status pass"><i className="fa-solid fa-circle-check" /> 통과</span>
+                                ) : (
+                                  <span className="quiz-status fail"><i className="fa-solid fa-circle-xmark" /> 미통과</span>
+                                )}
+                              </td>
+                              <td className="quiz-date-cell">{formatDate(firstDate)}</td>
+                              <td className="quiz-date-cell">{formatDate(lastDate)}</td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )
+            })()}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

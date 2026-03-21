@@ -32,6 +32,8 @@
 | 23 | 30분 세션 관리 | 완료 | 세션 타이머 + 5분 전 경고 + 자동 로그아웃 |
 | 24 | 관리자 페이지 | 완료 | AdminPage.jsx - 통계/콘텐츠/커뮤니티 관리 |
 | 25 | 풍선 드롭다운 | 완료 | Navbar 클릭 기반 balloon tooltip 드롭다운 |
+| 27 | 학생 개별 결과 페이지 | 완료 | 관리자 회원 관리에서 학생 클릭 → 개인 결과 모달 (MyPage 동일 레이아웃) |
+| 28 | 학습 데이터 Supabase 동기화 | 완료 | ProgressContext + BadgeContext → pymaster_user_progress 테이블 자동 동기화 |
 
 ### 추가 개선 사항
 
@@ -81,5 +83,5 @@
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정
-2. **학습 데이터 동기화** - localStorage ↔ Supabase
+2. ~~**학습 데이터 동기화**~~ - ✅ 완료 (pymaster_user_progress 테이블)
 3. **수료증 발급** - PDF/PNG 다운로드

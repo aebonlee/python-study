@@ -587,6 +587,126 @@
 }
 
 /* ========================================
+   Student Detail Modal
+   ======================================== */
+.student-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.student-modal {
+  background: var(--bg-white);
+  border-radius: 18px;
+  padding: 32px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.student-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-light);
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 16px;
+  transition: var(--transition);
+  z-index: 1;
+}
+
+.student-modal-close:hover {
+  background: #e74c3c;
+  color: #fff;
+  border-color: #e74c3c;
+}
+
+/* Modal uses mypage styles for content */
+.student-modal .mypage-profile-card {
+  margin-bottom: 24px;
+}
+
+.student-modal .mypage-section-title {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.student-modal .mypage-quiz-table-wrap {
+  margin-bottom: 0;
+}
+
+/* Dark mode modal */
+[data-theme="dark"] .student-modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .student-modal {
+  background: var(--bg-card, var(--bg-light));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .student-modal-close {
+  background: var(--bg-medium);
+  border-color: var(--border-medium);
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+  .student-modal-overlay {
+    padding: 12px;
+  }
+
+  .student-modal {
+    padding: 20px;
+    max-height: 90vh;
+    border-radius: 14px;
+  }
+
+  .student-modal .mypage-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .student-modal {
+    padding: 16px;
+  }
+
+  .student-modal .mypage-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
    Responsive
    ======================================== */
 @media (max-width: 768px) {
