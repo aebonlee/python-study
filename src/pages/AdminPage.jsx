@@ -114,32 +114,64 @@ export default function AdminPage() {
     setSelectedMember(member)
     setMemberProgress(null)
     setMemberProgressLoading(true)
-    try {
-      const { data, error } = await supabase
-        .from(TABLES.USER_PROGRESS)
-        .select('*')
-        .eq('user_id', member.id)
-        .single()
 
-      if (error && error.code !== 'PGRST116') throw error
-      setMemberProgress(data || {
-        completed_lessons: [],
-        code_runs: 0,
-        streak_count: 0,
-        streak_last_date: null,
-        earned_badges: [],
-        quiz_data: {},
-      })
+    const emptyProgress = {
+      completed_lessons: [],
+      code_runs: 0,
+      streak_count: 0,
+      streak_last_date: null,
+      earned_badges: [],
+      quiz_data: {},
+    }
+
+    try {
+      // 두 테이블에서 동시 조회
+      const [progressRes, scoresRes] = await Promise.all([
+        supabase
+          .from(TABLES.USER_PROGRESS)
+          .select('*')
+          .eq('user_id', member.id)
+          .single(),
+        supabase
+          .from(TABLES.QUIZ_SCORES)
+          .select('*')
+          .eq('user_id', member.id),
+      ])
+
+      const progress = (progressRes.error && progressRes.error.code === 'PGRST116')
+        ? emptyProgress
+        : (progressRes.data || emptyProgress)
+
+      // quiz_data가 비어있으면 pymaster_quiz_scores에서 폴백
+      let quizData = progress.quiz_data || {}
+      const hasQuizData = Object.keys(quizData).length > 0
+      const legacyScores = scoresRes.data || []
+
+      if (!hasQuizData && legacyScores.length > 0) {
+        // quiz_scores 테이블에서 폴백 데이터 구성
+        quizData = {}
+        for (const s of legacyScores) {
+          quizData[s.quiz_id] = {
+            attempts: [{ score: s.score, date: s.updated_at }],
+            bestScore: s.score,
+          }
+        }
+      } else if (hasQuizData && legacyScores.length > 0) {
+        // quiz_data에 없지만 quiz_scores에 있는 퀴즈 보충
+        for (const s of legacyScores) {
+          if (!quizData[s.quiz_id]) {
+            quizData[s.quiz_id] = {
+              attempts: [{ score: s.score, date: s.updated_at }],
+              bestScore: s.score,
+            }
+          }
+        }
+      }
+
+      setMemberProgress({ ...progress, quiz_data: quizData })
     } catch (err) {
       console.error('학생 데이터 조회 오류:', err.message)
-      setMemberProgress({
-        completed_lessons: [],
-        code_runs: 0,
-        streak_count: 0,
-        streak_last_date: null,
-        earned_badges: [],
-        quiz_data: {},
-      })
+      setMemberProgress(emptyProgress)
     } finally {
       setMemberProgressLoading(false)
     }

@@ -12,7 +12,6 @@ function migrateQuizScores(quizScores) {
   const migrated = {}
   for (const [quizId, value] of Object.entries(quizScores)) {
     if (typeof value === 'number') {
-      // 기존 형식: { quizId: bestScore } → 새 형식으로 변환 (날짜 정보 없음)
       migrated[quizId] = { attempts: [], bestScore: value }
     } else if (value && typeof value === 'object' && typeof value.bestScore === 'number') {
       migrated[quizId] = value
@@ -48,7 +47,9 @@ export function ProgressProvider({ children }) {
   const quizScoresRef = useRef(state.quizScores)
   quizScoresRef.current = state.quizScores
   const syncTimerRef = useRef(null)
+  const initialSyncDone = useRef(false)
 
+  // localStorage 저장
   useEffect(() => {
     const data = {
       completedLessons: Array.from(state.completedLessons),
@@ -59,25 +60,45 @@ export function ProgressProvider({ children }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
   }, [state])
 
-  // Sync progress to Supabase (debounced)
-  useEffect(() => {
+  // Supabase 동기화 함수
+  const syncToSupabase = useCallback((currentState) => {
     if (!user || !isSupabaseEnabled()) return
+    // 배지 데이터도 포함해서 보냄 (BadgeContext와 별도로 보내면 초기 INSERT시 빈 배열로 덮어쓰는 문제 방지)
+    let earnedBadges
+    try {
+      earnedBadges = JSON.parse(localStorage.getItem('pymaster-badges') || '[]')
+    } catch { earnedBadges = [] }
+
+    supabase.from(TABLES.USER_PROGRESS).upsert({
+      user_id: user.id,
+      completed_lessons: Array.from(currentState.completedLessons),
+      code_runs: currentState.codeRuns,
+      streak_count: currentState.streak.count,
+      streak_last_date: currentState.streak.lastDate || null,
+      earned_badges: earnedBadges,
+      quiz_data: currentState.quizScores,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'user_id' }).then(({ error }) => {
+      if (error) console.error('진행 데이터 동기화 오류:', error.message)
+    })
+  }, [user])
+
+  // 로그인 시 즉시 동기화 (디바운스 없음)
+  useEffect(() => {
+    if (!user || !isSupabaseEnabled() || initialSyncDone.current) return
+    initialSyncDone.current = true
+    syncToSupabase(state)
+  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 이후 변경 시 디바운스 동기화
+  useEffect(() => {
+    if (!user || !isSupabaseEnabled() || !initialSyncDone.current) return
     if (syncTimerRef.current) clearTimeout(syncTimerRef.current)
     syncTimerRef.current = setTimeout(() => {
-      supabase.from(TABLES.USER_PROGRESS).upsert({
-        user_id: user.id,
-        completed_lessons: Array.from(state.completedLessons),
-        code_runs: state.codeRuns,
-        streak_count: state.streak.count,
-        streak_last_date: state.streak.lastDate || null,
-        quiz_data: state.quizScores,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'user_id' }).then(({ error }) => {
-        if (error) console.error('진행 데이터 동기화 오류:', error.message)
-      })
+      syncToSupabase(state)
     }, 2000)
     return () => { if (syncTimerRef.current) clearTimeout(syncTimerRef.current) }
-  }, [user, state])
+  }, [user, state, syncToSupabase])
 
   const completeLesson = useCallback((lessonId) => {
     setState(prev => {
@@ -120,7 +141,7 @@ export function ProgressProvider({ children }) {
       }
     })
 
-    // Sync to Supabase for logged-in users (bestScore only)
+    // Sync to Supabase for logged-in users (bestScore only — legacy table)
     if (user && isSupabaseEnabled()) {
       const existing = quizScoresRef.current[quizId]
       const prevBest = existing?.bestScore || 0
