@@ -142,8 +142,7 @@ export default function CommunityPost() {
     })
   }
 
-  const handleComment = async (e) => {
-    e.preventDefault()
+  const handleComment = async () => {
     if (!commentText.trim() || submitting) return
     setSubmitting(true)
     await createComment(postId, commentText.trim())
@@ -333,7 +332,7 @@ export default function CommunityPost() {
 
               <form className="community-comment-form" onSubmit={(e) => {
                 e.preventDefault()
-                requireAuth(() => handleComment(e))
+                requireAuth(handleComment)
               }}>
                 <textarea
                   ref={commentInputRef}

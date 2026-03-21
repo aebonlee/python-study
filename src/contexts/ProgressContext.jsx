@@ -72,20 +72,6 @@ export function ProgressProvider({ children }) {
     setState(prev => {
       const prevScore = prev.quizScores[quizId] || 0
       const bestScore = Math.max(prevScore, score)
-
-      // Sync to Supabase for logged-in users
-      if (user && isSupabaseEnabled()) {
-        supabase.from(TABLES.QUIZ_SCORES).upsert({
-          user_id: user.id,
-          quiz_id: quizId,
-          score: bestScore,
-          max_score: 100,
-          updated_at: new Date().toISOString()
-        }, { onConflict: 'user_id,quiz_id' }).catch(err => {
-          console.error('퀴즈 점수 저장 오류:', err)
-        })
-      }
-
       return {
         ...prev,
         quizScores: {
@@ -94,7 +80,24 @@ export function ProgressProvider({ children }) {
         }
       }
     })
-  }, [user])
+
+    // Sync to Supabase for logged-in users (outside setState)
+    if (user && isSupabaseEnabled()) {
+      const prevScore = state.quizScores[quizId] || 0
+      const bestScore = Math.max(prevScore, score)
+      supabase.from(TABLES.QUIZ_SCORES).upsert({
+        user_id: user.id,
+        quiz_id: quizId,
+        score: bestScore,
+        max_score: 100,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,quiz_id' }).then(({ error }) => {
+        if (error) console.error('퀴즈 점수 저장 오류:', error.message)
+      }).catch(err => {
+        console.error('퀴즈 점수 저장 오류:', err)
+      })
+    }
+  }, [user, state.quizScores])
 
   const incrementCodeRuns = useCallback(() => {
     setState(prev => ({ ...prev, codeRuns: prev.codeRuns + 1 }))
