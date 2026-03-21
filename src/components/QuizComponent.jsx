@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useProgress } from '../contexts/ProgressContext'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function QuizComponent({ quiz, quizId, onComplete }) {
   const [currentQ, setCurrentQ] = useState(0)
@@ -9,6 +10,7 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
   const [timeLeft, setTimeLeft] = useState(quiz.timeLimit)
   const [finished, setFinished] = useState(false)
   const { saveQuizScore } = useProgress()
+  const { requireAuth } = useAuth()
 
   const questions = quiz.questions
 
@@ -168,7 +170,7 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
 
       <div className="quiz-actions">
         {!showResult ? (
-          <button className="btn btn-primary" onClick={handleSubmit} disabled={selected === null}>
+          <button className="btn btn-primary" onClick={() => requireAuth(handleSubmit)} disabled={selected === null}>
             제출하기
           </button>
         ) : (

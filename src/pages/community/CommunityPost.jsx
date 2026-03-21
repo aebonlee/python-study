@@ -112,7 +112,7 @@ function formatDate(dateStr) {
 export default function CommunityPost() {
   const { postId } = useParams()
   const navigate = useNavigate()
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, requireAuth } = useAuth()
   const {
     post, comments, loading, error,
     fetchPost, fetchComments, createComment, deleteComment,
@@ -136,9 +136,10 @@ export default function CommunityPost() {
   }, [isAuthenticated, postId, checkLiked])
 
   const handleLike = async () => {
-    if (!isAuthenticated) { navigate('/login'); return }
-    const result = await toggleLike(postId)
-    if (result !== null) setLiked(result)
+    requireAuth(async () => {
+      const result = await toggleLike(postId)
+      if (result !== null) setLiked(result)
+    })
   }
 
   const handleComment = async (e) => {
@@ -330,29 +331,27 @@ export default function CommunityPost() {
                 </div>
               ))}
 
-              {isAuthenticated ? (
-                <form className="community-comment-form" onSubmit={handleComment}>
-                  <textarea
-                    ref={commentInputRef}
-                    className="community-comment-input"
-                    placeholder="댓글을 작성하세요..."
-                    value={commentText}
-                    onChange={e => setCommentText(e.target.value)}
-                    rows={2}
-                  />
-                  <button
-                    type="submit"
-                    className="community-comment-submit"
-                    disabled={!commentText.trim() || submitting}
-                  >
-                    {submitting ? '등록 중...' : '댓글 등록'}
-                  </button>
-                </form>
-              ) : (
-                <div className="community-login-notice">
-                  댓글을 작성하려면 <Link to="/login">로그인</Link>이 필요합니다.
-                </div>
-              )}
+              <form className="community-comment-form" onSubmit={(e) => {
+                e.preventDefault()
+                requireAuth(() => handleComment(e))
+              }}>
+                <textarea
+                  ref={commentInputRef}
+                  className="community-comment-input"
+                  placeholder={isAuthenticated ? '댓글을 작성하세요...' : '로그인 후 댓글을 작성할 수 있습니다.'}
+                  value={commentText}
+                  onChange={e => setCommentText(e.target.value)}
+                  onFocus={() => { if (!isAuthenticated) requireAuth(() => {}) }}
+                  rows={2}
+                />
+                <button
+                  type="submit"
+                  className="community-comment-submit"
+                  disabled={!commentText.trim() || submitting}
+                >
+                  {submitting ? '등록 중...' : '댓글 등록'}
+                </button>
+              </form>
             </div>
           </div>
         </div>

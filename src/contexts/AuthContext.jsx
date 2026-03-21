@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
-import { supabase, isSupabaseEnabled } from '../config/supabase'
+import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 
 const AuthContext = createContext()
 
@@ -12,7 +12,9 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [sessionTimeLeft, setSessionTimeLeft] = useState(null)
+  const [showLoginModal, setShowLoginModal] = useState(false)
   const intervalRef = useRef(null)
+  const pendingActionRef = useRef(null)
 
   const getSessionExpiry = () => {
     try {
@@ -66,6 +68,23 @@ export function AuthProvider({ children }) {
     setSessionTimeLeft(SESSION_DURATION)
   }, [])
 
+  // Upsert user info to pymaster_users table
+  const upsertUser = useCallback(async (u) => {
+    if (!isSupabaseEnabled() || !u) return
+    try {
+      await supabase.from(TABLES.USERS).upsert({
+        id: u.id,
+        email: u.email,
+        name: u.user_metadata?.full_name || u.user_metadata?.name,
+        avatar_url: u.user_metadata?.avatar_url,
+        provider: u.app_metadata?.provider,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'id' })
+    } catch (err) {
+      console.error('사용자 정보 저장 오류:', err)
+    }
+  }, [])
+
   useEffect(() => {
     if (!isSupabaseEnabled()) {
       console.warn('Supabase가 설정되지 않았습니다. VITE_SUPABASE_URL과 VITE_SUPABASE_ANON_KEY를 확인하세요.')
@@ -86,6 +105,7 @@ export function AuthProvider({ children }) {
           setSessionTimeLeft(SESSION_DURATION)
         }
         startSessionTimer()
+        upsertUser(u)
       }
       setLoading(false)
     }).catch((err) => {
@@ -101,6 +121,14 @@ export function AuthProvider({ children }) {
         setSessionExpiry(newExpiry)
         setSessionTimeLeft(SESSION_DURATION)
         startSessionTimer()
+        upsertUser(u)
+        // Execute pending action after login
+        if (pendingActionRef.current) {
+          const action = pendingActionRef.current
+          pendingActionRef.current = null
+          setShowLoginModal(false)
+          setTimeout(() => action(), 100)
+        }
       } else {
         clearSessionTimer()
       }
@@ -132,6 +160,20 @@ export function AuthProvider({ children }) {
 
   const signOut = doSignOut
 
+  const requireAuth = useCallback((callback) => {
+    if (user) {
+      callback()
+    } else {
+      pendingActionRef.current = callback
+      setShowLoginModal(true)
+    }
+  }, [user])
+
+  const dismissLoginModal = useCallback(() => {
+    setShowLoginModal(false)
+    pendingActionRef.current = null
+  }, [])
+
   const isAdmin = ADMIN_EMAILS.includes(user?.email)
   const showSessionWarning = sessionTimeLeft !== null && sessionTimeLeft <= WARNING_THRESHOLD && sessionTimeLeft > 0
 
@@ -152,6 +194,9 @@ export function AuthProvider({ children }) {
     sessionTimeLeft,
     showSessionWarning,
     extendSession,
+    requireAuth,
+    showLoginModal,
+    dismissLoginModal,
   }
 
   return (
@@ -165,6 +210,39 @@ export function AuthProvider({ children }) {
             <button className="session-extend-btn" onClick={extendSession}>
               <i className="fa-solid fa-rotate-right" /> 연장하기
             </button>
+          </div>
+        </div>
+      )}
+      {showLoginModal && (
+        <div className="login-modal-overlay" onClick={dismissLoginModal}>
+          <div className="login-modal" onClick={e => e.stopPropagation()}>
+            <button className="login-modal-close" onClick={dismissLoginModal}>
+              <i className="fa-solid fa-xmark" />
+            </button>
+            <div className="login-modal-header">
+              <div className="login-modal-icon">
+                <i className="fa-solid fa-lock" />
+              </div>
+              <h2>로그인하고 계속하기</h2>
+              <p>이 기능을 사용하려면 로그인이 필요합니다</p>
+            </div>
+            <div className="login-modal-buttons">
+              <button className="login-btn google-btn" onClick={signInWithGoogle}>
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Google로 로그인
+              </button>
+              <button className="login-btn kakao-btn" onClick={signInWithKakao}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#3C1E1E">
+                  <path d="M12 3C6.48 3 2 6.36 2 10.44c0 2.62 1.75 4.93 4.38 6.24l-1.12 4.16c-.1.35.3.64.6.44l4.97-3.27c.38.03.77.05 1.17.05 5.52 0 10-3.36 10-7.5S17.52 3 12 3z"/>
+                </svg>
+                Kakao로 로그인
+              </button>
+            </div>
           </div>
         </div>
       )}

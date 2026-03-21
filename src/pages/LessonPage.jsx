@@ -3,11 +3,13 @@ import { useState } from 'react'
 import { lessons, levelInfo } from '../data/lessons'
 import { lessonContents } from '../data/lessonContents'
 import { useProgress } from '../contexts/ProgressContext'
+import { useAuth } from '../contexts/AuthContext'
 import CodeEditor from '../components/CodeEditor'
 
 export default function LessonPage() {
   const { level, lessonId } = useParams()
   const { completedLessons, completeLesson, uncompleteLesson } = useProgress()
+  const { requireAuth } = useAuth()
   const [activeSection, setActiveSection] = useState(0)
 
   const info = levelInfo[level]
@@ -150,12 +152,12 @@ export default function LessonPage() {
             </div>
 
             {!isCompleted && (
-              <button className="btn btn-accent complete-btn" onClick={() => completeLesson(lessonId)}>
+              <button className="btn btn-accent complete-btn" onClick={() => requireAuth(() => completeLesson(lessonId))}>
                 <i className="fa-solid fa-check" /> 학습 완료
               </button>
             )}
             {isCompleted && (
-              <button className="btn btn-outline complete-toggle-btn" onClick={() => uncompleteLesson(lessonId)}>
+              <button className="btn btn-outline complete-toggle-btn" onClick={() => requireAuth(() => uncompleteLesson(lessonId))}>
                 <i className="fa-solid fa-rotate-left" /> 완료 취소
               </button>
             )}

@@ -351,6 +351,109 @@
 }
 
 /* ========================================
+   Login Modal (requireAuth popup)
+   ======================================== */
+.login-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: loginModalFadeIn 0.2s ease;
+}
+
+.login-modal {
+  background: var(--bg-white);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+  position: relative;
+  text-align: center;
+  animation: loginModalSlideUp 0.3s ease;
+}
+
+.login-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-light);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.login-modal-close:hover {
+  background: var(--bg-light);
+  color: var(--text-primary);
+}
+
+.login-modal-header {
+  margin-bottom: 28px;
+}
+
+.login-modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(48, 105, 152, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 24px;
+  color: var(--primary);
+}
+
+.login-modal-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.login-modal-header p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.login-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-modal-buttons .login-btn {
+  width: 100%;
+}
+
+@keyframes loginModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes loginModalSlideUp {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========================================
    Dark mode
    ======================================== */
 [data-theme="dark"] .login-card {
@@ -401,4 +504,17 @@
 
 [data-theme="dark"] .session-extend-btn {
   background: #b8860b;
+}
+
+[data-theme="dark"] .login-modal {
+  background: var(--bg-light);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .login-modal-close:hover {
+  background: var(--bg-medium);
+}
+
+[data-theme="dark"] .login-modal-icon {
+  background: rgba(75, 139, 190, 0.15);
 }

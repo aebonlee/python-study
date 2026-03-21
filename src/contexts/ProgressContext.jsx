@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { lessons } from '../data/lessons'
+import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
+import { useAuth } from './AuthContext'
 
 const ProgressContext = createContext()
 
@@ -27,6 +29,7 @@ function loadProgress() {
 }
 
 export function ProgressProvider({ children }) {
+  const { user } = useAuth()
   const [state, setState] = useState(loadProgress)
 
   useEffect(() => {
@@ -68,15 +71,30 @@ export function ProgressProvider({ children }) {
   const saveQuizScore = useCallback((quizId, score) => {
     setState(prev => {
       const prevScore = prev.quizScores[quizId] || 0
+      const bestScore = Math.max(prevScore, score)
+
+      // Sync to Supabase for logged-in users
+      if (user && isSupabaseEnabled()) {
+        supabase.from(TABLES.QUIZ_SCORES).upsert({
+          user_id: user.id,
+          quiz_id: quizId,
+          score: bestScore,
+          max_score: 100,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id,quiz_id' }).catch(err => {
+          console.error('퀴즈 점수 저장 오류:', err)
+        })
+      }
+
       return {
         ...prev,
         quizScores: {
           ...prev.quizScores,
-          [quizId]: Math.max(prevScore, score)
+          [quizId]: bestScore
         }
       }
     })
-  }, [])
+  }, [user])
 
   const incrementCodeRuns = useCallback(() => {
     setState(prev => ({ ...prev, codeRuns: prev.codeRuns + 1 }))

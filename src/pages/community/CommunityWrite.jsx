@@ -56,7 +56,7 @@ function renderPreview(content) {
 export default function CommunityWrite() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, requireAuth } = useAuth()
   const { fetchPost, createPost, updatePost, post, error } = useCommunity()
 
   const editId = searchParams.get('edit')
@@ -70,10 +70,10 @@ export default function CommunityWrite() {
   const [showPreview, setShowPreview] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
-  // 비로그인 리다이렉트
+  // 비로그인 시 로그인 팝업 표시
   useEffect(() => {
-    if (!isAuthenticated) navigate('/login')
-  }, [isAuthenticated, navigate])
+    if (!isAuthenticated) requireAuth(() => {})
+  }, [isAuthenticated, requireAuth])
 
   // 수정 모드: 기존 데이터 로드
   useEffect(() => {

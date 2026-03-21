@@ -1,5 +1,6 @@
 import { useState, useRef, useMemo, useCallback } from 'react'
 import { useProgress } from '../contexts/ProgressContext'
+import { useAuth } from '../contexts/AuthContext'
 import { useCodeRunner } from '../hooks/useCodeRunner'
 
 const SVG_MARKER = '__TURTLE_SVG__'
@@ -11,6 +12,7 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
   const [waitingForInput, setWaitingForInput] = useState(false)
   const textareaRef = useRef(null)
   const { incrementCodeRuns } = useProgress()
+  const { requireAuth } = useAuth()
   const { status, output, errorMsg, runCode, resetOutput } = useCodeRunner()
 
   const isRunning = status === 'loading' || status === 'running'
@@ -130,7 +132,7 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
 
       {/* Bottom toolbar - matches practice-toolbar */}
       <div className="editor-toolbar-bottom">
-        <button className="editor-btn run-btn" onClick={handleRun} disabled={isRunning}>
+        <button className="editor-btn run-btn" onClick={() => requireAuth(handleRun)} disabled={isRunning}>
           {isRunning ? (
             <><div className="loading-spinner-small" /> {status === 'loading' ? 'Python 로딩 중...' : '실행 중...'}</>
           ) : (

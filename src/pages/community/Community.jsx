@@ -36,7 +36,7 @@ function stripCodeBlocks(text) {
 export default function Community() {
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, requireAuth } = useAuth()
   const { posts, totalCount, loading, error, fetchPosts } = useCommunity()
 
   const category = searchParams.get('category') || 'all'
@@ -152,7 +152,7 @@ export default function Community() {
             </form>
             <button
               className="community-write-btn"
-              onClick={() => isAuthenticated ? navigate('/community/write') : navigate('/login')}
+              onClick={() => requireAuth(() => navigate('/community/write'))}
             >
               <i className="fa-solid fa-pen" /> 글쓰기
             </button>

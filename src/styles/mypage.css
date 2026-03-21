@@ -294,9 +294,55 @@
   background: var(--bg-light);
 }
 
+/* Login Guide (non-authenticated) */
+.mypage-login-guide {
+  text-align: center;
+  padding: 60px 24px;
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.mypage-login-guide-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(48, 105, 152, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 28px;
+  color: var(--primary);
+}
+
+.mypage-login-guide h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.mypage-login-guide p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.mypage-login-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
 /* ========================================
    Dark Mode
    ======================================== */
+[data-theme="dark"] .mypage-login-guide,
 [data-theme="dark"] .mypage-profile-card,
 [data-theme="dark"] .mypage-stat-card,
 [data-theme="dark"] .mypage-quiz-table-wrap,

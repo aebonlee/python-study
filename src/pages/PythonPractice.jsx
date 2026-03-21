@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from 'react'
 import { useCodeRunner } from '../hooks/useCodeRunner'
+import { useAuth } from '../contexts/AuthContext'
 import { stepMeta, stepLoaders } from '../data/pythonSteps/index.js'
 
 /* ── 기본값→직접입력 자동 변환 ── */
@@ -71,6 +72,7 @@ const StepCodeRunner = ({ example, onReset }) => {
   const [waitingForInput, setWaitingForInput] = useState(false)
   const [codeMode, setCodeMode] = useState('default')
   const { status, output, errorMsg, runCode, resetOutput } = useCodeRunner()
+  const { requireAuth } = useAuth()
 
   const inputVersion = useMemo(() => generateInputVersion(example.code), [example.code])
   const hasTabs = inputVersion !== null
@@ -226,7 +228,7 @@ const StepCodeRunner = ({ example, onReset }) => {
       </div>
 
       <div className="practice-toolbar">
-        <button className="editor-btn run-btn" onClick={handleRun} disabled={isRunning}>
+        <button className="editor-btn run-btn" onClick={() => requireAuth(handleRun)} disabled={isRunning}>
           {isRunning ? (
             <><div className="loading-spinner-small" /> {status === 'loading' ? 'Python 로딩 중...' : '실행 중...'}</>
           ) : (
