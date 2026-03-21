@@ -325,8 +325,12 @@
   background: rgba(48, 105, 152, 0.06);
 }
 
-.admin-member-avatar-cell {
+.admin-member-num {
   width: 48px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 .admin-member-avatar {

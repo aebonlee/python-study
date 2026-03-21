@@ -420,29 +420,22 @@ export default function AdminPage() {
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th></th>
+                      <th>구분</th>
                       <th>이름</th>
                       <th>이메일</th>
                       <th>로그인 방식</th>
+                      <th>가입일</th>
                       <th>마지막 접속</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {members.map(member => (
+                    {members.map((member, idx) => (
                       <tr
                         key={member.id}
                         className="admin-member-row"
                         onClick={() => fetchMemberProgress(member)}
                       >
-                        <td className="admin-member-avatar-cell">
-                          {member.avatar_url ? (
-                            <img src={member.avatar_url} alt="" className="admin-member-avatar" />
-                          ) : (
-                            <div className="admin-member-avatar admin-member-avatar-placeholder">
-                              {member.name?.charAt(0)?.toUpperCase() || '?'}
-                            </div>
-                          )}
-                        </td>
+                        <td className="admin-member-num">{idx + 1}</td>
                         <td className="admin-member-name">{member.name || '-'}</td>
                         <td className="admin-member-email">{member.email || '-'}</td>
                         <td>
@@ -450,6 +443,7 @@ export default function AdminPage() {
                             <i className={getProviderIcon(member.provider)} /> {getProviderLabel(member.provider)}
                           </span>
                         </td>
+                        <td className="admin-member-date">{formatDate(member.created_at)}</td>
                         <td className="admin-member-date">{timeAgo(member.updated_at)}</td>
                       </tr>
                     ))}
