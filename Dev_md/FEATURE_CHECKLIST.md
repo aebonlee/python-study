@@ -18,7 +18,8 @@
 | 10 | 수료증 발급 | 예정 | 모의고사 합격 시 PDF/PNG 다운로드 구현 예정 |
 | 11 | 학습 완료 버튼 | 완료 | LessonPage.jsx 하단 "학습 완료" 버튼 |
 | 12 | 학습 완료 취소 | 완료 | uncompleteLesson() - 완료 상태 되돌리기 |
-| 13 | 시험 성적 기록 | 완료 | ProgressContext.saveQuizScore - 최고 점수 자동 저장 |
+| 13 | 시험 성적 기록 | 완료 | ProgressContext.saveQuizScore - 응시 이력(attempts) + 최고 점수 저장 |
+| 26 | 퀴즈 응시 기록 테이블 | 완료 | 퀴즈 센터 + 마이페이지에 최근 3회 응시 기록 테이블 표시 |
 | 14 | Navbar 인증 UI | 완료 | 풍선 도움말 드롭다운 (마이페이지/관리자/로그아웃) |
 | 15 | CSS 추가 | 완료 | auth.css + mypage.css + admin.css 등, 총 16개 CSS |
 | 16 | 다크모드/반응형 보강 | 완료 | 전체 다크모드/반응형 대응 (14개 CSS) |

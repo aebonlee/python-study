@@ -6,9 +6,18 @@ import { quizzes } from '../data/quizzes'
 import { lessons } from '../data/lessons'
 import BadgeCard from '../components/BadgeCard'
 
+function formatDate(dateStr) {
+  if (!dateStr) return '-'
+  const d = new Date(dateStr)
+  const yy = String(d.getFullYear()).slice(2)
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const dd = String(d.getDate()).padStart(2, '0')
+  return `${yy}.${mm}.${dd}`
+}
+
 export default function MyPage() {
   const { user, isAuthenticated, requireAuth, signInWithGoogle, signInWithKakao } = useAuth()
-  const { completedLessons, quizScores, codeRuns, streak, getTotalProgress } = useProgress()
+  const { completedLessons, quizScores, codeRuns, streak, getTotalProgress, getQuizBestScore, getQuizAttempts } = useProgress()
   const { earnedBadges } = useBadge()
 
   const userAvatar = user?.user_metadata?.avatar_url || user?.user_metadata?.picture
@@ -26,9 +35,10 @@ export default function MyPage() {
   const earnedBadgeData = badges.filter(b => earnedBadges.includes(b.id))
 
   const quizList = Object.entries(quizzes).map(([id, quiz]) => {
-    const score = quizScores[id]
-    const passed = score !== undefined && score >= (quiz.passingScore || 70)
-    return { id, title: quiz.title, score, passed, passingScore: quiz.passingScore || 70 }
+    const bestScore = getQuizBestScore(id)
+    const attempts = getQuizAttempts(id)
+    const passed = bestScore !== undefined && bestScore >= (quiz.passingScore || 70)
+    return { id, title: quiz.title, bestScore, attempts, passed, passingScore: quiz.passingScore || 70 }
   })
 
   if (!isAuthenticated) {
@@ -115,8 +125,8 @@ export default function MyPage() {
                 <i className="fa-solid fa-trophy" />
               </div>
               <div className="mypage-stat-value">
-                {quizList.filter(q => q.score !== undefined).length > 0
-                  ? Math.round(quizList.filter(q => q.score !== undefined).reduce((sum, q) => sum + q.score, 0) / quizList.filter(q => q.score !== undefined).length)
+                {quizList.filter(q => q.bestScore !== undefined).length > 0
+                  ? Math.round(quizList.filter(q => q.bestScore !== undefined).reduce((sum, q) => sum + q.bestScore, 0) / quizList.filter(q => q.bestScore !== undefined).length)
                   : 0}
                 <span className="mypage-stat-unit">점</span>
               </div>
@@ -168,34 +178,47 @@ export default function MyPage() {
               <thead>
                 <tr>
                   <th>퀴즈</th>
-                  <th>최고 점수</th>
-                  <th>통과 기준</th>
-                  <th>상태</th>
+                  <th>1회차</th>
+                  <th>2회차</th>
+                  <th>3회차</th>
+                  <th>최종 상태</th>
+                  <th>최초 응시일</th>
+                  <th>최종 응시일</th>
                 </tr>
               </thead>
               <tbody>
-                {quizList.map(q => (
-                  <tr key={q.id}>
-                    <td className="quiz-name-cell">{q.title}</td>
-                    <td className="quiz-score-cell">
-                      {q.score !== undefined ? (
-                        <span className={`quiz-score ${q.passed ? 'passed' : 'failed'}`}>{q.score}점</span>
-                      ) : (
-                        <span className="quiz-score none">-</span>
-                      )}
-                    </td>
-                    <td className="quiz-passing-cell">{q.passingScore}점</td>
-                    <td className="quiz-status-cell">
-                      {q.score === undefined ? (
-                        <span className="quiz-status not-taken">미응시</span>
-                      ) : q.passed ? (
-                        <span className="quiz-status pass"><i className="fa-solid fa-circle-check" /> 통과</span>
-                      ) : (
-                        <span className="quiz-status fail"><i className="fa-solid fa-circle-xmark" /> 미통과</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {quizList.map(q => {
+                  const recent3 = q.attempts.slice(-3)
+                  const firstDate = q.attempts.length > 0 ? q.attempts[0].date : null
+                  const lastDate = q.attempts.length > 0 ? q.attempts[q.attempts.length - 1].date : null
+                  return (
+                    <tr key={q.id}>
+                      <td className="quiz-name-cell">{q.title}</td>
+                      {[0, 1, 2].map(i => (
+                        <td key={i} className="quiz-attempt-cell">
+                          {recent3[i] ? (
+                            <span className={`quiz-attempt-score ${recent3[i].score >= q.passingScore ? 'passed' : 'failed'}`}>
+                              {recent3[i].score}점
+                            </span>
+                          ) : (
+                            <span className="quiz-attempt-score none">-</span>
+                          )}
+                        </td>
+                      ))}
+                      <td className="quiz-status-cell">
+                        {q.bestScore === undefined ? (
+                          <span className="quiz-status not-taken">미응시</span>
+                        ) : q.passed ? (
+                          <span className="quiz-status pass"><i className="fa-solid fa-circle-check" /> 통과</span>
+                        ) : (
+                          <span className="quiz-status fail"><i className="fa-solid fa-circle-xmark" /> 미통과</span>
+                        )}
+                      </td>
+                      <td className="quiz-date-cell">{formatDate(firstDate)}</td>
+                      <td className="quiz-date-cell">{formatDate(lastDate)}</td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>

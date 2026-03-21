@@ -294,6 +294,36 @@
   background: var(--bg-light);
 }
 
+/* Attempt Score Cells */
+.quiz-attempt-cell {
+  text-align: center;
+}
+
+.quiz-attempt-score {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.quiz-attempt-score.passed {
+  color: #2ecc71;
+}
+
+.quiz-attempt-score.failed {
+  color: #e74c3c;
+}
+
+.quiz-attempt-score.none {
+  color: var(--text-light);
+  font-weight: 400;
+}
+
+/* Date Cells */
+.quiz-date-cell {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
 /* Login Guide (non-authenticated) */
 .mypage-login-guide {
   text-align: center;

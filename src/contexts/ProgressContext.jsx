@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
 import { lessons } from '../data/lessons'
 import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 import { useAuth } from './AuthContext'
@@ -7,6 +7,20 @@ const ProgressContext = createContext()
 
 const STORAGE_KEY = 'pymaster-progress'
 
+function migrateQuizScores(quizScores) {
+  if (!quizScores) return {}
+  const migrated = {}
+  for (const [quizId, value] of Object.entries(quizScores)) {
+    if (typeof value === 'number') {
+      // 기존 형식: { quizId: bestScore } → 새 형식으로 변환 (날짜 정보 없음)
+      migrated[quizId] = { attempts: [], bestScore: value }
+    } else if (value && typeof value === 'object' && typeof value.bestScore === 'number') {
+      migrated[quizId] = value
+    }
+  }
+  return migrated
+}
+
 function loadProgress() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
@@ -14,7 +28,7 @@ function loadProgress() {
       const data = JSON.parse(saved)
       return {
         completedLessons: new Set(data.completedLessons || []),
-        quizScores: data.quizScores || {},
+        quizScores: migrateQuizScores(data.quizScores),
         codeRuns: data.codeRuns || 0,
         streak: data.streak || { count: 0, lastDate: null },
       }
@@ -31,6 +45,8 @@ function loadProgress() {
 export function ProgressProvider({ children }) {
   const { user } = useAuth()
   const [state, setState] = useState(loadProgress)
+  const quizScoresRef = useRef(state.quizScores)
+  quizScoresRef.current = state.quizScores
 
   useEffect(() => {
     const data = {
@@ -69,22 +85,25 @@ export function ProgressProvider({ children }) {
   }, [])
 
   const saveQuizScore = useCallback((quizId, score) => {
+    const now = new Date().toISOString()
     setState(prev => {
-      const prevScore = prev.quizScores[quizId] || 0
-      const bestScore = Math.max(prevScore, score)
+      const existing = prev.quizScores[quizId] || { attempts: [], bestScore: 0 }
+      const newAttempts = [...existing.attempts, { score, date: now }]
+      const bestScore = Math.max(existing.bestScore, score)
       return {
         ...prev,
         quizScores: {
           ...prev.quizScores,
-          [quizId]: bestScore
+          [quizId]: { attempts: newAttempts, bestScore }
         }
       }
     })
 
-    // Sync to Supabase for logged-in users (outside setState)
+    // Sync to Supabase for logged-in users (bestScore only)
     if (user && isSupabaseEnabled()) {
-      const prevScore = state.quizScores[quizId] || 0
-      const bestScore = Math.max(prevScore, score)
+      const existing = quizScoresRef.current[quizId]
+      const prevBest = existing?.bestScore || 0
+      const bestScore = Math.max(prevBest, score)
       supabase.from(TABLES.QUIZ_SCORES).upsert({
         user_id: user.id,
         quiz_id: quizId,
@@ -97,7 +116,7 @@ export function ProgressProvider({ children }) {
         console.error('퀴즈 점수 저장 오류:', err)
       })
     }
-  }, [user, state.quizScores])
+  }, [user])
 
   const incrementCodeRuns = useCallback(() => {
     setState(prev => ({ ...prev, codeRuns: prev.codeRuns + 1 }))
@@ -121,6 +140,16 @@ export function ProgressProvider({ children }) {
     return levelLessons.length > 0 && levelLessons.every(l => state.completedLessons.has(l.id))
   }, [state.completedLessons])
 
+  const getQuizBestScore = useCallback((quizId) => {
+    const data = state.quizScores[quizId]
+    return data?.bestScore
+  }, [state.quizScores])
+
+  const getQuizAttempts = useCallback((quizId) => {
+    const data = state.quizScores[quizId]
+    return data?.attempts || []
+  }, [state.quizScores])
+
   return (
     <ProgressContext.Provider value={{
       completedLessons: state.completedLessons,
@@ -134,6 +163,8 @@ export function ProgressProvider({ children }) {
       getTotalProgress,
       getLevelProgress,
       isLevelCompleted,
+      getQuizBestScore,
+      getQuizAttempts,
     }}>
       {children}
     </ProgressContext.Provider>

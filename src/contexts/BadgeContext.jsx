@@ -16,7 +16,7 @@ export function BadgeProvider({ children }) {
   })
   const [newBadge, setNewBadge] = useState(null)
 
-  const { completedLessons, quizScores, codeRuns, streak, isLevelCompleted } = useProgress()
+  const { completedLessons, quizScores, codeRuns, streak, isLevelCompleted, getQuizBestScore } = useProgress()
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(earnedBadges))
@@ -39,23 +39,25 @@ export function BadgeProvider({ children }) {
         case 'level_completed':
           earned = isLevelCompleted(condition.level)
           break
-        case 'quiz_passed':
-          earned = quizScores[condition.quizId] !== undefined && quizScores[condition.quizId] >= condition.minScore
+        case 'quiz_passed': {
+          const bs = getQuizBestScore(condition.quizId)
+          earned = bs !== undefined && bs >= condition.minScore
           break
+        }
         case 'quiz_perfect':
-          earned = quizScores[condition.quizId] === 100
+          earned = getQuizBestScore(condition.quizId) === 100
           break
         case 'all_quizzes_passed':
-          earned = Object.keys(quizScores).length >= 8 && Object.values(quizScores).every(s => s >= 70)
+          earned = Object.keys(quizScores).length >= 8 && Object.values(quizScores).every(s => s?.bestScore >= 70)
           break
         case 'all_quizzes_perfect':
-          earned = Object.keys(quizScores).length >= 8 && Object.values(quizScores).every(s => s === 100)
+          earned = Object.keys(quizScores).length >= 8 && Object.values(quizScores).every(s => s?.bestScore === 100)
           break
         case 'lib_quizzes_passed':
-          earned = ['lib-standard', 'lib-turtle', 'lib-data', 'lib-ai'].every(id => quizScores[id] !== undefined && quizScores[id] >= 70)
+          earned = ['lib-standard', 'lib-turtle', 'lib-data', 'lib-ai'].every(id => { const bs = getQuizBestScore(id); return bs !== undefined && bs >= 70 })
           break
         case 'lib_quizzes_perfect':
-          earned = ['lib-standard', 'lib-turtle', 'lib-data', 'lib-ai'].every(id => quizScores[id] === 100)
+          earned = ['lib-standard', 'lib-turtle', 'lib-data', 'lib-ai'].every(id => getQuizBestScore(id) === 100)
           break
         case 'code_runs':
           earned = codeRuns >= condition.count
@@ -82,7 +84,7 @@ export function BadgeProvider({ children }) {
       const badgeData = badges.find(b => b.id === newlyEarned[0])
       if (badgeData) setNewBadge(badgeData)
     }
-  }, [completedLessons, quizScores, codeRuns, streak, earnedBadges, isLevelCompleted])
+  }, [completedLessons, quizScores, codeRuns, streak, earnedBadges, isLevelCompleted, getQuizBestScore])
 
   const dismissBadgeNotification = useCallback(() => {
     setNewBadge(null)

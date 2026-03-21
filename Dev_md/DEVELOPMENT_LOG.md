@@ -411,3 +411,37 @@
 - 빌드 성공, GitHub Pages 배포 완료
 - 신규 청크: MyPage (5.63KB), AdminPage (6.63KB)
 - CSS: 96.34KB (기존 대비 +약 6KB)
+
+---
+
+## 2026-03-21 (Day 4) - 퀴즈 응시 기록 테이블
+
+### 데이터 구조 변경 (ProgressContext.jsx)
+- **quizScores 형식 변경**: `{ quizId: number }` → `{ quizId: { attempts: [{score, date}], bestScore } }`
+- **migrateQuizScores()**: 기존 number 형식 자동 마이그레이션 (날짜 정보 없이 bestScore만 보존)
+- **saveQuizScore()**: attempts 배열에 `{ score, date: ISO }` 추가, bestScore 갱신
+- **getQuizBestScore(quizId)**: bestScore 반환 헬퍼
+- **getQuizAttempts(quizId)**: attempts 배열 반환 헬퍼
+- Supabase 동기화: bestScore만 전송 (DB 스키마 변경 없음)
+
+### BadgeContext.jsx 호환성 수정
+- `quizScores[id]` 직접 접근 → `getQuizBestScore(id)` / `?.bestScore` 사용
+- quiz_passed, quiz_perfect, all_quizzes_passed/perfect, lib_quizzes_passed/perfect 모두 수정
+
+### 퀴즈 센터 응시 기록 테이블 (QuizCenter.jsx)
+- 카드 그리드 하단에 응시 기록 섹션 추가
+- 7컬럼 테이블: 퀴즈 | 1회차 | 2회차 | 3회차 | 최종 상태 | 최초 응시일 | 최종 응시일
+- 최근 3회 응시만 표시, 점수 색상 (통과=초록, 미통과=빨강)
+
+### 마이페이지 퀴즈 테이블 확장 (MyPage.jsx)
+- 기존 4컬럼 → 7컬럼 동일 구조로 확장
+- 퀴즈 평균 점수 계산도 bestScore 기반으로 수정
+
+### CSS 추가
+- **quiz.css**: `.quiz-history-section`, `.quiz-history-table` + 다크모드/반응형
+- **mypage.css**: `.quiz-attempt-cell`, `.quiz-attempt-score`, `.quiz-date-cell` 공통 스타일
+
+### 빌드 결과
+- 빌드 성공
+- QuizCenter: 8.96KB, MyPage: 8.08KB
+- CSS: 104.45KB
