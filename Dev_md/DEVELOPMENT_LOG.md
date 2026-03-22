@@ -634,3 +634,65 @@
 - MyPage: 18.01KB (기존 11.32KB → +6.69KB, Certificate 컴포넌트 포함)
 - CSS: 120.53KB (기존 117.42KB → +3.11KB)
 - 총 48개 청크
+
+---
+
+## 2026-03-22 (Day 5 추가 2) - 파이썬 실습 전면 개편 (koreatech 동기화)
+
+### 실습 데이터 파일 동기화 (13개 단계)
+- `D:\koreatech` 프로젝트에서 13개 step 데이터 파일 전체 동기화
+- **step1.js ~ step10.js**: koreatech 최신 버전으로 교체 (예제 수 증가, type 필드 추가)
+- **step5adv.js**: Turtle 심화 단계 신규 추가 (기존 step11.js 대체)
+- **stepAdvanced.js**: GUI 기초 (tkinter) — 12개 예제, type: 'tkinter'
+- **stepAdvanced2.js**: GUI 응용 & 그래프 — 15개 예제 (tkinter/matplotlib/webbrowser/gTTS/runnable)
+- **step11.js**: 삭제 (koreatech에서 step10.js로 통합)
+- **index.js**: 매핑 업데이트 (step 6→step5adv, step 7→step6, ... shifted)
+- 총 184개 예제
+
+### PracticeEditor.jsx (신규 컴포넌트)
+- `react-simple-code-editor` + PrismJS 기반 구문 강조 Python 에디터
+- koreatech의 CodeEditor 컴포넌트를 python-study에 맞게 재구성
+- GitHub Light 테마 syntax token 색상 (comment, keyword, string, number, function, class, operator)
+- GitHub Dark 테마 다크모드 대응
+- `React.lazy + Suspense`로 lazy loading
+- Props: `value, onChange, disabled, fontSize`
+
+### PythonPractice.jsx 전면 개편
+- **에디터 교체**: 기존 textarea → PracticeEditor (PrismJS 구문 강조)
+- **type 필드 우선 감지**: `example.type !== 'runnable'` 우선 체크 → regex fallback
+- **미지원 모듈 추가**: `webbrowser`, `gTTS` 패턴 추가 (기존: tkinter, matplotlib, pygame)
+- **스크린샷 표시**: 미지원 모듈 감지 시 `/py/img/${example.name}.png` 결과 이미지 자동 표시
+  - `onError` 핸들러로 이미지 없을 시 graceful 숨김
+- **수정됨 뱃지**: `isModified` 상태 → "수정됨" 뱃지 헤더에 표시
+- **단계별 안내 메시지**: step 5 (Turtle 기초), step 6 (Turtle 심화), step 98/99 (GUI) 별도 안내
+- **key prop**: `key={examples[selectedIdx].name}` on StepCodeRunner (예제 전환 시 proper remount)
+
+### public/py/ 에셋 복사 (170+개)
+- Python 예제 파일: `.py`, `.txt`, `.csv` (코드 다운로드용)
+- 이미지: `.GIF`, `.gif`, `.png` (프로그램 리소스)
+- 실행 결과 스크린샷: `py/img/*.png` 27개
+  - 심화 1: window1, event1, absolute, place, temp1~5, calc1~3 (12개)
+  - 심화 2: image, mypaint, mypaint2, filename, memo, pillow5, plot, plot1~3, graph, webopen, webopen1, tts (14개)
+
+### practice.css 스타일 추가
+- `.code-editor-wrapper`: PrismJS 에디터 래퍼, focus 상태, 기본 텍스트 색상
+- GitHub Light syntax tokens: comment(#116329), keyword(#CF222E), string(#0550AE), function(#8250DF) 등
+- GitHub Dark syntax tokens: comment(#8B949E), keyword(#FF7B72), string(#A5D6FF) 등
+- `.practice-screenshot`, `.practice-screenshot-label`, `.practice-screenshot-img`
+- `.practice-modified-badge`: 수정됨 뱃지
+- `.practice-runner-empty-icon`, `.practice-runner-empty-notice`: 빈 상태 안내
+- 다크모드 전체 대응
+
+### 코드 에디터 폰트 컬러 수정
+- 라이트 모드: `color: #24292F` (GitHub Dark 텍스트)
+- 다크 모드: `color: #C9D1D9` (GitHub Light 텍스트)
+- 기본 텍스트 색상 미지정으로 토큰 미분류 텍스트가 안 보이던 문제 해결
+
+### 빌드 결과
+- 빌드 성공
+- PracticeEditor.js: 28.67KB (신규)
+- PythonPractice.js: 13.69KB (기존 12KB → +1.69KB)
+- CSS: 124.07KB (기존 120.53KB → +3.54KB)
+- 총 50개 청크 (기존 48 → +2)
+- 커밋: 5042340 (실습 개편), 58d8ef1 (폰트 컬러 수정)
+- GitHub Pages 배포 완료

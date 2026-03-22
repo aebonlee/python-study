@@ -24,7 +24,7 @@
 | 15 | CSS 추가 | 완료 | auth.css + mypage.css + admin.css + teacher.css + guide.css 등, 총 18개 CSS |
 | 16 | 다크모드/반응형 보강 | 완료 | 전체 다크모드/반응형 대응 (14개 CSS) |
 | 17 | 파이썬 학습 | 완료 | PythonLearning 허브 + PythonLesson01~11 (11개 레슨) |
-| 18 | 파이썬 실습 | 완료 | Pyodide 기반 브라우저 Python 실행, 13단계 실습 |
+| 18 | 파이썬 실습 | 완료 | Pyodide 기반 브라우저 Python 실행, 13단계 184개 예제, PrismJS 에디터, 스크린샷 결과 |
 | 19 | Pyodide Worker | 완료 | Web Worker + turtle 모의 SVG + input() + 패키지 자동 로드 |
 | 20 | CodeEditor Pyodide 통합 | 완료 | 학습 레슨 CodeEditor도 Pyodide 실행 기반 |
 | 21 | 실습 뷰포트 레이아웃 | 완료 | 스크롤 없는 viewport-fit, 에디터 최대화 |

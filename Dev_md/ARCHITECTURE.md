@@ -33,7 +33,12 @@ D:\python-study\
 │   ├── favicon.svg            # 파비콘 (Python 로고)
 │   ├── og-image.png           # OG 미리보기 이미지
 │   ├── CNAME                  # 커스텀 도메인
-│   └── 404.html               # SPA 리디렉트
+│   ├── 404.html               # SPA 리디렉트
+│   └── py/                    # Python 실습 에셋 (170+개)
+│       ├── *.py               # Python 예제 파일 (다운로드용)
+│       ├── *.txt, *.csv       # 데이터 파일
+│       ├── *.GIF, *.gif, *.png # 이미지 리소스
+│       └── img/               # 실행 결과 스크린샷 (27개 PNG)
 ├── src/
 │   ├── main.jsx               # React 엔트리 포인트
 │   ├── App.jsx                # 라우터 + Provider + ErrorBoundary + Lazy
@@ -47,7 +52,9 @@ D:\python-study\
 │   │   │   ├── Navbar.jsx     # 상단 네비게이션 (1열 메뉴 + 인증 UI)
 │   │   │   └── Footer.jsx     # 하단 푸터
 │   │   ├── ErrorBoundary.jsx  # 런타임 에러 복구 UI
-│   │   ├── CodeEditor.jsx     # Python 코드 에디터 (input() 지원)
+│   │   ├── CodeEditor.jsx     # Python 코드 에디터 (레슨용, input() 지원)
+│   │   ├── PracticeEditor.jsx # Python 코드 에디터 (실습용, PrismJS 구문 강조)
+│   │   ├── Certificate.jsx    # 수료증 이미지 생성 (Canvas API, 4단계)
 │   │   ├── TurtleCanvas.jsx   # Turtle SVG 렌더러 (turtle 명령어 → SVG)
 │   │   ├── BadgeCard.jsx      # 배지 카드 (FA 아이콘)
 │   │   ├── LessonCard.jsx     # 레슨 카드 (FA 아이콘)
@@ -65,11 +72,12 @@ D:\python-study\
 │   │   ├── lessonContents.js  # 레슨 교육 컨텐츠
 │   │   ├── badges.js          # 배지 정의 (FA 아이콘 클래스)
 │   │   ├── quizzes.js         # 퀴즈 문제
-│   │   └── pythonSteps/       # 파이썬 실습 데이터 (13개 파일)
+│   │   └── pythonSteps/       # 파이썬 실습 데이터 (14개 파일)
 │   │       ├── index.js       # stepMeta + stepLoaders (동적 임포트)
 │   │       ├── step1~10.js    # 단계별 실습 예제
-│   │       ├── stepAdvanced.js  # 심화 실습 1
-│   │       └── stepAdvanced2.js # 심화 실습 2
+│   │       ├── step5adv.js    # Turtle 심화 실습
+│   │       ├── stepAdvanced.js  # 심화 1: GUI 기초 (tkinter)
+│   │       └── stepAdvanced2.js # 심화 2: GUI 응용 & 그래프
 │   ├── pages/
 │   │   ├── Home.jsx           # 메인 페이지
 │   │   ├── Login.jsx          # 로그인 페이지 (Google/Kakao, 필수)
@@ -218,11 +226,12 @@ App
 
 ## 코드 스플리팅
 
-빌드 결과 (React.lazy + Suspense):
+빌드 결과 (React.lazy + Suspense, 총 50개 청크):
 | 청크 | 크기 | 내용 |
 |------|------|------|
 | index.js | 453KB | React, Router, Contexts, Supabase |
-| LessonPage.js | 107KB | 레슨 페이지 + 컨텐츠 + TurtleCanvas (35개 레슨) |
+| index.css | 124KB | CSS 18개 파일 통합 |
+| LessonPage.js | 90KB | 레슨 페이지 + 컨텐츠 + TurtleCanvas (35개 레슨) |
 | PythonLesson03.js | 53KB | 파이썬 학습 03: Data Type (최대) |
 | PythonLesson07.js | 50KB | 파이썬 학습 07: IF 조건문 |
 | PythonLesson04.js | 47KB | 파이썬 학습 04: 입력-처리-출력 |
@@ -233,17 +242,31 @@ App
 | PythonLesson01.js | 38KB | 파이썬 학습 01: 실습환경 |
 | PythonLesson05.js | 35KB | 파이썬 학습 05: Turtle |
 | PythonLesson02.js | 35KB | 파이썬 학습 02: 입출력 |
+| quizzes.js | 33KB | 퀴즈 데이터 (88문제) |
 | PythonLesson11.js | 32KB | 파이썬 학습 11: 리스트 |
-| QuizCenter.js | 23KB | 퀴즈 센터 + 문제 데이터 (48문제) |
-| step5.js | 22KB | 파이썬 실습 step5 (최대 데이터) |
-| pyodide.worker.js | 15KB | Pyodide WASM Worker |
-| PythonPractice.js | 12KB | 파이썬 실습 페이지 |
-| stepAdvanced2.js | 12KB | 실습 심화 데이터 2 |
+| PracticeEditor.js | 29KB | PrismJS 구문 강조 에디터 (실습용) |
+| TeacherPage.js | 19KB | 선생님 대시보드 (클래스/학생/통계) |
+| MyPage.js | 18KB | 마이페이지 + 수료증 + 클래스 참여 |
+| AdminPage.js | 17KB | 관리자 대시보드 + 학생 상세 모달 |
+| pyodide.worker.js | 16KB | Pyodide WASM Worker |
+| PythonPractice.js | 14KB | 파이썬 실습 페이지 |
+| step5.js | 12KB | 파이썬 실습 step5: Turtle 기초 |
+| stepAdvanced2.js | 12KB | 심화 2: GUI 응용 & 그래프 (15개) |
+| step10.js | 11KB | 파이썬 실습 step10: 리스트/딕셔너리 |
+| stepAdvanced.js | 10KB | 심화 1: GUI 기초 (12개) |
+| step5adv.js | 10KB | Turtle 심화 실습 |
+| step7.js | 10KB | 반복문 (While/For) |
+| step6.js | 10KB | IF 조건문 |
+| QuizCenter.js | 9KB | 퀴즈 센터 |
+| step9.js | 9KB | 함수와 매개변수 |
+| step8.js | 8KB | 반복문 |
+| step3.js | 9KB | Data Type과 산술연산 |
 | Home.js | 7KB | 홈 페이지 |
-| BadgeCollection.js | 4KB | 배지 컬렉션 |
+| step4.js | 7KB | IPO |
+| Guide.js | 6KB | 사용설명서 |
+| step2.js | 6KB | 입출력과 변수 |
+| step1.js | 3KB | 파이썬 및 실습환경 |
 | LevelPage.js | 3KB | 레벨 페이지 |
 | PythonLearning.js | 3KB | 파이썬 학습 허브 |
-| Login.js | 2KB | 로그인 페이지 |
-| MyPage.js | 11KB | 마이페이지 + 클래스 참여 |
-| AdminPage.js | 16KB | 관리자 대시보드 + 학생 상세 모달 |
-| TeacherPage.js | 19KB | 선생님 대시보드 (클래스/학생/통계) |
+| Login.js | 3KB | 로그인 페이지 |
+| BadgeCollection.js | 3KB | 배지 컬렉션 |

@@ -25,11 +25,14 @@
 ### 3. 파이썬 실습 (Python Practice)
 - **Pyodide** (Python WebAssembly) 기반 브라우저 내 실제 Python 실행
 - Web Worker로 메인 스레드 블로킹 방지
-- 12단계 실습 (step1~10, stepAdvanced, stepAdvanced2)
+- 13단계 실습 (step1~10, step5adv, stepAdvanced, stepAdvanced2) — 184개 예제
+- **PrismJS 구문 강조 에디터** (PracticeEditor, GitHub Light/Dark 테마)
 - input() 함수 대화형 입력 지원
 - Turtle Graphics SVG 모의 렌더링
-- 코드 에디터 (라인 넘버, 복사, 다운로드)
+- 코드 에디터 (복사, 다운로드, 수정됨 뱃지)
 - 기본값/직접입력 모드 전환
+- **미지원 모듈 결과 스크린샷**: tkinter/matplotlib/webbrowser/gTTS 모듈은 스크린샷으로 결과 표시
+- 단계별 안내 메시지 (Turtle, GUI 단계)
 
 ### 4. 레슨별 코드 에디터
 - 브라우저 내 파이썬 코드 에디터
@@ -104,4 +107,5 @@
 21. ~~학생 개별 결과 모달~~ ✅ (관리자 회원 관리 → 클릭 → 상세)
 22. ~~선생님 역할 시스템~~ ✅ (클래스 코드 기반, TeacherPage 대시보드)
 23. ~~사용설명서 페이지~~ ✅ (/guide 정적 페이지, 12개 섹션 + FAQ)
-24. 수료증 발급 - 예정
+24. ~~수료증 발급~~ ✅ (Canvas API 기반 4단계 PNG 다운로드)
+25. ~~파이썬 실습 전면 개편~~ ✅ (koreatech 동기화, PrismJS 에디터, 스크린샷, 184개 예제)
