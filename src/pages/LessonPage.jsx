@@ -93,7 +93,7 @@ export default function LessonPage() {
                   onClick={() => setActiveSection(i)}
                 >
                   <span className="toc-number">{i + 1}</span>
-                  <span className="toc-title">{sec.title}</span>
+                  <span className="toc-title">{localizedField(sec, 'title')}</span>
                 </button>
               </li>
             ))}
@@ -112,9 +112,9 @@ export default function LessonPage() {
         {/* Main Content */}
         <main className="lesson-content">
           <div className="lesson-section">
-            <h2>{sections[activeSection]?.title}</h2>
+            <h2>{localizedField(sections[activeSection], 'title')}</h2>
             <div className="lesson-text" dangerouslySetInnerHTML={{
-              __html: sections[activeSection]?.content?.replace(/\n/g, '<br/>')
+              __html: localizedField(sections[activeSection], 'content')?.replace(/\n/g, '<br/>')
             }} />
 
             {sections[activeSection]?.code && (
@@ -133,7 +133,7 @@ export default function LessonPage() {
               <div className="lesson-tip">
                 <span className="tip-icon"><i className="fa-solid fa-lightbulb" /></span>
                 <div>
-                  <strong>{lang === 'en' ? 'Tip:' : '팁:'}</strong> {sections[activeSection].tip}
+                  <strong>{lang === 'en' ? 'Tip:' : '팁:'}</strong> {localizedField(sections[activeSection], 'tip')}
                 </div>
               </div>
             )}

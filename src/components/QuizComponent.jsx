@@ -3,7 +3,7 @@ import { useProgress } from '../contexts/ProgressContext'
 import { useAuth } from '../contexts/AuthContext'
 import { useLanguage } from '../contexts/LanguageContext'
 
-function shuffleOptions(options, correctIdx) {
+function shuffleOptions(options, correctIdx, optionsEn) {
   const indices = options.map((_, i) => i)
   for (let i = indices.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -11,14 +11,15 @@ function shuffleOptions(options, correctIdx) {
   }
   return {
     options: indices.map(i => options[i]),
+    optionsEn: optionsEn ? indices.map(i => optionsEn[i]) : null,
     correct: indices.indexOf(correctIdx)
   }
 }
 
 function createShuffledQuestions(questions) {
   return questions.map(q => {
-    const shuffled = shuffleOptions(q.options, q.correct)
-    return { ...q, options: shuffled.options, correct: shuffled.correct }
+    const shuffled = shuffleOptions(q.options, q.correct, q.optionsEn)
+    return { ...q, options: shuffled.options, optionsEn: shuffled.optionsEn, correct: shuffled.correct }
   })
 }
 
@@ -154,14 +155,14 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
       </div>
 
       <div className="quiz-question">
-        <h3 className="question-text">{q.question}</h3>
+        <h3 className="question-text">{lang === 'en' && q.questionEn ? q.questionEn : q.question}</h3>
         {q.code && (
           <pre className="question-code"><code>{q.code}</code></pre>
         )}
       </div>
 
       <div className="quiz-options">
-        {q.options.map((opt, i) => (
+        {(lang === 'en' && q.optionsEn ? q.optionsEn : q.options).map((opt, i) => (
           <button
             key={i}
             className={`quiz-option
@@ -189,7 +190,7 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
 
       {showResult && q.explanation && (
         <div className="quiz-explanation">
-          <strong>{t('quiz.explanationLabel')}</strong> {q.explanation}
+          <strong>{t('quiz.explanationLabel')}</strong> {lang === 'en' && q.explanationEn ? q.explanationEn : q.explanation}
         </div>
       )}
 
