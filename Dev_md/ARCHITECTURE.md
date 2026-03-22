@@ -37,7 +37,7 @@ D:\python-study\
 ├── src/
 │   ├── main.jsx               # React 엔트리 포인트
 │   ├── App.jsx                # 라우터 + Provider + ErrorBoundary + Lazy
-│   ├── index.css              # CSS 임포트 허브 (16개 CSS)
+│   ├── index.css              # CSS 임포트 허브 (17개 CSS)
 │   ├── hooks/
 │   │   └── useCodeRunner.js   # Pyodide Web Worker 실행 훅
 │   ├── workers/
@@ -56,7 +56,7 @@ D:\python-study\
 │   ├── config/
 │   │   └── supabase.js        # Supabase 클라이언트 (pymaster_ 접두사)
 │   ├── contexts/
-│   │   ├── AuthContext.jsx    # 인증 + 세션 관리 + 관리자 판별
+│   │   ├── AuthContext.jsx    # 인증 + 세션 관리 + 관리자/선생님 판별
 │   │   ├── ThemeContext.jsx    # 다크모드 상태
 │   │   ├── ProgressContext.jsx # 학습 진도 상태
 │   │   └── BadgeContext.jsx   # 배지 상태
@@ -74,7 +74,8 @@ D:\python-study\
 │   │   ├── Home.jsx           # 메인 페이지
 │   │   ├── Login.jsx          # 로그인 페이지 (Google/Kakao, 필수)
 │   │   ├── MyPage.jsx         # 마이페이지 (프로필/통계/배지/성적)
-│   │   ├── AdminPage.jsx      # 관리자 페이지 (통계/콘텐츠/커뮤니티)
+│   │   ├── AdminPage.jsx      # 관리자 페이지 (통계/콘텐츠/커뮤니티/회원관리)
+│   │   ├── TeacherPage.jsx    # 선생님 페이지 (클래스 관리/학생 목록/학습 통계)
 │   │   ├── LevelPage.jsx      # 단계별 레슨 목록
 │   │   ├── LessonPage.jsx     # 레슨 상세/학습
 │   │   ├── BadgeCollection.jsx # 배지 컬렉션
@@ -93,10 +94,11 @@ D:\python-study\
 │   │       ├── PythonLesson09.jsx  # 함수와 매개변수
 │   │       ├── PythonLesson10.jsx  # Try-Except 예외처리
 │   │       └── PythonLesson11.jsx  # 2차원, 3차원 리스트
-│   └── styles/                # CSS 16개 파일
+│   └── styles/                # CSS 17개 파일
 │       ├── auth.css           # 로그인 + 풍선 드롭다운 + 세션 경고
 │       ├── mypage.css         # 마이페이지 스타일
-│       ├── admin.css          # 관리자 페이지 스타일
+│       ├── admin.css          # 관리자 페이지 + 학생 상세 모달 스타일
+│       ├── teacher.css        # 선생님 페이지 + 클래스 참여 UI 스타일
 │       ├── practice.css       # 파이썬 실습 페이지 스타일
 │       └── python-learning.css # 파이썬 학습 허브 + 레슨 스타일
 └── Dev_md/                    # 개발 문서
@@ -121,7 +123,7 @@ App
 ```
 
 ### 데이터 흐름
-- **AuthContext**: Supabase OAuth 인증 (Google/Kakao), 30분 세션 관리, isAdmin 판별
+- **AuthContext**: Supabase OAuth 인증 (Google/Kakao), 30분 세션 관리, isAdmin/isTeacher 판별
 - **ThemeContext**: light/dark 테마 토글, HTML data-theme 속성 제어
 - **ProgressContext**: 완료 레슨, 퀴즈 점수, 코드 실행 수, 스트릭 관리
 - **BadgeContext**: 배지 조건 평가, 획득 알림, 배지 목록 관리
@@ -144,6 +146,8 @@ App
 | `pymaster_community_posts` | 커뮤니티 게시글 |
 | `pymaster_community_comments` | 커뮤니티 댓글 |
 | `pymaster_community_likes` | 커뮤니티 좋아요 |
+| `pymaster_classes` | 선생님 클래스 (class_name, class_code, teacher_id) |
+| `pymaster_class_members` | 클래스 멤버 (class_id, student_id, joined_at) |
 
 ## 라우팅
 
@@ -151,6 +155,9 @@ App
 |------|--------|------|
 | `/` | Home | lazy |
 | `/login` | Login | lazy |
+| `/my` | MyPage | lazy |
+| `/admin` | AdminPage | lazy (AdminRoute) |
+| `/teacher` | TeacherPage | lazy (TeacherRoute) |
 | `/python-learning` | PythonLearning | lazy |
 | `/python-learning/01~11` | PythonLesson01~11 | lazy |
 | `/python-practice` | PythonPractice | lazy |
@@ -211,7 +218,7 @@ App
 빌드 결과 (React.lazy + Suspense):
 | 청크 | 크기 | 내용 |
 |------|------|------|
-| index.js | 439KB | React, Router, Contexts, Supabase |
+| index.js | 453KB | React, Router, Contexts, Supabase |
 | LessonPage.js | 107KB | 레슨 페이지 + 컨텐츠 + TurtleCanvas (35개 레슨) |
 | PythonLesson03.js | 53KB | 파이썬 학습 03: Data Type (최대) |
 | PythonLesson07.js | 50KB | 파이썬 학습 07: IF 조건문 |
@@ -234,3 +241,6 @@ App
 | LevelPage.js | 3KB | 레벨 페이지 |
 | PythonLearning.js | 3KB | 파이썬 학습 허브 |
 | Login.js | 2KB | 로그인 페이지 |
+| MyPage.js | 11KB | 마이페이지 + 클래스 참여 |
+| AdminPage.js | 16KB | 관리자 대시보드 + 학생 상세 모달 |
+| TeacherPage.js | 19KB | 선생님 대시보드 (클래스/학생/통계) |

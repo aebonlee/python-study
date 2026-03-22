@@ -21,7 +21,7 @@
 | 13 | 시험 성적 기록 | 완료 | ProgressContext.saveQuizScore - 응시 이력(attempts) + 최고 점수 저장 |
 | 26 | 퀴즈 응시 기록 테이블 | 완료 | 퀴즈 센터 + 마이페이지에 최근 3회 응시 기록 테이블 표시 |
 | 14 | Navbar 인증 UI | 완료 | 풍선 도움말 드롭다운 (마이페이지/관리자/로그아웃) |
-| 15 | CSS 추가 | 완료 | auth.css + mypage.css + admin.css 등, 총 16개 CSS |
+| 15 | CSS 추가 | 완료 | auth.css + mypage.css + admin.css + teacher.css 등, 총 17개 CSS |
 | 16 | 다크모드/반응형 보강 | 완료 | 전체 다크모드/반응형 대응 (14개 CSS) |
 | 17 | 파이썬 학습 | 완료 | PythonLearning 허브 + PythonLesson01~11 (11개 레슨) |
 | 18 | 파이썬 실습 | 완료 | Pyodide 기반 브라우저 Python 실행, 13단계 실습 |

@@ -445,3 +445,91 @@
 - 빌드 성공
 - QuizCenter: 8.96KB, MyPage: 8.08KB
 - CSS: 104.45KB
+
+---
+
+## 2026-03-21 (Day 4 후반) - 학생 개별 결과 + 동기화 수정 + 회원 관리 개선
+
+### 관리자 학생 개별 결과 페이지 (AdminPage.jsx)
+- 회원 관리 탭에서 **학생 이름 클릭 → 개인 결과 모달** 표시
+- 모달 레이아웃: MyPage와 동일 구조
+  - 프로필 카드 (아바타, 이름, 이메일, 로그인 방식)
+  - 학습 통계 4종 (완료 레슨, 퀴즈 평균, 코드 실행 수, 연속 학습일)
+  - 획득 배지 목록 (BadgeCard 재사용)
+  - 퀴즈 성적표 (최근 3회차, 최초/최종 응시일)
+- **Supabase 신규 테이블**: `pymaster_user_progress` — 학생 진행 데이터 통합 저장
+- **ProgressContext.jsx**: Supabase 자동 동기화 추가 (즉시 + 2초 디바운스)
+- **admin.css**: 모달 스타일 (`.student-modal-overlay`, `.student-modal`, 다크모드/반응형)
+
+### 동기화 데이터 불일치 수정
+- **문제**: 마이페이지(localStorage)와 관리자 모달(Supabase) 데이터가 불일치
+- **원인 1**: 2초 디바운스로만 동기화 → 로그인 직후 데이터 누락
+- **해결 1**: 로그인 시 **즉시 동기화** 추가
+- **원인 2**: BadgeContext 별도 upsert → INSERT 시 빈 배열로 덮어씀
+- **해결 2**: ProgressContext가 **localStorage 배지 읽어서 통합 전송**
+- **원인 3**: 기존 quiz_scores 테이블 데이터를 모달이 안 읽음
+- **해결 3**: `pymaster_user_progress` + `pymaster_quiz_scores` **두 테이블 동시 조회 후 병합**
+
+### 회원 관리 테이블 컬럼 변경
+- 기존: 아바타 / 이름 / 이메일 / 로그인 방식 / 마지막 접속
+- 변경: **구분(순번) / 이름 / 이메일 / 로그인 방식 / 가입일 / 마지막 접속**
+- admin.css: `.admin-member-num` 스타일 추가
+
+### 빌드 결과
+- 빌드 성공
+- AdminPage: 16.24KB, CSS: 106.21KB
+- 커밋 3건: 6889183, 9730abb, 9ef389d
+
+---
+
+## 2026-03-22 (Day 5) - 선생님 역할 시스템
+
+### 핵심 변경: 역할 분리
+- **기존**: `ADMIN_EMAILS = ['aebon@kakao.com', 'pch93472016@gmail.com']` → 둘 다 전체 관리자
+- **변경**: `pch93472016@gmail.com`을 **선생님 역할**로 분리
+  - `ADMIN_EMAILS = ['aebon@kakao.com']` — 전체 관리자
+  - `TEACHER_EMAILS = ['pch93472016@gmail.com']` — 선생님 (담당 학생만)
+
+### AuthContext.jsx
+- `TEACHER_EMAILS` 배열 추가
+- `isTeacher` boolean 계산 및 context value 노출
+
+### App.jsx
+- `TeacherPage` lazy import
+- `TeacherRoute` 가드 컴포넌트 (`isTeacher` 체크, 미인증 → /login, 비선생님 → /)
+- `/teacher` 라우트 등록
+
+### Navbar.jsx
+- `isTeacher` 디스트럭처링
+- "선생님" 메뉴 링크 (`fa-chalkboard-user` 아이콘)
+
+### TeacherPage.jsx (신규 - 18.65KB)
+3개 탭 대시보드:
+- **클래스 관리**: 클래스 생성 (이름 입력 → 6자리 영숫자 코드 자동 생성), 클래스 카드 목록 (코드 복사, 삭제)
+- **학생 목록**: 클래스별 필터 드롭다운, 학생 테이블 (구분/이름/이메일/클래스/가입일), 클릭 → 학생 상세 모달
+- **학습 통계**: 총 학생 수, 평균 퀴즈 점수, 평균 레슨 완료율, 클래스별 요약 테이블
+- **학생 상세 모달**: AdminPage 모달 로직과 동일 (프로필/통계/배지/퀴즈 성적표)
+
+### MyPage.jsx — 클래스 참여 기능 추가
+- 프로필 카드 아래에 "내 클래스" 섹션 추가
+- 6자리 코드 입력 (자동 대문자, maxLength=6) → 클래스 조회 → 참여
+- 중복 참여 / 잘못된 코드 오류 처리
+- 참여 중인 클래스 목록 (클래스명 + 선생님 이메일 + 탈퇴 버튼)
+
+### Supabase 테이블 (수동 실행)
+- `pymaster_classes` — 클래스 정보 (class_name, class_code, teacher_id, teacher_email)
+- `pymaster_class_members` — 클래스 멤버 (class_id, student_id, joined_at)
+- RLS: 선생님은 자기 클래스만 관리, 학생은 자기만 참여 가능
+
+### teacher.css (신규)
+- 클래스 생성 폼, 클래스 카드 그리드, 코드 표시 (모노스페이스, 24px), 복사 버튼
+- 마이페이지 클래스 참여 UI (코드 입력, 클래스 목록)
+- 다크모드 + 반응형 (768px, 480px)
+
+### 빌드 결과
+- 빌드 성공 (4.02초)
+- TeacherPage.js: 18.65KB, MyPage.js: 11.32KB
+- CSS: 112.52KB, index.js: 453.01KB
+- 총 47개 청크
+- GitHub Pages 배포 완료
+- 커밋: 44fd4da
