@@ -74,6 +74,13 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 3. Kakao: REST API Key 입력
 4. Redirect URI: `https://[project-ref].supabase.co/auth/v1/callback`
 
+## 다국어(i18n) 설정
+- 기본 언어: 한국어 (`ko`)
+- 지원 언어: 한국어/영어 (`ko` / `en`)
+- localStorage 키: `pymaster-lang`
+- Navbar의 지구본(fa-globe) 아이콘 클릭으로 전환
+- 새로고침 후에도 선택 언어 유지
+
 ## 체크리스트
 - [x] vite.config.js base: '/' (커스텀 도메인)
 - [x] CNAME 파일 설정
@@ -84,3 +91,4 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 - [x] Font Awesome 6 CDN
 - [x] Supabase .env 설정
 - [x] Google/Kakao OAuth 클라이언트 코드
+- [x] 다국어(i18n) 한국어/영어 지원

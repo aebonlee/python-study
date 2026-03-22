@@ -143,6 +143,13 @@
 .dropdown-header        /* 카테고리 구분 라벨 (소문자, 구분선) */
 ```
 
+### Navbar 언어 토글
+```css
+.lang-toggle            /* 언어 전환 버튼 (fa-globe 아이콘) */
+/* 다크모드 토글 옆 위치, 클릭 시 ko ↔ en 전환 */
+/* localStorage 'pymaster-lang' 키로 상태 유지 */
+```
+
 ### 파이썬 학습 허브 (python-learning.css)
 ```css
 .python-learning-page .page-header-section  /* 허브 페이지 헤더 */

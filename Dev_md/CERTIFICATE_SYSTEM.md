@@ -83,3 +83,10 @@ const CERT_REQUIREMENTS = {
 2. Canvas 미리보기가 카드 그리드 아래에 표시
 3. "PNG 다운로드" 클릭 → `canvas.toDataURL('image/png')` → `<a download>` 트리거
 4. 파일명: `PyMaster_{등급}_certificate.png`
+
+## 다국어(i18n) 지원
+
+- 수료증 UI 텍스트 (`t('cert.*')`) 한국어/영어 전환
+- 수료증 이미지 내 텍스트: 발급 언어에 따라 표시
+- MyPage 수료증 섹션: 등급명, 버튼, 상태 텍스트 번역 적용
+- `localizedField()` 패턴으로 등급 명칭 영어 전환
