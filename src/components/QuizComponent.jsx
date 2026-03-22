@@ -2,7 +2,27 @@ import { useState, useEffect, useCallback } from 'react'
 import { useProgress } from '../contexts/ProgressContext'
 import { useAuth } from '../contexts/AuthContext'
 
+function shuffleOptions(options, correctIdx) {
+  const indices = options.map((_, i) => i)
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[indices[i], indices[j]] = [indices[j], indices[i]]
+  }
+  return {
+    options: indices.map(i => options[i]),
+    correct: indices.indexOf(correctIdx)
+  }
+}
+
+function createShuffledQuestions(questions) {
+  return questions.map(q => {
+    const shuffled = shuffleOptions(q.options, q.correct)
+    return { ...q, options: shuffled.options, correct: shuffled.correct }
+  })
+}
+
 export default function QuizComponent({ quiz, quizId, onComplete }) {
+  const [shuffledQuestions, setShuffledQuestions] = useState(() => createShuffledQuestions(quiz.questions))
   const [currentQ, setCurrentQ] = useState(0)
   const [selected, setSelected] = useState(null)
   const [showResult, setShowResult] = useState(false)
@@ -12,7 +32,7 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
   const { saveQuizScore } = useProgress()
   const { requireAuth } = useAuth()
 
-  const questions = quiz.questions
+  const questions = shuffledQuestions
 
   const finishQuiz = useCallback((finalAnswers) => {
     const correct = finalAnswers.filter((a, i) => a === questions[i].correct).length
@@ -93,6 +113,7 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
         </div>
 
         <button className="btn btn-primary" onClick={() => {
+          setShuffledQuestions(createShuffledQuestions(quiz.questions))
           setCurrentQ(0)
           setSelected(null)
           setShowResult(false)
