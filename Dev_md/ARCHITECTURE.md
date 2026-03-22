@@ -123,7 +123,7 @@ App
 ```
 
 ### 데이터 흐름
-- **AuthContext**: Supabase OAuth 인증 (Google/Kakao), 30분 세션 관리, isAdmin/isTeacher 판별
+- **AuthContext**: Supabase OAuth 인증 (Google/Kakao), 30분 세션 관리, isAdmin 판별, DB 기반 isTeacher (role 컬럼 조회)
 - **ThemeContext**: light/dark 테마 토글, HTML data-theme 속성 제어
 - **ProgressContext**: 완료 레슨, 퀴즈 점수, 코드 실행 수, 스트릭 관리
 - **BadgeContext**: 배지 조건 평가, 획득 알림, 배지 목록 관리

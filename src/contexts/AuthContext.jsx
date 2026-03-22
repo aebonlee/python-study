@@ -7,10 +7,10 @@ const SESSION_DURATION = 30 * 60 * 1000 // 30분
 const WARNING_THRESHOLD = 5 * 60 * 1000 // 5분
 const SESSION_EXPIRY_KEY = 'pymaster-session-expiry'
 const ADMIN_EMAILS = ['aebon@kakao.com']
-const TEACHER_EMAILS = ['pch93472016@gmail.com']
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
+  const [userRole, setUserRole] = useState(null)
   const [loading, setLoading] = useState(true)
   const [sessionTimeLeft, setSessionTimeLeft] = useState(null)
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -69,7 +69,7 @@ export function AuthProvider({ children }) {
     setSessionTimeLeft(SESSION_DURATION)
   }, [])
 
-  // Upsert user info to pymaster_users table
+  // Upsert user info to pymaster_users table and fetch role
   const upsertUser = useCallback(async (u) => {
     if (!isSupabaseEnabled() || !u) return
     try {
@@ -81,8 +81,17 @@ export function AuthProvider({ children }) {
         provider: u.app_metadata?.provider,
         updated_at: new Date().toISOString()
       }, { onConflict: 'id' })
+
+      // Fetch role from DB
+      const { data } = await supabase
+        .from(TABLES.USERS)
+        .select('role')
+        .eq('id', u.id)
+        .single()
+      setUserRole(data?.role || 'student')
     } catch (err) {
       console.error('사용자 정보 저장 오류:', err)
+      setUserRole('student')
     }
   }, [])
 
@@ -93,7 +102,7 @@ export function AuthProvider({ children }) {
       return
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       const u = session?.user ?? null
       setUser(u)
       if (u) {
@@ -106,7 +115,7 @@ export function AuthProvider({ children }) {
           setSessionTimeLeft(SESSION_DURATION)
         }
         startSessionTimer()
-        upsertUser(u)
+        await upsertUser(u)
       }
       setLoading(false)
     }).catch((err) => {
@@ -132,6 +141,7 @@ export function AuthProvider({ children }) {
         }
       } else {
         clearSessionTimer()
+        setUserRole(null)
       }
     })
 
@@ -176,7 +186,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const isAdmin = ADMIN_EMAILS.includes(user?.email)
-  const isTeacher = TEACHER_EMAILS.includes(user?.email)
+  const isTeacher = userRole === 'teacher'
   const showSessionWarning = sessionTimeLeft !== null && sessionTimeLeft <= WARNING_THRESHOLD && sessionTimeLeft > 0
 
   const formatTimeLeft = (ms) => {

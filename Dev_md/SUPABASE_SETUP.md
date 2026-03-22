@@ -27,6 +27,7 @@ CREATE TABLE pymaster_users (
   name TEXT,
   avatar_url TEXT,
   provider TEXT,
+  role TEXT DEFAULT 'student',  -- 'student' | 'teacher'
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -217,10 +218,31 @@ export const TABLES = {
 - 접근 경로: `/admin`
 
 ### 선생님 (Teacher)
-- 이메일: `AuthContext.jsx`의 `TEACHER_EMAILS` 배열 (`pch93472016@gmail.com`)
+- DB 기반: `pymaster_users.role = 'teacher'`로 판별
+- 관리자가 AdminPage 회원 관리에서 동적으로 역할 지정/해제 (토글 버튼)
+- `set_user_role` RPC 함수로 관리자만 역할 변경 가능
 - 자기 클래스에 참여한 학생만 조회
 - 클래스 생성/삭제, 학생 목록, 학습 통계
 - 접근 경로: `/teacher`
+
+### 역할 변경 RPC 함수
+```sql
+CREATE OR REPLACE FUNCTION set_user_role(target_user_id UUID, new_role TEXT)
+RETURNS void AS $$
+DECLARE
+  caller_email TEXT;
+BEGIN
+  SELECT email INTO caller_email FROM auth.users WHERE id = auth.uid();
+  IF caller_email != 'aebon@kakao.com' THEN
+    RAISE EXCEPTION 'Unauthorized: only admin can change roles';
+  END IF;
+  IF new_role NOT IN ('student', 'teacher') THEN
+    RAISE EXCEPTION 'Invalid role: must be student or teacher';
+  END IF;
+  UPDATE pymaster_users SET role = new_role WHERE id = target_user_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+```
 
 ### RLS 설계
 - `pymaster_users`, `pymaster_user_progress`, `pymaster_quiz_scores`: `SELECT TO authenticated USING (true)` — 인증된 사용자 누구나 읽기 가능 (앱 레벨에서 필터링)

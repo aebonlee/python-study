@@ -68,7 +68,46 @@
 
 ---
 
-## 빌드 결과 (최종 7d2ccd9)
+## 3. 동적 역할 관리 시스템 (DB 기반)
+
+### 배경
+- 기존: `TEACHER_EMAILS` 하드코딩 배열로 선생님 판별
+- 변경: `pymaster_users.role` 컬럼 기반, 관리자가 AdminPage에서 동적으로 역할 지정/해제
+
+### 변경 내용
+
+#### AuthContext.jsx
+- `TEACHER_EMAILS` 배열 제거
+- `userRole` 상태 추가 → DB에서 `role` 조회
+- `isTeacher = userRole === 'teacher'`로 변경
+- `upsertUser()` 내에서 role 조회 통합 → loading 안정성 확보
+
+#### AdminPage.jsx
+- `TEACHER_EMAILS` 상수 제거
+- 회원 테이블에 "역할" 열 추가 (이메일과 로그인 방식 사이)
+- 역할 토글 버튼: 학생(회색) ↔ 선생님(보라색)
+- 관리자 계정: "관리자" 뱃지 표시, 토글 불가
+- `supabase.rpc('set_user_role')` 호출, 로딩 중 비활성화
+
+#### admin.css
+- `.admin-role-toggle` 버튼 스타일 (teacher 보라색, student 회색)
+- `.admin-role-badge.admin` 관리자 뱃지 스타일 (주황색)
+- hover 효과 + 다크모드 대응
+
+#### Supabase 변경 (수동 실행 필요)
+- `pymaster_users`에 `role TEXT DEFAULT 'student'` 컬럼 추가
+- `set_user_role` RPC 함수 생성 (관리자 전용)
+
+### 변경 파일
+| 파일 | 변경 |
+|------|------|
+| `src/contexts/AuthContext.jsx` | TEACHER_EMAILS 제거, userRole 상태 + DB 조회 |
+| `src/pages/AdminPage.jsx` | 역할 열 + 토글 버튼 + RPC 호출 |
+| `src/styles/admin.css` | 역할 토글 + 관리자 뱃지 스타일 |
+
+---
+
+## 빌드 결과 (최종)
 - CSS: 112.82KB
 - index.js: 453.01KB
 - TeacherPage.js: 18.65KB

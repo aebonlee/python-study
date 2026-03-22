@@ -6,7 +6,7 @@ import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 import BadgeCard from '../components/BadgeCard'
 
 const CATEGORY_LABELS = { qna: 'Q&A', free: '자유', code: '코드', review: '후기' }
-const TEACHER_EMAILS = ['pch93472016@gmail.com']
+const ADMIN_EMAIL = 'aebon@kakao.com'
 
 const ADMIN_TABS = [
   { key: 'stats', label: '사이트 통계', icon: 'fa-solid fa-chart-pie' },
@@ -48,6 +48,9 @@ export default function AdminPage() {
   const [selectedMember, setSelectedMember] = useState(null)
   const [memberProgress, setMemberProgress] = useState(null)
   const [memberProgressLoading, setMemberProgressLoading] = useState(false)
+
+  // Role toggling state
+  const [roleToggling, setRoleToggling] = useState(null)
 
   // Static stats
   const totalLessons = Object.values(lessons).flat().length
@@ -209,6 +212,27 @@ export default function AdminPage() {
     if (provider === 'google') return 'fa-brands fa-google'
     if (provider === 'kakao') return 'fa-solid fa-comment'
     return 'fa-solid fa-user'
+  }
+
+  const handleRoleToggle = async (e, member) => {
+    e.stopPropagation()
+    if (roleToggling) return
+    const newRole = member.role === 'teacher' ? 'student' : 'teacher'
+    setRoleToggling(member.id)
+    try {
+      const { error } = await supabase.rpc('set_user_role', {
+        target_user_id: member.id,
+        new_role: newRole,
+      })
+      if (error) throw error
+      setMembers(prev => prev.map(m =>
+        m.id === member.id ? { ...m, role: newRole } : m
+      ))
+    } catch (err) {
+      console.error('역할 변경 오류:', err.message)
+    } finally {
+      setRoleToggling(null)
+    }
   }
 
   // Build student quiz list from progress data
@@ -424,6 +448,7 @@ export default function AdminPage() {
                       <th>구분</th>
                       <th>이름</th>
                       <th>이메일</th>
+                      <th>역할</th>
                       <th>로그인 방식</th>
                       <th>가입일</th>
                       <th>마지막 접속</th>
@@ -437,13 +462,27 @@ export default function AdminPage() {
                         onClick={() => fetchMemberProgress(member)}
                       >
                         <td className="admin-member-num">{idx + 1}</td>
-                        <td className="admin-member-name">
-                          {member.name || '-'}
-                          {TEACHER_EMAILS.includes(member.email) && (
-                            <span className="admin-role-badge teacher"><i className="fa-solid fa-chalkboard-user" /> 선생님</span>
+                        <td className="admin-member-name">{member.name || '-'}</td>
+                        <td className="admin-member-email">{member.email || '-'}</td>
+                        <td>
+                          {member.email === ADMIN_EMAIL ? (
+                            <span className="admin-role-badge admin"><i className="fa-solid fa-shield-halved" /> 관리자</span>
+                          ) : (
+                            <button
+                              className={`admin-role-toggle ${member.role === 'teacher' ? 'teacher' : 'student'}`}
+                              onClick={(e) => handleRoleToggle(e, member)}
+                              disabled={roleToggling === member.id}
+                            >
+                              {roleToggling === member.id ? (
+                                <><i className="fa-solid fa-spinner fa-spin" /> 변경중</>
+                              ) : member.role === 'teacher' ? (
+                                <><i className="fa-solid fa-chalkboard-user" /> 선생님</>
+                              ) : (
+                                <><i className="fa-solid fa-user" /> 학생</>
+                              )}
+                            </button>
                           )}
                         </td>
-                        <td className="admin-member-email">{member.email || '-'}</td>
                         <td>
                           <span className="admin-provider-badge">
                             <i className={getProviderIcon(member.provider)} /> {getProviderLabel(member.provider)}

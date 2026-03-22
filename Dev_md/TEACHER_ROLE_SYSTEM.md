@@ -33,11 +33,51 @@
 | `src/styles/admin.css` | 수정 | `.admin-role-badge.teacher` 선생님 뱃지 스타일 + 다크모드 |
 | `src/index.css` | 수정 | `teacher.css` import 추가 |
 
-## 관리자 선생님 식별
+## 역할 판별 방식
 
-관리자 페이지(`/admin`) → 회원 관리 탭에서 선생님 계정을 확인할 수 있음:
-- `TEACHER_EMAILS` 배열에 포함된 이메일이면 이름 옆에 보라색 **"선생님"** 뱃지 표시
-- 뱃지 스타일: `.admin-role-badge.teacher` (보라색 #8e44ad, 다크모드 #bb6bd9)
+### v2 — DB 기반 동적 역할 (현재)
+- `pymaster_users` 테이블에 `role` 컬럼 추가 (`TEXT DEFAULT 'student'`)
+- `AuthContext`에서 로그인 시 DB에서 `role` 조회 → `userRole` 상태 → `isTeacher = userRole === 'teacher'`
+- 관리자가 AdminPage 회원 관리에서 역할 토글 가능 (학생 ↔ 선생님)
+- `set_user_role` RPC 함수로 관리자만 역할 변경 가능
+
+### v1 — 하드코딩 배열 (폐기)
+- ~~`TEACHER_EMAILS` 배열로 이메일 매칭~~ → DB 기반으로 전환
+
+## 관리자 회원 관리 역할 토글
+
+관리자 페이지(`/admin`) → 회원 관리 탭에서 역할 관리:
+- **관리자 계정** (`aebon@kakao.com`): 주황색 "관리자" 뱃지 표시, 토글 불가
+- **선생님**: 보라색 "선생님" 버튼 → 클릭 시 학생으로 변경
+- **학생**: 회색 "학생" 버튼 → 클릭 시 선생님으로 변경
+- RPC 호출: `supabase.rpc('set_user_role', { target_user_id, new_role })`
+
+## Supabase 역할 변경 (수동 실행)
+
+```sql
+-- role 컬럼 추가
+ALTER TABLE pymaster_users ADD COLUMN role TEXT DEFAULT 'student';
+
+-- 기존 선생님 마이그레이션
+UPDATE pymaster_users SET role = 'teacher' WHERE email = 'pch93472016@gmail.com';
+
+-- 관리자만 역할 변경 가능한 RPC
+CREATE OR REPLACE FUNCTION set_user_role(target_user_id UUID, new_role TEXT)
+RETURNS void AS $$
+DECLARE
+  caller_email TEXT;
+BEGIN
+  SELECT email INTO caller_email FROM auth.users WHERE id = auth.uid();
+  IF caller_email != 'aebon@kakao.com' THEN
+    RAISE EXCEPTION 'Unauthorized: only admin can change roles';
+  END IF;
+  IF new_role NOT IN ('student', 'teacher') THEN
+    RAISE EXCEPTION 'Invalid role: must be student or teacher';
+  END IF;
+  UPDATE pymaster_users SET role = new_role WHERE id = target_user_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+```
 
 ## Supabase 테이블 (수동 실행)
 

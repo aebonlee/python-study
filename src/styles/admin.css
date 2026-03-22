@@ -373,6 +373,49 @@
   background: rgba(142, 68, 173, 0.1);
 }
 
+.admin-role-badge.admin {
+  color: #e67e22;
+  background: rgba(230, 126, 34, 0.1);
+}
+
+/* Role Toggle Button */
+.admin-role-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.admin-role-toggle.teacher {
+  color: #8e44ad;
+  background: rgba(142, 68, 173, 0.12);
+}
+
+.admin-role-toggle.teacher:hover {
+  background: rgba(142, 68, 173, 0.22);
+}
+
+.admin-role-toggle.student {
+  color: #7f8c8d;
+  background: rgba(127, 140, 141, 0.12);
+}
+
+.admin-role-toggle.student:hover {
+  background: rgba(127, 140, 141, 0.22);
+}
+
+.admin-role-toggle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .admin-member-email {
   font-size: 13px;
   color: var(--text-secondary);
@@ -575,6 +618,29 @@
 [data-theme="dark"] .admin-role-badge.teacher {
   color: #bb6bd9;
   background: rgba(142, 68, 173, 0.2);
+}
+
+[data-theme="dark"] .admin-role-badge.admin {
+  color: #f0a540;
+  background: rgba(230, 126, 34, 0.2);
+}
+
+[data-theme="dark"] .admin-role-toggle.teacher {
+  color: #bb6bd9;
+  background: rgba(142, 68, 173, 0.2);
+}
+
+[data-theme="dark"] .admin-role-toggle.teacher:hover {
+  background: rgba(142, 68, 173, 0.35);
+}
+
+[data-theme="dark"] .admin-role-toggle.student {
+  color: #95a5a6;
+  background: rgba(127, 140, 141, 0.2);
+}
+
+[data-theme="dark"] .admin-role-toggle.student:hover {
+  background: rgba(127, 140, 141, 0.35);
 }
 
 [data-theme="dark"] .admin-member-row:hover {
