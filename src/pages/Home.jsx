@@ -1,23 +1,25 @@
 import { Link } from 'react-router-dom'
 import { useProgress } from '../contexts/ProgressContext'
 import { useBadge } from '../contexts/BadgeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import { lessons, levelInfo } from '../data/lessons'
 import ProgressBar from '../components/ProgressBar'
 
 export default function Home() {
   const { completedLessons, getTotalProgress, getLevelProgress } = useProgress()
   const { earnedBadges } = useBadge()
+  const { t, lang } = useLanguage()
 
   const totalLessons = Object.values(lessons).flat().length
   const totalProgress = getTotalProgress()
 
   const features = [
-    { icon: 'fa-solid fa-seedling', title: '기초부터 탄탄하게', desc: '변수, 자료형, 반복문 등 핵심 문법을 단계별로 학습' },
-    { icon: 'fa-solid fa-rocket', title: '실력 향상', desc: '객체지향, 함수형 프로그래밍, 정규식 등 중급 과정' },
-    { icon: 'fa-solid fa-bolt', title: '고급 테크닉', desc: '데코레이터, 메타클래스, 동시성 프로그래밍' },
-    { icon: 'fa-solid fa-microscope', title: '데이터 과학', desc: 'NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow 실습' },
-    { icon: 'fa-solid fa-trophy', title: '도장깨기', desc: '배지 시스템으로 학습 성과를 확인하고 동기 부여' },
-    { icon: 'fa-solid fa-pen-nib', title: '퀴즈 & 테스트', desc: '단계별 테스트로 이해도를 점검' },
+    { icon: 'fa-solid fa-seedling', title: t('home.feature1Title'), desc: t('home.feature1Desc') },
+    { icon: 'fa-solid fa-rocket', title: t('home.feature2Title'), desc: t('home.feature2Desc') },
+    { icon: 'fa-solid fa-bolt', title: t('home.feature3Title'), desc: t('home.feature3Desc') },
+    { icon: 'fa-solid fa-microscope', title: t('home.feature4Title'), desc: t('home.feature4Desc') },
+    { icon: 'fa-solid fa-trophy', title: t('home.feature5Title'), desc: t('home.feature5Desc') },
+    { icon: 'fa-solid fa-pen-nib', title: t('home.feature6Title'), desc: t('home.feature6Desc') },
   ]
 
   return (
@@ -53,19 +55,28 @@ export default function Home() {
 
         <div className="container hero-content">
           <h1 className="hero-title">
-            <span className="title-line">파이썬을</span>
-            <span className="title-line">
-              <span className="highlight">마스터</span>하는 가장 빠른 길
-            </span>
+            {lang === 'en' ? (
+              <>
+                <span className="title-line">{t('home.heroTitle1')}</span>
+                <span className="title-line">
+                  <span className="highlight">{t('home.heroTitle2')}</span>{t('home.heroTitle3')}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="title-line">{t('home.heroTitle1')}</span>
+                <span className="title-line">
+                  <span className="highlight">{t('home.heroTitle2')}</span>{t('home.heroTitle3')}
+                </span>
+              </>
+            )}
           </h1>
           <p className="hero-description">
-            기초 문법부터 데이터 분석, 머신러닝, 딥러닝까지
-            도장깨기 배지 시스템과 실시간 코드 에디터로
-            체계적으로 파이썬을 정복하세요.
+            {t('home.heroDesc')}
           </p>
           <div className="hero-buttons">
-            <Link to="/basics" className="btn btn-primary">학습 시작하기</Link>
-            <Link to="/badges" className="btn btn-secondary">도장깨기 보기</Link>
+            <Link to="/basics" className="btn btn-primary">{t('home.startLearning')}</Link>
+            <Link to="/badges" className="btn btn-secondary">{t('home.viewBadges')}</Link>
           </div>
         </div>
       </section>
@@ -76,19 +87,19 @@ export default function Home() {
           <div className="stats-grid">
             <div className="stat-card">
               <span className="stat-number">{totalLessons}</span>
-              <span className="stat-label">학습 레슨</span>
+              <span className="stat-label">{t('home.lessonsCount')}</span>
             </div>
             <div className="stat-card">
               <span className="stat-number">4</span>
-              <span className="stat-label">학습 단계</span>
+              <span className="stat-label">{t('home.stagesCount')}</span>
             </div>
             <div className="stat-card">
               <span className="stat-number">20+</span>
-              <span className="stat-label">수집 가능 배지</span>
+              <span className="stat-label">{t('home.badgesCount')}</span>
             </div>
             <div className="stat-card">
               <span className="stat-number">40+</span>
-              <span className="stat-label">퀴즈 문제</span>
+              <span className="stat-label">{t('home.quizCount')}</span>
             </div>
           </div>
         </div>
@@ -98,8 +109,8 @@ export default function Home() {
       <section className="features-section">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">왜 PyMaster인가요?</h2>
-            <p className="section-subtitle">체계적인 커리큘럼, 실습 중심의 학습, 동기부여 시스템</p>
+            <h2 className="section-title">{t('home.whyPyMaster')}</h2>
+            <p className="section-subtitle">{t('home.whySubtitle')}</p>
           </div>
           <div className="features-grid">
             {features.map((f, i) => (
@@ -117,23 +128,25 @@ export default function Home() {
       <section className="path-section">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">학습 경로</h2>
-            <p className="section-subtitle">단계별로 파이썬을 정복하세요</p>
+            <h2 className="section-title">{t('home.learningPath')}</h2>
+            <p className="section-subtitle">{t('home.pathSubtitle')}</p>
           </div>
           <div className="path-grid">
-            {Object.entries(levelInfo).map(([key, info]) => {
+            {Object.entries(levelInfo).filter(([key]) => ['basics','intermediate','advanced','applied'].includes(key)).map(([key, info]) => {
               const levelLessons = lessons[key] || []
               const progress = getLevelProgress(key)
+              const title = t(`levelInfo.${key}.title`) || info.title
+              const desc = t(`levelInfo.${key}.description`) || info.description
               return (
                 <Link to={`/${key}`} key={key} className="path-card">
                   <div className="path-card-icon" style={{ background: `${info.color}15`, color: info.color }}>
                     <i className={info.icon} />
                   </div>
-                  <h3 className="path-card-title">{info.title} 과정</h3>
-                  <p className="path-card-desc">{info.description}</p>
+                  <h3 className="path-card-title">{title} {t('home.course')}</h3>
+                  <p className="path-card-desc">{desc}</p>
                   <div className="path-card-info">
-                    <span>{levelLessons.length}개 레슨</span>
-                    <span style={{ color: info.color }}>{progress}% 완료</span>
+                    <span>{levelLessons.length}{t('home.lessons')}</span>
+                    <span style={{ color: info.color }}>{progress}{t('home.completed')}</span>
                   </div>
                   <ProgressBar value={progress} color={info.color} showPercent={false} size="sm" />
                 </Link>
@@ -148,20 +161,20 @@ export default function Home() {
         <section className="overview-section">
           <div className="container">
             <div className="section-header">
-              <h2 className="section-title">나의 학습 현황</h2>
+              <h2 className="section-title">{t('home.myProgress')}</h2>
             </div>
             <div className="overview-grid">
               <div className="overview-card">
-                <h4>전체 진도</h4>
+                <h4>{t('home.totalProgressLabel')}</h4>
                 <div className="overview-big-number">{totalProgress}%</div>
                 <ProgressBar value={totalProgress} color="var(--primary)" />
-                <p>{completedLessons.size} / {totalLessons} 레슨 완료</p>
+                <p>{completedLessons.size} / {totalLessons} {t('home.lessonsCompleted')}</p>
               </div>
               <div className="overview-card">
-                <h4>획득 배지</h4>
+                <h4>{t('home.earnedBadgesLabel')}</h4>
                 <div className="overview-big-number">{earnedBadges.length}</div>
-                <p>도장깨기 배지를 모아보세요</p>
-                <Link to="/badges" className="btn-link">배지 보기 →</Link>
+                <p>{t('home.collectBadges')}</p>
+                <Link to="/badges" className="btn-link">{t('home.viewBadgesLink')}</Link>
               </div>
             </div>
           </div>
@@ -172,9 +185,9 @@ export default function Home() {
       <section className="cta-section">
         <div className="container">
           <div className="cta-content">
-            <h2>지금 바로 파이썬 학습을 시작하세요</h2>
-            <p>무료로 제공되는 모든 강의와 실습을 즐겨보세요</p>
-            <Link to="/basics" className="btn btn-primary">무료로 시작하기</Link>
+            <h2>{t('home.ctaTitle')}</h2>
+            <p>{t('home.ctaDesc')}</p>
+            <Link to="/basics" className="btn btn-primary">{t('home.ctaButton')}</Link>
           </div>
         </div>
       </section>

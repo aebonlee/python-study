@@ -1,47 +1,86 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../contexts/LanguageContext';
 
-const PythonLesson08 = () => (
-  <div className="python-lesson-detail" style={{ marginTop: 'var(--nav-height)' }}>
-    <section className="page-header">
-      <div className="container">
-        <h1>8주차: While 조건반복, For 횟수반복</h1>
-        <p>반복문으로 효율적인 프로그래밍과 패턴 출력</p>
-      </div>
-    </section>
-    <section className="section lesson-content">
-      <div className="container">
-        <div className="lesson-body">
+export default function PythonLesson08() {
+  const { t, lang } = useLanguage();
+  return (
+    <div className="python-lesson-detail" style={{ marginTop: 'var(--nav-height)' }}>
+      <section className="page-header">
+        <div className="container">
+          <h1>{lang === 'en' ? 'Week 8: While & For Loops' : '8주차: While 조건반복, For 횟수반복'}</h1>
+          <p>{lang === 'en' ? 'Efficient programming and pattern output with loops' : '반복문으로 효율적인 프로그래밍과 패턴 출력'}</p>
+        </div>
+      </section>
+      <section className="section lesson-content">
+        <div className="container">
+          <div className="lesson-body">
 
-          <div className="callout-box">
-            <h3>학습 목표</h3>
-            <ul>
-              <li>반복문의 개념과 프로그래밍에서의 필요성을 이해한다</li>
-              <li>while문과 for문의 차이점을 이해하고 적절히 선택하여 사용할 수 있다</li>
-              <li>range() 함수의 다양한 형태를 활용할 수 있다</li>
-              <li>break와 continue로 반복문의 흐름을 제어할 수 있다</li>
-              <li>중첩 반복문을 사용하여 구구단과 별 찍기 패턴을 구현할 수 있다</li>
-            </ul>
-          </div>
+            {lang === 'en' ? (
+              <>
+                <div className="callout-box">
+                  <h3>{t('pythonLearning.learningObjectives')}</h3>
+                  <ul>
+                    <li>Understand the concept of loops and why they are needed in programming</li>
+                    <li>Understand the differences between while and for loops and choose appropriately</li>
+                    <li>Use the range() function in its various forms</li>
+                    <li>Control loop flow with break and continue</li>
+                    <li>Implement multiplication tables and star patterns using nested loops</li>
+                  </ul>
+                </div>
 
-          {/* ========== 1. 반복문이란? ========== */}
-          <h2>1. 반복문이란?</h2>
+                {/* ========== 1. What Are Loops? ========== */}
+                <h2>1. What Are Loops?</h2>
 
-          <h3>1-1. 프로그램의 반복 구조</h3>
-          <p>
-            프로그램의 3가지 제어 구조(순차, 선택, 반복) 중 마지막인 <strong>반복 구조(Repetition Structure)</strong>를 학습합니다.
-            반복문은 특정 조건이 만족되는 동안 또는 정해진 횟수만큼 코드 블록을 반복 실행하는 구문입니다.
-          </p>
+                <h3>1-1. Repetition Structure in Programs</h3>
+                <p>
+                  We now learn the last of the 3 control structures (sequential, selection, repetition): the <strong>Repetition Structure</strong>.
+                  A loop is a construct that repeatedly executes a code block while a certain condition is met or for a specified number of times.
+                </p>
 
-          <h3>1-2. 반복문이 없다면?</h3>
-          <p>
-            만약 "안녕하세요"를 100번 출력해야 한다고 가정합시다. 반복문이 없다면
-            <code>print("안녕하세요")</code>를 100줄 복사해야 합니다.
-            1000번이라면? 10000번이라면? 이것은 비효율적이며 유지보수도 불가능합니다.
-            반복문을 사용하면 단 3줄로 해결할 수 있습니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">반복문의 필요성</div>
-            <pre><code>{`# 반복문 없이 5번 출력 (비효율적)
+                <h3>1-2. What If We Had No Loops?</h3>
+                <p>
+                  Suppose you need to print "Hello" 100 times. Without loops, you would have to copy
+                  <code>print("Hello")</code> 100 lines.
+                  What about 1000 times? 10000 times? This is inefficient and impossible to maintain.
+                  With a loop, you can solve it in just 3 lines.
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="callout-box">
+                  <h3>{t('pythonLearning.learningObjectives')}</h3>
+                  <ul>
+                    <li>반복문의 개념과 프로그래밍에서의 필요성을 이해한다</li>
+                    <li>while문과 for문의 차이점을 이해하고 적절히 선택하여 사용할 수 있다</li>
+                    <li>range() 함수의 다양한 형태를 활용할 수 있다</li>
+                    <li>break와 continue로 반복문의 흐름을 제어할 수 있다</li>
+                    <li>중첩 반복문을 사용하여 구구단과 별 찍기 패턴을 구현할 수 있다</li>
+                  </ul>
+                </div>
+
+                {/* ========== 1. 반복문이란? ========== */}
+                <h2>1. 반복문이란?</h2>
+
+                <h3>1-1. 프로그램의 반복 구조</h3>
+                <p>
+                  프로그램의 3가지 제어 구조(순차, 선택, 반복) 중 마지막인 <strong>반복 구조(Repetition Structure)</strong>를 학습합니다.
+                  반복문은 특정 조건이 만족되는 동안 또는 정해진 횟수만큼 코드 블록을 반복 실행하는 구문입니다.
+                </p>
+
+                <h3>1-2. 반복문이 없다면?</h3>
+                <p>
+                  만약 "안녕하세요"를 100번 출력해야 한다고 가정합시다. 반복문이 없다면
+                  <code>print("안녕하세요")</code>를 100줄 복사해야 합니다.
+                  1000번이라면? 10000번이라면? 이것은 비효율적이며 유지보수도 불가능합니다.
+                  반복문을 사용하면 단 3줄로 해결할 수 있습니다.
+                </p>
+              </>
+            )}
+
+            {/* SHARED code block */}
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Why We Need Loops' : '반복문의 필요성'}</div>
+              <pre><code>{`# 반복문 없이 5번 출력 (비효율적)
 print("안녕하세요")  # 1번째
 print("안녕하세요")  # 2번째
 print("안녕하세요")  # 3번째
@@ -55,51 +94,106 @@ for i in range(5):
 # 100번, 1000번도 숫자만 바꾸면 됩니다!
 for i in range(1000):
     print("안녕하세요")`}</code></pre>
-          </div>
+            </div>
 
-          <h3>1-3. 반복문의 구성 요소</h3>
-          <p>모든 반복문은 다음 4가지 요소로 구성됩니다:</p>
-          <table className="lesson-table">
-            <thead>
-              <tr><th>구성 요소</th><th>설명</th><th>예시</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>초기화</strong></td><td>반복에 사용할 변수의 초기값 설정</td><td><code>i = 1</code></td></tr>
-              <tr><td><strong>조건</strong></td><td>반복을 계속할지 결정하는 조건식</td><td><code>i &lt;= 10</code></td></tr>
-              <tr><td><strong>본문</strong></td><td>반복적으로 실행할 코드</td><td><code>print(i)</code></td></tr>
-              <tr><td><strong>갱신</strong></td><td>반복 변수를 변경 (조건을 변화시킴)</td><td><code>i += 1</code></td></tr>
-            </tbody>
-          </table>
-          <p>
-            <strong>주의:</strong> 갱신을 잊으면 조건이 영원히 True로 유지되어 <strong>무한 루프(Infinite Loop)</strong>에 빠집니다.
-            무한 루프에 빠지면 프로그램이 끝나지 않으므로, 실행 중 <code>Ctrl + C</code>로 강제 종료해야 합니다.
-          </p>
+            {lang === 'en' ? (
+              <>
+                <h3>1-3. Components of a Loop</h3>
+                <p>Every loop consists of these 4 components:</p>
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>Component</th><th>Description</th><th>Example</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>Initialization</strong></td><td>Set initial value for the loop variable</td><td><code>i = 1</code></td></tr>
+                    <tr><td><strong>Condition</strong></td><td>Condition that determines whether to continue looping</td><td><code>i &lt;= 10</code></td></tr>
+                    <tr><td><strong>Body</strong></td><td>Code to be executed repeatedly</td><td><code>print(i)</code></td></tr>
+                    <tr><td><strong>Update</strong></td><td>Modify the loop variable (changes the condition)</td><td><code>i += 1</code></td></tr>
+                  </tbody>
+                </table>
+                <p>
+                  <strong>Caution:</strong> If you forget the update, the condition stays True forever, resulting in an <strong>infinite loop</strong>.
+                  If stuck in an infinite loop, force quit with <code>Ctrl + C</code>.
+                </p>
 
-          <h3>1-4. while vs for 선택 기준</h3>
-          <table className="lesson-table">
-            <thead>
-              <tr><th>상황</th><th>권장 반복문</th><th>이유</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>반복 횟수가 미리 정해진 경우</td><td><code>for</code></td><td>range()로 간결하게 표현</td></tr>
-              <tr><td>반복 횟수를 모르는 경우</td><td><code>while</code></td><td>조건으로 종료 시점 결정</td></tr>
-              <tr><td>시퀀스 순회 (리스트, 문자열)</td><td><code>for</code></td><td>자동으로 요소를 하나씩 꺼냄</td></tr>
-              <tr><td>사용자 입력 대기</td><td><code>while</code></td><td>언제 종료할지 알 수 없음</td></tr>
-              <tr><td>무한 반복 필요</td><td><code>while True</code></td><td>break로 탈출 조건 설정</td></tr>
-            </tbody>
-          </table>
+                <h3>1-4. Choosing Between while and for</h3>
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>Situation</th><th>Recommended Loop</th><th>Reason</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Number of iterations known in advance</td><td><code>for</code></td><td>Concise expression with range()</td></tr>
+                    <tr><td>Number of iterations unknown</td><td><code>while</code></td><td>End point determined by condition</td></tr>
+                    <tr><td>Traversing a sequence (list, string)</td><td><code>for</code></td><td>Automatically extracts elements one by one</td></tr>
+                    <tr><td>Waiting for user input</td><td><code>while</code></td><td>Cannot predict when it will end</td></tr>
+                    <tr><td>Infinite loop needed</td><td><code>while True</code></td><td>Exit condition set with break</td></tr>
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <>
+                <h3>1-3. 반복문의 구성 요소</h3>
+                <p>모든 반복문은 다음 4가지 요소로 구성됩니다:</p>
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>구성 요소</th><th>설명</th><th>예시</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>초기화</strong></td><td>반복에 사용할 변수의 초기값 설정</td><td><code>i = 1</code></td></tr>
+                    <tr><td><strong>조건</strong></td><td>반복을 계속할지 결정하는 조건식</td><td><code>i &lt;= 10</code></td></tr>
+                    <tr><td><strong>본문</strong></td><td>반복적으로 실행할 코드</td><td><code>print(i)</code></td></tr>
+                    <tr><td><strong>갱신</strong></td><td>반복 변수를 변경 (조건을 변화시킴)</td><td><code>i += 1</code></td></tr>
+                  </tbody>
+                </table>
+                <p>
+                  <strong>주의:</strong> 갱신을 잊으면 조건이 영원히 True로 유지되어 <strong>무한 루프(Infinite Loop)</strong>에 빠집니다.
+                  무한 루프에 빠지면 프로그램이 끝나지 않으므로, 실행 중 <code>Ctrl + C</code>로 강제 종료해야 합니다.
+                </p>
 
-          {/* ========== 2. while문 ========== */}
-          <h2>2. while문 (조건 반복)</h2>
+                <h3>1-4. while vs for 선택 기준</h3>
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>상황</th><th>권장 반복문</th><th>이유</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>반복 횟수가 미리 정해진 경우</td><td><code>for</code></td><td>range()로 간결하게 표현</td></tr>
+                    <tr><td>반복 횟수를 모르는 경우</td><td><code>while</code></td><td>조건으로 종료 시점 결정</td></tr>
+                    <tr><td>시퀀스 순회 (리스트, 문자열)</td><td><code>for</code></td><td>자동으로 요소를 하나씩 꺼냄</td></tr>
+                    <tr><td>사용자 입력 대기</td><td><code>while</code></td><td>언제 종료할지 알 수 없음</td></tr>
+                    <tr><td>무한 반복 필요</td><td><code>while True</code></td><td>break로 탈출 조건 설정</td></tr>
+                  </tbody>
+                </table>
+              </>
+            )}
 
-          <h3>2-1. while문의 문법</h3>
-          <p>
-            <code>while</code>문은 조건식이 <code>True</code>인 동안 코드 블록을 반복 실행합니다.
-            조건식이 <code>False</code>가 되면 반복이 종료됩니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">while문 문법</div>
-            <pre><code>{`# 기본 문법
+            {lang === 'en' ? (
+              <>
+                {/* ========== 2. while Loop ========== */}
+                <h2>2. while Loop (Conditional Repetition)</h2>
+
+                <h3>2-1. while Loop Syntax</h3>
+                <p>
+                  The <code>while</code> loop repeatedly executes a code block as long as the condition is <code>True</code>.
+                  When the condition becomes <code>False</code>, the loop terminates.
+                </p>
+              </>
+            ) : (
+              <>
+                {/* ========== 2. while문 ========== */}
+                <h2>2. while문 (조건 반복)</h2>
+
+                <h3>2-1. while문의 문법</h3>
+                <p>
+                  <code>while</code>문은 조건식이 <code>True</code>인 동안 코드 블록을 반복 실행합니다.
+                  조건식이 <code>False</code>가 되면 반복이 종료됩니다.
+                </p>
+              </>
+            )}
+
+            {/* SHARED code block */}
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'while Loop Syntax' : 'while문 문법'}</div>
+              <pre><code>{`# 기본 문법
 while 조건식:
     반복할 코드
     ...
@@ -110,19 +204,36 @@ while 조건식:
 # 3단계: True이면 다시 본문 실행 (반복)
 # ...
 # N단계: 조건식이 False → 반복 종료, while 다음 코드로 이동`}</code></pre>
-          </div>
+            </div>
 
-          <h3>2-2. while문과 순서도</h3>
-          <p>
-            while문은 순서도에서 다이아몬드(판단) 기호와 흐름선의 되돌아감으로 표현됩니다.
-            조건이 True이면 본문을 실행하고 다시 조건으로 돌아가며,
-            False이면 반복을 빠져나갑니다.
-          </p>
+            {lang === 'en' ? (
+              <>
+                <h3>2-2. while Loop and Flowcharts</h3>
+                <p>
+                  In flowcharts, a while loop is represented by a diamond (decision) symbol and a return arrow.
+                  If the condition is True, execute the body and return to the condition;
+                  if False, exit the loop.
+                </p>
 
-          <h3>2-3. while문 기본 예제</h3>
-          <div className="code-block">
-            <div className="code-header">예제 1: 1부터 5까지 출력</div>
-            <pre><code>{`i = 1           # 초기화
+                <h3>2-3. Basic while Loop Examples</h3>
+              </>
+            ) : (
+              <>
+                <h3>2-2. while문과 순서도</h3>
+                <p>
+                  while문은 순서도에서 다이아몬드(판단) 기호와 흐름선의 되돌아감으로 표현됩니다.
+                  조건이 True이면 본문을 실행하고 다시 조건으로 돌아가며,
+                  False이면 반복을 빠져나갑니다.
+                </p>
+
+                <h3>2-3. while문 기본 예제</h3>
+              </>
+            )}
+
+            {/* SHARED code blocks */}
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Example 1: Print 1 to 5' : '예제 1: 1부터 5까지 출력'}</div>
+              <pre><code>{`i = 1           # 초기화
 
 while i <= 5:   # 조건: i가 5 이하인 동안
     print(i)    # 본문: i 출력
@@ -137,10 +248,10 @@ print("반복 종료")
 # i=4 → 4<=5? True → 4 출력 → i=5
 # i=5 → 5<=5? True → 5 출력 → i=6
 # i=6 → 6<=5? False → 반복 종료`}</code></pre>
-          </div>
-          <div className="code-block">
-            <div className="code-header">예제 2: 1부터 100까지 합계</div>
-            <pre><code>{`# 1 + 2 + 3 + ... + 100 = ?
+            </div>
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Example 2: Sum from 1 to 100' : '예제 2: 1부터 100까지 합계'}</div>
+              <pre><code>{`# 1 + 2 + 3 + ... + 100 = ?
 total = 0  # 합계를 저장할 변수 (누적 변수)
 i = 1      # 반복 변수
 
@@ -151,10 +262,10 @@ while i <= 100:
 print(f"1부터 100까지의 합: {total}")  # 5050
 
 # 가우스의 공식: n(n+1)/2 = 100*101/2 = 5050`}</code></pre>
-          </div>
-          <div className="code-block">
-            <div className="code-header">예제 3: 카운트다운</div>
-            <pre><code>{`count = 10
+            </div>
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Example 3: Countdown' : '예제 3: 카운트다운'}</div>
+              <pre><code>{`count = 10
 
 print("카운트다운 시작!")
 while count > 0:
@@ -166,12 +277,17 @@ print("\\n발사! 🚀")
 # 출력: 카운트다운 시작!
 # 10... 9... 8... 7... 6... 5... 4... 3... 2... 1...
 # 발사! 🚀`}</code></pre>
-          </div>
+            </div>
 
-          <h3>2-4. 사용자 입력 반복</h3>
-          <div className="code-block">
-            <div className="code-header">예제 4: 특정 값 입력 시 종료</div>
-            <pre><code>{`# "quit"을 입력할 때까지 반복
+            {lang === 'en' ? (
+              <h3>2-4. Repeated User Input</h3>
+            ) : (
+              <h3>2-4. 사용자 입력 반복</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Example 4: Exit on Specific Input' : '예제 4: 특정 값 입력 시 종료'}</div>
+              <pre><code>{`# "quit"을 입력할 때까지 반복
 print("메시지를 입력하세요 ('quit' 입력 시 종료)")
 
 message = ""  # 초기값 설정
@@ -191,12 +307,17 @@ print("프로그램을 종료합니다.")
 # 입력한 메시지: 파이썬 공부중
 # >>> quit
 # 프로그램을 종료합니다.`}</code></pre>
-          </div>
+            </div>
 
-          <h3>2-5. 무한 루프와 while True</h3>
-          <div className="code-block">
-            <div className="code-header">예제 5: 비밀번호 맞추기 (3회 기회)</div>
-            <pre><code>{`correct_pw = "python123"
+            {lang === 'en' ? (
+              <h3>2-5. Infinite Loops and while True</h3>
+            ) : (
+              <h3>2-5. 무한 루프와 while True</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Example 5: Password Guessing (3 Attempts)' : '예제 5: 비밀번호 맞추기 (3회 기회)'}</div>
+              <pre><code>{`correct_pw = "python123"
 max_attempts = 3
 attempt = 0
 
@@ -222,12 +343,17 @@ while attempt < max_attempts:
 # 틀렸습니다. 2회 남음
 # [2/3] 비밀번호: python123
 # 로그인 성공!`}</code></pre>
-          </div>
+            </div>
 
-          <h3>2-6. 무한 루프 주의</h3>
-          <div className="code-block">
-            <div className="code-header">무한 루프의 원인과 해결</div>
-            <pre><code>{`# ✗ 무한 루프 - 갱신을 잊은 경우
+            {lang === 'en' ? (
+              <h3>2-6. Infinite Loop Caution</h3>
+            ) : (
+              <h3>2-6. 무한 루프 주의</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Infinite Loop Causes and Solutions' : '무한 루프의 원인과 해결'}</div>
+              <pre><code>{`# ✗ 무한 루프 - 갱신을 잊은 경우
 # i = 1
 # while i <= 5:
 #     print(i)
@@ -246,19 +372,36 @@ while True:
     print(f"입력: {user}")
 
 print("종료되었습니다.")`}</code></pre>
-          </div>
+            </div>
 
-          {/* ========== 3. for문 ========== */}
-          <h2>3. for문 (횟수 반복)</h2>
+            {lang === 'en' ? (
+              <>
+                {/* ========== 3. for Loop ========== */}
+                <h2>3. for Loop (Count-based Repetition)</h2>
 
-          <h3>3-1. for문의 문법</h3>
-          <p>
-            <code>for</code>문은 시퀀스(순서가 있는 자료)의 요소를 하나씩 꺼내어 반복합니다.
-            반복 횟수가 정해져 있거나, 시퀀스의 각 요소를 처리할 때 사용합니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">for문 문법</div>
-            <pre><code>{`# 기본 문법
+                <h3>3-1. for Loop Syntax</h3>
+                <p>
+                  The <code>for</code> loop iterates through elements of a sequence one by one.
+                  It is used when the number of iterations is fixed or when processing each element of a sequence.
+                </p>
+              </>
+            ) : (
+              <>
+                {/* ========== 3. for문 ========== */}
+                <h2>3. for문 (횟수 반복)</h2>
+
+                <h3>3-1. for문의 문법</h3>
+                <p>
+                  <code>for</code>문은 시퀀스(순서가 있는 자료)의 요소를 하나씩 꺼내어 반복합니다.
+                  반복 횟수가 정해져 있거나, 시퀀스의 각 요소를 처리할 때 사용합니다.
+                </p>
+              </>
+            )}
+
+            {/* SHARED code block */}
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'for Loop Syntax' : 'for문 문법'}</div>
+              <pre><code>{`# 기본 문법
 for 변수 in 시퀀스:
     반복할 코드
     ...
@@ -271,12 +414,17 @@ for 변수 in 시퀀스:
 # 2. 시퀀스에서 두 번째 요소를 꺼내 변수에 대입 → 본문 실행
 # 3. ...
 # N. 시퀀스의 마지막 요소까지 실행 → 반복 종료`}</code></pre>
-          </div>
+            </div>
 
-          <h3>3-2. range()와 함께 사용</h3>
-          <div className="code-block">
-            <div className="code-header">for문과 range() 기본</div>
-            <pre><code>{`# range(n): 0부터 n-1까지
+            {lang === 'en' ? (
+              <h3>3-2. Using with range()</h3>
+            ) : (
+              <h3>3-2. range()와 함께 사용</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'for Loop with range() Basics' : 'for문과 range() 기본'}</div>
+              <pre><code>{`# range(n): 0부터 n-1까지
 print("range(5):")
 for i in range(5):
     print(i, end=" ")  # 0 1 2 3 4
@@ -299,12 +447,17 @@ print("range(5, 0, -1):")
 for i in range(5, 0, -1):
     print(i, end=" ")  # 5 4 3 2 1
 print()`}</code></pre>
-          </div>
+            </div>
 
-          <h3>3-3. 문자열 순회</h3>
-          <div className="code-block">
-            <div className="code-header">문자열을 for문으로 순회</div>
-            <pre><code>{`# 문자열의 각 문자를 하나씩 출력
+            {lang === 'en' ? (
+              <h3>3-3. String Traversal</h3>
+            ) : (
+              <h3>3-3. 문자열 순회</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Traversing Strings with for' : '문자열을 for문으로 순회'}</div>
+              <pre><code>{`# 문자열의 각 문자를 하나씩 출력
 word = "Python"
 for char in word:
     print(char, end=" ")
@@ -322,12 +475,17 @@ for char in text:
         count += 1
 
 print(f"'{text}'에서 모음 개수: {count}개")  # 3개`}</code></pre>
-          </div>
+            </div>
 
-          <h3>3-4. 리스트 순회</h3>
-          <div className="code-block">
-            <div className="code-header">리스트를 for문으로 순회</div>
-            <pre><code>{`# 리스트의 각 요소를 하나씩 처리
+            {lang === 'en' ? (
+              <h3>3-4. List Traversal</h3>
+            ) : (
+              <h3>3-4. 리스트 순회</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Traversing Lists with for' : '리스트를 for문으로 순회'}</div>
+              <pre><code>{`# 리스트의 각 요소를 하나씩 처리
 fruits = ["사과", "바나나", "포도", "딸기", "수박"]
 
 for fruit in fruits:
@@ -348,39 +506,76 @@ for num in numbers:
     total += num
 
 print(f"합계: {total}")  # 150`}</code></pre>
-          </div>
+            </div>
 
-          {/* ========== 4. range() 함수 완전 정복 ========== */}
-          <h2>4. range() 함수 완전 정복</h2>
+            {lang === 'en' ? (
+              <>
+                {/* ========== 4. range() Mastery ========== */}
+                <h2>4. Mastering the range() Function</h2>
 
-          <h3>4-1. range()의 세 가지 형태</h3>
-          <p>
-            <code>range()</code> 함수는 연속된 정수 시퀀스를 생성합니다. for문에서 가장 많이 사용되는 함수입니다.
-          </p>
-          <table className="lesson-table">
-            <thead>
-              <tr><th>형태</th><th>설명</th><th>생성되는 값</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><code>range(5)</code></td><td>0부터 4까지</td><td>0, 1, 2, 3, 4</td></tr>
-              <tr><td><code>range(1, 6)</code></td><td>1부터 5까지</td><td>1, 2, 3, 4, 5</td></tr>
-              <tr><td><code>range(0, 10, 2)</code></td><td>0부터 8까지 2씩 증가</td><td>0, 2, 4, 6, 8</td></tr>
-              <tr><td><code>range(10, 0, -1)</code></td><td>10부터 1까지 역순</td><td>10, 9, 8, ..., 2, 1</td></tr>
-              <tr><td><code>range(10, 0, -2)</code></td><td>10부터 2까지 2씩 감소</td><td>10, 8, 6, 4, 2</td></tr>
-              <tr><td><code>range(1, 1)</code></td><td>시작 == 끝</td><td>(빈 시퀀스, 아무것도 없음)</td></tr>
-            </tbody>
-          </table>
+                <h3>4-1. Three Forms of range()</h3>
+                <p>
+                  The <code>range()</code> function generates a sequence of consecutive integers. It is the most commonly used function with for loops.
+                </p>
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>Form</th><th>Description</th><th>Generated Values</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>range(5)</code></td><td>0 to 4</td><td>0, 1, 2, 3, 4</td></tr>
+                    <tr><td><code>range(1, 6)</code></td><td>1 to 5</td><td>1, 2, 3, 4, 5</td></tr>
+                    <tr><td><code>range(0, 10, 2)</code></td><td>0 to 8 by 2</td><td>0, 2, 4, 6, 8</td></tr>
+                    <tr><td><code>range(10, 0, -1)</code></td><td>10 to 1 in reverse</td><td>10, 9, 8, ..., 2, 1</td></tr>
+                    <tr><td><code>range(10, 0, -2)</code></td><td>10 to 2 by -2</td><td>10, 8, 6, 4, 2</td></tr>
+                    <tr><td><code>range(1, 1)</code></td><td>start == stop</td><td>(empty sequence)</td></tr>
+                  </tbody>
+                </table>
 
-          <h3>4-2. range()의 중요한 특성</h3>
-          <ul>
-            <li><strong>끝값(stop)은 포함되지 않습니다:</strong> <code>range(1, 5)</code>는 1, 2, 3, 4 (5는 미포함)</li>
-            <li><strong>정수만 사용 가능:</strong> <code>range(0.5, 5.5)</code>는 오류 (실수 불가)</li>
-            <li><strong>메모리 효율:</strong> <code>range()</code>는 즉시 리스트를 생성하지 않고, 필요할 때 값을 하나씩 생성합니다 (지연 평가, Lazy Evaluation)</li>
-            <li><code>list(range(...))</code>로 리스트로 변환할 수 있습니다</li>
-          </ul>
-          <div className="code-block">
-            <div className="code-header">range()를 리스트로 변환</div>
-            <pre><code>{`# range 객체 자체는 리스트가 아님
+                <h3>4-2. Important Properties of range()</h3>
+                <ul>
+                  <li><strong>The stop value is excluded:</strong> <code>range(1, 5)</code> produces 1, 2, 3, 4 (5 is not included)</li>
+                  <li><strong>Only integers:</strong> <code>range(0.5, 5.5)</code> causes an error (no floats)</li>
+                  <li><strong>Memory efficient:</strong> <code>range()</code> does not create a list immediately; it generates values one at a time (Lazy Evaluation)</li>
+                  <li>Use <code>list(range(...))</code> to convert to a list</li>
+                </ul>
+              </>
+            ) : (
+              <>
+                {/* ========== 4. range() 함수 완전 정복 ========== */}
+                <h2>4. range() 함수 완전 정복</h2>
+
+                <h3>4-1. range()의 세 가지 형태</h3>
+                <p>
+                  <code>range()</code> 함수는 연속된 정수 시퀀스를 생성합니다. for문에서 가장 많이 사용되는 함수입니다.
+                </p>
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>형태</th><th>설명</th><th>생성되는 값</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code>range(5)</code></td><td>0부터 4까지</td><td>0, 1, 2, 3, 4</td></tr>
+                    <tr><td><code>range(1, 6)</code></td><td>1부터 5까지</td><td>1, 2, 3, 4, 5</td></tr>
+                    <tr><td><code>range(0, 10, 2)</code></td><td>0부터 8까지 2씩 증가</td><td>0, 2, 4, 6, 8</td></tr>
+                    <tr><td><code>range(10, 0, -1)</code></td><td>10부터 1까지 역순</td><td>10, 9, 8, ..., 2, 1</td></tr>
+                    <tr><td><code>range(10, 0, -2)</code></td><td>10부터 2까지 2씩 감소</td><td>10, 8, 6, 4, 2</td></tr>
+                    <tr><td><code>range(1, 1)</code></td><td>시작 == 끝</td><td>(빈 시퀀스, 아무것도 없음)</td></tr>
+                  </tbody>
+                </table>
+
+                <h3>4-2. range()의 중요한 특성</h3>
+                <ul>
+                  <li><strong>끝값(stop)은 포함되지 않습니다:</strong> <code>range(1, 5)</code>는 1, 2, 3, 4 (5는 미포함)</li>
+                  <li><strong>정수만 사용 가능:</strong> <code>range(0.5, 5.5)</code>는 오류 (실수 불가)</li>
+                  <li><strong>메모리 효율:</strong> <code>range()</code>는 즉시 리스트를 생성하지 않고, 필요할 때 값을 하나씩 생성합니다 (지연 평가, Lazy Evaluation)</li>
+                  <li><code>list(range(...))</code>로 리스트로 변환할 수 있습니다</li>
+                </ul>
+              </>
+            )}
+
+            {/* SHARED code blocks */}
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Converting range() to List' : 'range()를 리스트로 변환'}</div>
+              <pre><code>{`# range 객체 자체는 리스트가 아님
 print(range(5))         # range(0, 5)
 print(type(range(5)))   # <class 'range'>
 
@@ -394,12 +589,17 @@ print(list(range(10, 0, -3))) # [10, 7, 4, 1]
 # 메모리 효율 비교
 # range(1000000) → 메모리 거의 안 씀 (range 객체 1개)
 # list(range(1000000)) → 리스트 100만 개 생성 (메모리 많이 사용)`}</code></pre>
-          </div>
+            </div>
 
-          <h3>4-3. range() 활용 예제</h3>
-          <div className="code-block">
-            <div className="code-header">range() 다양한 활용</div>
-            <pre><code>{`# 1부터 N까지의 합
+            {lang === 'en' ? (
+              <h3>4-3. range() Usage Examples</h3>
+            ) : (
+              <h3>4-3. range() 활용 예제</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Various range() Applications' : 'range() 다양한 활용'}</div>
+              <pre><code>{`# 1부터 N까지의 합
 n = 100
 total = 0
 for i in range(1, n + 1):  # 1부터 100까지
@@ -422,19 +622,36 @@ print()  # 1 3 5 7 9 11 13 15 17 19
 for i in range(10, 0, -1):
     print(i, end=" ")
 print("발사!")  # 10 9 8 7 6 5 4 3 2 1 발사!`}</code></pre>
-          </div>
+            </div>
 
-          {/* ========== 5. break와 continue ========== */}
-          <h2>5. break와 continue</h2>
+            {lang === 'en' ? (
+              <>
+                {/* ========== 5. break and continue ========== */}
+                <h2>5. break and continue</h2>
 
-          <h3>5-1. break: 반복문 즉시 탈출</h3>
-          <p>
-            <code>break</code>는 반복문을 즉시 종료하고 반복문 바깥으로 빠져나갑니다.
-            특정 조건에서 더 이상 반복할 필요가 없을 때 사용합니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">while에서 break</div>
-            <pre><code>{`# 숫자 맞추기 게임
+                <h3>5-1. break: Exit Loop Immediately</h3>
+                <p>
+                  <code>break</code> immediately terminates the loop and jumps out.
+                  It is used when there is no need to continue looping under a specific condition.
+                </p>
+              </>
+            ) : (
+              <>
+                {/* ========== 5. break와 continue ========== */}
+                <h2>5. break와 continue</h2>
+
+                <h3>5-1. break: 반복문 즉시 탈출</h3>
+                <p>
+                  <code>break</code>는 반복문을 즉시 종료하고 반복문 바깥으로 빠져나갑니다.
+                  특정 조건에서 더 이상 반복할 필요가 없을 때 사용합니다.
+                </p>
+              </>
+            )}
+
+            {/* SHARED code blocks */}
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'break in while' : 'while에서 break'}</div>
+              <pre><code>{`# 숫자 맞추기 게임
 import random
 
 secret = random.randint(1, 50)  # 1~50 사이 랜덤 숫자
@@ -453,10 +670,10 @@ while True:  # 무한 루프
         print("더 큰 수입니다. ↑")
     else:
         print("더 작은 수입니다. ↓")`}</code></pre>
-          </div>
-          <div className="code-block">
-            <div className="code-header">for에서 break</div>
-            <pre><code>{`# 리스트에서 특정 값 찾기
+            </div>
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'break in for' : 'for에서 break'}</div>
+              <pre><code>{`# 리스트에서 특정 값 찾기
 numbers = [4, 7, 2, 9, 1, 8, 3, 6]
 target = 9
 
@@ -469,16 +686,29 @@ else:
     print(f"{target}을(를) 찾지 못했습니다.")
 
 # 출력: 9을(를) 인덱스 3에서 찾았습니다!`}</code></pre>
-          </div>
+            </div>
 
-          <h3>5-2. continue: 현재 반복 건너뛰기</h3>
-          <p>
-            <code>continue</code>는 현재 반복의 나머지 코드를 건너뛰고 다음 반복으로 넘어갑니다.
-            특정 조건에서 코드 실행을 생략할 때 사용합니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">continue 예제</div>
-            <pre><code>{`# 홀수만 출력 (짝수는 건너뛰기)
+            {lang === 'en' ? (
+              <>
+                <h3>5-2. continue: Skip Current Iteration</h3>
+                <p>
+                  <code>continue</code> skips the rest of the current iteration and moves to the next one.
+                  It is used to skip code execution under specific conditions.
+                </p>
+              </>
+            ) : (
+              <>
+                <h3>5-2. continue: 현재 반복 건너뛰기</h3>
+                <p>
+                  <code>continue</code>는 현재 반복의 나머지 코드를 건너뛰고 다음 반복으로 넘어갑니다.
+                  특정 조건에서 코드 실행을 생략할 때 사용합니다.
+                </p>
+              </>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'continue Examples' : 'continue 예제'}</div>
+              <pre><code>{`# 홀수만 출력 (짝수는 건너뛰기)
 print("1~10 사이 홀수:")
 for i in range(1, 11):
     if i % 2 == 0:
@@ -493,23 +723,43 @@ for i in range(1, 21):
         continue    # 3의 배수이면 건너뛰기
     print(i, end=" ")
 print()  # 1 2 4 5 7 8 10 11 13 14 16 17 19 20`}</code></pre>
-          </div>
+            </div>
 
-          <h3>5-3. break vs continue 비교</h3>
-          <table className="lesson-table">
-            <thead>
-              <tr><th>구분</th><th>break</th><th>continue</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>동작</strong></td><td>반복문 전체를 즉시 종료</td><td>현재 반복만 건너뛰고 다음 반복으로</td></tr>
-              <tr><td><strong>실행 위치</strong></td><td>반복문 바깥으로 이동</td><td>반복문의 조건 검사로 이동</td></tr>
-              <tr><td><strong>사용 예</strong></td><td>원하는 값을 찾았을 때</td><td>특정 조건을 제외할 때</td></tr>
-              <tr><td><strong>중첩 시</strong></td><td>가장 안쪽 반복문만 탈출</td><td>가장 안쪽 반복문의 현재 반복만 건너뜀</td></tr>
-            </tbody>
-          </table>
-          <div className="code-block">
-            <div className="code-header">break와 continue 비교 예제</div>
-            <pre><code>{`# break: 5를 만나면 반복 완전 종료
+            {lang === 'en' ? (
+              <>
+                <h3>5-3. break vs continue Comparison</h3>
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>Aspect</th><th>break</th><th>continue</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>Action</strong></td><td>Immediately terminates the entire loop</td><td>Skips only the current iteration</td></tr>
+                    <tr><td><strong>Execution point</strong></td><td>Moves to outside the loop</td><td>Moves to the loop's condition check</td></tr>
+                    <tr><td><strong>Use case</strong></td><td>When the desired value is found</td><td>When excluding specific conditions</td></tr>
+                    <tr><td><strong>Nested loops</strong></td><td>Only exits the innermost loop</td><td>Only skips current iteration of innermost loop</td></tr>
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <>
+                <h3>5-3. break vs continue 비교</h3>
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>구분</th><th>break</th><th>continue</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>동작</strong></td><td>반복문 전체를 즉시 종료</td><td>현재 반복만 건너뛰고 다음 반복으로</td></tr>
+                    <tr><td><strong>실행 위치</strong></td><td>반복문 바깥으로 이동</td><td>반복문의 조건 검사로 이동</td></tr>
+                    <tr><td><strong>사용 예</strong></td><td>원하는 값을 찾았을 때</td><td>특정 조건을 제외할 때</td></tr>
+                    <tr><td><strong>중첩 시</strong></td><td>가장 안쪽 반복문만 탈출</td><td>가장 안쪽 반복문의 현재 반복만 건너뜀</td></tr>
+                  </tbody>
+                </table>
+              </>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'break and continue Comparison Example' : 'break와 continue 비교 예제'}</div>
+              <pre><code>{`# break: 5를 만나면 반복 완전 종료
 print("break 예제:")
 for i in range(1, 11):
     if i == 5:
@@ -524,16 +774,29 @@ for i in range(1, 11):
         continue
     print(i, end=" ")
 print()  # 1 2 3 4 6 7 8 9 10 (5만 빠지고 나머지는 출력)`}</code></pre>
-          </div>
+            </div>
 
-          <h3>5-4. 중첩 반복문에서의 break</h3>
-          <p>
-            <strong>중요:</strong> <code>break</code>는 가장 안쪽 반복문만 탈출합니다.
-            바깥 반복문까지 종료하려면 별도의 플래그 변수나 함수를 사용해야 합니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">중첩 반복문에서 break</div>
-            <pre><code>{`# break는 가장 안쪽 반복문만 종료
+            {lang === 'en' ? (
+              <>
+                <h3>5-4. break in Nested Loops</h3>
+                <p>
+                  <strong>Important:</strong> <code>break</code> only exits the innermost loop.
+                  To terminate outer loops, use a flag variable or a function.
+                </p>
+              </>
+            ) : (
+              <>
+                <h3>5-4. 중첩 반복문에서의 break</h3>
+                <p>
+                  <strong>중요:</strong> <code>break</code>는 가장 안쪽 반복문만 탈출합니다.
+                  바깥 반복문까지 종료하려면 별도의 플래그 변수나 함수를 사용해야 합니다.
+                </p>
+              </>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'break in Nested Loops' : '중첩 반복문에서 break'}</div>
+              <pre><code>{`# break는 가장 안쪽 반복문만 종료
 for i in range(1, 4):
     print(f"바깥 루프 i={i}")
     for j in range(1, 4):
@@ -548,18 +811,33 @@ for i in range(1, 4):
 #   안쪽 루프 j=1
 # 바깥 루프 i=3
 #   안쪽 루프 j=1`}</code></pre>
-          </div>
+            </div>
 
-          {/* ========== 6. for-else와 while-else ========== */}
-          <h2>6. for-else와 while-else</h2>
-          <p>
-            파이썬에는 다른 언어에 없는 독특한 문법인 <strong>반복문-else</strong> 구조가 있습니다.
-            <code>else</code> 블록은 반복문이 <strong>break 없이 정상 종료</strong>되었을 때 실행됩니다.
-            break로 종료된 경우에는 else 블록이 실행되지 않습니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">소수 판별에서 for-else 활용</div>
-            <pre><code>{`num = int(input("양의 정수를 입력하세요: "))
+            {lang === 'en' ? (
+              <>
+                {/* ========== 6. for-else and while-else ========== */}
+                <h2>6. for-else and while-else</h2>
+                <p>
+                  Python has a unique syntax called <strong>loop-else</strong> not found in other languages.
+                  The <code>else</code> block executes when the loop completes <strong>without a break</strong>.
+                  If the loop exits via break, the else block does not execute.
+                </p>
+              </>
+            ) : (
+              <>
+                {/* ========== 6. for-else와 while-else ========== */}
+                <h2>6. for-else와 while-else</h2>
+                <p>
+                  파이썬에는 다른 언어에 없는 독특한 문법인 <strong>반복문-else</strong> 구조가 있습니다.
+                  <code>else</code> 블록은 반복문이 <strong>break 없이 정상 종료</strong>되었을 때 실행됩니다.
+                  break로 종료된 경우에는 else 블록이 실행되지 않습니다.
+                </p>
+              </>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Prime Number Check with for-else' : '소수 판별에서 for-else 활용'}</div>
+              <pre><code>{`num = int(input("양의 정수를 입력하세요: "))
 
 if num < 2:
     print(f"{num}은(는) 소수가 아닙니다.")
@@ -578,19 +856,35 @@ else:
 #
 # 양의 정수를 입력하세요: 12
 # 12은(는) 소수가 아닙니다. (2로 나누어짐)`}</code></pre>
-          </div>
+            </div>
 
-          {/* ========== 7. 누적 패턴 ========== */}
-          <h2>7. 누적(Accumulation) 패턴</h2>
-          <p>
-            반복문에서 가장 많이 사용되는 패턴 중 하나가 <strong>누적 패턴</strong>입니다.
-            변수에 값을 계속 더하거나(합계), 횟수를 세거나(카운트), 최대/최소를 갱신하는 패턴입니다.
-          </p>
+            {lang === 'en' ? (
+              <>
+                {/* ========== 7. Accumulation Pattern ========== */}
+                <h2>7. Accumulation Pattern</h2>
+                <p>
+                  One of the most commonly used patterns in loops is the <strong>accumulation pattern</strong>.
+                  It involves continuously adding values (sum), counting occurrences (count), or updating max/min values.
+                </p>
 
-          <h3>7-1. 합계 구하기 패턴</h3>
-          <div className="code-block">
-            <div className="code-header">합계 누적 패턴</div>
-            <pre><code>{`# 패턴: total = 0 → 반복하며 total += 값
+                <h3>7-1. Sum Pattern</h3>
+              </>
+            ) : (
+              <>
+                {/* ========== 7. 누적 패턴 ========== */}
+                <h2>7. 누적(Accumulation) 패턴</h2>
+                <p>
+                  반복문에서 가장 많이 사용되는 패턴 중 하나가 <strong>누적 패턴</strong>입니다.
+                  변수에 값을 계속 더하거나(합계), 횟수를 세거나(카운트), 최대/최소를 갱신하는 패턴입니다.
+                </p>
+
+                <h3>7-1. 합계 구하기 패턴</h3>
+              </>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Sum Accumulation Pattern' : '합계 누적 패턴'}</div>
+              <pre><code>{`# 패턴: total = 0 → 반복하며 total += 값
 # 1부터 N까지 합
 n = int(input("N을 입력하세요: "))
 
@@ -610,12 +904,17 @@ while True:
     total += num
 
 print(f"입력한 숫자의 합: {total}")`}</code></pre>
-          </div>
+            </div>
 
-          <h3>7-2. 개수 세기 패턴</h3>
-          <div className="code-block">
-            <div className="code-header">카운트 패턴</div>
-            <pre><code>{`# 패턴: count = 0 → 조건 만족 시 count += 1
+            {lang === 'en' ? (
+              <h3>7-2. Count Pattern</h3>
+            ) : (
+              <h3>7-2. 개수 세기 패턴</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Count Pattern' : '카운트 패턴'}</div>
+              <pre><code>{`# 패턴: count = 0 → 조건 만족 시 count += 1
 # 1~100에서 3의 배수 개수
 count = 0                    # ① 카운트 변수 초기화 (0)
 for i in range(1, 101):
@@ -634,12 +933,17 @@ for char in text:
         count += 1
 
 print(f"'{text}'에서 '{target}'의 개수: {count}개")`}</code></pre>
-          </div>
+            </div>
 
-          <h3>7-3. 최대/최소 찾기 패턴</h3>
-          <div className="code-block">
-            <div className="code-header">최대값, 최소값 찾기</div>
-            <pre><code>{`# 패턴: 첫 값으로 초기화 → 더 큰(작은) 값 발견 시 갱신
+            {lang === 'en' ? (
+              <h3>7-3. Finding Max/Min Pattern</h3>
+            ) : (
+              <h3>7-3. 최대/최소 찾기 패턴</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Finding Max and Min Values' : '최대값, 최소값 찾기'}</div>
+              <pre><code>{`# 패턴: 첫 값으로 초기화 → 더 큰(작은) 값 발견 시 갱신
 numbers = [45, 23, 78, 12, 91, 34, 67]
 
 # 최대값 찾기
@@ -657,12 +961,17 @@ for num in numbers:
         min_val = num
 
 print(f"최소값: {min_val}")  # 12`}</code></pre>
-          </div>
+            </div>
 
-          <h3>7-4. 문자열 누적 패턴</h3>
-          <div className="code-block">
-            <div className="code-header">문자열 누적</div>
-            <pre><code>{`# 패턴: result = "" → 반복하며 result += 문자
+            {lang === 'en' ? (
+              <h3>7-4. String Accumulation Pattern</h3>
+            ) : (
+              <h3>7-4. 문자열 누적 패턴</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'String Accumulation' : '문자열 누적'}</div>
+              <pre><code>{`# 패턴: result = "" → 반복하며 result += 문자
 # 문자열 뒤집기
 original = "Python"
 reversed_str = ""             # ① 빈 문자열로 초기화
@@ -682,19 +991,35 @@ for char in text:
         result += char
 
 print(f"모음 제거: {result}")  # Hll Wrld`}</code></pre>
-          </div>
+            </div>
 
-          {/* ========== 8. 중첩 반복문 ========== */}
-          <h2>8. 중첩 반복문 (Nested Loop)</h2>
+            {lang === 'en' ? (
+              <>
+                {/* ========== 8. Nested Loops ========== */}
+                <h2>8. Nested Loops</h2>
 
-          <h3>8-1. 이중 for문의 동작 원리</h3>
-          <p>
-            반복문 안에 또 다른 반복문을 넣는 것을 <strong>중첩 반복문</strong>이라고 합니다.
-            바깥 반복문이 1번 실행될 때마다, 안쪽 반복문은 처음부터 끝까지 전체를 실행합니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">이중 for문 동작 이해</div>
-            <pre><code>{`# 바깥 루프가 1회 실행될 때, 안쪽 루프는 전체가 실행됨
+                <h3>8-1. How Double for Loops Work</h3>
+                <p>
+                  Placing a loop inside another loop is called a <strong>nested loop</strong>.
+                  Each time the outer loop executes once, the inner loop runs through its entire cycle.
+                </p>
+              </>
+            ) : (
+              <>
+                {/* ========== 8. 중첩 반복문 ========== */}
+                <h2>8. 중첩 반복문 (Nested Loop)</h2>
+
+                <h3>8-1. 이중 for문의 동작 원리</h3>
+                <p>
+                  반복문 안에 또 다른 반복문을 넣는 것을 <strong>중첩 반복문</strong>이라고 합니다.
+                  바깥 반복문이 1번 실행될 때마다, 안쪽 반복문은 처음부터 끝까지 전체를 실행합니다.
+                </p>
+              </>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Understanding Double for Loop Behavior' : '이중 for문 동작 이해'}</div>
+              <pre><code>{`# 바깥 루프가 1회 실행될 때, 안쪽 루프는 전체가 실행됨
 for i in range(1, 4):       # 바깥: 1, 2, 3
     for j in range(1, 4):   # 안쪽: 1, 2, 3 (매번 처음부터)
         print(f"(i={i}, j={j})", end="  ")
@@ -705,12 +1030,17 @@ for i in range(1, 4):       # 바깥: 1, 2, 3
 # (i=2, j=1)  (i=2, j=2)  (i=2, j=3)
 # (i=3, j=1)  (i=3, j=2)  (i=3, j=3)
 # → 총 3 x 3 = 9번 실행`}</code></pre>
-          </div>
+            </div>
 
-          <h3>8-2. 구구단 출력</h3>
-          <div className="code-block">
-            <div className="code-header">구구단 (2단~9단)</div>
-            <pre><code>{`# 특정 단 출력
+            {lang === 'en' ? (
+              <h3>8-2. Multiplication Table Output</h3>
+            ) : (
+              <h3>8-2. 구구단 출력</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Multiplication Table (2x to 9x)' : '구구단 (2단~9단)'}</div>
+              <pre><code>{`# 특정 단 출력
 dan = 7
 print(f"=== {dan}단 ===")
 for i in range(1, 10):
@@ -724,17 +1054,29 @@ for dan in range(2, 10):         # 바깥: 2단~9단
     for i in range(1, 10):       # 안쪽: 1~9
         print(f"{dan} x {i} = {dan * i}")
     print()  # 단 사이 빈 줄`}</code></pre>
-          </div>
+            </div>
 
-          <h3>8-3. 별(*) 찍기 패턴</h3>
-          <p>
-            중첩 반복문의 대표적인 연습 문제가 별 찍기 패턴입니다.
-            각 패턴은 바깥 루프(행)와 안쪽 루프(열)로 구성됩니다.
-          </p>
+            {lang === 'en' ? (
+              <>
+                <h3>8-3. Star (*) Patterns</h3>
+                <p>
+                  Star printing patterns are classic nested loop exercises.
+                  Each pattern consists of an outer loop (rows) and an inner loop (columns).
+                </p>
+              </>
+            ) : (
+              <>
+                <h3>8-3. 별(*) 찍기 패턴</h3>
+                <p>
+                  중첩 반복문의 대표적인 연습 문제가 별 찍기 패턴입니다.
+                  각 패턴은 바깥 루프(행)와 안쪽 루프(열)로 구성됩니다.
+                </p>
+              </>
+            )}
 
-          <div className="code-block">
-            <div className="code-header">패턴 1: 직각삼각형 (왼쪽 정렬)</div>
-            <pre><code>{`# n = 5
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Pattern 1: Right Triangle (Left-aligned)' : '패턴 1: 직각삼각형 (왼쪽 정렬)'}</div>
+              <pre><code>{`# n = 5
 # *
 # **
 # ***
@@ -750,11 +1092,11 @@ for i in range(1, n + 1):   # 행: 1~5
 # 또는 간단하게:
 for i in range(1, n + 1):
     print("*" * i)`}</code></pre>
-          </div>
+            </div>
 
-          <div className="code-block">
-            <div className="code-header">패턴 2: 역직각삼각형</div>
-            <pre><code>{`# n = 5
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Pattern 2: Inverted Triangle' : '패턴 2: 역직각삼각형'}</div>
+              <pre><code>{`# n = 5
 # *****
 # ****
 # ***
@@ -770,11 +1112,11 @@ for i in range(n, 0, -1):   # 행: 5~1 (역순)
 # 또는 간단하게:
 for i in range(n, 0, -1):
     print("*" * i)`}</code></pre>
-          </div>
+            </div>
 
-          <div className="code-block">
-            <div className="code-header">패턴 3: 피라미드 (가운데 정렬)</div>
-            <pre><code>{`# n = 5
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Pattern 3: Pyramid (Center-aligned)' : '패턴 3: 피라미드 (가운데 정렬)'}</div>
+              <pre><code>{`# n = 5
 #     *        (공백4개, 별1개)
 #    ***       (공백3개, 별3개)
 #   *****      (공백2개, 별5개)
@@ -794,11 +1136,11 @@ for i in range(1, n + 1):
 # i=3: 공백2 + 별5   = "  *****"
 # i=4: 공백1 + 별7   = " *******"
 # i=5: 공백0 + 별9   = "*********"`}</code></pre>
-          </div>
+            </div>
 
-          <div className="code-block">
-            <div className="code-header">패턴 4: 역피라미드</div>
-            <pre><code>{`# n = 5
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Pattern 4: Inverted Pyramid' : '패턴 4: 역피라미드'}</div>
+              <pre><code>{`# n = 5
 # *********    (공백0개, 별9개)
 #  *******     (공백1개, 별7개)
 #   *****      (공백2개, 별5개)
@@ -810,11 +1152,11 @@ for i in range(n, 0, -1):
     spaces = " " * (n - i)
     stars = "*" * (2 * i - 1)
     print(spaces + stars)`}</code></pre>
-          </div>
+            </div>
 
-          <div className="code-block">
-            <div className="code-header">패턴 5: 다이아몬드</div>
-            <pre><code>{`# n = 5 (상단 높이)
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Pattern 5: Diamond' : '패턴 5: 다이아몬드'}</div>
+              <pre><code>{`# n = 5 (상단 높이)
 #     *
 #    ***
 #   *****
@@ -838,30 +1180,59 @@ for i in range(n - 1, 0, -1):
     spaces = " " * (n - i)
     stars = "*" * (2 * i - 1)
     print(spaces + stars)`}</code></pre>
-          </div>
+            </div>
 
-          {/* ========== 9. while vs for 비교 총정리 ========== */}
-          <h2>9. while vs for 비교 총정리</h2>
+            {lang === 'en' ? (
+              <>
+                {/* ========== 9. while vs for Summary ========== */}
+                <h2>9. while vs for Complete Comparison</h2>
 
-          <table className="lesson-table">
-            <thead>
-              <tr><th>비교 항목</th><th>while문</th><th>for문</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><strong>용도</strong></td><td>조건이 만족되는 동안 반복</td><td>정해진 횟수만큼 또는 시퀀스 순회</td></tr>
-              <tr><td><strong>반복 횟수</strong></td><td>미리 알 수 없는 경우</td><td>미리 정해진 경우</td></tr>
-              <tr><td><strong>종료 조건</strong></td><td>조건식이 False가 될 때</td><td>시퀀스의 모든 요소를 처리했을 때</td></tr>
-              <tr><td><strong>무한 루프</strong></td><td>가능 (while True)</td><td>불가능 (시퀀스 길이로 제한)</td></tr>
-              <tr><td><strong>초기화/갱신</strong></td><td>직접 작성해야 함</td><td>자동으로 처리됨</td></tr>
-              <tr><td><strong>주의사항</strong></td><td>갱신 누락 시 무한 루프</td><td>range() 범위 설정 주의</td></tr>
-              <tr><td><strong>대표 사용처</strong></td><td>입력 대기, 게임 루프, 검증</td><td>구구단, 리스트 처리, 횟수 반복</td></tr>
-            </tbody>
-          </table>
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>Aspect</th><th>while loop</th><th>for loop</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>Purpose</strong></td><td>Repeat while condition is satisfied</td><td>Fixed iterations or sequence traversal</td></tr>
+                    <tr><td><strong>Iterations</strong></td><td>Unknown in advance</td><td>Predetermined</td></tr>
+                    <tr><td><strong>Termination</strong></td><td>When condition becomes False</td><td>When all elements are processed</td></tr>
+                    <tr><td><strong>Infinite loop</strong></td><td>Possible (while True)</td><td>Not possible (limited by sequence length)</td></tr>
+                    <tr><td><strong>Init/Update</strong></td><td>Must write manually</td><td>Handled automatically</td></tr>
+                    <tr><td><strong>Caution</strong></td><td>Missing update causes infinite loop</td><td>Watch range() boundaries</td></tr>
+                    <tr><td><strong>Typical uses</strong></td><td>Input waiting, game loops, validation</td><td>Multiplication tables, list processing</td></tr>
+                  </tbody>
+                </table>
+              </>
+            ) : (
+              <>
+                {/* ========== 9. while vs for 비교 총정리 ========== */}
+                <h2>9. while vs for 비교 총정리</h2>
 
-          <h3>같은 문제를 while과 for로 각각 구현</h3>
-          <div className="code-block">
-            <div className="code-header">1~10 합계: while vs for</div>
-            <pre><code>{`# ── while문 버전 ──
+                <table className="lesson-table">
+                  <thead>
+                    <tr><th>비교 항목</th><th>while문</th><th>for문</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>용도</strong></td><td>조건이 만족되는 동안 반복</td><td>정해진 횟수만큼 또는 시퀀스 순회</td></tr>
+                    <tr><td><strong>반복 횟수</strong></td><td>미리 알 수 없는 경우</td><td>미리 정해진 경우</td></tr>
+                    <tr><td><strong>종료 조건</strong></td><td>조건식이 False가 될 때</td><td>시퀀스의 모든 요소를 처리했을 때</td></tr>
+                    <tr><td><strong>무한 루프</strong></td><td>가능 (while True)</td><td>불가능 (시퀀스 길이로 제한)</td></tr>
+                    <tr><td><strong>초기화/갱신</strong></td><td>직접 작성해야 함</td><td>자동으로 처리됨</td></tr>
+                    <tr><td><strong>주의사항</strong></td><td>갱신 누락 시 무한 루프</td><td>range() 범위 설정 주의</td></tr>
+                    <tr><td><strong>대표 사용처</strong></td><td>입력 대기, 게임 루프, 검증</td><td>구구단, 리스트 처리, 횟수 반복</td></tr>
+                  </tbody>
+                </table>
+              </>
+            )}
+
+            {lang === 'en' ? (
+              <h3>Same Problem with while and for</h3>
+            ) : (
+              <h3>같은 문제를 while과 for로 각각 구현</h3>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Sum 1-10: while vs for' : '1~10 합계: while vs for'}</div>
+              <pre><code>{`# ── while문 버전 ──
 total = 0
 i = 1                # 초기화 (직접)
 while i <= 10:       # 조건 (직접)
@@ -877,11 +1248,11 @@ print(f"for 합계: {total}")    # 55
 
 # → for문이 더 간결하고, 무한 루프 위험이 없음
 # → 횟수가 정해진 반복에는 for문이 적합!`}</code></pre>
-          </div>
+            </div>
 
-          <div className="code-block">
-            <div className="code-header">사용자 입력 처리: while이 적합한 경우</div>
-            <pre><code>{`# 이 문제는 while이 적합 (반복 횟수를 모름)
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'User Input: while is More Suitable' : '사용자 입력 처리: while이 적합한 경우'}</div>
+              <pre><code>{`# 이 문제는 while이 적합 (반복 횟수를 모름)
 total = 0
 count = 0
 
@@ -900,18 +1271,33 @@ if count > 0:
     print(f"평균: {avg:.1f}")
 else:
     print("입력된 숫자가 없습니다.")`}</code></pre>
-          </div>
+            </div>
 
-          {/* ========== 10. 종합 실습 예제 ========== */}
-          <h2>10. 종합 실습 예제</h2>
+            {lang === 'en' ? (
+              <>
+                {/* ========== 10. Comprehensive Practice ========== */}
+                <h2>10. Comprehensive Practice Examples</h2>
 
-          <h3>예제 1: 구구단 전체 출력 (가로 형태)</h3>
-          <p>
-            <strong>문제:</strong> 2단부터 9단까지 구구단을 가로 형태로 깔끔하게 출력합니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">구구단 가로 출력</div>
-            <pre><code>{`# 가로 형태 구구단 (2~9단을 나란히)
+                <h3>Example 1: Full Multiplication Table (Horizontal)</h3>
+                <p>
+                  <strong>Problem:</strong> Print the multiplication table from 2x to 9x in a horizontal format.
+                </p>
+              </>
+            ) : (
+              <>
+                {/* ========== 10. 종합 실습 예제 ========== */}
+                <h2>10. 종합 실습 예제</h2>
+
+                <h3>예제 1: 구구단 전체 출력 (가로 형태)</h3>
+                <p>
+                  <strong>문제:</strong> 2단부터 9단까지 구구단을 가로 형태로 깔끔하게 출력합니다.
+                </p>
+              </>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Horizontal Multiplication Table' : '구구단 가로 출력'}</div>
+              <pre><code>{`# 가로 형태 구구단 (2~9단을 나란히)
 print("=" * 72)
 print(" " * 25 + "< 구 구 단 >")
 print("=" * 72)
@@ -932,15 +1318,27 @@ print("=" * 72)
 # ...
 # 2x9=18  3x9=27  4x9=36  5x9=45  6x9=54  7x9=63  8x9=72  9x9=81
 # ========================================================================`}</code></pre>
-          </div>
+            </div>
 
-          <h3>예제 2: 약수 구하기</h3>
-          <p>
-            <strong>문제:</strong> 사용자가 입력한 양의 정수의 모든 약수를 구하고, 약수의 개수와 합을 출력합니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">약수 구하기 프로그램</div>
-            <pre><code>{`num = int(input("양의 정수를 입력하세요: "))
+            {lang === 'en' ? (
+              <>
+                <h3>Example 2: Finding Divisors</h3>
+                <p>
+                  <strong>Problem:</strong> Find all divisors of a positive integer entered by the user, and display the count and sum of divisors.
+                </p>
+              </>
+            ) : (
+              <>
+                <h3>예제 2: 약수 구하기</h3>
+                <p>
+                  <strong>문제:</strong> 사용자가 입력한 양의 정수의 모든 약수를 구하고, 약수의 개수와 합을 출력합니다.
+                </p>
+              </>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Divisor Finder Program' : '약수 구하기 프로그램'}</div>
+              <pre><code>{`num = int(input("양의 정수를 입력하세요: "))
 
 divisors = []      # 약수를 저장할 리스트
 count = 0          # 약수 개수
@@ -967,20 +1365,37 @@ if total - num == num:
 # 약수의 개수: 6개
 # 약수의 합: 56
 # 28은(는) 완전수입니다!`}</code></pre>
-          </div>
+            </div>
 
-          <h3>예제 3: 소수 판별 (에라토스테네스의 체)</h3>
-          <p>
-            <strong>문제:</strong> 2부터 N까지의 모든 소수를 구합니다.
-            <strong>에라토스테네스의 체(Sieve of Eratosthenes)</strong>는 고대 그리스 수학자 에라토스테네스가
-            고안한 효율적인 소수 판별 알고리즘입니다.
-          </p>
-          <p>
-            <strong>원리:</strong> 2부터 시작하여 각 소수의 배수를 지워나가면, 남는 수가 모두 소수입니다.
-          </p>
-          <div className="code-block">
-            <div className="code-header">에라토스테네스의 체</div>
-            <pre><code>{`n = int(input("N을 입력하세요: "))
+            {lang === 'en' ? (
+              <>
+                <h3>Example 3: Sieve of Eratosthenes</h3>
+                <p>
+                  <strong>Problem:</strong> Find all prime numbers from 2 to N.
+                  The <strong>Sieve of Eratosthenes</strong> is an efficient prime-finding algorithm
+                  devised by the ancient Greek mathematician Eratosthenes.
+                </p>
+                <p>
+                  <strong>Principle:</strong> Starting from 2, eliminate multiples of each prime. The remaining numbers are all prime.
+                </p>
+              </>
+            ) : (
+              <>
+                <h3>예제 3: 소수 판별 (에라토스테네스의 체)</h3>
+                <p>
+                  <strong>문제:</strong> 2부터 N까지의 모든 소수를 구합니다.
+                  <strong>에라토스테네스의 체(Sieve of Eratosthenes)</strong>는 고대 그리스 수학자 에라토스테네스가
+                  고안한 효율적인 소수 판별 알고리즘입니다.
+                </p>
+                <p>
+                  <strong>원리:</strong> 2부터 시작하여 각 소수의 배수를 지워나가면, 남는 수가 모두 소수입니다.
+                </p>
+              </>
+            )}
+
+            <div className="code-block">
+              <div className="code-header">{lang === 'en' ? 'Sieve of Eratosthenes' : '에라토스테네스의 체'}</div>
+              <pre><code>{`n = int(input("N을 입력하세요: "))
 
 # 0~N까지의 소수 여부를 저장 (True=소수, False=소수 아님)
 is_prime = [True] * (n + 1)
@@ -1008,93 +1423,173 @@ print(primes)
 #
 # 2~50 사이의 소수 (15개):
 # [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]`}</code></pre>
-          </div>
+            </div>
 
-          {/* ========== 11. 자주 하는 실수 ========== */}
-          <div className="callout-box">
-            <h3>자주 하는 실수</h3>
-            <ul>
-              <li>
-                <strong>while문에서 변수 갱신 누락:</strong> <code>i += 1</code>을 잊으면 무한 루프에 빠집니다.
-                while문을 작성할 때는 항상 반복 변수의 갱신을 확인하세요.
-              </li>
-              <li>
-                <strong>range() 범위 오류 (Off-by-one Error):</strong> <code>range(1, 10)</code>은
-                1~9까지이며 10은 포함되지 않습니다. 10을 포함하려면 <code>range(1, 11)</code>로 써야 합니다.
-              </li>
-              <li>
-                <strong>for 변수를 반복문 내에서 변경:</strong> <code>for i in range(5)</code>에서
-                반복문 본문 안에서 <code>i = 10</code>으로 변경해도 다음 반복에서 range()가
-                제공하는 다음 값으로 덮어씌워집니다. for문의 반복 변수를 직접 수정하는 것은 의미가 없습니다.
-              </li>
-              <li>
-                <strong>중첩 반복문 들여쓰기 혼동:</strong> 이중 for문에서 어떤 코드가 바깥 루프에 속하고
-                어떤 코드가 안쪽 루프에 속하는지 들여쓰기를 정확히 맞춰야 합니다.
-              </li>
-            </ul>
-          </div>
+            {/* ========== Common Mistakes ========== */}
+            {lang === 'en' ? (
+              <div className="callout-box">
+                <h3>{t('pythonLearning.commonMistakes')}</h3>
+                <ul>
+                  <li>
+                    <strong>Forgetting variable update in while:</strong> Omitting <code>i += 1</code> causes an infinite loop.
+                    Always verify the loop variable update when writing while loops.
+                  </li>
+                  <li>
+                    <strong>range() Off-by-one Error:</strong> <code>range(1, 10)</code> goes from 1 to 9;
+                    10 is not included. To include 10, use <code>range(1, 11)</code>.
+                  </li>
+                  <li>
+                    <strong>Modifying for loop variable inside the loop:</strong> In <code>for i in range(5)</code>,
+                    even if you set <code>i = 10</code> inside the loop, the next iteration will overwrite it
+                    with the next value from range(). Modifying the for variable directly is meaningless.
+                  </li>
+                  <li>
+                    <strong>Indentation confusion in nested loops:</strong> In double for loops,
+                    you must match indentation precisely to indicate which code belongs to the outer vs inner loop.
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <div className="callout-box">
+                <h3>{t('pythonLearning.commonMistakes')}</h3>
+                <ul>
+                  <li>
+                    <strong>while문에서 변수 갱신 누락:</strong> <code>i += 1</code>을 잊으면 무한 루프에 빠집니다.
+                    while문을 작성할 때는 항상 반복 변수의 갱신을 확인하세요.
+                  </li>
+                  <li>
+                    <strong>range() 범위 오류 (Off-by-one Error):</strong> <code>range(1, 10)</code>은
+                    1~9까지이며 10은 포함되지 않습니다. 10을 포함하려면 <code>range(1, 11)</code>로 써야 합니다.
+                  </li>
+                  <li>
+                    <strong>for 변수를 반복문 내에서 변경:</strong> <code>for i in range(5)</code>에서
+                    반복문 본문 안에서 <code>i = 10</code>으로 변경해도 다음 반복에서 range()가
+                    제공하는 다음 값으로 덮어씌워집니다. for문의 반복 변수를 직접 수정하는 것은 의미가 없습니다.
+                  </li>
+                  <li>
+                    <strong>중첩 반복문 들여쓰기 혼동:</strong> 이중 for문에서 어떤 코드가 바깥 루프에 속하고
+                    어떤 코드가 안쪽 루프에 속하는지 들여쓰기를 정확히 맞춰야 합니다.
+                  </li>
+                </ul>
+              </div>
+            )}
 
-          {/* ========== 핵심 정리 ========== */}
-          <div className="callout-box">
-            <h3>핵심 정리</h3>
-            <ul>
-              <li><strong>반복문</strong>은 코드를 반복 실행하는 제어 구조이며, 효율적인 프로그래밍의 핵심이다</li>
-              <li><strong>while문</strong>은 조건이 True인 동안 반복하며, 반복 횟수를 모를 때 적합하다</li>
-              <li><strong>for문</strong>은 시퀀스를 순회하며 반복하고, 반복 횟수가 정해진 경우에 적합하다</li>
-              <li><strong>range(start, stop, step)</strong>은 연속된 정수 시퀀스를 생성하며, stop은 포함되지 않는다</li>
-              <li><strong>break</strong>는 반복문을 즉시 종료하고, <strong>continue</strong>는 현재 반복만 건너뛴다</li>
-              <li><strong>for-else/while-else</strong>에서 else는 break 없이 정상 종료되었을 때 실행된다</li>
-              <li><strong>누적 패턴</strong>(합계, 카운트, 최대/최소, 문자열 누적)은 반복문에서 가장 자주 사용되는 패턴이다</li>
-              <li><strong>중첩 반복문</strong>에서 바깥 루프 1회 실행 시 안쪽 루프 전체가 실행된다</li>
-              <li>while문에서는 반복 변수 <strong>갱신을 반드시</strong> 포함해야 무한 루프를 방지한다</li>
-            </ul>
-          </div>
+            {/* ========== Key Summary ========== */}
+            {lang === 'en' ? (
+              <div className="callout-box">
+                <h3>{t('pythonLearning.keySummary')}</h3>
+                <ul>
+                  <li><strong>Loops</strong> are control structures for repeating code execution and are key to efficient programming</li>
+                  <li><strong>while</strong> repeats while the condition is True; suitable when the number of iterations is unknown</li>
+                  <li><strong>for</strong> iterates over a sequence; suitable when the number of iterations is predetermined</li>
+                  <li><strong>range(start, stop, step)</strong> generates integer sequences; stop is not included</li>
+                  <li><strong>break</strong> immediately terminates the loop; <strong>continue</strong> skips only the current iteration</li>
+                  <li><strong>for-else/while-else</strong>: the else block runs only when the loop completes without a break</li>
+                  <li><strong>Accumulation patterns</strong> (sum, count, max/min, string) are the most frequently used loop patterns</li>
+                  <li>In <strong>nested loops</strong>, one execution of the outer loop runs the entire inner loop</li>
+                  <li>In while loops, you <strong>must include variable updates</strong> to prevent infinite loops</li>
+                </ul>
+              </div>
+            ) : (
+              <div className="callout-box">
+                <h3>{t('pythonLearning.keySummary')}</h3>
+                <ul>
+                  <li><strong>반복문</strong>은 코드를 반복 실행하는 제어 구조이며, 효율적인 프로그래밍의 핵심이다</li>
+                  <li><strong>while문</strong>은 조건이 True인 동안 반복하며, 반복 횟수를 모를 때 적합하다</li>
+                  <li><strong>for문</strong>은 시퀀스를 순회하며 반복하고, 반복 횟수가 정해진 경우에 적합하다</li>
+                  <li><strong>range(start, stop, step)</strong>은 연속된 정수 시퀀스를 생성하며, stop은 포함되지 않는다</li>
+                  <li><strong>break</strong>는 반복문을 즉시 종료하고, <strong>continue</strong>는 현재 반복만 건너뛴다</li>
+                  <li><strong>for-else/while-else</strong>에서 else는 break 없이 정상 종료되었을 때 실행된다</li>
+                  <li><strong>누적 패턴</strong>(합계, 카운트, 최대/최소, 문자열 누적)은 반복문에서 가장 자주 사용되는 패턴이다</li>
+                  <li><strong>중첩 반복문</strong>에서 바깥 루프 1회 실행 시 안쪽 루프 전체가 실행된다</li>
+                  <li>while문에서는 반복 변수 <strong>갱신을 반드시</strong> 포함해야 무한 루프를 방지한다</li>
+                </ul>
+              </div>
+            )}
 
-          {/* ========== 실습 과제 ========== */}
-          <div className="exercise-box">
-            <h3>실습 과제</h3>
-            <p><strong>과제 1: 구구단 전체 가로 형태 출력</strong></p>
-            <p>
-              2단부터 9단까지 구구단을 가로 형태로 출력하는 프로그램을 작성하세요.
-              각 단이 열로 나란히 배치되도록 하며, 포맷을 깔끔하게 정렬하세요.
-              (위 종합 실습 예제 1 참고)
-            </p>
+            {/* ========== Exercises ========== */}
+            {lang === 'en' ? (
+              <div className="exercise-box">
+                <h3>{t('pythonLearning.exercises')}</h3>
+                <p><strong>Exercise 1: Full Horizontal Multiplication Table</strong></p>
+                <p>
+                  Write a program that prints the multiplication table from 2x to 9x in horizontal format.
+                  Each table should be arranged side by side in columns, with clean formatting.
+                  (Refer to Comprehensive Example 1 above)
+                </p>
 
-            <p><strong>과제 2: 다이아몬드 별 찍기</strong></p>
-            <p>
-              사용자로부터 높이(홀수)를 입력받아 다이아몬드 모양을 출력하세요.
-              상단은 피라미드, 하단은 역피라미드로 구성됩니다.
-              입력값이 짝수이면 1을 더하여 홀수로 변환 후 출력하세요.
-            </p>
-          </div>
+                <p><strong>Exercise 2: Diamond Star Pattern</strong></p>
+                <p>
+                  Receive an odd height number from the user and print a diamond shape.
+                  The top is a pyramid and the bottom is an inverted pyramid.
+                  If the input is even, add 1 to make it odd before printing.
+                </p>
+              </div>
+            ) : (
+              <div className="exercise-box">
+                <h3>{t('pythonLearning.exercises')}</h3>
+                <p><strong>과제 1: 구구단 전체 가로 형태 출력</strong></p>
+                <p>
+                  2단부터 9단까지 구구단을 가로 형태로 출력하는 프로그램을 작성하세요.
+                  각 단이 열로 나란히 배치되도록 하며, 포맷을 깔끔하게 정렬하세요.
+                  (위 종합 실습 예제 1 참고)
+                </p>
 
-          {/* ========== 심화 문제 ========== */}
-          <div className="exercise-box">
-            <h3>심화 문제</h3>
-            <p><strong>심화 1: 소인수분해 프로그램</strong></p>
-            <p>
-              사용자로부터 2 이상의 양의 정수를 입력받아 소인수분해 결과를 출력하세요.<br/>
-              예: 60을 입력하면 "60 = 2 x 2 x 3 x 5" 또는 "60 = 2^2 x 3 x 5"로 출력<br/>
-              <em>힌트: 2부터 시작하여 나누어 떨어지면 그 수로 계속 나누고, 안 되면 다음 수로 넘어갑니다.</em>
-            </p>
+                <p><strong>과제 2: 다이아몬드 별 찍기</strong></p>
+                <p>
+                  사용자로부터 높이(홀수)를 입력받아 다이아몬드 모양을 출력하세요.
+                  상단은 피라미드, 하단은 역피라미드로 구성됩니다.
+                  입력값이 짝수이면 1을 더하여 홀수로 변환 후 출력하세요.
+                </p>
+              </div>
+            )}
 
-            <p><strong>심화 2: N x N 곱셈표 만들기</strong></p>
-            <p>
-              사용자로부터 N을 입력받아 N x N 곱셈표를 출력하세요.
-              각 칸의 숫자가 정렬되도록 포맷을 맞추세요.<br/>
-              예: N=5이면 1x1부터 5x5까지의 곱셈표를 표 형태로 출력<br/>
-              <em>힌트: f-string의 자릿수 지정 <code>{'{'}f"{'{'}value:4d{'}'}"{'}'}</code>를 활용하세요.</em>
-            </p>
-          </div>
+            {/* ========== Advanced Problems ========== */}
+            {lang === 'en' ? (
+              <div className="exercise-box">
+                <h3>{t('pythonLearning.advancedProblems')}</h3>
+                <p><strong>Advanced 1: Prime Factorization Program</strong></p>
+                <p>
+                  Receive a positive integer (2 or greater) from the user and output its prime factorization.<br/>
+                  Example: Input 60 outputs "60 = 2 x 2 x 3 x 5" or "60 = 2^2 x 3 x 5"<br/>
+                  <em>Hint: Starting from 2, if divisible, keep dividing by that number; otherwise move to the next.</em>
+                </p>
 
-          <div className="lesson-nav">
-            <Link to="/python-learning/07" className="lesson-nav-btn prev">← 07: IF 조건문</Link>
-            <Link to="/python-learning/09" className="lesson-nav-btn next">09: 함수 →</Link>
+                <p><strong>Advanced 2: N x N Multiplication Table</strong></p>
+                <p>
+                  Receive N from the user and print an N x N multiplication table.
+                  Format the numbers to align properly in each cell.<br/>
+                  Example: For N=5, print a table from 1x1 to 5x5 in table format.<br/>
+                  <em>Hint: Use f-string width formatting <code>{'{'}f"{'{'}value:4d{'}'}"{'}'}</code>.</em>
+                </p>
+              </div>
+            ) : (
+              <div className="exercise-box">
+                <h3>{t('pythonLearning.advancedProblems')}</h3>
+                <p><strong>심화 1: 소인수분해 프로그램</strong></p>
+                <p>
+                  사용자로부터 2 이상의 양의 정수를 입력받아 소인수분해 결과를 출력하세요.<br/>
+                  예: 60을 입력하면 "60 = 2 x 2 x 3 x 5" 또는 "60 = 2^2 x 3 x 5"로 출력<br/>
+                  <em>힌트: 2부터 시작하여 나누어 떨어지면 그 수로 계속 나누고, 안 되면 다음 수로 넘어갑니다.</em>
+                </p>
+
+                <p><strong>심화 2: N x N 곱셈표 만들기</strong></p>
+                <p>
+                  사용자로부터 N을 입력받아 N x N 곱셈표를 출력하세요.
+                  각 칸의 숫자가 정렬되도록 포맷을 맞추세요.<br/>
+                  예: N=5이면 1x1부터 5x5까지의 곱셈표를 표 형태로 출력<br/>
+                  <em>힌트: f-string의 자릿수 지정 <code>{'{'}f"{'{'}value:4d{'}'}"{'}'}</code>를 활용하세요.</em>
+                </p>
+              </div>
+            )}
+
+            <div className="lesson-nav">
+              <Link to="/python-learning/07" className="lesson-nav-btn prev">← 07: {lang === 'en' ? 'IF Conditionals' : 'IF 조건문'}</Link>
+              <Link to="/python-learning/09" className="lesson-nav-btn next">09: {lang === 'en' ? 'Functions' : '함수'} →</Link>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  </div>
-);
-
-export default PythonLesson08;
+      </section>
+    </div>
+  );
+}

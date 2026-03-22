@@ -1,43 +1,51 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { useCommunity } from '../../hooks/useCommunity'
-
-const CATEGORIES = [
-  { key: 'all', label: '전체' },
-  { key: 'qna', label: '질문답변' },
-  { key: 'free', label: '자유게시판' },
-  { key: 'code', label: '코드공유' },
-  { key: 'review', label: '학습후기' },
-]
-
-const CATEGORY_LABELS = { qna: 'Q&A', free: '자유', code: '코드', review: '후기' }
 
 const POSTS_PER_PAGE = 12
 
-function timeAgo(dateStr) {
+function timeAgo(dateStr, lang) {
   const diff = Date.now() - new Date(dateStr).getTime()
   const m = Math.floor(diff / 60000)
-  if (m < 1) return '방금 전'
-  if (m < 60) return `${m}분 전`
+  if (m < 1) return lang === 'en' ? 'Just now' : '방금 전'
+  if (m < 60) return lang === 'en' ? `${m}m ago` : `${m}분 전`
   const h = Math.floor(m / 60)
-  if (h < 24) return `${h}시간 전`
+  if (h < 24) return lang === 'en' ? `${h}h ago` : `${h}시간 전`
   const d = Math.floor(h / 24)
-  if (d < 30) return `${d}일 전`
+  if (d < 30) return lang === 'en' ? `${d}d ago` : `${d}일 전`
   const mon = Math.floor(d / 30)
-  if (mon < 12) return `${mon}개월 전`
-  return `${Math.floor(mon / 12)}년 전`
+  if (mon < 12) return lang === 'en' ? `${mon}mo ago` : `${mon}개월 전`
+  return lang === 'en' ? `${Math.floor(mon / 12)}y ago` : `${Math.floor(mon / 12)}년 전`
 }
 
-function stripCodeBlocks(text) {
-  return text.replace(/```[\s\S]*?```/g, '[코드]').replace(/\n+/g, ' ').trim()
+function stripCodeBlocks(text, lang) {
+  const codeLabel = lang === 'en' ? '[code]' : '[코드]'
+  return text.replace(/```[\s\S]*?```/g, codeLabel).replace(/\n+/g, ' ').trim()
 }
 
 export default function Community() {
   const [searchParams, setSearchParams] = useSearchParams()
   const navigate = useNavigate()
   const { isAuthenticated, requireAuth } = useAuth()
+  const { t, lang } = useLanguage()
   const { posts, totalCount, loading, error, fetchPosts } = useCommunity()
+
+  const CATEGORIES = [
+    { key: 'all', label: t('community.all') },
+    { key: 'qna', label: t('community.qna') },
+    { key: 'free', label: t('community.free') },
+    { key: 'code', label: t('community.code') },
+    { key: 'review', label: t('community.review') },
+  ]
+
+  const CATEGORY_LABELS = {
+    qna: t('community.qnaShort'),
+    free: t('community.freeShort'),
+    code: t('community.codeShort'),
+    review: t('community.reviewShort'),
+  }
 
   const category = searchParams.get('category') || 'all'
   const search = searchParams.get('search') || ''
@@ -116,8 +124,8 @@ export default function Community() {
             <div className="page-header-title-row">
               <span className="page-header-icon"><i className="fa-solid fa-users" /></span>
               <div>
-                <h1>커뮤니티</h1>
-                <p>함께 배우고, 질문하고, 공유하세요</p>
+                <h1>{t('community.title')}</h1>
+                <p>{t('community.subtitle')}</p>
               </div>
             </div>
           </div>
@@ -145,7 +153,7 @@ export default function Community() {
               <i className="fa-solid fa-magnifying-glass" />
               <input
                 type="text"
-                placeholder="제목 또는 내용으로 검색..."
+                placeholder={t('community.searchPlaceholder')}
                 value={searchInput}
                 onChange={e => setSearchInput(e.target.value)}
               />
@@ -154,7 +162,7 @@ export default function Community() {
               className="community-write-btn"
               onClick={() => requireAuth(() => navigate('/community/write'))}
             >
-              <i className="fa-solid fa-pen" /> 글쓰기
+              <i className="fa-solid fa-pen" /> {t('community.write')}
             </button>
           </div>
 
@@ -182,29 +190,29 @@ export default function Community() {
               {posts.length === 0 ? (
                 <div className="community-empty">
                   <div className="community-empty-icon"><i className="fa-solid fa-comments" /></div>
-                  <h3>게시글이 없습니다</h3>
-                  <p>{search ? '검색 결과가 없습니다. 다른 키워드로 검색해보세요.' : '첫 번째 글을 작성해보세요!'}</p>
+                  <h3>{t('community.noPosts')}</h3>
+                  <p>{search ? t('community.noSearchResults') : t('community.firstPostCTA')}</p>
                 </div>
               ) : (
                 <div className="community-posts-grid">
                   {posts.map(post => {
-                    const preview = stripCodeBlocks(post.content).slice(0, 120)
+                    const preview = stripCodeBlocks(post.content, lang).slice(0, 120)
                     return (
                       <Link key={post.id} to={`/community/${post.id}`} className="community-card">
                         <div className="community-card-header">
                           <span className={`community-card-badge community-badge-${post.category}`}>
                             {CATEGORY_LABELS[post.category]}
                           </span>
-                          {post.is_solved && <span className="community-card-solved"><i className="fa-solid fa-check" /> 해결</span>}
+                          {post.is_solved && <span className="community-card-solved"><i className="fa-solid fa-check" /> {t('community.solved')}</span>}
                         </div>
                         <div className="community-card-title">{post.title}</div>
                         {preview && <div className="community-card-preview">{preview}</div>}
                         {post.tags?.length > 0 && (
                           <div className="community-card-tags">
-                            {post.tags.map(t => (
-                              <span key={t} className="community-tag"
-                                onClick={e => { e.preventDefault(); updateParams({ tag: t }) }}>
-                                #{t}
+                            {post.tags.map(tg => (
+                              <span key={tg} className="community-tag"
+                                onClick={e => { e.preventDefault(); updateParams({ tag: tg }) }}>
+                                #{tg}
                               </span>
                             ))}
                           </div>
@@ -221,7 +229,7 @@ export default function Community() {
                             <span className="community-card-author-name">{post.author_name}</span>
                           </div>
                           <div className="community-card-meta">
-                            <span>{timeAgo(post.created_at)}</span>
+                            <span>{timeAgo(post.created_at, lang)}</span>
                             <span><i className="fa-solid fa-eye" /> {post.view_count || 0}</span>
                             <span><i className="fa-solid fa-heart" /> {post.like_count || 0}</span>
                             <span><i className="fa-solid fa-comment" /> {post.comment_count || 0}</span>

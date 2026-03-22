@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { useCommunity } from '../../hooks/useCommunity'
-
-const CATEGORY_LABELS = { qna: 'Q&A', free: '자유게시판', code: '코드공유', review: '학습후기' }
 
 // Python syntax highlighting tokens
 const PYTHON_KEYWORDS = ['False','None','True','and','as','assert','async','await','break','class','continue','def','del','elif','else','except','finally','for','from','global','if','import','in','is','lambda','nonlocal','not','or','pass','raise','return','try','while','with','yield']
@@ -90,22 +89,25 @@ function renderContent(content) {
   return elements
 }
 
-function timeAgo(dateStr) {
+function timeAgo(dateStr, lang) {
   const diff = Date.now() - new Date(dateStr).getTime()
   const m = Math.floor(diff / 60000)
-  if (m < 1) return '방금 전'
-  if (m < 60) return `${m}분 전`
+  if (m < 1) return lang === 'en' ? 'Just now' : '방금 전'
+  if (m < 60) return lang === 'en' ? `${m}m ago` : `${m}분 전`
   const h = Math.floor(m / 60)
-  if (h < 24) return `${h}시간 전`
+  if (h < 24) return lang === 'en' ? `${h}h ago` : `${h}시간 전`
   const d = Math.floor(h / 24)
-  if (d < 30) return `${d}일 전`
+  if (d < 30) return lang === 'en' ? `${d}d ago` : `${d}일 전`
   const mon = Math.floor(d / 30)
-  if (mon < 12) return `${mon}개월 전`
-  return `${Math.floor(mon / 12)}년 전`
+  if (mon < 12) return lang === 'en' ? `${mon}mo ago` : `${mon}개월 전`
+  return lang === 'en' ? `${Math.floor(mon / 12)}y ago` : `${Math.floor(mon / 12)}년 전`
 }
 
-function formatDate(dateStr) {
+function formatDate(dateStr, lang) {
   const d = new Date(dateStr)
+  if (lang === 'en') {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+  }
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
 }
 
@@ -113,11 +115,19 @@ export default function CommunityPost() {
   const { postId } = useParams()
   const navigate = useNavigate()
   const { user, isAuthenticated, requireAuth } = useAuth()
+  const { t, lang } = useLanguage()
   const {
     post, comments, loading, error,
     fetchPost, fetchComments, createComment, deleteComment,
     toggleLike, checkLiked, toggleSolved, deletePost,
   } = useCommunity()
+
+  const CATEGORY_LABELS = {
+    qna: t('community.qnaFull'),
+    free: t('community.freeFull'),
+    code: t('community.codeFull'),
+    review: t('community.reviewFull'),
+  }
 
   const [liked, setLiked] = useState(false)
   const [commentText, setCommentText] = useState('')
@@ -151,13 +161,13 @@ export default function CommunityPost() {
   }
 
   const handleDeleteComment = async (commentId) => {
-    if (window.confirm('댓글을 삭제하시겠습니까?')) {
+    if (window.confirm(t('community.confirmDeleteComment'))) {
       await deleteComment(commentId)
     }
   }
 
   const handleDeletePost = async () => {
-    if (window.confirm('게시글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+    if (window.confirm(t('community.confirmDeletePost'))) {
       const ok = await deletePost(postId)
       if (ok) navigate('/community')
     }
@@ -179,7 +189,7 @@ export default function CommunityPost() {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="15 18 9 12 15 6"/>
                 </svg>
-                목록으로
+                {t('community.backToList')}
               </button>
             </div>
           </div>
@@ -201,13 +211,13 @@ export default function CommunityPost() {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="15 18 9 12 15 6"/>
                 </svg>
-                목록으로
+                {t('community.backToList')}
               </button>
             </div>
           </div>
         </section>
         <div className="community-error" style={{ paddingTop: 80 }}>
-          <i className="fa-solid fa-triangle-exclamation" /> {error || '게시글을 찾을 수 없습니다.'}
+          <i className="fa-solid fa-triangle-exclamation" /> {error || t('community.postNotFound')}
         </div>
       </div>
     )
@@ -222,12 +232,12 @@ export default function CommunityPost() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="15 18 9 12 15 6"/>
               </svg>
-              목록으로
+              {t('community.backToList')}
             </button>
             <div className="page-header-title-row">
               <div>
                 <h1 style={{ fontSize: 22 }}>{post.title}</h1>
-                <p>{CATEGORY_LABELS[post.category]} · {timeAgo(post.created_at)}</p>
+                <p>{CATEGORY_LABELS[post.category]} · {timeAgo(post.created_at, lang)}</p>
               </div>
             </div>
           </div>
@@ -250,19 +260,19 @@ export default function CommunityPost() {
                   )}
                   <div className="community-detail-author-info">
                     <span className="community-detail-author-name">{post.author_name}</span>
-                    <span className="community-detail-date">{formatDate(post.created_at)}</span>
+                    <span className="community-detail-date">{formatDate(post.created_at, lang)}</span>
                   </div>
                 </div>
                 <span className={`community-card-badge community-badge-${post.category}`}>
                   {CATEGORY_LABELS[post.category]}
                 </span>
-                {post.is_solved && <span className="community-card-solved"><i className="fa-solid fa-check" /> 해결됨</span>}
+                {post.is_solved && <span className="community-card-solved"><i className="fa-solid fa-check" /> {t('community.solvedFull')}</span>}
               </div>
 
               {post.tags?.length > 0 && (
                 <div className="community-detail-tags">
-                  {post.tags.map(t => (
-                    <Link key={t} to={`/community?tag=${encodeURIComponent(t)}`} className="community-tag">#{t}</Link>
+                  {post.tags.map(tg => (
+                    <Link key={tg} to={`/community?tag=${encodeURIComponent(tg)}`} className="community-tag">#{tg}</Link>
                   ))}
                 </div>
               )}
@@ -282,7 +292,7 @@ export default function CommunityPost() {
 
                 {isAuthor && post.category === 'qna' && (
                   <button className={`community-action-btn${post.is_solved ? ' solved' : ''}`} onClick={handleToggleSolved}>
-                    <i className="fa-solid fa-check-circle" /> {post.is_solved ? '해결됨' : '해결로 표시'}
+                    <i className="fa-solid fa-check-circle" /> {post.is_solved ? t('community.solvedFull') : t('community.markSolved')}
                   </button>
                 )}
 
@@ -291,10 +301,10 @@ export default function CommunityPost() {
                 {isAuthor && (
                   <>
                     <button className="community-action-btn" onClick={() => navigate(`/community/write?edit=${post.id}`)}>
-                      <i className="fa-solid fa-pen-to-square" /> 수정
+                      <i className="fa-solid fa-pen-to-square" /> {t('community.edit')}
                     </button>
                     <button className="community-action-btn danger" onClick={handleDeletePost}>
-                      <i className="fa-solid fa-trash" /> 삭제
+                      <i className="fa-solid fa-trash" /> {t('community.delete')}
                     </button>
                   </>
                 )}
@@ -305,7 +315,7 @@ export default function CommunityPost() {
             <div className="community-comments-section">
               <h3 className="community-comments-title">
                 <i className="fa-solid fa-comments" style={{ marginRight: 8, color: 'var(--primary)' }} />
-                댓글 {comments.length > 0 && `(${comments.length})`}
+                {t('community.comments')} {comments.length > 0 && `(${comments.length})`}
               </h3>
 
               {comments.map(comment => (
@@ -319,10 +329,10 @@ export default function CommunityPost() {
                       </div>
                     )}
                     <span className="community-comment-name">{comment.author_name}</span>
-                    <span className="community-comment-date">{timeAgo(comment.created_at)}</span>
+                    <span className="community-comment-date">{timeAgo(comment.created_at, lang)}</span>
                     {user && comment.author_id === user.id && (
                       <button className="community-comment-delete" onClick={() => handleDeleteComment(comment.id)}>
-                        <i className="fa-solid fa-trash" /> 삭제
+                        <i className="fa-solid fa-trash" /> {t('community.delete')}
                       </button>
                     )}
                   </div>
@@ -337,7 +347,7 @@ export default function CommunityPost() {
                 <textarea
                   ref={commentInputRef}
                   className="community-comment-input"
-                  placeholder={isAuthenticated ? '댓글을 작성하세요...' : '로그인 후 댓글을 작성할 수 있습니다.'}
+                  placeholder={isAuthenticated ? t('community.commentPlaceholder') : t('community.loginToComment')}
                   value={commentText}
                   onChange={e => setCommentText(e.target.value)}
                   onFocus={() => { if (!isAuthenticated) requireAuth(() => {}) }}
@@ -348,7 +358,7 @@ export default function CommunityPost() {
                   className="community-comment-submit"
                   disabled={!commentText.trim() || submitting}
                 >
-                  {submitting ? '등록 중...' : '댓글 등록'}
+                  {submitting ? t('community.submitting') : t('community.submitComment')}
                 </button>
               </form>
             </div>

@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { badges } from '../data/badges'
 import { useProgress } from './ProgressContext'
+import { useLanguage } from './LanguageContext'
 import { lessons } from '../data/lessons'
 
 const BadgeContext = createContext()
@@ -17,6 +18,7 @@ export function BadgeProvider({ children }) {
   const [newBadge, setNewBadge] = useState(null)
 
   const { completedLessons, quizScores, codeRuns, streak, isLevelCompleted, getQuizBestScore } = useProgress()
+  const { lang, localizedField } = useLanguage()
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(earnedBadges))
@@ -101,9 +103,9 @@ export function BadgeProvider({ children }) {
           <div className="badge-notification-content">
             <div className="badge-notification-icon"><i className={newBadge.icon} /></div>
             <div className="badge-notification-text">
-              <span className="badge-notification-label">새 배지 획득!</span>
-              <span className="badge-notification-title">{newBadge.title}</span>
-              <span className="badge-notification-desc">{newBadge.description}</span>
+              <span className="badge-notification-label">{lang === 'en' ? 'New Badge Earned!' : '새 배지 획득!'}</span>
+              <span className="badge-notification-title">{localizedField(newBadge, 'title')}</span>
+              <span className="badge-notification-desc">{localizedField(newBadge, 'description')}</span>
             </div>
           </div>
         </div>

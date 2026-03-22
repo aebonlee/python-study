@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext'
 import { ProgressProvider } from './contexts/ProgressContext'
 import { BadgeProvider } from './contexts/BadgeContext'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
@@ -69,6 +70,20 @@ function TeacherRoute({ children }) {
   return children
 }
 
+function NotFoundPage() {
+  const { t } = useLanguage()
+  return (
+    <div className="not-found-page">
+      <div className="not-found-content">
+        <div className="not-found-code">{t('notFound.code')}</div>
+        <h2 className="not-found-title">{t('notFound.title')}</h2>
+        <p className="not-found-desc">{t('notFound.desc')}</p>
+        <a href="/" className="btn btn-primary">{t('notFound.home')}</a>
+      </div>
+    </div>
+  )
+}
+
 function AppLayout() {
   return (
     <>
@@ -101,16 +116,7 @@ function AppLayout() {
           <Route path="/:level/:lessonId" element={<LazyRoute element={<LessonPage />} />} />
           <Route path="/badges" element={<LazyRoute element={<BadgeCollection />} />} />
           <Route path="/quiz" element={<LazyRoute element={<QuizCenter />} />} />
-          <Route path="*" element={
-            <div className="not-found-page">
-              <div className="not-found-content">
-                <div className="not-found-code">404</div>
-                <h2 className="not-found-title">페이지를 찾을 수 없습니다</h2>
-                <p className="not-found-desc">요청하신 페이지가 존재하지 않습니다.</p>
-                <a href="/" className="btn btn-primary">홈으로 돌아가기</a>
-              </div>
-            </div>
-          } />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
       <Footer />
@@ -122,6 +128,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
+        <LanguageProvider>
         <AuthProvider>
           <ProgressProvider>
             <BadgeProvider>
@@ -131,6 +138,7 @@ export default function App() {
             </BadgeProvider>
           </ProgressProvider>
         </AuthProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </BrowserRouter>
   )

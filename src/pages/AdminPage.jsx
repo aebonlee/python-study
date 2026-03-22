@@ -4,37 +4,35 @@ import { quizzes } from '../data/quizzes'
 import { badges } from '../data/badges'
 import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 import BadgeCard from '../components/BadgeCard'
+import { useLanguage } from '../contexts/LanguageContext'
 
-const CATEGORY_LABELS = { qna: 'Q&A', free: '자유', code: '코드', review: '후기' }
 const ADMIN_EMAIL = 'aebon@kakao.com'
 
-const ADMIN_TABS = [
-  { key: 'stats', label: '사이트 통계', icon: 'fa-solid fa-chart-pie' },
-  { key: 'content', label: '콘텐츠 현황', icon: 'fa-solid fa-folder-tree' },
-  { key: 'community', label: '커뮤니티 관리', icon: 'fa-solid fa-comments' },
-  { key: 'members', label: '회원 관리', icon: 'fa-solid fa-user-group' },
-]
-
-function timeAgo(dateStr) {
+function timeAgo(dateStr, lang) {
   if (!dateStr) return '-'
   const diff = Date.now() - new Date(dateStr).getTime()
   const m = Math.floor(diff / 60000)
-  if (m < 1) return '방금 전'
-  if (m < 60) return `${m}분 전`
+  if (m < 1) return lang === 'en' ? 'Just now' : '방금 전'
+  if (m < 60) return lang === 'en' ? `${m}m ago` : `${m}분 전`
   const h = Math.floor(m / 60)
-  if (h < 24) return `${h}시간 전`
+  if (h < 24) return lang === 'en' ? `${h}h ago` : `${h}시간 전`
   const d = Math.floor(h / 24)
-  if (d < 30) return `${d}일 전`
-  return `${Math.floor(d / 30)}개월 전`
+  if (d < 30) return lang === 'en' ? `${d}d ago` : `${d}일 전`
+  return lang === 'en' ? `${Math.floor(d / 30)}mo ago` : `${Math.floor(d / 30)}개월 전`
 }
 
-function formatDate(dateStr) {
+function formatDate(dateStr, lang) {
   if (!dateStr) return '-'
   const d = new Date(dateStr)
+  if (lang === 'en') {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  }
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
 }
 
 export default function AdminPage() {
+  const { t, lang, localizedField } = useLanguage()
+
   const [activeTab, setActiveTab] = useState('stats')
   const [communityPosts, setCommunityPosts] = useState([])
   const [communityLoading, setCommunityLoading] = useState(false)
@@ -52,6 +50,22 @@ export default function AdminPage() {
   // Role toggling state
   const [roleToggling, setRoleToggling] = useState(null)
 
+  // Dynamic tabs
+  const ADMIN_TABS = [
+    { key: 'stats', label: t('admin.siteStats'), icon: 'fa-solid fa-chart-pie' },
+    { key: 'content', label: t('admin.contentOverview'), icon: 'fa-solid fa-folder-tree' },
+    { key: 'community', label: t('admin.communityManagement'), icon: 'fa-solid fa-comments' },
+    { key: 'members', label: t('admin.memberManagement'), icon: 'fa-solid fa-user-group' },
+  ]
+
+  // Dynamic category labels
+  const CATEGORY_LABELS = {
+    qna: t('community.qnaShort'),
+    free: t('community.freeShort'),
+    code: t('community.codeShort'),
+    review: t('community.reviewShort'),
+  }
+
   // Static stats
   const totalLessons = Object.values(lessons).flat().length
   const totalQuizzes = Object.keys(quizzes).length
@@ -62,7 +76,7 @@ export default function AdminPage() {
     .filter(([key]) => levelInfo[key])
     .map(([key, items]) => ({
       key,
-      title: levelInfo[key]?.title || key,
+      title: localizedField(levelInfo[key], 'title') || key,
       icon: levelInfo[key]?.icon || 'fa-solid fa-folder',
       color: levelInfo[key]?.color || '#666',
       lessonCount: items.length,
@@ -70,7 +84,7 @@ export default function AdminPage() {
 
   const quizStats = Object.entries(quizzes).map(([id, quiz]) => ({
     id,
-    title: quiz.title,
+    title: localizedField(quiz, 'title'),
     questionCount: quiz.questions.length,
     passingScore: quiz.passingScore || 70,
     timeLimit: quiz.timeLimit,
@@ -243,7 +257,7 @@ export default function AdminPage() {
       const bestScore = data?.bestScore
       const attempts = data?.attempts || []
       const passed = bestScore !== undefined && bestScore >= (quiz.passingScore || 70)
-      return { id, title: quiz.title, bestScore, attempts, passed, passingScore: quiz.passingScore || 70 }
+      return { id, quiz, title: localizedField(quiz, 'title'), bestScore, attempts, passed, passingScore: quiz.passingScore || 70 }
     })
   }
 
@@ -251,7 +265,7 @@ export default function AdminPage() {
     <div className="admin-page">
       <div className="container">
         <h1 className="admin-title">
-          <i className="fa-solid fa-shield-halved" /> 관리자 대시보드
+          <i className="fa-solid fa-shield-halved" /> {t('admin.title')}
         </h1>
 
         {/* Tab Navigation */}
@@ -271,7 +285,7 @@ export default function AdminPage() {
         {activeTab === 'stats' && (
           <section className="admin-section">
             <h2 className="admin-section-title">
-              <i className="fa-solid fa-chart-pie" /> 사이트 통계
+              <i className="fa-solid fa-chart-pie" /> {t('admin.siteStats')}
             </h2>
             <div className="admin-stats-grid">
               <div className="admin-stat-card">
@@ -279,28 +293,28 @@ export default function AdminPage() {
                   <i className="fa-solid fa-book" />
                 </div>
                 <div className="admin-stat-value">{totalLessons}</div>
-                <div className="admin-stat-label">총 레슨</div>
+                <div className="admin-stat-label">{t('admin.totalLessons')}</div>
               </div>
               <div className="admin-stat-card">
                 <div className="admin-stat-icon" style={{ background: 'rgba(255,212,59,0.15)', color: '#D4A017' }}>
                   <i className="fa-solid fa-pen-to-square" />
                 </div>
                 <div className="admin-stat-value">{totalQuizzes}</div>
-                <div className="admin-stat-label">총 퀴즈</div>
+                <div className="admin-stat-label">{t('admin.totalQuizzes')}</div>
               </div>
               <div className="admin-stat-card">
                 <div className="admin-stat-icon" style={{ background: 'rgba(231,76,60,0.12)', color: '#e74c3c' }}>
                   <i className="fa-solid fa-question-circle" />
                 </div>
                 <div className="admin-stat-value">{totalQuestions}</div>
-                <div className="admin-stat-label">총 문제 수</div>
+                <div className="admin-stat-label">{t('admin.totalQuestions')}</div>
               </div>
               <div className="admin-stat-card">
                 <div className="admin-stat-icon" style={{ background: 'rgba(46,204,113,0.12)', color: '#2ecc71' }}>
                   <i className="fa-solid fa-medal" />
                 </div>
                 <div className="admin-stat-value">{totalBadges}</div>
-                <div className="admin-stat-label">총 배지</div>
+                <div className="admin-stat-label">{t('admin.totalBadges')}</div>
               </div>
             </div>
           </section>
@@ -310,21 +324,21 @@ export default function AdminPage() {
         {activeTab === 'content' && (
           <section className="admin-section">
             <h2 className="admin-section-title">
-              <i className="fa-solid fa-folder-tree" /> 콘텐츠 현황
+              <i className="fa-solid fa-folder-tree" /> {t('admin.contentOverview')}
             </h2>
 
             <div className="admin-content-tables">
               <div className="admin-table-wrap">
-                <h3 className="admin-table-heading">레벨별 레슨 수</h3>
+                <h3 className="admin-table-heading">{t('admin.levelLessonCount')}</h3>
                 <table className="admin-table">
                   <thead>
-                    <tr><th>레벨</th><th>레슨 수</th></tr>
+                    <tr><th>{t('admin.level')}</th><th>{t('admin.lessonCount')}</th></tr>
                   </thead>
                   <tbody>
                     {levelStats.map(l => (
                       <tr key={l.key}>
                         <td><i className={l.icon} style={{ color: l.color, marginRight: 8 }} />{l.title}</td>
-                        <td>{l.lessonCount}개</td>
+                        <td>{l.lessonCount}{lang === 'en' ? '' : '개'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -332,18 +346,18 @@ export default function AdminPage() {
               </div>
 
               <div className="admin-table-wrap">
-                <h3 className="admin-table-heading">퀴즈별 문제 수</h3>
+                <h3 className="admin-table-heading">{t('admin.quizQuestionCount')}</h3>
                 <table className="admin-table">
                   <thead>
-                    <tr><th>퀴즈</th><th>문제 수</th><th>통과 기준</th><th>제한 시간</th></tr>
+                    <tr><th>{t('admin.quiz')}</th><th>{t('admin.questionCount')}</th><th>{t('admin.passingScore')}</th><th>{t('admin.timeLimit')}</th></tr>
                   </thead>
                   <tbody>
                     {quizStats.map(q => (
                       <tr key={q.id}>
                         <td>{q.title}</td>
-                        <td>{q.questionCount}문제</td>
-                        <td>{q.passingScore}점</td>
-                        <td>{Math.floor(q.timeLimit / 60)}분</td>
+                        <td>{q.questionCount}{lang === 'en' ? '' : '문제'}</td>
+                        <td>{q.passingScore}{lang === 'en' ? 'pts' : '점'}</td>
+                        <td>{Math.floor(q.timeLimit / 60)}{lang === 'en' ? 'min' : '분'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -357,7 +371,7 @@ export default function AdminPage() {
         {activeTab === 'community' && (
           <section className="admin-section">
             <h2 className="admin-section-title">
-              <i className="fa-solid fa-comments" /> 커뮤니티 관리
+              <i className="fa-solid fa-comments" /> {t('admin.communityManagement')}
               <button className="admin-refresh-btn" onClick={fetchCommunityPosts} disabled={communityLoading}>
                 <i className={`fa-solid fa-rotate-right${communityLoading ? ' fa-spin' : ''}`} />
               </button>
@@ -366,24 +380,24 @@ export default function AdminPage() {
             {communityLoading ? (
               <div className="admin-loading">
                 <div className="loading-spinner-small" style={{ width: 24, height: 24, borderWidth: 2 }} />
-                <span>게시글 불러오는 중...</span>
+                <span>{t('admin.loadingPosts')}</span>
               </div>
             ) : communityPosts.length === 0 ? (
               <div className="admin-empty">
                 <i className="fa-solid fa-inbox" />
-                <p>게시글이 없습니다</p>
+                <p>{t('admin.noPosts')}</p>
               </div>
             ) : (
               <div className="admin-table-wrap">
                 <table className="admin-table admin-community-table">
                   <thead>
                     <tr>
-                      <th>카테고리</th>
-                      <th>제목</th>
-                      <th>작성자</th>
-                      <th>작성일</th>
-                      <th>조회</th>
-                      <th>관리</th>
+                      <th>{t('admin.category')}</th>
+                      <th>{t('admin.postTitle')}</th>
+                      <th>{t('admin.author')}</th>
+                      <th>{t('admin.date')}</th>
+                      <th>{t('admin.views')}</th>
+                      <th>{t('admin.manage')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -396,13 +410,13 @@ export default function AdminPage() {
                         </td>
                         <td className="admin-post-title">{post.title}</td>
                         <td className="admin-post-author">{post.author_name || post.author_email?.split('@')[0] || '-'}</td>
-                        <td className="admin-post-date">{timeAgo(post.created_at)}</td>
+                        <td className="admin-post-date">{timeAgo(post.created_at, lang)}</td>
                         <td className="admin-post-views">{post.view_count || 0}</td>
                         <td>
                           {deleteConfirm === post.id ? (
                             <div className="admin-delete-confirm">
-                              <button className="admin-btn-confirm" onClick={() => handleDeletePost(post.id)}>확인</button>
-                              <button className="admin-btn-cancel" onClick={() => setDeleteConfirm(null)}>취소</button>
+                              <button className="admin-btn-confirm" onClick={() => handleDeletePost(post.id)}>{t('admin.confirm')}</button>
+                              <button className="admin-btn-cancel" onClick={() => setDeleteConfirm(null)}>{t('admin.cancel')}</button>
                             </div>
                           ) : (
                             <button className="admin-btn-delete" onClick={() => setDeleteConfirm(post.id)}>
@@ -423,8 +437,8 @@ export default function AdminPage() {
         {activeTab === 'members' && (
           <section className="admin-section">
             <h2 className="admin-section-title">
-              <i className="fa-solid fa-user-group" /> 회원 관리
-              <span className="admin-member-count">{members.length}명</span>
+              <i className="fa-solid fa-user-group" /> {t('admin.memberManagement')}
+              <span className="admin-member-count">{members.length}{lang === 'en' ? '' : '명'}</span>
               <button className="admin-refresh-btn" onClick={fetchMembers} disabled={membersLoading}>
                 <i className={`fa-solid fa-rotate-right${membersLoading ? ' fa-spin' : ''}`} />
               </button>
@@ -433,25 +447,25 @@ export default function AdminPage() {
             {membersLoading ? (
               <div className="admin-loading">
                 <div className="loading-spinner-small" style={{ width: 24, height: 24, borderWidth: 2 }} />
-                <span>회원 불러오는 중...</span>
+                <span>{t('admin.loadingMembers')}</span>
               </div>
             ) : members.length === 0 ? (
               <div className="admin-empty">
                 <i className="fa-solid fa-users" />
-                <p>등록된 회원이 없습니다</p>
+                <p>{t('admin.noMembers')}</p>
               </div>
             ) : (
               <div className="admin-table-wrap admin-members-table">
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th>구분</th>
-                      <th>이름</th>
-                      <th>이메일</th>
-                      <th>역할</th>
-                      <th>로그인 방식</th>
-                      <th>가입일</th>
-                      <th>마지막 접속</th>
+                      <th>{t('admin.num')}</th>
+                      <th>{t('admin.name')}</th>
+                      <th>{t('admin.email')}</th>
+                      <th>{t('admin.role')}</th>
+                      <th>{t('admin.loginMethod')}</th>
+                      <th>{t('admin.joinDate')}</th>
+                      <th>{t('admin.lastAccess')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -466,7 +480,7 @@ export default function AdminPage() {
                         <td className="admin-member-email">{member.email || '-'}</td>
                         <td>
                           {member.email === ADMIN_EMAIL ? (
-                            <span className="admin-role-badge admin"><i className="fa-solid fa-shield-halved" /> 관리자</span>
+                            <span className="admin-role-badge admin"><i className="fa-solid fa-shield-halved" /> {t('admin.administrator')}</span>
                           ) : (
                             <button
                               className={`admin-role-toggle ${member.role === 'teacher' ? 'teacher' : 'student'}`}
@@ -474,11 +488,11 @@ export default function AdminPage() {
                               disabled={roleToggling === member.id}
                             >
                               {roleToggling === member.id ? (
-                                <><i className="fa-solid fa-spinner fa-spin" /> 변경중</>
+                                <><i className="fa-solid fa-spinner fa-spin" /> {t('admin.changingRole')}</>
                               ) : member.role === 'teacher' ? (
-                                <><i className="fa-solid fa-chalkboard-user" /> 선생님</>
+                                <><i className="fa-solid fa-chalkboard-user" /> {t('admin.teacher')}</>
                               ) : (
-                                <><i className="fa-solid fa-user" /> 학생</>
+                                <><i className="fa-solid fa-user" /> {t('admin.student')}</>
                               )}
                             </button>
                           )}
@@ -488,8 +502,8 @@ export default function AdminPage() {
                             <i className={getProviderIcon(member.provider)} /> {getProviderLabel(member.provider)}
                           </span>
                         </td>
-                        <td className="admin-member-date">{formatDate(member.created_at)}</td>
-                        <td className="admin-member-date">{timeAgo(member.updated_at)}</td>
+                        <td className="admin-member-date">{formatDate(member.created_at, lang)}</td>
+                        <td className="admin-member-date">{timeAgo(member.updated_at, lang)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -511,7 +525,7 @@ export default function AdminPage() {
             {memberProgressLoading ? (
               <div className="admin-loading" style={{ minHeight: 200 }}>
                 <div className="loading-spinner-small" style={{ width: 28, height: 28, borderWidth: 3 }} />
-                <span>학생 데이터 불러오는 중...</span>
+                <span>{t('admin.loadingStudentData')}</span>
               </div>
             ) : memberProgress && (() => {
               const progress = memberProgress
@@ -541,14 +555,14 @@ export default function AdminPage() {
                       <h2 className="mypage-name">{selectedMember.name || '-'}</h2>
                       <p className="mypage-email">{selectedMember.email || '-'}</p>
                       <span className="mypage-provider">
-                        <i className={getProviderIcon(selectedMember.provider)} /> {getProviderLabel(selectedMember.provider)} 로그인
+                        <i className={getProviderIcon(selectedMember.provider)} /> {getProviderLabel(selectedMember.provider)} {t('admin.loginSuffix')}
                       </span>
                     </div>
                   </div>
 
                   {/* Learning Stats */}
                   <h2 className="mypage-section-title">
-                    <i className="fa-solid fa-chart-line" /> 학습 통계
+                    <i className="fa-solid fa-chart-line" /> {t('admin.learningStats')}
                   </h2>
                   <div className="mypage-stats-grid">
                     <div className="mypage-stat-card">
@@ -556,7 +570,7 @@ export default function AdminPage() {
                         <i className="fa-solid fa-book-open" />
                       </div>
                       <div className="mypage-stat-value">{completedCount}<span className="mypage-stat-unit">/{totalLessons}</span></div>
-                      <div className="mypage-stat-label">완료 레슨</div>
+                      <div className="mypage-stat-label">{t('admin.completedLessons')}</div>
                       <div className="mypage-stat-bar">
                         <div className="mypage-stat-bar-fill" style={{ width: `${progressPct}%`, background: '#4B8BBE' }} />
                       </div>
@@ -565,57 +579,57 @@ export default function AdminPage() {
                       <div className="mypage-stat-icon" style={{ background: 'rgba(255,212,59,0.15)', color: '#D4A017' }}>
                         <i className="fa-solid fa-trophy" />
                       </div>
-                      <div className="mypage-stat-value">{quizAvg}<span className="mypage-stat-unit">점</span></div>
-                      <div className="mypage-stat-label">퀴즈 평균 점수</div>
+                      <div className="mypage-stat-value">{quizAvg}<span className="mypage-stat-unit">{lang === 'en' ? 'pts' : '점'}</span></div>
+                      <div className="mypage-stat-label">{t('admin.quizAvgScore')}</div>
                     </div>
                     <div className="mypage-stat-card">
                       <div className="mypage-stat-icon" style={{ background: 'rgba(46,204,113,0.12)', color: '#2ecc71' }}>
                         <i className="fa-solid fa-play" />
                       </div>
-                      <div className="mypage-stat-value">{progress.code_runs || 0}<span className="mypage-stat-unit">회</span></div>
-                      <div className="mypage-stat-label">코드 실행 수</div>
+                      <div className="mypage-stat-value">{progress.code_runs || 0}<span className="mypage-stat-unit">{lang === 'en' ? '' : '회'}</span></div>
+                      <div className="mypage-stat-label">{t('admin.codeRunCount')}</div>
                     </div>
                     <div className="mypage-stat-card">
                       <div className="mypage-stat-icon" style={{ background: 'rgba(231,76,60,0.12)', color: '#e74c3c' }}>
                         <i className="fa-solid fa-fire" />
                       </div>
-                      <div className="mypage-stat-value">{progress.streak_count || 0}<span className="mypage-stat-unit">일</span></div>
-                      <div className="mypage-stat-label">연속 학습일</div>
+                      <div className="mypage-stat-value">{progress.streak_count || 0}<span className="mypage-stat-unit">{lang === 'en' ? 'd' : '일'}</span></div>
+                      <div className="mypage-stat-label">{t('admin.streakDays')}</div>
                     </div>
                   </div>
 
                   {/* Earned Badges */}
                   <h2 className="mypage-section-title" style={{ marginTop: 28 }}>
-                    <i className="fa-solid fa-medal" /> 획득 배지 <span className="mypage-badge-count">{earnedBadgeData.length}개</span>
+                    <i className="fa-solid fa-medal" /> {t('admin.earnedBadges')} <span className="mypage-badge-count">{earnedBadgeData.length}{lang === 'en' ? '' : '개'}</span>
                   </h2>
                   {earnedBadgeData.length > 0 ? (
                     <div className="mypage-badge-grid">
                       {earnedBadgeData.map(badge => (
-                        <BadgeCard key={badge.id} badge={badge} />
+                        <BadgeCard key={badge.id} badge={{ ...badge, title: localizedField(badge, 'title'), description: localizedField(badge, 'description') }} />
                       ))}
                     </div>
                   ) : (
                     <div className="mypage-empty">
                       <i className="fa-solid fa-lock" />
-                      <p>아직 획득한 배지가 없습니다.</p>
+                      <p>{t('admin.noBadgesEarned')}</p>
                     </div>
                   )}
 
                   {/* Quiz Scores */}
                   <h2 className="mypage-section-title" style={{ marginTop: 28 }}>
-                    <i className="fa-solid fa-clipboard-check" /> 퀴즈 성적표
+                    <i className="fa-solid fa-clipboard-check" /> {t('admin.quizScorecard')}
                   </h2>
                   <div className="mypage-quiz-table-wrap">
                     <table className="mypage-quiz-table">
                       <thead>
                         <tr>
-                          <th>퀴즈</th>
-                          <th>1회차</th>
-                          <th>2회차</th>
-                          <th>3회차</th>
-                          <th>최종 상태</th>
-                          <th>최초 응시일</th>
-                          <th>최종 응시일</th>
+                          <th>{t('admin.quiz')}</th>
+                          <th>{t('admin.attempt1')}</th>
+                          <th>{t('admin.attempt2')}</th>
+                          <th>{t('admin.attempt3')}</th>
+                          <th>{t('admin.finalStatus')}</th>
+                          <th>{t('admin.firstDate')}</th>
+                          <th>{t('admin.lastDate')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -630,7 +644,7 @@ export default function AdminPage() {
                                 <td key={i} className="quiz-attempt-cell">
                                   {recent3[i] ? (
                                     <span className={`quiz-attempt-score ${recent3[i].score >= q.passingScore ? 'passed' : 'failed'}`}>
-                                      {recent3[i].score}점
+                                      {recent3[i].score}{lang === 'en' ? 'pts' : '점'}
                                     </span>
                                   ) : (
                                     <span className="quiz-attempt-score none">-</span>
@@ -639,15 +653,15 @@ export default function AdminPage() {
                               ))}
                               <td className="quiz-status-cell">
                                 {q.bestScore === undefined ? (
-                                  <span className="quiz-status not-taken">미응시</span>
+                                  <span className="quiz-status not-taken">{t('admin.notTaken')}</span>
                                 ) : q.passed ? (
-                                  <span className="quiz-status pass"><i className="fa-solid fa-circle-check" /> 통과</span>
+                                  <span className="quiz-status pass"><i className="fa-solid fa-circle-check" /> {t('admin.pass')}</span>
                                 ) : (
-                                  <span className="quiz-status fail"><i className="fa-solid fa-circle-xmark" /> 미통과</span>
+                                  <span className="quiz-status fail"><i className="fa-solid fa-circle-xmark" /> {t('admin.fail')}</span>
                                 )}
                               </td>
-                              <td className="quiz-date-cell">{formatDate(firstDate)}</td>
-                              <td className="quiz-date-cell">{formatDate(lastDate)}</td>
+                              <td className="quiz-date-cell">{formatDate(firstDate, lang)}</td>
+                              <td className="quiz-date-cell">{formatDate(lastDate, lang)}</td>
                             </tr>
                           )
                         })}

@@ -1,7 +1,9 @@
 export const quizzes = {
   basics: {
     title: '파이썬 기초 퀴즈',
+    titleEn: 'Python Basics Quiz',
     description: '변수, 자료형, 조건문, 반복문, 리스트 등 기초 지식을 테스트합니다',
+    descriptionEn: 'Test your knowledge of variables, data types, conditionals, loops, and lists',
     timeLimit: 600, // 10분
     passingScore: 70,
     questions: [
@@ -81,7 +83,9 @@ export const quizzes = {
 
   intermediate: {
     title: '파이썬 중급 퀴즈',
+    titleEn: 'Python Intermediate Quiz',
     description: 'OOP, 예외 처리, 파일 I/O, 컴프리헨션 등 중급 지식을 테스트합니다',
+    descriptionEn: 'Test your knowledge of OOP, exception handling, file I/O, and comprehensions',
     timeLimit: 600,
     passingScore: 70,
     questions: [
@@ -181,7 +185,9 @@ export const quizzes = {
 
   advanced: {
     title: '파이썬 고급 퀴즈',
+    titleEn: 'Python Advanced Quiz',
     description: '데코레이터, 제너레이터, 동시성 등 고급 주제를 테스트합니다',
+    descriptionEn: 'Test your knowledge of decorators, generators, concurrency, and more',
     timeLimit: 720, // 12분
     passingScore: 70,
     questions: [
@@ -289,7 +295,9 @@ export const quizzes = {
 
   applied: {
     title: '응용 (NumPy & Pandas) 퀴즈',
+    titleEn: 'Applied (NumPy & Pandas) Quiz',
     description: 'NumPy 배열 연산과 Pandas 데이터 처리 지식을 테스트합니다',
+    descriptionEn: 'Test your knowledge of NumPy array operations and Pandas data processing',
     timeLimit: 720,
     passingScore: 70,
     questions: [
@@ -437,7 +445,9 @@ export const quizzes = {
 
   'lib-standard': {
     title: '표준 라이브러리 퀴즈',
+    titleEn: 'Standard Library Quiz',
     description: 'os/sys, math/cmath, json, datetime 등 파이썬 표준 라이브러리 지식을 테스트합니다',
+    descriptionEn: 'Test your knowledge of os/sys, math/cmath, json, datetime standard libraries',
     timeLimit: 600,
     passingScore: 70,
     questions: [
@@ -549,7 +559,9 @@ export const quizzes = {
 
   'lib-turtle': {
     title: 'Turtle 그래픽 퀴즈',
+    titleEn: 'Turtle Graphics Quiz',
     description: 'turtle 모듈을 활용한 그래픽 프로그래밍 지식을 테스트합니다',
+    descriptionEn: 'Test your knowledge of graphics programming with the turtle module',
     timeLimit: 600,
     passingScore: 70,
     questions: [
@@ -666,7 +678,9 @@ export const quizzes = {
 
   'lib-data': {
     title: '데이터 분석 퀴즈',
+    titleEn: 'Data Analysis Quiz',
     description: 'NumPy, Pandas, Matplotlib/Seaborn 등 데이터 분석 라이브러리를 테스트합니다',
+    descriptionEn: 'Test your knowledge of NumPy, Pandas, Matplotlib/Seaborn data analysis libraries',
     timeLimit: 600,
     passingScore: 70,
     questions: [
@@ -793,7 +807,9 @@ export const quizzes = {
 
   'lib-ai': {
     title: 'AI/머신러닝 퀴즈',
+    titleEn: 'AI/ML Quiz',
     description: 'Scikit-learn, TensorFlow, PyTorch 등 AI/ML 라이브러리 지식을 테스트합니다',
+    descriptionEn: 'Test your knowledge of Scikit-learn, TensorFlow, PyTorch AI/ML libraries',
     timeLimit: 600,
     passingScore: 70,
     questions: [

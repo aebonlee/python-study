@@ -4,17 +4,15 @@ import { quizzes } from '../data/quizzes'
 import { badges } from '../data/badges'
 import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 import { useAuth } from '../contexts/AuthContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import BadgeCard from '../components/BadgeCard'
 
-const TEACHER_TABS = [
-  { key: 'classes', label: '클래스 관리', icon: 'fa-solid fa-chalkboard' },
-  { key: 'students', label: '학생 목록', icon: 'fa-solid fa-user-group' },
-  { key: 'stats', label: '학습 통계', icon: 'fa-solid fa-chart-pie' },
-]
-
-function formatDate(dateStr) {
+function formatDate(dateStr, lang) {
   if (!dateStr) return '-'
   const d = new Date(dateStr)
+  if (lang === 'en') {
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
 }
 
@@ -29,7 +27,14 @@ function generateClassCode() {
 
 export default function TeacherPage() {
   const { user } = useAuth()
+  const { t, lang, localizedField } = useLanguage()
   const [activeTab, setActiveTab] = useState('classes')
+
+  const TEACHER_TABS = [
+    { key: 'classes', label: t('teacher.classManagement'), icon: 'fa-solid fa-chalkboard' },
+    { key: 'students', label: t('teacher.studentList'), icon: 'fa-solid fa-user-group' },
+    { key: 'stats', label: t('teacher.learningStats'), icon: 'fa-solid fa-chart-pie' },
+  ]
 
   // Class management
   const [classes, setClasses] = useState([])
@@ -348,7 +353,7 @@ export default function TeacherPage() {
       const bestScore = data?.bestScore
       const attempts = data?.attempts || []
       const passed = bestScore !== undefined && bestScore >= (quiz.passingScore || 70)
-      return { id, title: quiz.title, bestScore, attempts, passed, passingScore: quiz.passingScore || 70 }
+      return { id, quiz, title: quiz.title, bestScore, attempts, passed, passingScore: quiz.passingScore || 70 }
     })
   }
 
@@ -409,7 +414,7 @@ export default function TeacherPage() {
     <div className="admin-page teacher-page">
       <div className="container">
         <h1 className="admin-title">
-          <i className="fa-solid fa-chalkboard-user" /> 선생님 대시보드
+          <i className="fa-solid fa-chalkboard-user" /> {t('teacher.title')}
         </h1>
 
         {/* Tab Navigation */}
@@ -429,7 +434,7 @@ export default function TeacherPage() {
         {activeTab === 'classes' && (
           <section className="admin-section">
             <h2 className="admin-section-title">
-              <i className="fa-solid fa-chalkboard" /> 클래스 관리
+              <i className="fa-solid fa-chalkboard" /> {t('teacher.classManagement')}
             </h2>
 
             {/* Create Class Form */}
@@ -437,7 +442,7 @@ export default function TeacherPage() {
               <input
                 type="text"
                 className="teacher-input"
-                placeholder="클래스 이름을 입력하세요"
+                placeholder={t('teacher.classNamePlaceholder')}
                 value={newClassName}
                 onChange={e => setNewClassName(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleCreateClass()}
@@ -449,9 +454,9 @@ export default function TeacherPage() {
                 disabled={!newClassName.trim() || creating}
               >
                 {creating ? (
-                  <><div className="loading-spinner-small" style={{ width: 16, height: 16, borderWidth: 2 }} /> 생성 중...</>
+                  <><div className="loading-spinner-small" style={{ width: 16, height: 16, borderWidth: 2 }} /> {t('teacher.creating')}</>
                 ) : (
-                  <><i className="fa-solid fa-plus" /> 클래스 생성</>
+                  <><i className="fa-solid fa-plus" /> {t('teacher.createClass')}</>
                 )}
               </button>
             </div>
@@ -460,12 +465,12 @@ export default function TeacherPage() {
             {classesLoading ? (
               <div className="admin-loading">
                 <div className="loading-spinner-small" style={{ width: 24, height: 24, borderWidth: 2 }} />
-                <span>클래스 불러오는 중...</span>
+                <span>{t('teacher.loadingClasses')}</span>
               </div>
             ) : classes.length === 0 ? (
               <div className="admin-empty">
                 <i className="fa-solid fa-chalkboard" />
-                <p>아직 생성한 클래스가 없습니다</p>
+                <p>{t('teacher.noClasses')}</p>
               </div>
             ) : (
               <div className="teacher-class-grid">
@@ -475,8 +480,8 @@ export default function TeacherPage() {
                       <h3 className="teacher-class-name">{cls.class_name}</h3>
                       {deleteConfirm === cls.id ? (
                         <div className="admin-delete-confirm">
-                          <button className="admin-btn-confirm" onClick={() => handleDeleteClass(cls.id)}>삭제</button>
-                          <button className="admin-btn-cancel" onClick={() => setDeleteConfirm(null)}>취소</button>
+                          <button className="admin-btn-confirm" onClick={() => handleDeleteClass(cls.id)}>{t('teacher.delete')}</button>
+                          <button className="admin-btn-cancel" onClick={() => setDeleteConfirm(null)}>{t('teacher.cancel')}</button>
                         </div>
                       ) : (
                         <button className="admin-btn-delete" onClick={() => setDeleteConfirm(cls.id)}>
@@ -485,7 +490,7 @@ export default function TeacherPage() {
                       )}
                     </div>
                     <div className="teacher-class-code-wrap">
-                      <span className="teacher-class-code-label">클래스 코드</span>
+                      <span className="teacher-class-code-label">{t('teacher.classCode')}</span>
                       <div className="teacher-class-code-row">
                         <span className="teacher-class-code">{cls.class_code}</span>
                         <button
@@ -493,12 +498,12 @@ export default function TeacherPage() {
                           onClick={() => handleCopyCode(cls.class_code)}
                         >
                           <i className={copiedCode === cls.class_code ? 'fa-solid fa-check' : 'fa-solid fa-copy'} />
-                          {copiedCode === cls.class_code ? '복사됨' : '복사'}
+                          {copiedCode === cls.class_code ? t('teacher.copied') : t('teacher.copy')}
                         </button>
                       </div>
                     </div>
                     <div className="teacher-class-meta">
-                      <span><i className="fa-solid fa-calendar" /> {formatDate(cls.created_at)}</span>
+                      <span><i className="fa-solid fa-calendar" /> {formatDate(cls.created_at, lang)}</span>
                     </div>
                   </div>
                 ))}
@@ -511,8 +516,8 @@ export default function TeacherPage() {
         {activeTab === 'students' && (
           <section className="admin-section">
             <h2 className="admin-section-title">
-              <i className="fa-solid fa-user-group" /> 학생 목록
-              <span className="admin-member-count">{filteredStudents.length}명</span>
+              <i className="fa-solid fa-user-group" /> {t('teacher.studentList')}
+              <span className="admin-member-count">{filteredStudents.length}{lang === 'en' ? '' : '명'}</span>
               <button className="admin-refresh-btn" onClick={fetchStudents} disabled={studentsLoading}>
                 <i className={`fa-solid fa-rotate-right${studentsLoading ? ' fa-spin' : ''}`} />
               </button>
@@ -526,7 +531,7 @@ export default function TeacherPage() {
                   value={selectedClassFilter}
                   onChange={e => setSelectedClassFilter(e.target.value)}
                 >
-                  <option value="all">전체 클래스</option>
+                  <option value="all">{t('teacher.allClasses')}</option>
                   {classes.map(cls => (
                     <option key={cls.id} value={cls.id}>{cls.class_name}</option>
                   ))}
@@ -537,23 +542,23 @@ export default function TeacherPage() {
             {studentsLoading ? (
               <div className="admin-loading">
                 <div className="loading-spinner-small" style={{ width: 24, height: 24, borderWidth: 2 }} />
-                <span>학생 불러오는 중...</span>
+                <span>{t('teacher.loadingStudents')}</span>
               </div>
             ) : filteredStudents.length === 0 ? (
               <div className="admin-empty">
                 <i className="fa-solid fa-users" />
-                <p>배정된 학생이 없습니다</p>
+                <p>{t('teacher.noStudents')}</p>
               </div>
             ) : (
               <div className="admin-table-wrap admin-members-table">
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th>구분</th>
-                      <th>이름</th>
-                      <th>이메일</th>
-                      <th>클래스</th>
-                      <th>가입일</th>
+                      <th>{t('teacher.num')}</th>
+                      <th>{t('teacher.name')}</th>
+                      <th>{t('teacher.email')}</th>
+                      <th>{t('teacher.class')}</th>
+                      <th>{t('teacher.joinDate')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -573,7 +578,7 @@ export default function TeacherPage() {
                             ))}
                           </div>
                         </td>
-                        <td className="admin-member-date">{formatDate(student.created_at)}</td>
+                        <td className="admin-member-date">{formatDate(student.created_at, lang)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -587,18 +592,18 @@ export default function TeacherPage() {
         {activeTab === 'stats' && (
           <section className="admin-section">
             <h2 className="admin-section-title">
-              <i className="fa-solid fa-chart-pie" /> 학습 통계
+              <i className="fa-solid fa-chart-pie" /> {t('teacher.learningStats')}
             </h2>
 
             {statsLoading ? (
               <div className="admin-loading">
                 <div className="loading-spinner-small" style={{ width: 24, height: 24, borderWidth: 2 }} />
-                <span>통계 불러오는 중...</span>
+                <span>{t('teacher.loadingStats')}</span>
               </div>
             ) : !statsData ? (
               <div className="admin-empty">
                 <i className="fa-solid fa-chart-bar" />
-                <p>배정된 학생이 없어 통계를 표시할 수 없습니다</p>
+                <p>{t('teacher.noStatsAvailable')}</p>
               </div>
             ) : (
               <>
@@ -608,51 +613,51 @@ export default function TeacherPage() {
                       <i className="fa-solid fa-users" />
                     </div>
                     <div className="admin-stat-value">{statsData.totalStudents}</div>
-                    <div className="admin-stat-label">총 학생 수</div>
+                    <div className="admin-stat-label">{t('teacher.totalStudents')}</div>
                   </div>
                   <div className="admin-stat-card">
                     <div className="admin-stat-icon" style={{ background: 'rgba(255,212,59,0.15)', color: '#D4A017' }}>
                       <i className="fa-solid fa-trophy" />
                     </div>
-                    <div className="admin-stat-value">{statsData.avgQuizScore}<span style={{ fontSize: 16, fontWeight: 400 }}>점</span></div>
-                    <div className="admin-stat-label">평균 퀴즈 점수</div>
+                    <div className="admin-stat-value">{statsData.avgQuizScore}<span style={{ fontSize: 16, fontWeight: 400 }}>{lang === 'en' ? 'pts' : '점'}</span></div>
+                    <div className="admin-stat-label">{t('teacher.avgQuizScore')}</div>
                   </div>
                   <div className="admin-stat-card">
                     <div className="admin-stat-icon" style={{ background: 'rgba(46,204,113,0.12)', color: '#2ecc71' }}>
                       <i className="fa-solid fa-book-open" />
                     </div>
                     <div className="admin-stat-value">{statsData.avgLessonCompletion}<span style={{ fontSize: 16, fontWeight: 400 }}>%</span></div>
-                    <div className="admin-stat-label">평균 레슨 완료율</div>
+                    <div className="admin-stat-label">{t('teacher.avgLessonCompletion')}</div>
                   </div>
                   <div className="admin-stat-card">
                     <div className="admin-stat-icon" style={{ background: 'rgba(155,89,182,0.12)', color: '#9b59b6' }}>
                       <i className="fa-solid fa-chalkboard" />
                     </div>
                     <div className="admin-stat-value">{classes.length}</div>
-                    <div className="admin-stat-label">총 클래스</div>
+                    <div className="admin-stat-label">{t('teacher.totalClasses')}</div>
                   </div>
                 </div>
 
                 {/* Per-class summary */}
                 {statsData.classSummary.length > 0 && (
                   <div className="admin-table-wrap" style={{ marginTop: 24 }}>
-                    <h3 className="admin-table-heading">클래스별 요약</h3>
+                    <h3 className="admin-table-heading">{t('teacher.classSummary')}</h3>
                     <table className="admin-table">
                       <thead>
                         <tr>
-                          <th>클래스</th>
-                          <th>학생 수</th>
-                          <th>평균 레슨 완료율</th>
-                          <th>평균 퀴즈 점수</th>
+                          <th>{t('teacher.classLabel')}</th>
+                          <th>{t('teacher.studentCount')}</th>
+                          <th>{t('teacher.avgLessonPct')}</th>
+                          <th>{t('teacher.avgQuizScoreLabel')}</th>
                         </tr>
                       </thead>
                       <tbody>
                         {statsData.classSummary.map(cls => (
                           <tr key={cls.id}>
                             <td style={{ fontWeight: 600 }}>{cls.class_name}</td>
-                            <td>{cls.studentCount}명</td>
+                            <td>{cls.studentCount}{lang === 'en' ? '' : '명'}</td>
                             <td>{cls.avgLessonPct}%</td>
-                            <td>{cls.avgQuizScore}점</td>
+                            <td>{cls.avgQuizScore}{lang === 'en' ? 'pts' : '점'}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -676,7 +681,7 @@ export default function TeacherPage() {
             {memberProgressLoading ? (
               <div className="admin-loading" style={{ minHeight: 200 }}>
                 <div className="loading-spinner-small" style={{ width: 28, height: 28, borderWidth: 3 }} />
-                <span>학생 데이터 불러오는 중...</span>
+                <span>{t('teacher.loadingStudentData')}</span>
               </div>
             ) : memberProgress && (() => {
               const progress = memberProgress
@@ -706,14 +711,14 @@ export default function TeacherPage() {
                       <h2 className="mypage-name">{selectedMember.name || '-'}</h2>
                       <p className="mypage-email">{selectedMember.email || '-'}</p>
                       <span className="mypage-provider">
-                        <i className={getProviderIcon(selectedMember.provider)} /> {getProviderLabel(selectedMember.provider)} 로그인
+                        <i className={getProviderIcon(selectedMember.provider)} /> {getProviderLabel(selectedMember.provider)} {t('teacher.loginSuffix')}
                       </span>
                     </div>
                   </div>
 
                   {/* Learning Stats */}
                   <h2 className="mypage-section-title">
-                    <i className="fa-solid fa-chart-line" /> 학습 통계
+                    <i className="fa-solid fa-chart-line" /> {t('teacher.learningStats')}
                   </h2>
                   <div className="mypage-stats-grid">
                     <div className="mypage-stat-card">
@@ -721,7 +726,7 @@ export default function TeacherPage() {
                         <i className="fa-solid fa-book-open" />
                       </div>
                       <div className="mypage-stat-value">{completedCount}<span className="mypage-stat-unit">/{totalLessons}</span></div>
-                      <div className="mypage-stat-label">완료 레슨</div>
+                      <div className="mypage-stat-label">{t('teacher.completedLessons')}</div>
                       <div className="mypage-stat-bar">
                         <div className="mypage-stat-bar-fill" style={{ width: `${progressPct}%`, background: '#4B8BBE' }} />
                       </div>
@@ -730,57 +735,57 @@ export default function TeacherPage() {
                       <div className="mypage-stat-icon" style={{ background: 'rgba(255,212,59,0.15)', color: '#D4A017' }}>
                         <i className="fa-solid fa-trophy" />
                       </div>
-                      <div className="mypage-stat-value">{quizAvg}<span className="mypage-stat-unit">점</span></div>
-                      <div className="mypage-stat-label">퀴즈 평균 점수</div>
+                      <div className="mypage-stat-value">{quizAvg}<span className="mypage-stat-unit">{lang === 'en' ? 'pts' : '점'}</span></div>
+                      <div className="mypage-stat-label">{t('teacher.quizAvgScore')}</div>
                     </div>
                     <div className="mypage-stat-card">
                       <div className="mypage-stat-icon" style={{ background: 'rgba(46,204,113,0.12)', color: '#2ecc71' }}>
                         <i className="fa-solid fa-play" />
                       </div>
-                      <div className="mypage-stat-value">{progress.code_runs || 0}<span className="mypage-stat-unit">회</span></div>
-                      <div className="mypage-stat-label">코드 실행 수</div>
+                      <div className="mypage-stat-value">{progress.code_runs || 0}<span className="mypage-stat-unit">{lang === 'en' ? 'runs' : '회'}</span></div>
+                      <div className="mypage-stat-label">{t('teacher.codeRunCount')}</div>
                     </div>
                     <div className="mypage-stat-card">
                       <div className="mypage-stat-icon" style={{ background: 'rgba(231,76,60,0.12)', color: '#e74c3c' }}>
                         <i className="fa-solid fa-fire" />
                       </div>
-                      <div className="mypage-stat-value">{progress.streak_count || 0}<span className="mypage-stat-unit">일</span></div>
-                      <div className="mypage-stat-label">연속 학습일</div>
+                      <div className="mypage-stat-value">{progress.streak_count || 0}<span className="mypage-stat-unit">{lang === 'en' ? 'days' : '일'}</span></div>
+                      <div className="mypage-stat-label">{t('teacher.streakDays')}</div>
                     </div>
                   </div>
 
                   {/* Earned Badges */}
                   <h2 className="mypage-section-title" style={{ marginTop: 28 }}>
-                    <i className="fa-solid fa-medal" /> 획득 배지 <span className="mypage-badge-count">{earnedBadgeData.length}개</span>
+                    <i className="fa-solid fa-medal" /> {t('teacher.earnedBadges')} <span className="mypage-badge-count">{earnedBadgeData.length}{lang === 'en' ? '' : '개'}</span>
                   </h2>
                   {earnedBadgeData.length > 0 ? (
                     <div className="mypage-badge-grid">
                       {earnedBadgeData.map(badge => (
-                        <BadgeCard key={badge.id} badge={badge} />
+                        <BadgeCard key={badge.id} badge={{ ...badge, title: localizedField(badge, 'title'), description: localizedField(badge, 'description') }} />
                       ))}
                     </div>
                   ) : (
                     <div className="mypage-empty">
                       <i className="fa-solid fa-lock" />
-                      <p>아직 획득한 배지가 없습니다.</p>
+                      <p>{t('teacher.noBadgesEarned')}</p>
                     </div>
                   )}
 
                   {/* Quiz Scores */}
                   <h2 className="mypage-section-title" style={{ marginTop: 28 }}>
-                    <i className="fa-solid fa-clipboard-check" /> 퀴즈 성적표
+                    <i className="fa-solid fa-clipboard-check" /> {t('teacher.quizScorecard')}
                   </h2>
                   <div className="mypage-quiz-table-wrap">
                     <table className="mypage-quiz-table">
                       <thead>
                         <tr>
-                          <th>퀴즈</th>
-                          <th>1회차</th>
-                          <th>2회차</th>
-                          <th>3회차</th>
-                          <th>최종 상태</th>
-                          <th>최초 응시일</th>
-                          <th>최종 응시일</th>
+                          <th>{t('teacher.quizScorecard').split(' ')[0] || (lang === 'en' ? 'Quiz' : '퀴즈')}</th>
+                          <th>{t('teacher.attempt1')}</th>
+                          <th>{t('teacher.attempt2')}</th>
+                          <th>{t('teacher.attempt3')}</th>
+                          <th>{t('teacher.finalStatus')}</th>
+                          <th>{t('teacher.firstDate')}</th>
+                          <th>{t('teacher.lastDate')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -790,12 +795,12 @@ export default function TeacherPage() {
                           const lastDate = q.attempts.length > 0 ? q.attempts[q.attempts.length - 1].date : null
                           return (
                             <tr key={q.id}>
-                              <td className="quiz-name-cell">{q.title}</td>
+                              <td className="quiz-name-cell">{localizedField(q.quiz, 'title')}</td>
                               {[0, 1, 2].map(i => (
                                 <td key={i} className="quiz-attempt-cell">
                                   {recent3[i] ? (
                                     <span className={`quiz-attempt-score ${recent3[i].score >= q.passingScore ? 'passed' : 'failed'}`}>
-                                      {recent3[i].score}점
+                                      {recent3[i].score}{lang === 'en' ? 'pts' : '점'}
                                     </span>
                                   ) : (
                                     <span className="quiz-attempt-score none">-</span>
@@ -804,15 +809,15 @@ export default function TeacherPage() {
                               ))}
                               <td className="quiz-status-cell">
                                 {q.bestScore === undefined ? (
-                                  <span className="quiz-status not-taken">미응시</span>
+                                  <span className="quiz-status not-taken">{t('teacher.notTaken')}</span>
                                 ) : q.passed ? (
-                                  <span className="quiz-status pass"><i className="fa-solid fa-circle-check" /> 통과</span>
+                                  <span className="quiz-status pass"><i className="fa-solid fa-circle-check" /> {t('teacher.pass')}</span>
                                 ) : (
-                                  <span className="quiz-status fail"><i className="fa-solid fa-circle-xmark" /> 미통과</span>
+                                  <span className="quiz-status fail"><i className="fa-solid fa-circle-xmark" /> {t('teacher.fail')}</span>
                                 )}
                               </td>
-                              <td className="quiz-date-cell">{formatDate(firstDate)}</td>
-                              <td className="quiz-date-cell">{formatDate(lastDate)}</td>
+                              <td className="quiz-date-cell">{formatDate(firstDate, lang)}</td>
+                              <td className="quiz-date-cell">{formatDate(lastDate, lang)}</td>
                             </tr>
                           )
                         })}

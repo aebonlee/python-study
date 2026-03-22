@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useProgress } from '../contexts/ProgressContext'
 import { useAuth } from '../contexts/AuthContext'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function shuffleOptions(options, correctIdx) {
   const indices = options.map((_, i) => i)
@@ -31,6 +32,7 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
   const [finished, setFinished] = useState(false)
   const { saveQuizScore } = useProgress()
   const { requireAuth } = useAuth()
+  const { t, lang, localizedField } = useLanguage()
 
   const questions = shuffledQuestions
 
@@ -92,13 +94,15 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
       <div className="quiz-result">
         <div className={`quiz-score-circle ${passed ? 'passed' : 'failed'}`}>
           <span className="score-number">{score}</span>
-          <span className="score-label">점</span>
+          <span className="score-label">{lang === 'en' ? 'pts' : '점'}</span>
         </div>
         <h2 className="quiz-result-title">
-          {passed ? '축하합니다! 통과했습니다!' : '아쉽지만 다시 도전해보세요'}
+          {passed ? t('quiz.congratsPass') : t('quiz.tryAgainMsg')}
         </h2>
         <p className="quiz-result-detail">
-          {questions.length}문제 중 {correct}문제 정답 (합격 기준: {quiz.passingScore}점)
+          {lang === 'en'
+            ? `${correct} of ${questions.length} correct (passing: ${quiz.passingScore}pts)`
+            : `${questions.length}문제 중 ${correct}문제 정답 (합격 기준: ${quiz.passingScore}점)`}
         </p>
 
         <div className="quiz-answers-review">
@@ -121,7 +125,7 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
           setTimeLeft(quiz.timeLimit)
           setFinished(false)
         }}>
-          다시 도전하기
+          {t('quiz.retryButton')}
         </button>
       </div>
     )
@@ -185,18 +189,18 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
 
       {showResult && q.explanation && (
         <div className="quiz-explanation">
-          <strong>해설:</strong> {q.explanation}
+          <strong>{t('quiz.explanationLabel')}</strong> {q.explanation}
         </div>
       )}
 
       <div className="quiz-actions">
         {!showResult ? (
           <button className="btn btn-primary" onClick={() => requireAuth(handleSubmit)} disabled={selected === null}>
-            제출하기
+            {t('quiz.submit')}
           </button>
         ) : (
           <button className="btn btn-primary" onClick={handleNext}>
-            {currentQ + 1 >= questions.length ? '결과 보기' : '다음 문제'}
+            {currentQ + 1 >= questions.length ? t('quiz.viewResult') : t('quiz.nextQuestion')}
           </button>
         )}
       </div>

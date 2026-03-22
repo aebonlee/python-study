@@ -1,4 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const CERT_CONFIG = {
   bronze: {
@@ -35,7 +36,7 @@ const CERT_CONFIG = {
   }
 }
 
-function generateCertificate(canvas, { userName, certificateType, issueDate, stats }) {
+function generateCertificate(canvas, { userName, certificateType, issueDate, stats, lang }) {
   const ctx = canvas.getContext('2d')
   const W = 800
   const H = 566
@@ -129,9 +130,10 @@ function generateCertificate(canvas, { userName, certificateType, issueDate, sta
   ctx.fillText('has successfully completed', W / 2, 300)
 
   // Certificate level
+  const certLabel = lang === 'en' ? config.labelEn : config.label
   ctx.fillStyle = config.borderColor
   ctx.font = 'bold 24px "Segoe UI", Arial, sans-serif'
-  ctx.fillText(`${config.emoji} ${config.label}`, W / 2, 338)
+  ctx.fillText(`${config.emoji} ${certLabel}`, W / 2, 338)
 
   // Course name
   ctx.fillStyle = '#555555'
@@ -142,7 +144,8 @@ function generateCertificate(canvas, { userName, certificateType, issueDate, sta
   if (stats) {
     ctx.fillStyle = '#666666'
     ctx.font = '14px "Segoe UI", Arial, sans-serif'
-    const statsText = `Lessons: ${stats.completedLessons}/${stats.totalLessons}  |  Quiz Avg: ${stats.quizAvg}\uc810  |  Progress: ${stats.progress}%`
+    const scoreUnit = lang === 'en' ? 'pts' : '\uc810'
+    const statsText = `Lessons: ${stats.completedLessons}/${stats.totalLessons}  |  Quiz Avg: ${stats.quizAvg}${scoreUnit}  |  Progress: ${stats.progress}%`
     ctx.fillText(statsText, W / 2, 400)
   }
 
@@ -184,11 +187,12 @@ function generateCertificate(canvas, { userName, certificateType, issueDate, sta
 
 export default function Certificate({ userName, certificateType, issueDate, stats }) {
   const canvasRef = useRef(null)
+  const { t, lang } = useLanguage()
 
   const draw = useCallback(() => {
     if (!canvasRef.current) return
-    generateCertificate(canvasRef.current, { userName, certificateType, issueDate, stats })
-  }, [userName, certificateType, issueDate, stats])
+    generateCertificate(canvasRef.current, { userName, certificateType, issueDate, stats, lang })
+  }, [userName, certificateType, issueDate, stats, lang])
 
   useEffect(() => {
     draw()
@@ -211,7 +215,7 @@ export default function Certificate({ userName, certificateType, issueDate, stat
         style={{ width: '100%', height: 'auto', borderRadius: 8 }}
       />
       <button className="cert-download-btn" onClick={handleDownload}>
-        <i className="fa-solid fa-download" /> PNG 다운로드
+        <i className="fa-solid fa-download" /> {t('cert.downloadPNG')}
       </button>
     </div>
   )

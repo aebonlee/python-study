@@ -1,16 +1,18 @@
 import { useBadge } from '../contexts/BadgeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import { badges } from '../data/badges'
 import BadgeCard from '../components/BadgeCard'
 
 export default function BadgeCollection() {
   const { earnedBadges } = useBadge()
+  const { t, localizedField } = useLanguage()
 
   const tiers = ['platinum', 'gold', 'silver', 'bronze']
   const tierNames = {
-    platinum: { icon: 'fa-solid fa-gem', label: '플래티넘', color: 'var(--primary-light)' },
-    gold: { icon: 'fa-solid fa-award', label: '골드', color: 'var(--tier-gold)' },
-    silver: { icon: 'fa-solid fa-award', label: '실버', color: 'var(--tier-silver)' },
-    bronze: { icon: 'fa-solid fa-award', label: '브론즈', color: 'var(--tier-bronze)' }
+    platinum: { icon: 'fa-solid fa-gem', label: t('badge.platinum'), color: 'var(--primary-light)' },
+    gold: { icon: 'fa-solid fa-award', label: t('badge.gold'), color: 'var(--tier-gold)' },
+    silver: { icon: 'fa-solid fa-award', label: t('badge.silver'), color: 'var(--tier-silver)' },
+    bronze: { icon: 'fa-solid fa-award', label: t('badge.bronze'), color: 'var(--tier-bronze)' }
   }
 
   const earned = badges.filter(b => earnedBadges.includes(b.id))
@@ -24,22 +26,22 @@ export default function BadgeCollection() {
             <div className="page-header-title-row">
               <span className="page-header-icon"><i className="fa-solid fa-trophy" /></span>
               <div>
-                <h1>도장깨기</h1>
-                <p>학습 성과를 배지로 수집하세요. 모든 배지를 모아 파이썬 마스터가 되어보세요!</p>
+                <h1>{t('badge.title')}</h1>
+                <p>{t('badge.subtitle')}</p>
               </div>
             </div>
             <div className="badge-overview-stats">
               <div className="badge-stat">
                 <span className="badge-stat-num">{earned.length}</span>
-                <span className="badge-stat-label">획득</span>
+                <span className="badge-stat-label">{t('badge.earned')}</span>
               </div>
               <div className="badge-stat">
                 <span className="badge-stat-num">{badges.length}</span>
-                <span className="badge-stat-label">전체</span>
+                <span className="badge-stat-label">{t('badge.total')}</span>
               </div>
               <div className="badge-stat">
                 <span className="badge-stat-num">{Math.round((earned.length / badges.length) * 100)}%</span>
-                <span className="badge-stat-label">달성률</span>
+                <span className="badge-stat-label">{t('badge.rate')}</span>
               </div>
             </div>
           </div>
@@ -53,7 +55,7 @@ export default function BadgeCollection() {
             <div className="badge-group">
               <h2 className="badge-group-title">
                 <span className="badge-group-icon"><i className="fa-solid fa-wand-magic-sparkles" /></span>
-                획득한 배지 ({earned.length})
+                {t('badge.earnedBadges')} ({earned.length})
               </h2>
               <div className="badge-grid">
                 {earned.map(badge => (
@@ -74,7 +76,7 @@ export default function BadgeCollection() {
                   <span className="badge-group-icon" style={{color: tierInfo.color}}>
                     <i className={tierInfo.icon} />
                   </span>
-                  {tierInfo.label} 등급 ({tierBadges.length}개 남음)
+                  {tierInfo.label} {t('badge.tier')} ({tierBadges.length}{t('badge.remaining')})
                 </h2>
                 <div className="badge-grid">
                   {tierBadges.map(badge => (

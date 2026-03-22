@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from 'react'
 import { useCodeRunner } from '../hooks/useCodeRunner'
 import { useAuth } from '../contexts/AuthContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import { stepMeta, stepLoaders } from '../data/pythonSteps/index.js'
 
 const PracticeEditor = lazy(() => import('../components/PracticeEditor'))
@@ -43,14 +44,15 @@ function generateInputVersion(code) {
 }
 
 /* ── input() / textinput() / numinput() 감지 ── */
-function detectInputPrompts(code) {
+function detectInputPrompts(code, lang) {
   const prompts = []
+  const defaultPrompt = lang === 'en' ? 'Enter value:' : '입력하세요:'
   for (const line of code.split('\n')) {
     if (line.trim().startsWith('#')) continue
     const inputMatches = [...line.matchAll(/(?<![a-zA-Z])input\s*\(\s*(?:["']([^"']*?)["'])?\s*\)/g)]
-    for (const m of inputMatches) prompts.push(m[1] || '입력하세요:')
+    for (const m of inputMatches) prompts.push(m[1] || defaultPrompt)
     const turtleMatches = [...line.matchAll(/(?:textinput|numinput)\s*\(\s*["'][^"']*["']\s*,\s*["']([^"']*?)["']/g)]
-    for (const m of turtleMatches) prompts.push(m[1] || '입력하세요:')
+    for (const m of turtleMatches) prompts.push(m[1] || defaultPrompt)
   }
   return prompts
 }
@@ -75,6 +77,7 @@ const StepCodeRunner = ({ example, onReset }) => {
   const [codeMode, setCodeMode] = useState('default')
   const { status, output, errorMsg, runCode, resetOutput } = useCodeRunner()
   const { requireAuth } = useAuth()
+  const { t, lang } = useLanguage()
 
   const inputVersion = useMemo(() => generateInputVersion(example.code), [example.code])
   const hasTabs = inputVersion !== null
@@ -105,7 +108,6 @@ const StepCodeRunner = ({ example, onReset }) => {
   const handleRun = useCallback(() => {
     setUnsupportedMsg(null)
     setWaitingForInput(false)
-    // type 필드 우선 → regex fallback
     const exType = example.type
     if (exType && exType !== 'runnable') {
       resetOutput()
@@ -118,7 +120,7 @@ const StepCodeRunner = ({ example, onReset }) => {
       setUnsupportedMsg(found.name)
       return
     }
-    const prompts = detectInputPrompts(code)
+    const prompts = detectInputPrompts(code, lang)
     if (prompts.length > 0) {
       resetOutput()
       setInputPrompts(prompts)
@@ -127,7 +129,7 @@ const StepCodeRunner = ({ example, onReset }) => {
       return
     }
     runCode(code)
-  }, [runCode, code, resetOutput, example.type])
+  }, [runCode, code, resetOutput, example.type, lang])
 
   const updateInputValue = useCallback((idx, val) => {
     setInputValues(prev => { const next = [...prev]; next[idx] = val; return next })
@@ -179,17 +181,17 @@ const StepCodeRunner = ({ example, onReset }) => {
         <span className="practice-runner-filename">
           <i className="fa-brands fa-python" /> {example.name}.py
           <span className="practice-runner-title">{example.title}</span>
-          {isModified && <span className="practice-modified-badge">수정됨</span>}
+          {isModified && <span className="practice-modified-badge">{t('practice.modified')}</span>}
         </span>
         <div className="practice-runner-actions">
           <button className={`editor-btn${copied ? ' copied' : ''}`} onClick={handleCopy}>
-            {copied ? <><i className="fa-solid fa-check" /> 복사됨</> : <><i className="fa-regular fa-clipboard" /> 복사</>}
+            {copied ? <><i className="fa-solid fa-check" /> {t('practice.copied')}</> : <><i className="fa-regular fa-clipboard" /> {t('practice.copy')}</>}
           </button>
           <button className="editor-btn" onClick={handleDownload}>
-            <i className="fa-solid fa-download" /> 다운로드
+            <i className="fa-solid fa-download" /> {t('practice.download')}
           </button>
           <button className="editor-btn" onClick={onReset}>
-            <i className="fa-solid fa-xmark" /> 닫기
+            <i className="fa-solid fa-xmark" /> {t('practice.close')}
           </button>
         </div>
       </div>
@@ -200,13 +202,13 @@ const StepCodeRunner = ({ example, onReset }) => {
             className={`practice-mode-tab${codeMode === 'default' ? ' active' : ''}`}
             onClick={() => switchMode('default')}
           >
-            <i className="fa-solid fa-play" /> 기본값 실행
+            <i className="fa-solid fa-play" /> {t('practice.defaultRun')}
           </button>
           <button
             className={`practice-mode-tab${codeMode === 'input' ? ' active' : ''}`}
             onClick={() => switchMode('input')}
           >
-            <i className="fa-solid fa-keyboard" /> 직접 입력
+            <i className="fa-solid fa-keyboard" /> {t('practice.directInput')}
           </button>
         </div>
       )}
@@ -218,36 +220,36 @@ const StepCodeRunner = ({ example, onReset }) => {
       <div className="practice-toolbar">
         <button className="editor-btn run-btn" onClick={() => requireAuth(handleRun)} disabled={isRunning}>
           {isRunning ? (
-            <><div className="loading-spinner-small" /> {status === 'loading' ? 'Python 로딩 중...' : '실행 중...'}</>
+            <><div className="loading-spinner-small" /> {status === 'loading' ? t('practice.loadingPython') : t('practice.running')}</>
           ) : (
-            <><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> 실행</>
+            <><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> {t('practice.run')}</>
           )}
         </button>
         <div className="practice-toolbar-right">
-          <button className="editor-btn" onClick={handleReset} disabled={isRunning}>초기화</button>
+          <button className="editor-btn" onClick={handleReset} disabled={isRunning}>{t('practice.reset')}</button>
           {hasOutput && (
-            <button className="editor-btn" onClick={handleClearOutput} disabled={isRunning}>출력 지우기</button>
+            <button className="editor-btn" onClick={handleClearOutput} disabled={isRunning}>{t('practice.clearOutput')}</button>
           )}
         </div>
       </div>
 
       {unsupportedMsg && (
         <div className="practice-output">
-          <div className="practice-output-header">실행 결과</div>
+          <div className="practice-output-header">{t('practice.outputResult')}</div>
           <div className="practice-unsupported">
             <i className="fa-solid fa-triangle-exclamation" />
             <div>
-              <strong>{unsupportedMsg}</strong> 모듈은 브라우저에서 실행할 수 없습니다.
-              <p>코드를 다운로드하여 PC의 Python IDLE 또는 VS Code에서 실행해 주세요.</p>
+              <strong>{unsupportedMsg}</strong> {t('practice.unsupportedModule')}
+              <p>{t('practice.unsupportedHint')}</p>
             </div>
           </div>
           <div className="practice-screenshot">
             <p className="practice-screenshot-label">
-              <i className="fa-solid fa-image" /> 실행 결과 예시
+              <i className="fa-solid fa-image" /> {t('practice.screenshotLabel')}
             </p>
             <img
               src={`/py/img/${example.name}.png?v=2`}
-              alt={`${example.name} 실행 결과`}
+              alt={`${example.name} output`}
               className="practice-screenshot-img"
               onError={(e) => { e.target.closest('.practice-screenshot').style.display = 'none' }}
             />
@@ -257,7 +259,7 @@ const StepCodeRunner = ({ example, onReset }) => {
 
       {waitingForInput && (
         <div className="practice-output">
-          <div className="practice-output-header"><i className="fa-solid fa-keyboard" /> 입력값 입력</div>
+          <div className="practice-output-header"><i className="fa-solid fa-keyboard" /> {t('practice.inputValues')}</div>
           <form className="practice-input-form" onSubmit={handleSubmitInputs}>
             {inputPrompts.map((prompt, i) => (
               <div key={i} className="practice-input-row">
@@ -271,7 +273,7 @@ const StepCodeRunner = ({ example, onReset }) => {
               </div>
             ))}
             <button type="submit" className="editor-btn run-btn">
-              <i className="fa-solid fa-play" /> 실행
+              <i className="fa-solid fa-play" /> {t('practice.run')}
             </button>
           </form>
         </div>
@@ -285,7 +287,7 @@ const StepCodeRunner = ({ example, onReset }) => {
 
         return (
           <div className="practice-output">
-            <div className="practice-output-header">실행 결과</div>
+            <div className="practice-output-header">{t('practice.outputResult')}</div>
             <div className={`practice-output-content${status === 'error' ? ' has-error' : ''}`}>
               {textOutput && <pre className="practice-stdout">{textOutput}</pre>}
               {svgHtml && (
@@ -293,7 +295,7 @@ const StepCodeRunner = ({ example, onReset }) => {
               )}
               {errorMsg && <pre className="practice-stderr">{errorMsg}</pre>}
               {!output && !errorMsg && status === 'done' && (
-                <span className="practice-no-output">(출력 없음)</span>
+                <span className="practice-no-output">{t('practice.noOutput')}</span>
               )}
             </div>
           </div>
@@ -316,6 +318,7 @@ const StepSection = ({ meta }) => {
   const [examples, setExamples] = useState(null)
   const [loading, setLoading] = useState(false)
   const [selectedIdx, setSelectedIdx] = useState(null)
+  const { t, lang } = useLanguage()
 
   useEffect(() => {
     let cancelled = false
@@ -327,22 +330,24 @@ const StepSection = ({ meta }) => {
     return () => { cancelled = true }
   }, [meta.step])
 
+  const title = lang === 'en' && meta.titleEn ? meta.titleEn : meta.title
+
   return (
     <div className="practice-step-layout">
       <aside className="practice-example-sidebar">
         <div className="practice-sidebar-header">
           <span className="practice-sidebar-icon"><i className={meta.icon} /></span>
           <div>
-            <h3>{meta.title}</h3>
+            <h3>{title}</h3>
             <span className="practice-file-count">
-              {examples ? examples.length : '..'}개 예제
+              {examples ? examples.length : '..'}{t('practice.exampleCount')}
             </span>
           </div>
         </div>
 
         {loading && (
           <div style={{ padding: '24px', textAlign: 'center', color: 'var(--text-light)', fontSize: '0.85rem' }}>
-            로딩...
+            {t('practice.loading')}
           </div>
         )}
 
@@ -370,21 +375,15 @@ const StepSection = ({ meta }) => {
         ) : (
           <div className="practice-runner-empty">
             <div className="practice-runner-empty-icon"><i className="fa-solid fa-hand-point-left" /></div>
-            <p>예제를 선택하면 코드를 편집하고 실행할 수 있습니다.</p>
+            <p>{t('practice.selectExample')}</p>
             {meta.step === 5 && (
-              <p className="practice-runner-empty-notice">
-                이 단계는 Python turtle 모듈의 동작을 이해할 수 있도록 SVG 기반으로 구현된 웹 실습 환경입니다. 실제 turtle 모듈과 문법이 동일하므로 학습한 내용을 로컬 Python 환경에서도 그대로 활용할 수 있습니다.
-              </p>
+              <p className="practice-runner-empty-notice">{t('practice.turtleBasicNotice')}</p>
             )}
             {meta.step === 6 && (
-              <p className="practice-runner-empty-notice">
-                이 단계의 예제들은 이벤트/애니메이션 등 turtle 고급 기능을 사용하므로 브라우저에서는 실행할 수 없습니다. 코드를 다운로드하여 로컬 Python 환경(IDLE, VS Code 등)에서 실행하세요.
-              </p>
+              <p className="practice-runner-empty-notice">{t('practice.turtleAdvNotice')}</p>
             )}
             {(meta.step === 98 || meta.step === 99) && (
-              <p className="practice-runner-empty-notice">
-                이 단계는 Python tkinter 모듈의 동작을 이해할 수 있도록 웹 환경에서 구현된 실습입니다. 실제 tkinter GUI 프로그래밍의 구조와 문법을 학습할 수 있으며, 로컬 Python 환경에서 동일한 코드를 실행할 수 있습니다.
-              </p>
+              <p className="practice-runner-empty-notice">{t('practice.tkinterNotice')}</p>
             )}
           </div>
         )}
@@ -396,6 +395,7 @@ const StepSection = ({ meta }) => {
 /* ── 메인 페이지 ── */
 export default function PythonPractice() {
   const [activeStep, setActiveStep] = useState(stepMeta[0].step)
+  const { t, lang } = useLanguage()
 
   return (
     <div className="practice-page">
@@ -405,8 +405,8 @@ export default function PythonPractice() {
             <div className="page-header-title-row">
               <span className="page-header-icon"><i className="fa-solid fa-laptop-code" /></span>
               <div>
-                <h1>파이썬 실습</h1>
-                <p>소스 코드를 확인하고 편집하여 직접 실행해 보세요</p>
+                <h1>{t('practice.title')}</h1>
+                <p>{t('practice.subtitle')}</p>
               </div>
             </div>
           </div>
@@ -424,8 +424,8 @@ export default function PythonPractice() {
                   onClick={() => setActiveStep(s.step)}
                 >
                   <span className="practice-tab-label">
-                    <span className="practice-tab-step">{`${s.step}단계`}</span>
-                    <span className="practice-tab-title">{s.title}</span>
+                    <span className="practice-tab-step">{lang === 'en' ? `${t('practice.stepLabel')} ${s.step}` : `${s.step}단계`}</span>
+                    <span className="practice-tab-title">{lang === 'en' && s.titleEn ? s.titleEn : s.title}</span>
                   </span>
                 </button>
               ))}
@@ -438,8 +438,8 @@ export default function PythonPractice() {
                   onClick={() => setActiveStep(s.step)}
                 >
                   <span className="practice-tab-label">
-                    <span className="practice-tab-step">{s.step >= 98 ? `심화 ${s.step - 97}` : `${s.step}단계`}</span>
-                    <span className="practice-tab-title">{s.title}</span>
+                    <span className="practice-tab-step">{s.step >= 98 ? (lang === 'en' ? `${t('practice.advancedLabel')} ${s.step - 97}` : `심화 ${s.step - 97}`) : (lang === 'en' ? `${t('practice.stepLabel')} ${s.step}` : `${s.step}단계`)}</span>
+                    <span className="practice-tab-title">{lang === 'en' && s.titleEn ? s.titleEn : s.title}</span>
                   </span>
                 </button>
               ))}

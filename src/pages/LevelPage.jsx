@@ -1,12 +1,14 @@
 import { useParams } from 'react-router-dom'
 import { lessons, levelInfo } from '../data/lessons'
 import { useProgress } from '../contexts/ProgressContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import LessonCard from '../components/LessonCard'
 import ProgressBar from '../components/ProgressBar'
 
 export default function LevelPage() {
   const { level } = useParams()
   const { getLevelProgress } = useProgress()
+  const { t, localizedField } = useLanguage()
   const info = levelInfo[level]
   const levelLessons = lessons[level] || []
   const progress = getLevelProgress(level)
@@ -16,7 +18,7 @@ export default function LevelPage() {
       <div className="not-found-page">
         <div className="not-found-content">
           <div className="not-found-code">404</div>
-          <h2 className="not-found-title">과정을 찾을 수 없습니다</h2>
+          <h2 className="not-found-title">{t('notFound.title')}</h2>
         </div>
       </div>
     )
@@ -30,13 +32,13 @@ export default function LevelPage() {
             <div className="page-header-title-row">
               <span className="page-header-icon"><i className={info.icon} /></span>
               <div>
-                <h1>{info.title} 과정</h1>
-                <p>{info.description}</p>
+                <h1>{localizedField(info, 'title')} {t('level.course')}</h1>
+                <p>{localizedField(info, 'description')}</p>
               </div>
             </div>
             <div className="page-header-progress">
               <ProgressBar value={progress} color="#ffffff" showPercent={true} size="lg" />
-              <span className="progress-detail">{levelLessons.filter(l => false).length} / {levelLessons.length} 완료</span>
+              <span className="progress-detail">{levelLessons.filter(l => false).length} / {levelLessons.length} {t('level.completed')}</span>
             </div>
           </div>
         </div>

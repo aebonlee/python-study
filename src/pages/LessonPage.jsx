@@ -4,12 +4,14 @@ import { lessons, levelInfo } from '../data/lessons'
 import { lessonContents } from '../data/lessonContents'
 import { useProgress } from '../contexts/ProgressContext'
 import { useAuth } from '../contexts/AuthContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import CodeEditor from '../components/CodeEditor'
 
 export default function LessonPage() {
   const { level, lessonId } = useParams()
   const { completedLessons, completeLesson, uncompleteLesson } = useProgress()
   const { requireAuth } = useAuth()
+  const { t, lang, localizedField } = useLanguage()
   const [activeSection, setActiveSection] = useState(0)
 
   const info = levelInfo[level]
@@ -28,8 +30,8 @@ export default function LessonPage() {
       <div className="not-found-page">
         <div className="not-found-content">
           <div className="not-found-code">404</div>
-          <h2 className="not-found-title">레슨을 찾을 수 없습니다</h2>
-          <Link to={`/${level}`} className="btn btn-primary">목록으로 돌아가기</Link>
+          <h2 className="not-found-title">{t('notFound.title')}</h2>
+          <Link to={`/${level}`} className="btn btn-primary">{t('lesson.backToLevel')}</Link>
         </div>
       </div>
     )
@@ -37,8 +39,10 @@ export default function LessonPage() {
 
   const sections = content?.sections || [
     {
-      title: lesson.title,
-      content: `이 레슨에서는 ${lesson.description}에 대해 학습합니다.`,
+      title: localizedField(lesson, 'title'),
+      content: lang === 'en'
+        ? `In this lesson, you will learn about ${localizedField(lesson, 'description')}.`
+        : `이 레슨에서는 ${lesson.description}에 대해 학습합니다.`,
       code: '# 예제 코드\nprint("Hello, Python!")',
       expectedOutput: 'Hello, Python!'
     }
@@ -50,21 +54,21 @@ export default function LessonPage() {
       <section className="page-header">
         <div className="container">
           <div className="breadcrumb">
-            <Link to="/">홈</Link>
+            <Link to="/">{lang === 'en' ? 'Home' : '홈'}</Link>
             <span>/</span>
-            <Link to={`/${level}`}>{info.title} 과정</Link>
+            <Link to={`/${level}`}>{localizedField(info, 'title')} {t('level.course')}</Link>
             <span>/</span>
-            <span>{lesson.title}</span>
+            <span>{localizedField(lesson, 'title')}</span>
           </div>
           <div className="page-header-content">
             <div className="page-header-title-row">
               <span className="page-header-icon"><i className={lesson.icon} /></span>
               <div>
-                <h1>{lesson.title}</h1>
-                <p>{lesson.description}</p>
+                <h1>{localizedField(lesson, 'title')}</h1>
+                <p>{localizedField(lesson, 'description')}</p>
                 <div className="lesson-meta-bar">
-                  <span><i className="fa-solid fa-clock" /> 약 {lesson.estimatedTime}분</span>
-                  <span><i className="fa-solid fa-clipboard" /> {lesson.topics?.length || 0}개 주제</span>
+                  <span><i className="fa-solid fa-clock" /> {lang === 'en' ? `~${lesson.estimatedTime}min` : `약 ${lesson.estimatedTime}분`}</span>
+                  <span><i className="fa-solid fa-clipboard" /> {lesson.topics?.length || 0} {lang === 'en' ? 'topics' : '개 주제'}</span>
                   <span>
                     {Array.from({ length: 3 }, (_, i) => (
                       <i key={i} className={i < lesson.difficulty ? 'fa-solid fa-star' : 'fa-regular fa-star'} />
@@ -80,7 +84,7 @@ export default function LessonPage() {
       <div className="lesson-layout container">
         {/* Sidebar */}
         <aside className="lesson-sidebar">
-          <h3>학습 목차</h3>
+          <h3>{lang === 'en' ? 'Contents' : '학습 목차'}</h3>
           <ul className="lesson-toc">
             {sections.map((sec, i) => (
               <li key={i}>
@@ -97,7 +101,7 @@ export default function LessonPage() {
 
           {lesson.topics && (
             <div className="lesson-topics-list">
-              <h4>학습 주제</h4>
+              <h4>{lang === 'en' ? 'Topics' : '학습 주제'}</h4>
               {lesson.topics.map((topic, i) => (
                 <span key={i} className="topic-tag">{topic}</span>
               ))}
@@ -115,7 +119,7 @@ export default function LessonPage() {
 
             {sections[activeSection]?.code && (
               <div className="lesson-practice">
-                <h3>직접 실습해보세요</h3>
+                <h3>{t('lesson.tryCode')}</h3>
                 <CodeEditor
                   key={`${lessonId}-${activeSection}`}
                   initialCode={sections[activeSection].code}
@@ -129,7 +133,7 @@ export default function LessonPage() {
               <div className="lesson-tip">
                 <span className="tip-icon"><i className="fa-solid fa-lightbulb" /></span>
                 <div>
-                  <strong>팁:</strong> {sections[activeSection].tip}
+                  <strong>{lang === 'en' ? 'Tip:' : '팁:'}</strong> {sections[activeSection].tip}
                 </div>
               </div>
             )}
@@ -144,8 +148,8 @@ export default function LessonPage() {
                     <polyline points="15 18 9 12 15 6"/>
                   </svg>
                   <div>
-                    <span className="nav-label">이전 레슨</span>
-                    <span className="nav-title">{prevLesson.title}</span>
+                    <span className="nav-label">{t('lesson.prevLesson')}</span>
+                    <span className="nav-title">{localizedField(prevLesson, 'title')}</span>
                   </div>
                 </Link>
               )}
@@ -153,12 +157,12 @@ export default function LessonPage() {
 
             {!isCompleted && (
               <button className="btn btn-accent complete-btn" onClick={() => requireAuth(() => completeLesson(lessonId))}>
-                <i className="fa-solid fa-check" /> 학습 완료
+                <i className="fa-solid fa-check" /> {t('lesson.completeLesson')}
               </button>
             )}
             {isCompleted && (
               <button className="btn btn-outline complete-toggle-btn" onClick={() => requireAuth(() => uncompleteLesson(lessonId))}>
-                <i className="fa-solid fa-rotate-left" /> 완료 취소
+                <i className="fa-solid fa-rotate-left" /> {lang === 'en' ? 'Undo Complete' : '완료 취소'}
               </button>
             )}
 
@@ -166,8 +170,8 @@ export default function LessonPage() {
               {nextLesson && (
                 <Link to={`/${level}/${nextLesson.id}`} className="lesson-nav-btn next">
                   <div>
-                    <span className="nav-label">다음 레슨</span>
-                    <span className="nav-title">{nextLesson.title}</span>
+                    <span className="nav-label">{t('lesson.nextLesson')}</span>
+                    <span className="nav-title">{localizedField(nextLesson, 'title')}</span>
                   </div>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <polyline points="9 18 15 12 9 6"/>

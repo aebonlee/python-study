@@ -1,23 +1,26 @@
 import { Link } from 'react-router-dom'
-
-const quickLinks = [
-  { path: '/python-learning', label: '파이썬 학습' },
-  { path: '/python-practice', label: '파이썬 실습' },
-  { path: '/basics', label: '기초 과정' },
-  { path: '/intermediate', label: '중급 과정' },
-  { path: '/advanced', label: '고급 과정' },
-  { path: '/applied', label: '응용 과정' },
-  { path: '/community', label: '커뮤니티' },
-  { path: '/quiz', label: '퀴즈 센터' },
-  { path: '/badges', label: '도장깨기' },
-]
-
-const familySites = [
-  { name: 'Coding Study', url: 'https://coding.dreamitbiz.com' },
-  { name: 'DreamIT Biz', url: 'https://dreamitbiz.com' },
-]
+import { useLanguage } from '../../contexts/LanguageContext'
 
 export default function Footer() {
+  const { t } = useLanguage()
+
+  const quickLinks = [
+    { path: '/python-learning', label: t('footer.pythonLearning') },
+    { path: '/python-practice', label: t('footer.pythonPractice') },
+    { path: '/basics', label: t('footer.basicsCourse') },
+    { path: '/intermediate', label: t('footer.intermediateCourse') },
+    { path: '/advanced', label: t('footer.advancedCourse') },
+    { path: '/applied', label: t('footer.appliedCourse') },
+    { path: '/community', label: t('footer.community') },
+    { path: '/quiz', label: t('footer.quizCenter') },
+    { path: '/badges', label: t('footer.badgeCollection') },
+  ]
+
+  const familySites = [
+    { name: 'Coding Study', url: 'https://coding.dreamitbiz.com' },
+    { name: 'DreamIT Biz', url: 'https://dreamitbiz.com' },
+  ]
+
   const handleFamilySite = (e) => {
     const url = e.target.value
     if (url) {
@@ -35,8 +38,8 @@ export default function Footer() {
             <h3 className="footer-logo">
               <span className="brand-py">Py</span><span className="brand-master">Master</span>
             </h3>
-            <p>파이썬 전문 학습 플랫폼</p>
-            <p className="footer-desc">기초부터 고급, NumPy·Pandas 실습까지 체계적으로 학습하세요.</p>
+            <p>{t('footer.brand')}</p>
+            <p className="footer-desc">{t('footer.desc')}</p>
             <div className="footer-family">
               <select onChange={handleFamilySite} defaultValue="">
                 <option value="" disabled>Family Site</option>
@@ -49,7 +52,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div className="footer-section">
-            <h4 className="footer-heading">바로가기</h4>
+            <h4 className="footer-heading">{t('footer.quickLinks')}</h4>
             <ul className="footer-quick-links">
               {quickLinks.map((item, i) => (
                 <li key={i}>
@@ -61,7 +64,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="footer-section">
-            <h4 className="footer-heading">Contact</h4>
+            <h4 className="footer-heading">{t('footer.contact')}</h4>
             <ul className="footer-contact">
               <li>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -79,27 +82,27 @@ export default function Footer() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
-                <span>카카오톡: aebon</span>
+                <span>{t('footer.kakao')}</span>
               </li>
               <li>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                 </svg>
-                <span>평일 09:00 ~ 18:00</span>
+                <span>{t('footer.weekday')}</span>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2026 드림아이티비즈(DreamIT Biz). All rights reserved.</p>
+          <p>{t('footer.copyright')}</p>
           <p className="footer-meta">
-            Designed by Ph.D Aebon Lee | 대표이사: 이애본 | 사업자등록번호: 601-45-20154 | 통신판매신고번호: 제2024-수원팔달-0584호 | 출판사 신고번호: 제2026-000026호
+            {t('footer.meta')}
           </p>
         </div>
       </div>
 
-      <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label="맨 위로">
+      <button className="back-to-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} aria-label={t('footer.backToTop')}>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="18 15 12 9 6 15"/>
         </svg>

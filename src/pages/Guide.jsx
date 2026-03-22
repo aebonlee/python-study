@@ -1,102 +1,47 @@
 import { Link } from 'react-router-dom'
-
-const sections = [
-  {
-    icon: 'fa-solid fa-right-to-bracket',
-    title: '로그인 / 회원가입',
-    content: 'Google 계정으로 간편하게 로그인할 수 있습니다. 로그인하면 학습 진도, 배지, 퀴즈 기록이 자동 저장됩니다.',
-    link: { to: '/login', label: '로그인 페이지로 이동' }
-  },
-  {
-    icon: 'fa-solid fa-book-open',
-    title: '파이썬 학습',
-    content: '파이썬의 역사, 특징, 설치 방법, 기본 문법 등을 체계적으로 정리한 학습 자료입니다. 이론 위주의 콘텐츠로 구성되어 있어 처음 시작할 때 읽어보세요.',
-    link: { to: '/python-learning', label: '파이썬 학습 보기' }
-  },
-  {
-    icon: 'fa-solid fa-layer-group',
-    title: '단계별 과정',
-    content: '기초 → 중급 → 고급 → 응용 4단계로 구성되어 있습니다. 각 단계에는 여러 레슨이 있으며, 순서대로 학습하는 것을 추천합니다.',
-    links: [
-      { to: '/basics', label: '기초' },
-      { to: '/intermediate', label: '중급' },
-      { to: '/advanced', label: '고급' },
-      { to: '/applied', label: '응용' }
-    ]
-  },
-  {
-    icon: 'fa-solid fa-puzzle-piece',
-    title: '라이브러리',
-    content: 'os/sys, math, json, datetime 등 표준 라이브러리와 NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow 등 데이터 분석·AI 라이브러리를 다룹니다.',
-    link: { to: '/intermediate', label: '라이브러리 학습' }
-  },
-  {
-    icon: 'fa-solid fa-terminal',
-    title: '파이썬 실습',
-    content: '브라우저에서 바로 파이썬 코드를 작성하고 실행할 수 있는 온라인 에디터입니다. 별도 설치 없이 코드 실행 결과를 확인할 수 있습니다.',
-    link: { to: '/python-practice', label: '실습 에디터 열기' }
-  },
-  {
-    icon: 'fa-solid fa-clipboard-question',
-    title: '퀴즈',
-    content: '각 단계별 퀴즈를 통해 학습한 내용을 점검할 수 있습니다. 합격 시 점수가 기록되며, 여러 번 도전할 수 있습니다.',
-    link: { to: '/quiz', label: '퀴즈 센터로 이동' }
-  },
-  {
-    icon: 'fa-solid fa-medal',
-    title: '도장깨기 (배지)',
-    content: '레슨 완료, 퀴즈 합격, 연속 학습 등 다양한 조건을 달성하면 배지를 획득합니다. 브론즈 → 실버 → 골드 → 플래티넘 4등급으로 구성됩니다.',
-    link: { to: '/badges', label: '배지 컬렉션 보기' }
-  },
-  {
-    icon: 'fa-solid fa-user-circle',
-    title: '마이페이지',
-    content: '내 학습 통계, 완료한 레슨 목록, 획득 배지, 퀴즈 성적을 한눈에 확인할 수 있습니다. 프로필 정보도 확인 가능합니다.',
-    link: { to: '/my', label: '마이페이지로 이동' }
-  },
-  {
-    icon: 'fa-solid fa-comments',
-    title: '커뮤니티',
-    content: 'Q&A, 자유게시판, 코드공유, 코드리뷰 카테고리로 나뉘어 있습니다. 질문을 올리거나 다른 학습자와 소통할 수 있습니다.',
-    link: { to: '/community', label: '커뮤니티 가기' }
-  },
-  {
-    icon: 'fa-solid fa-moon',
-    title: '다크모드',
-    content: '상단 네비게이션 바의 해/달 아이콘을 클릭하면 다크모드로 전환됩니다. 설정은 브라우저에 저장되어 다음 방문 시에도 유지됩니다.',
-    link: null
-  },
-  {
-    icon: 'fa-solid fa-chart-line',
-    title: '학습 진도',
-    content: '상단 네비게이션 바 오른쪽의 원형 진도 표시로 전체 학습 진행률을 실시간 확인할 수 있습니다. 레슨을 완료할 때마다 자동 업데이트됩니다.',
-    link: null
-  },
-  {
-    icon: 'fa-solid fa-chalkboard-user',
-    title: '선생님 안내',
-    content: '선생님 권한을 가진 사용자는 클래스 코드를 생성하여 학생들의 학습 현황을 관리할 수 있습니다. 선생님 권한은 관리자에게 요청하세요.',
-    link: null
-  }
-]
-
-const faqs = [
-  { q: '로그인 없이도 사용할 수 있나요?', a: '네, 학습 콘텐츠 열람과 코드 실습은 로그인 없이 가능합니다. 다만 진도 저장, 배지, 퀴즈 기록, 커뮤니티 글쓰기는 로그인이 필요합니다.' },
-  { q: '모바일에서도 이용할 수 있나요?', a: '네, 반응형 디자인으로 모바일 브라우저에서도 학습할 수 있습니다. 코드 실습은 넓은 화면에서 더 편리합니다.' },
-  { q: '학습 순서가 정해져 있나요?', a: '추천 순서는 기초 → 중급 → 고급 → 응용이지만, 원하는 주제를 자유롭게 선택하여 학습할 수 있습니다.' },
-  { q: '선생님 권한은 어떻게 받나요?', a: '관리자에게 요청하시면 선생님 역할을 부여받을 수 있습니다. 선생님은 클래스 코드를 생성하여 학생들을 관리할 수 있습니다.' },
-]
+import { useLanguage } from '../contexts/LanguageContext'
 
 export default function Guide() {
+  const { t } = useLanguage()
+
+  const sections = [
+    { icon: 'fa-solid fa-right-to-bracket', title: t('guide.section1Title'), content: t('guide.section1Content'), link: { to: '/login', label: t('guide.section1Link') } },
+    { icon: 'fa-solid fa-book-open', title: t('guide.section2Title'), content: t('guide.section2Content'), link: { to: '/python-learning', label: t('guide.section2Link') } },
+    { icon: 'fa-solid fa-layer-group', title: t('guide.section3Title'), content: t('guide.section3Content'),
+      links: [
+        { to: '/basics', label: t('nav.basics') },
+        { to: '/intermediate', label: t('nav.intermediate') },
+        { to: '/advanced', label: t('nav.advanced') },
+        { to: '/applied', label: t('nav.applied') },
+      ]
+    },
+    { icon: 'fa-solid fa-puzzle-piece', title: t('guide.section4Title'), content: t('guide.section4Content'), link: { to: '/intermediate', label: t('guide.section4Link') } },
+    { icon: 'fa-solid fa-terminal', title: t('guide.section5Title'), content: t('guide.section5Content'), link: { to: '/python-practice', label: t('guide.section5Link') } },
+    { icon: 'fa-solid fa-clipboard-question', title: t('guide.section6Title'), content: t('guide.section6Content'), link: { to: '/quiz', label: t('guide.section6Link') } },
+    { icon: 'fa-solid fa-medal', title: t('guide.section7Title'), content: t('guide.section7Content'), link: { to: '/badges', label: t('guide.section7Link') } },
+    { icon: 'fa-solid fa-user-circle', title: t('guide.section8Title'), content: t('guide.section8Content'), link: { to: '/my', label: t('guide.section8Link') } },
+    { icon: 'fa-solid fa-comments', title: t('guide.section9Title'), content: t('guide.section9Content'), link: { to: '/community', label: t('guide.section9Link') } },
+    { icon: 'fa-solid fa-moon', title: t('guide.section10Title'), content: t('guide.section10Content'), link: null },
+    { icon: 'fa-solid fa-chart-line', title: t('guide.section11Title'), content: t('guide.section11Content'), link: null },
+    { icon: 'fa-solid fa-chalkboard-user', title: t('guide.section12Title'), content: t('guide.section12Content'), link: null },
+  ]
+
+  const faqs = [
+    { q: t('guide.faq1Q'), a: t('guide.faq1A') },
+    { q: t('guide.faq2Q'), a: t('guide.faq2A') },
+    { q: t('guide.faq3Q'), a: t('guide.faq3A') },
+    { q: t('guide.faq4Q'), a: t('guide.faq4A') },
+  ]
+
   return (
     <div className="guide-page">
       <section className="guide-header">
         <div className="container">
           <h1 className="guide-title">
-            <i className="fa-solid fa-book" /> 사용설명서
+            <i className="fa-solid fa-book" /> {t('guide.title')}
           </h1>
           <p className="guide-subtitle">
-            PyMaster의 모든 기능을 안내합니다. 처음 방문하셨다면 아래 내용을 읽어보세요.
+            {t('guide.subtitle')}
           </p>
         </div>
       </section>
@@ -133,7 +78,7 @@ export default function Guide() {
 
           <div className="guide-faq">
             <h2 className="guide-faq-title">
-              <i className="fa-solid fa-circle-question" /> 자주 묻는 질문
+              <i className="fa-solid fa-circle-question" /> {t('guide.faqTitle')}
             </h2>
             <div className="guide-faq-list">
               {faqs.map((faq, i) => (

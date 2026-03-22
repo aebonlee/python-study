@@ -1,6 +1,7 @@
 import { useState, useRef, useMemo, useCallback } from 'react'
 import { useProgress } from '../contexts/ProgressContext'
 import { useAuth } from '../contexts/AuthContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import { useCodeRunner } from '../hooks/useCodeRunner'
 
 const SVG_MARKER = '__TURTLE_SVG__'
@@ -13,6 +14,7 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
   const textareaRef = useRef(null)
   const { incrementCodeRuns } = useProgress()
   const { requireAuth } = useAuth()
+  const { t, lang } = useLanguage()
   const { status, output, errorMsg, runCode, resetOutput } = useCodeRunner()
 
   const isRunning = status === 'loading' || status === 'running'
@@ -23,12 +25,12 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
     for (const line of code.split('\n')) {
       if (line.trim().startsWith('#')) continue
       const inputMatches = [...line.matchAll(/(?<![a-zA-Z])input\s*\(\s*(?:["']([^"']*?)["'])?\s*\)/g)]
-      for (const m of inputMatches) prompts.push(m[1] || '입력하세요:')
+      for (const m of inputMatches) prompts.push(m[1] || t('editor.inputPlaceholder'))
       const turtleMatches = [...line.matchAll(/(?:textinput|numinput)\s*\(\s*["'][^"']*["']\s*,\s*["']([^"']*?)["']/g)]
-      for (const m of turtleMatches) prompts.push(m[1] || '입력하세요:')
+      for (const m of turtleMatches) prompts.push(m[1] || t('editor.inputPlaceholder'))
     }
     return prompts
-  }, [code])
+  }, [code, t])
 
   // Check if code uses turtle
   const isTurtleCode = useMemo(() => {
@@ -105,7 +107,7 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
         <div className="editor-header-actions">
           {expectedOutput && (
             <button className={`editor-header-btn${showHint ? ' active' : ''}`} onClick={() => setShowHint(!showHint)}>
-              <i className="fa-solid fa-lightbulb" /> 힌트
+              <i className="fa-solid fa-lightbulb" /> {t('editor.hint')}
             </button>
           )}
         </div>
@@ -126,7 +128,7 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
           onKeyDown={handleKeyDown}
           spellCheck={false}
           disabled={isRunning}
-          placeholder="# 파이썬 코드를 입력하세요..."
+          placeholder={t('editor.placeholder')}
         />
       </div>
 
@@ -134,15 +136,15 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
       <div className="editor-toolbar-bottom">
         <button className="editor-btn run-btn" onClick={() => requireAuth(handleRun)} disabled={isRunning}>
           {isRunning ? (
-            <><div className="loading-spinner-small" /> {status === 'loading' ? 'Python 로딩 중...' : '실행 중...'}</>
+            <><div className="loading-spinner-small" /> {status === 'loading' ? t('editor.loadingPython') : t('editor.running')}</>
           ) : (
-            <><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> 실행</>
+            <><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> {t('editor.run')}</>
           )}
         </button>
         <div className="editor-toolbar-right">
-          <button className="editor-btn" onClick={handleReset} disabled={isRunning}>초기화</button>
+          <button className="editor-btn" onClick={handleReset} disabled={isRunning}>{t('editor.reset')}</button>
           {hasOutput && (
-            <button className="editor-btn" onClick={handleClearOutput} disabled={isRunning}>출력 지우기</button>
+            <button className="editor-btn" onClick={handleClearOutput} disabled={isRunning}>{t('editor.clearOutput')}</button>
           )}
         </div>
       </div>
@@ -150,14 +152,14 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
       {/* Hint */}
       {showHint && expectedOutput && (
         <div className="editor-hint">
-          <strong>예상 출력:</strong> <code>{expectedOutput}</code>
+          <strong>{t('editor.expectedOutput')}</strong> <code>{expectedOutput}</code>
         </div>
       )}
 
       {/* Input form - matches practice-input-form */}
       {waitingForInput && (
         <div className="editor-output">
-          <div className="editor-output-header"><i className="fa-solid fa-keyboard" /> 입력값 입력</div>
+          <div className="editor-output-header"><i className="fa-solid fa-keyboard" /> {t('editor.inputHeader')}</div>
           <form className="editor-input-form" onSubmit={handleSubmitInputs}>
             {inputPrompts.map((prompt, i) => (
               <div key={i} className="editor-input-row">
@@ -174,7 +176,7 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
               </div>
             ))}
             <button type="submit" className="editor-btn run-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> 실행
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> {t('editor.run')}
             </button>
           </form>
         </div>
@@ -184,9 +186,9 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
       {!waitingForInput && (status === 'done' || status === 'error' || output || errorMsg) && (
         <div className="editor-output">
           <div className="editor-output-header">
-            실행 결과
+            {t('editor.result')}
             {expectedOutput && textOutput && textOutput.trim() === expectedOutput.trim() && (
-              <span className="output-correct">정답!</span>
+              <span className="output-correct">{t('editor.correct')}</span>
             )}
           </div>
           <div className={`editor-output-content${status === 'error' ? ' has-error' : ''}`}>
@@ -196,7 +198,7 @@ export default function CodeEditor({ initialCode = '', expectedOutput = '', less
             )}
             {errorMsg && <pre className="editor-stderr">{errorMsg}</pre>}
             {!output && !errorMsg && status === 'done' && (
-              <span className="editor-no-output">(출력 없음)</span>
+              <span className="editor-no-output">{t('editor.noOutput')}</span>
             )}
           </div>
         </div>

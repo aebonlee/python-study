@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../../contexts/ThemeContext'
 import { useProgress } from '../../contexts/ProgressContext'
 import { useAuth } from '../../contexts/AuthContext'
+import { useLanguage } from '../../contexts/LanguageContext'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -11,6 +12,7 @@ export default function Navbar() {
   const { theme, toggleTheme } = useTheme()
   const { getTotalProgress } = useProgress()
   const { user, isAuthenticated, isAdmin, isTeacher, signOut } = useAuth()
+  const { t, toggleLang, lang } = useLanguage()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userMenuRef = useRef(null)
   const location = useLocation()
@@ -41,31 +43,31 @@ export default function Navbar() {
   const totalProgress = getTotalProgress()
 
   const navItems = [
-    { to: '/python-learning', label: '파이썬 학습' },
-    { to: '/basics', label: '기초' },
-    { to: '/intermediate', label: '중급' },
-    { to: '/advanced', label: '고급' },
-    { to: '/applied', label: '응용' },
-    { label: '라이브러리', grouped: true, children: [
-      { type: 'header', label: '기본 내장/표준 라이브러리', group: 'group-standard' },
+    { to: '/python-learning', label: t('nav.pythonLearning') },
+    { to: '/basics', label: t('nav.basics') },
+    { to: '/intermediate', label: t('nav.intermediate') },
+    { to: '/advanced', label: t('nav.advanced') },
+    { to: '/applied', label: t('nav.applied') },
+    { label: t('nav.libraries'), grouped: true, children: [
+      { type: 'header', label: t('nav.libStandard'), group: 'group-standard' },
       { to: '/intermediate/os-sys', label: 'os/sys', icon: 'fa-solid fa-terminal' },
       { to: '/intermediate/math-cmath', label: 'math/cmath', icon: 'fa-solid fa-square-root-variable' },
       { to: '/intermediate/json-module', label: 'json', icon: 'fa-solid fa-code' },
       { to: '/intermediate/datetime-module', label: 'datetime', icon: 'fa-solid fa-calendar-days' },
-      { type: 'header', label: '교육용·그래픽 라이브러리', group: 'group-education' },
+      { type: 'header', label: t('nav.libEducation'), group: 'group-education' },
       { to: '/intermediate/turtle-graphics', label: 'Turtle', icon: 'fa-solid fa-pen-ruler' },
-      { type: 'header', label: '데이터 분석·AI 라이브러리', group: 'group-data' },
+      { type: 'header', label: t('nav.libData'), group: 'group-data' },
       { to: '/applied/numpy-basics', label: 'NumPy', icon: 'fa-solid fa-calculator' },
       { to: '/applied/pandas-basics', label: 'Pandas', icon: 'fa-solid fa-table' },
       { to: '/applied/matplotlib-seaborn', label: 'Matplotlib', icon: 'fa-solid fa-chart-pie' },
       { to: '/applied/scikit-learn', label: 'Scikit-learn', icon: 'fa-solid fa-brain' },
       { to: '/applied/tensorflow-pytorch', label: 'TensorFlow', icon: 'fa-solid fa-network-wired' },
     ]},
-    { to: '/python-practice', label: '파이썬 실습' },
-    { to: '/quiz', label: '퀴즈' },
-    { to: '/badges', label: '도장깨기' },
-    { to: '/guide', label: '사용설명서' },
-    { to: '/community', label: '커뮤니티' },
+    { to: '/python-practice', label: t('nav.pythonPractice') },
+    { to: '/quiz', label: t('nav.quiz') },
+    { to: '/badges', label: t('nav.badges') },
+    { to: '/guide', label: t('nav.guide') },
+    { to: '/community', label: t('nav.community') },
   ]
 
   const userAvatar = user?.user_metadata?.avatar_url || user?.user_metadata?.picture
@@ -143,7 +145,7 @@ export default function Navbar() {
         </ul>
 
         <div className="nav-actions">
-          <div className="nav-progress-badge" title={`전체 진도: ${totalProgress}%`}>
+          <div className="nav-progress-badge" title={`${t('nav.totalProgress')}: ${totalProgress}%`}>
             <svg width="28" height="28" viewBox="0 0 36 36">
               <circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--border-light)" strokeWidth="3" />
               <circle
@@ -160,8 +162,18 @@ export default function Navbar() {
 
           <button
             className="theme-toggle"
+            onClick={toggleLang}
+            aria-label={t('nav.langToggle')}
+            title={lang === 'ko' ? 'English' : '한국어'}
+            style={{ fontWeight: 700, fontSize: '13px', minWidth: '32px' }}
+          >
+            {t('nav.langToggle')}
+          </button>
+
+          <button
+            className="theme-toggle"
             onClick={toggleTheme}
-            aria-label="테마 전환"
+            aria-label={t('nav.themeToggle')}
             data-mode={theme}
           >
             {theme === 'dark' ? (
@@ -181,7 +193,7 @@ export default function Navbar() {
               <button
                 className="nav-user-trigger"
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                aria-label="사용자 메뉴"
+                aria-label={t('nav.userMenu')}
               >
                 {userAvatar ? (
                   <img src={userAvatar} alt={userName} className="nav-user-avatar" />
@@ -199,34 +211,34 @@ export default function Navbar() {
                 </div>
                 <div className="nav-balloon-links">
                   <Link to="/my" className="nav-balloon-link" onClick={() => setUserMenuOpen(false)}>
-                    <i className="fa-solid fa-user-circle" /> 마이페이지
+                    <i className="fa-solid fa-user-circle" /> {t('nav.mypage')}
                   </Link>
                   {isAdmin && (
                     <Link to="/admin" className="nav-balloon-link" onClick={() => setUserMenuOpen(false)}>
-                      <i className="fa-solid fa-shield-halved" /> 관리자
+                      <i className="fa-solid fa-shield-halved" /> {t('nav.admin')}
                     </Link>
                   )}
                   {isTeacher && (
                     <Link to="/teacher" className="nav-balloon-link" onClick={() => setUserMenuOpen(false)}>
-                      <i className="fa-solid fa-chalkboard-user" /> 선생님
+                      <i className="fa-solid fa-chalkboard-user" /> {t('nav.teacher')}
                     </Link>
                   )}
                 </div>
                 <button className="nav-balloon-logout" onClick={() => { signOut(); setUserMenuOpen(false); navigate('/login') }}>
-                  <i className="fa-solid fa-right-from-bracket" /> 로그아웃
+                  <i className="fa-solid fa-right-from-bracket" /> {t('nav.logout')}
                 </button>
               </div>
             </div>
           ) : (
             <button className="nav-login-btn" onClick={() => navigate('/login')}>
-              <i className="fa-solid fa-user" /> 로그인
+              <i className="fa-solid fa-user" /> {t('nav.login')}
             </button>
           )}
 
           <button
             className={`mobile-toggle${mobileOpen ? ' active' : ''}`}
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="메뉴"
+            aria-label={t('nav.menu')}
           >
             <span /><span /><span />
           </button>

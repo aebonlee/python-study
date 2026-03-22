@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useProgress } from '../contexts/ProgressContext'
 import { useBadge } from '../contexts/BadgeContext'
+import { useLanguage } from '../contexts/LanguageContext'
 import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 import { badges } from '../data/badges'
 import { quizzes } from '../data/quizzes'
@@ -22,6 +23,7 @@ export default function MyPage() {
   const { user, isAuthenticated, requireAuth, signInWithGoogle, signInWithKakao } = useAuth()
   const { completedLessons, quizScores, codeRuns, streak, getTotalProgress, getQuizBestScore, getQuizAttempts } = useProgress()
   const { earnedBadges } = useBadge()
+  const { t, lang, localizedField } = useLanguage()
 
   // Class join state
   const [classCode, setClassCode] = useState('')
@@ -58,7 +60,7 @@ export default function MyPage() {
         return { ...cls, joined_at: membership?.joined_at }
       }))
     } catch (err) {
-      console.error('내 클래스 조회 오류:', err.message)
+      console.error('Class fetch error:', err.message)
     } finally {
       setClassesLoading(false)
     }
@@ -75,7 +77,6 @@ export default function MyPage() {
     setJoinLoading(true)
     setJoinMessage(null)
     try {
-      // Look up class by code
       const { data: cls, error: lookupError } = await supabase
         .from(TABLES.CLASSES)
         .select('*')
@@ -83,12 +84,11 @@ export default function MyPage() {
         .single()
 
       if (lookupError || !cls) {
-        setJoinMessage({ type: 'error', text: '존재하지 않는 클래스 코드입니다.' })
+        setJoinMessage({ type: 'error', text: t('mypage.invalidCode') })
         setJoinLoading(false)
         return
       }
 
-      // Check if already a member
       const { data: existing } = await supabase
         .from(TABLES.CLASS_MEMBERS)
         .select('id')
@@ -97,24 +97,23 @@ export default function MyPage() {
         .single()
 
       if (existing) {
-        setJoinMessage({ type: 'error', text: '이미 참여 중인 클래스입니다.' })
+        setJoinMessage({ type: 'error', text: t('mypage.alreadyJoined') })
         setJoinLoading(false)
         return
       }
 
-      // Join
       const { error: joinError } = await supabase
         .from(TABLES.CLASS_MEMBERS)
         .insert({ class_id: cls.id, student_id: user.id })
 
       if (joinError) throw joinError
 
-      setJoinMessage({ type: 'success', text: `"${cls.class_name}" 클래스에 참여했습니다!` })
+      setJoinMessage({ type: 'success', text: `"${cls.class_name}" ${t('mypage.joinSuccess')}` })
       setClassCode('')
       fetchMyClasses()
     } catch (err) {
-      console.error('클래스 참여 오류:', err.message)
-      setJoinMessage({ type: 'error', text: '클래스 참여 중 오류가 발생했습니다.' })
+      console.error('Class join error:', err.message)
+      setJoinMessage({ type: 'error', text: t('mypage.joinError') })
     } finally {
       setJoinLoading(false)
     }
@@ -132,7 +131,7 @@ export default function MyPage() {
       if (error) throw error
       fetchMyClasses()
     } catch (err) {
-      console.error('클래스 탈퇴 오류:', err.message)
+      console.error('Class leave error:', err.message)
     }
   }
 
@@ -154,27 +153,17 @@ export default function MyPage() {
     const bestScore = getQuizBestScore(id)
     const attempts = getQuizAttempts(id)
     const passed = bestScore !== undefined && bestScore >= (quiz.passingScore || 70)
-    return { id, title: quiz.title, bestScore, attempts, passed, passingScore: quiz.passingScore || 70 }
+    return { id, title: quiz.title, titleEn: quiz.titleEn, bestScore, attempts, passed, passingScore: quiz.passingScore || 70 }
   })
 
   // Certificate eligibility
   const CERT_REQUIREMENTS = {
-    bronze: {
-      levels: ['basics'],
-      quizzes: ['basics']
-    },
-    silver: {
-      levels: ['basics', 'intermediate'],
-      quizzes: ['basics', 'intermediate']
-    },
-    gold: {
-      levels: ['basics', 'intermediate', 'advanced'],
-      quizzes: ['basics', 'intermediate', 'advanced']
-    },
+    bronze: { levels: ['basics'], quizzes: ['basics'] },
+    silver: { levels: ['basics', 'intermediate'], quizzes: ['basics', 'intermediate'] },
+    gold: { levels: ['basics', 'intermediate', 'advanced'], quizzes: ['basics', 'intermediate', 'advanced'] },
     master: {
       levels: ['basics', 'intermediate', 'advanced', 'applied'],
-      quizzes: ['basics', 'intermediate', 'advanced', 'applied',
-                'lib-standard', 'lib-turtle', 'lib-data', 'lib-ai']
+      quizzes: ['basics', 'intermediate', 'advanced', 'applied', 'lib-standard', 'lib-turtle', 'lib-data', 'lib-ai']
     }
   }
 
@@ -212,8 +201,16 @@ export default function MyPage() {
 
   const [previewCert, setPreviewCert] = useState(null)
 
-  const levelLabels = { basics: '기초', intermediate: '중급', advanced: '고급', applied: '응용',
-    'lib-standard': '표준 라이브러리', 'lib-turtle': 'Turtle', 'lib-data': '데이터 분석', 'lib-ai': 'AI/ML' }
+  const levelLabels = {
+    basics: t('levelInfo.basics.title'),
+    intermediate: t('levelInfo.intermediate.title'),
+    advanced: t('levelInfo.advanced.title'),
+    applied: t('levelInfo.applied.title'),
+    'lib-standard': t('levelInfo.lib-standard.title'),
+    'lib-turtle': t('levelInfo.lib-turtle.title'),
+    'lib-data': t('levelInfo.lib-data.title'),
+    'lib-ai': t('levelInfo.lib-ai.title'),
+  }
 
   const getCertStats = () => {
     const attempted = quizList.filter(q => q.bestScore !== undefined)
@@ -228,14 +225,14 @@ export default function MyPage() {
       <div className="mypage">
         <div className="container">
           <h1 className="mypage-title">
-            <i className="fa-solid fa-user-circle" /> 마이페이지
+            <i className="fa-solid fa-user-circle" /> {t('mypage.title')}
           </h1>
           <div className="mypage-login-guide">
             <div className="mypage-login-guide-icon">
               <i className="fa-solid fa-lock" />
             </div>
-            <h2>로그인이 필요합니다</h2>
-            <p>마이페이지에서 학습 통계, 퀴즈 성적, 획득 배지를 확인하려면 로그인해 주세요.</p>
+            <h2>{t('mypage.loginRequired')}</h2>
+            <p>{t('mypage.loginGuide')}</p>
             <div className="mypage-login-buttons">
               <button className="login-btn google-btn" onClick={signInWithGoogle}>
                 <svg width="18" height="18" viewBox="0 0 24 24">
@@ -244,13 +241,13 @@ export default function MyPage() {
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
-                Google로 로그인
+                {t('mypage.googleLogin')}
               </button>
               <button className="login-btn kakao-btn" onClick={signInWithKakao}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="#3C1E1E">
                   <path d="M12 3C6.48 3 2 6.36 2 10.44c0 2.62 1.75 4.93 4.38 6.24l-1.12 4.16c-.1.35.3.64.6.44l4.97-3.27c.38.03.77.05 1.17.05 5.52 0 10-3.36 10-7.5S17.52 3 12 3z"/>
                 </svg>
-                Kakao로 로그인
+                {t('mypage.kakaoLogin')}
               </button>
             </div>
           </div>
@@ -263,7 +260,7 @@ export default function MyPage() {
     <div className="mypage">
       <div className="container">
         <h1 className="mypage-title">
-          <i className="fa-solid fa-user-circle" /> 마이페이지
+          <i className="fa-solid fa-user-circle" /> {t('mypage.title')}
         </h1>
 
         {/* Profile Card */}
@@ -281,7 +278,7 @@ export default function MyPage() {
             <h2 className="mypage-name">{userName}</h2>
             <p className="mypage-email">{userEmail}</p>
             <span className="mypage-provider">
-              <i className={providerIcon} /> {providerLabel} 로그인
+              <i className={providerIcon} /> {providerLabel} {t('mypage.loginLabel')}
             </span>
           </div>
         </section>
@@ -289,13 +286,13 @@ export default function MyPage() {
         {/* My Classes */}
         <section className="mypage-class-section">
           <h3 className="mypage-class-title">
-            <i className="fa-solid fa-chalkboard" /> 내 클래스
+            <i className="fa-solid fa-chalkboard" /> {t('mypage.myClass')}
           </h3>
           <div className="mypage-class-join-form">
             <input
               type="text"
               className="mypage-class-input"
-              placeholder="클래스 코드 입력"
+              placeholder={t('mypage.classCodePlaceholder')}
               value={classCode}
               onChange={e => setClassCode(e.target.value.toUpperCase().slice(0, 6))}
               onKeyDown={e => e.key === 'Enter' && handleJoinClass()}
@@ -306,7 +303,7 @@ export default function MyPage() {
               onClick={handleJoinClass}
               disabled={classCode.trim().length !== 6 || joinLoading}
             >
-              {joinLoading ? '참여 중...' : <><i className="fa-solid fa-right-to-bracket" /> 참여</>}
+              {joinLoading ? t('mypage.joining') : <><i className="fa-solid fa-right-to-bracket" /> {t('mypage.join')}</>}
             </button>
           </div>
           {joinMessage && (
@@ -316,7 +313,7 @@ export default function MyPage() {
           )}
           {myClasses.length > 0 && (
             <div className="mypage-class-list">
-              <div className="mypage-class-list-title">참여 중인 클래스</div>
+              <div className="mypage-class-list-title">{t('mypage.joinedClasses')}</div>
               {myClasses.map(cls => (
                 <div key={cls.id} className="mypage-class-item">
                   <div className="mypage-class-item-info">
@@ -329,7 +326,7 @@ export default function MyPage() {
                     className="mypage-class-leave-btn"
                     onClick={() => handleLeaveClass(cls.id)}
                   >
-                    탈퇴
+                    {t('mypage.leave')}
                   </button>
                 </div>
               ))}
@@ -337,7 +334,7 @@ export default function MyPage() {
           )}
           {myClasses.length === 0 && !classesLoading && (
             <div style={{ fontSize: 13, color: 'var(--text-light)', marginTop: 8 }}>
-              참여 중인 클래스가 없습니다. 선생님에게 받은 6자리 코드를 입력해 참여하세요.
+              {t('mypage.noClasses')}
             </div>
           )}
         </section>
@@ -345,7 +342,7 @@ export default function MyPage() {
         {/* Learning Stats */}
         <section className="mypage-section">
           <h2 className="mypage-section-title">
-            <i className="fa-solid fa-chart-line" /> 학습 통계
+            <i className="fa-solid fa-chart-line" /> {t('mypage.learningStats')}
           </h2>
           <div className="mypage-stats-grid">
             <div className="mypage-stat-card">
@@ -353,7 +350,7 @@ export default function MyPage() {
                 <i className="fa-solid fa-book-open" />
               </div>
               <div className="mypage-stat-value">{completedCount}<span className="mypage-stat-unit">/{totalLessons}</span></div>
-              <div className="mypage-stat-label">완료 레슨</div>
+              <div className="mypage-stat-label">{t('mypage.completedLessons')}</div>
               <div className="mypage-stat-bar">
                 <div className="mypage-stat-bar-fill" style={{ width: `${totalProgress}%`, background: '#4B8BBE' }} />
               </div>
@@ -366,23 +363,23 @@ export default function MyPage() {
                 {quizList.filter(q => q.bestScore !== undefined).length > 0
                   ? Math.round(quizList.filter(q => q.bestScore !== undefined).reduce((sum, q) => sum + q.bestScore, 0) / quizList.filter(q => q.bestScore !== undefined).length)
                   : 0}
-                <span className="mypage-stat-unit">점</span>
+                <span className="mypage-stat-unit">{t('mypage.points')}</span>
               </div>
-              <div className="mypage-stat-label">퀴즈 평균 점수</div>
+              <div className="mypage-stat-label">{t('mypage.quizAvgScore')}</div>
             </div>
             <div className="mypage-stat-card">
               <div className="mypage-stat-icon" style={{ background: 'rgba(46,204,113,0.12)', color: '#2ecc71' }}>
                 <i className="fa-solid fa-play" />
               </div>
-              <div className="mypage-stat-value">{codeRuns}<span className="mypage-stat-unit">회</span></div>
-              <div className="mypage-stat-label">코드 실행 수</div>
+              <div className="mypage-stat-value">{codeRuns}<span className="mypage-stat-unit">{t('mypage.times')}</span></div>
+              <div className="mypage-stat-label">{t('mypage.codeRunCount')}</div>
             </div>
             <div className="mypage-stat-card">
               <div className="mypage-stat-icon" style={{ background: 'rgba(231,76,60,0.12)', color: '#e74c3c' }}>
                 <i className="fa-solid fa-fire" />
               </div>
-              <div className="mypage-stat-value">{streak.count}<span className="mypage-stat-unit">일</span></div>
-              <div className="mypage-stat-label">연속 학습일</div>
+              <div className="mypage-stat-value">{streak.count}<span className="mypage-stat-unit">{t('mypage.days')}</span></div>
+              <div className="mypage-stat-label">{t('mypage.streakDays')}</div>
             </div>
           </div>
         </section>
@@ -390,7 +387,7 @@ export default function MyPage() {
         {/* Certificates */}
         <section className="mypage-section cert-section">
           <h2 className="mypage-section-title">
-            <i className="fa-solid fa-scroll" /> 수료증
+            <i className="fa-solid fa-scroll" /> {t('mypage.certificates')}
           </h2>
           <div className="cert-grid">
             {certStatus.map(cert => {
@@ -405,19 +402,19 @@ export default function MyPage() {
                   {cert.earned ? (
                     <>
                       <div className="cert-card-status earned">
-                        <i className="fa-solid fa-circle-check" /> 획득!
+                        <i className="fa-solid fa-circle-check" /> {t('mypage.earned')}
                       </div>
                       <button
                         className="cert-card-action-btn"
                         onClick={() => setPreviewCert(prev => prev === cert.type ? null : cert.type)}
                       >
-                        {previewCert === cert.type ? '닫기' : '보기 / 다운로드'}
+                        {previewCert === cert.type ? t('mypage.close') : t('mypage.viewDownload')}
                       </button>
                     </>
                   ) : (
                     <>
                       <div className="cert-card-status locked">
-                        <i className="fa-solid fa-lock" /> {cert.met}/{cert.total} 조건
+                        <i className="fa-solid fa-lock" /> {cert.met}/{cert.total} {t('mypage.conditions')}
                       </div>
                       <div className="cert-progress">
                         <div className="cert-progress-bar" style={{ width: `${Math.round(cert.met / cert.total * 100)}%` }} />
@@ -425,12 +422,12 @@ export default function MyPage() {
                       <div className="cert-card-missing">
                         {cert.missingLevels.map(l => (
                           <span key={l} className="cert-missing-tag level">
-                            {levelLabels[l] || l} 레슨 완료 필요
+                            {levelLabels[l] || l} {t('mypage.lessonRequired')}
                           </span>
                         ))}
                         {cert.missingQuizzes.map(q => (
                           <span key={q} className="cert-missing-tag quiz">
-                            {levelLabels[q] || q} 퀴즈 합격 필요
+                            {levelLabels[q] || q} {t('mypage.quizRequired')}
                           </span>
                         ))}
                       </div>
@@ -445,7 +442,7 @@ export default function MyPage() {
               <Certificate
                 userName={userName}
                 certificateType={previewCert}
-                issueDate={new Date().toLocaleDateString('ko-KR')}
+                issueDate={new Date().toLocaleDateString(lang === 'en' ? 'en-US' : 'ko-KR')}
                 stats={getCertStats()}
               />
             </div>
@@ -455,7 +452,7 @@ export default function MyPage() {
         {/* Earned Badges */}
         <section className="mypage-section">
           <h2 className="mypage-section-title">
-            <i className="fa-solid fa-medal" /> 획득 배지 <span className="mypage-badge-count">{earnedBadgeData.length}개</span>
+            <i className="fa-solid fa-medal" /> {t('mypage.earnedBadges')} <span className="mypage-badge-count">{earnedBadgeData.length}{t('mypage.badgeCount')}</span>
           </h2>
           {earnedBadgeData.length > 0 ? (
             <div className="mypage-badge-grid">
@@ -466,7 +463,7 @@ export default function MyPage() {
           ) : (
             <div className="mypage-empty">
               <i className="fa-solid fa-lock" />
-              <p>아직 획득한 배지가 없습니다. 학습을 시작해보세요!</p>
+              <p>{t('mypage.noBadges')}</p>
             </div>
           )}
         </section>
@@ -474,19 +471,19 @@ export default function MyPage() {
         {/* Quiz Scores */}
         <section className="mypage-section">
           <h2 className="mypage-section-title">
-            <i className="fa-solid fa-clipboard-check" /> 퀴즈 성적표
+            <i className="fa-solid fa-clipboard-check" /> {t('mypage.quizScorecard')}
           </h2>
           <div className="mypage-quiz-table-wrap">
             <table className="mypage-quiz-table">
               <thead>
                 <tr>
-                  <th>퀴즈</th>
-                  <th>1회차</th>
-                  <th>2회차</th>
-                  <th>3회차</th>
-                  <th>최종 상태</th>
-                  <th>최초 응시일</th>
-                  <th>최종 응시일</th>
+                  <th>{t('mypage.quizName')}</th>
+                  <th>{t('mypage.attempt1')}</th>
+                  <th>{t('mypage.attempt2')}</th>
+                  <th>{t('mypage.attempt3')}</th>
+                  <th>{t('mypage.finalStatus')}</th>
+                  <th>{t('mypage.firstAttemptDate')}</th>
+                  <th>{t('mypage.lastAttemptDate')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -496,12 +493,12 @@ export default function MyPage() {
                   const lastDate = q.attempts.length > 0 ? q.attempts[q.attempts.length - 1].date : null
                   return (
                     <tr key={q.id}>
-                      <td className="quiz-name-cell">{q.title}</td>
+                      <td className="quiz-name-cell">{localizedField(q, 'title')}</td>
                       {[0, 1, 2].map(i => (
                         <td key={i} className="quiz-attempt-cell">
                           {recent3[i] ? (
                             <span className={`quiz-attempt-score ${recent3[i].score >= q.passingScore ? 'passed' : 'failed'}`}>
-                              {recent3[i].score}점
+                              {recent3[i].score}{t('mypage.points') === '점' ? '점' : 'pts'}
                             </span>
                           ) : (
                             <span className="quiz-attempt-score none">-</span>
@@ -510,11 +507,11 @@ export default function MyPage() {
                       ))}
                       <td className="quiz-status-cell">
                         {q.bestScore === undefined ? (
-                          <span className="quiz-status not-taken">미응시</span>
+                          <span className="quiz-status not-taken">{t('mypage.notTaken')}</span>
                         ) : q.passed ? (
-                          <span className="quiz-status pass"><i className="fa-solid fa-circle-check" /> 통과</span>
+                          <span className="quiz-status pass"><i className="fa-solid fa-circle-check" /> {t('mypage.pass')}</span>
                         ) : (
-                          <span className="quiz-status fail"><i className="fa-solid fa-circle-xmark" /> 미통과</span>
+                          <span className="quiz-status fail"><i className="fa-solid fa-circle-xmark" /> {t('mypage.fail')}</span>
                         )}
                       </td>
                       <td className="quiz-date-cell">{formatDate(firstDate)}</td>

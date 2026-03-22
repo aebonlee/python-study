@@ -293,12 +293,81 @@
 
 ---
 
-## 빌드 결과 (최종)
-- CSS: 124.04KB
-- index.js: 453.43KB
+---
+
+## 9. 다국어(i18n) 한국어/영어 이중 언어 지원
+
+### 배경
+- 전체 사이트를 한국어/영어 이중 언어로 지원
+- 외부 라이브러리 없이 React Context API + localStorage 패턴으로 구현
+
+### 핵심 구조
+
+#### LanguageContext.jsx (신규)
+- `lang` 상태 (ko/en) + `t('key.subkey')` 번역 함수 + `localizedField(item, 'field')` 헬퍼
+- localStorage 키: `pymaster-lang`
+- `<html lang>` 속성 자동 설정
+
+#### 로케일 파일 (신규)
+- `src/locales/ko.js`: 한국어 UI 문자열 (~500키, 15개 네임스페이스)
+- `src/locales/en.js`: 영어 UI 문자열 (~500키, 동일 키 구조)
+
+#### Navbar 언어 토글
+- fa-globe 아이콘, 다크모드 토글 옆에 배치
+- 클릭 시 ko ↔ en 전환, 새로고침 후 유지
+
+### 번역 패턴
+1. **UI 라벨** → `t('key')` 함수
+2. **데이터 필드** → `localizedField(item, 'field')` + `fieldEn` 패턴
+3. **교육 콘텐츠** (파이썬 학습 레슨) → `lang === 'en'` 분기
+4. **코드 예제** → 번역 안 함 (파이썬 코드는 영어)
+5. **Fallback** → 영어 키 없으면 한국어 표시
+
+### 적용 범위 (약 45개 파일)
+
+| 카테고리 | 파일 |
+|----------|------|
+| 기반 구조 | LanguageContext.jsx, ko.js, en.js (신규), App.jsx |
+| 레이아웃 | Navbar.jsx, Footer.jsx |
+| 주요 페이지 | Home, Login, MyPage, Guide, BadgeCollection, QuizCenter |
+| 데이터 파일 | lessons.js, badges.js, quizzes.js (En 필드 추가) |
+| 관리자/선생님 | AdminPage, TeacherPage |
+| 커뮤니티 | Community, CommunityPost, CommunityWrite |
+| 공통 컴포넌트 | CodeEditor, QuizComponent, Certificate, ErrorBoundary, BadgeContext |
+| 파이썬 학습 | PythonPractice, PythonLearning, PythonLesson01~11 (11개) |
+| 기타 | LevelPage, LessonPage, NotFound |
+
+### 파이썬 학습 레슨 (11개) 영어 번역
+- PythonLesson01~11 전체 교육 콘텐츠 영어 번역
+- `useLanguage` 훅 + `lang === 'en'` 분기로 구현
+- 코드 블록은 한/영 공유 (파이썬 코드는 번역 불필요)
+- 각 레슨 파일 크기 약 1.5배 증가 (영어 콘텐츠 추가)
+
+### 변경 파일
+| 파일 | 변경 |
+|------|------|
+| `src/contexts/LanguageContext.jsx` | 신규 — 언어 상태 관리 Context |
+| `src/locales/ko.js` | 신규 — 한국어 UI 문자열 (~500키) |
+| `src/locales/en.js` | 신규 — 영어 UI 문자열 (~500키) |
+| `src/App.jsx` | LanguageProvider 추가 |
+| `src/components/layout/Navbar.jsx` | 언어 토글 + 메뉴 라벨 번역 |
+| `src/components/layout/Footer.jsx` | 저작권/링크 번역 |
+| `src/pages/*.jsx` (15개) | t() 함수 적용 |
+| `src/components/*.jsx` (4개) | t() 함수 적용 |
+| `src/data/lessons.js` | titleEn, descriptionEn 추가 |
+| `src/data/badges.js` | nameEn, descriptionEn 추가 |
+| `src/data/quizzes.js` | titleEn, descriptionEn, 문제 En 필드 추가 |
+| `src/pages/python-learning/PythonLesson01~11.jsx` | 전체 영어 번역 |
+
+---
+
+## 빌드 결과 (최종 — i18n 적용 후)
+- CSS: 124.77KB
+- index.js: 499.35KB (+46KB, locale 파일 포함)
+- PythonLesson03.js: 84.14KB (최대, 영어 콘텐츠 포함)
+- PythonLesson07.js: 72.71KB
+- PythonLesson01.js: 68.59KB
 - PracticeEditor.js: 28.67KB
-- PythonPractice.js: 13.69KB
-- 단계 데이터: step1~10 + step5adv + stepAdvanced + stepAdvanced2 (총 13개 청크)
-- MyPage.js: 18.01KB
+- PythonPractice.js: 13.34KB
 - 총 50개 청크
 - GitHub Pages 배포 완료

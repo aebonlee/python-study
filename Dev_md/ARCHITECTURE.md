@@ -63,10 +63,14 @@ D:\python-study\
 │   ├── config/
 │   │   └── supabase.js        # Supabase 클라이언트 (pymaster_ 접두사)
 │   ├── contexts/
-│   │   ├── AuthContext.jsx    # 인증 + 세션 관리 + 관리자/선생님 판별
+│   │   ├── AuthContext.jsx     # 인증 + 세션 관리 + 관리자/선생님 판별
 │   │   ├── ThemeContext.jsx    # 다크모드 상태
+│   │   ├── LanguageContext.jsx # 다국어 상태 (ko/en) + t() + localizedField()
 │   │   ├── ProgressContext.jsx # 학습 진도 상태
-│   │   └── BadgeContext.jsx   # 배지 상태
+│   │   └── BadgeContext.jsx    # 배지 상태
+│   ├── locales/
+│   │   ├── ko.js              # 한국어 UI 문자열 (~500키)
+│   │   └── en.js              # 영어 UI 문자열 (~500키)
 │   ├── data/
 │   │   ├── lessons.js         # 레슨 메타데이터 (FA 아이콘 클래스)
 │   │   ├── lessonContents.js  # 레슨 교육 컨텐츠
@@ -121,10 +125,11 @@ D:\python-study\
 App
  └── ErrorBoundary (전역)
       └── ThemeProvider (테마 상태)
-           └── AuthProvider (인증 상태)
-                └── ProgressProvider (학습 진도)
-                     └── BadgeProvider (배지 시스템)
-                          └── AppLayout
+           └── LanguageProvider (다국어 상태)
+                └── AuthProvider (인증 상태)
+                     └── ProgressProvider (학습 진도)
+                          └── BadgeProvider (배지 시스템)
+                               └── AppLayout
                                ├── Navbar (인증 UI 포함)
                                ├── ErrorBoundary (페이지별)
                                │    └── Suspense (lazy loading)
@@ -135,6 +140,7 @@ App
 ### 데이터 흐름
 - **AuthContext**: Supabase OAuth 인증 (Google/Kakao), 30분 세션 관리, isAdmin 판별, DB 기반 isTeacher (role 컬럼 조회)
 - **ThemeContext**: light/dark 테마 토글, HTML data-theme 속성 제어
+- **LanguageContext**: ko/en 언어 토글, t() 번역 함수, localizedField() 데이터 번역, HTML lang 속성 제어
 - **ProgressContext**: 완료 레슨, 퀴즈 점수, 코드 실행 수, 스트릭 관리
 - **BadgeContext**: 배지 조건 평가, 획득 알림, 배지 목록 관리
 
@@ -142,6 +148,7 @@ App
 | 키 | 용도 | 저장소 |
 |----|------|--------|
 | `pymaster-theme` | 테마 설정 | localStorage |
+| `pymaster-lang` | 언어 설정 (ko/en) | localStorage |
 | `pymaster-progress` | 학습 진도 | localStorage + Supabase 동기화 |
 | `pymaster-badges` | 획득 배지 | localStorage + Supabase 동기화 |
 | `pymaster-session-expiry` | 세션 만료 시각 | localStorage |
@@ -189,7 +196,7 @@ App
 
 ### Navbar 구조 (1열 + 라이브러리 드롭다운 3카테고리)
 ```
-파이썬 학습 | 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 파이썬 실습 | 퀴즈 | 도장깨기 | 사용설명서 | 커뮤니티 | [진도] [테마] [로그인/아바타]
+파이썬 학습 | 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 파이썬 실습 | 퀴즈 | 도장깨기 | 사용설명서 | 커뮤니티 | [진도] [테마] [언어🌐] [로그인/아바타]
                            └→ [기본 내장/표준 라이브러리]
                               os/sys / math/cmath / json / datetime
                               [교육용·그래픽 라이브러리]
@@ -229,21 +236,21 @@ App
 빌드 결과 (React.lazy + Suspense, 총 50개 청크):
 | 청크 | 크기 | 내용 |
 |------|------|------|
-| index.js | 453KB | React, Router, Contexts, Supabase |
-| index.css | 124KB | CSS 18개 파일 통합 |
-| LessonPage.js | 90KB | 레슨 페이지 + 컨텐츠 + TurtleCanvas (35개 레슨) |
-| PythonLesson03.js | 53KB | 파이썬 학습 03: Data Type (최대) |
-| PythonLesson07.js | 50KB | 파이썬 학습 07: IF 조건문 |
-| PythonLesson04.js | 47KB | 파이썬 학습 04: 입력-처리-출력 |
-| PythonLesson08.js | 44KB | 파이썬 학습 08: 반복문 |
-| PythonLesson09.js | 44KB | 파이썬 학습 09: 함수 |
-| PythonLesson06.js | 44KB | 파이썬 학습 06: 순서도 |
-| PythonLesson10.js | 38KB | 파이썬 학습 10: 예외처리 |
-| PythonLesson01.js | 38KB | 파이썬 학습 01: 실습환경 |
-| PythonLesson05.js | 35KB | 파이썬 학습 05: Turtle |
-| PythonLesson02.js | 35KB | 파이썬 학습 02: 입출력 |
-| quizzes.js | 33KB | 퀴즈 데이터 (88문제) |
-| PythonLesson11.js | 32KB | 파이썬 학습 11: 리스트 |
+| index.js | 499KB | React, Router, Contexts, Supabase, Locales |
+| index.css | 125KB | CSS 18개 파일 통합 |
+| LessonPage.js | 91KB | 레슨 페이지 + 컨텐츠 + TurtleCanvas (35개 레슨) |
+| PythonLesson03.js | 84KB | 파이썬 학습 03: Data Type (최대, 한/영) |
+| PythonLesson07.js | 73KB | 파이썬 학습 07: IF 조건문 (한/영) |
+| PythonLesson09.js | 69KB | 파이썬 학습 09: 함수 (한/영) |
+| PythonLesson01.js | 69KB | 파이썬 학습 01: 실습환경 (한/영) |
+| PythonLesson04.js | 67KB | 파이썬 학습 04: 입력-처리-출력 (한/영) |
+| PythonLesson06.js | 66KB | 파이썬 학습 06: 순서도 (한/영) |
+| PythonLesson08.js | 65KB | 파이썬 학습 08: 반복문 (한/영) |
+| PythonLesson10.js | 60KB | 파이썬 학습 10: 예외처리 (한/영) |
+| PythonLesson05.js | 54KB | 파이썬 학습 05: Turtle (한/영) |
+| PythonLesson02.js | 53KB | 파이썬 학습 02: 입출력 (한/영) |
+| PythonLesson11.js | 46KB | 파이썬 학습 11: 리스트 (한/영) |
+| quizzes.js | 34KB | 퀴즈 데이터 (88문제, 한/영) |
 | PracticeEditor.js | 29KB | PrismJS 구문 강조 에디터 (실습용) |
 | TeacherPage.js | 19KB | 선생님 대시보드 (클래스/학생/통계) |
 | MyPage.js | 18KB | 마이페이지 + 수료증 + 클래스 참여 |

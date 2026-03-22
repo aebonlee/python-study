@@ -1,14 +1,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { useCommunity } from '../../hooks/useCommunity'
-
-const CATEGORIES = [
-  { key: 'qna', label: '질문답변', color: 'var(--info)' },
-  { key: 'free', label: '자유게시판', color: 'var(--success)' },
-  { key: 'code', label: '코드공유', color: 'var(--primary)' },
-  { key: 'review', label: '학습후기', color: 'var(--warning)' },
-]
 
 function renderPreview(content) {
   const parts = content.split(/(```(\w*)\n[\s\S]*?```)/g)
@@ -57,7 +51,15 @@ export default function CommunityWrite() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { user, isAuthenticated, requireAuth } = useAuth()
+  const { t, lang } = useLanguage()
   const { fetchPost, createPost, updatePost, post, error } = useCommunity()
+
+  const CATEGORIES = [
+    { key: 'qna', label: t('community.qna'), color: 'var(--info)' },
+    { key: 'free', label: t('community.free'), color: 'var(--success)' },
+    { key: 'code', label: t('community.code'), color: 'var(--primary)' },
+    { key: 'review', label: t('community.review'), color: 'var(--warning)' },
+  ]
 
   const editId = searchParams.get('edit')
   const isEdit = !!editId
@@ -90,10 +92,10 @@ export default function CommunityWrite() {
   }, [isEdit, post])
 
   const insertCodeBlock = useCallback(() => {
-    const codeTemplate = '\n```python\n# 여기에 코드를 작성하세요\n\n```\n'
+    const codeTemplate = `\n\`\`\`python\n# ${t('community.codeComment')}\n\n\`\`\`\n`
     setContent(prev => prev + codeTemplate)
     setShowPreview(false)
-  }, [])
+  }, [t])
 
   const handleTagAdd = (e) => {
     if (e.key === 'Enter') {
@@ -107,7 +109,7 @@ export default function CommunityWrite() {
   }
 
   const handleTagRemove = (tagToRemove) => {
-    setTags(prev => prev.filter(t => t !== tagToRemove))
+    setTags(prev => prev.filter(tg => tg !== tagToRemove))
   }
 
   const handleSubmit = async (e) => {
@@ -135,13 +137,13 @@ export default function CommunityWrite() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="15 18 9 12 15 6"/>
               </svg>
-              돌아가기
+              {t('community.goBack')}
             </button>
             <div className="page-header-title-row">
               <span className="page-header-icon"><i className="fa-solid fa-pen" /></span>
               <div>
-                <h1>{isEdit ? '글 수정' : '글 작성'}</h1>
-                <p>커뮤니티에 새 글을 {isEdit ? '수정' : '작성'}합니다</p>
+                <h1>{isEdit ? t('community.editTitle') : t('community.writeTitle')}</h1>
+                <p>{isEdit ? t('community.editSubtitle') : t('community.writeSubtitle')}</p>
               </div>
             </div>
           </div>
@@ -154,7 +156,7 @@ export default function CommunityWrite() {
             <form className="community-write-card" onSubmit={handleSubmit}>
               {/* Category */}
               <div className="community-form-group">
-                <label className="community-form-label">카테고리</label>
+                <label className="community-form-label">{t('community.categoryLabel')}</label>
                 <div className="community-category-selector">
                   {CATEGORIES.map(cat => (
                     <button
@@ -172,11 +174,11 @@ export default function CommunityWrite() {
 
               {/* Title */}
               <div className="community-form-group">
-                <label className="community-form-label">제목</label>
+                <label className="community-form-label">{t('community.titleLabel')}</label>
                 <input
                   type="text"
                   className="community-form-input"
-                  placeholder="제목을 입력하세요"
+                  placeholder={t('community.titlePlaceholder')}
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   maxLength={200}
@@ -185,32 +187,32 @@ export default function CommunityWrite() {
 
               {/* Content */}
               <div className="community-form-group">
-                <label className="community-form-label">내용</label>
+                <label className="community-form-label">{t('community.contentLabel')}</label>
                 <div className="community-editor-toolbar">
                   <button
                     type="button"
                     className="community-toolbar-btn"
                     onClick={insertCodeBlock}
-                    title="코드 블록 삽입"
+                    title={t('community.codeInsert')}
                   >
-                    <i className="fa-solid fa-code" /> 코드 삽입
+                    <i className="fa-solid fa-code" /> {t('community.codeInsert')}
                   </button>
                   <button
                     type="button"
                     className={`community-toolbar-btn${showPreview ? ' active' : ''}`}
                     onClick={() => setShowPreview(!showPreview)}
                   >
-                    <i className="fa-solid fa-eye" /> {showPreview ? '편집' : '미리보기'}
+                    <i className="fa-solid fa-eye" /> {showPreview ? t('community.editing') : t('community.preview')}
                   </button>
                 </div>
                 {showPreview ? (
                   <div className="community-preview">
-                    {content ? renderPreview(content) : <p style={{ color: 'var(--text-light)' }}>내용을 입력하면 미리보기가 표시됩니다.</p>}
+                    {content ? renderPreview(content) : <p style={{ color: 'var(--text-light)' }}>{t('community.previewEmpty')}</p>}
                   </div>
                 ) : (
                   <textarea
                     className="community-textarea"
-                    placeholder="내용을 입력하세요. 코드 블록은 ```python ... ``` 으로 감싸주세요."
+                    placeholder={t('community.contentPlaceholder')}
                     value={content}
                     onChange={e => setContent(e.target.value)}
                   />
@@ -219,7 +221,7 @@ export default function CommunityWrite() {
 
               {/* Tags */}
               <div className="community-form-group">
-                <label className="community-form-label">태그 (최대 5개)</label>
+                <label className="community-form-label">{t('community.tagsLabel')}</label>
                 <div className="community-tag-input-wrapper">
                   {tags.map(tag => (
                     <span key={tag} className="community-tag-item">
@@ -231,14 +233,14 @@ export default function CommunityWrite() {
                     <input
                       type="text"
                       className="community-tag-input"
-                      placeholder="태그 입력 후 Enter"
+                      placeholder={t('community.tagPlaceholder')}
                       value={tagInput}
                       onChange={e => setTagInput(e.target.value)}
                       onKeyDown={handleTagAdd}
                     />
                   )}
                 </div>
-                <div className="community-tag-hint">Enter 키를 눌러 태그를 추가하세요</div>
+                <div className="community-tag-hint">{t('community.tagHint')}</div>
               </div>
 
               {/* Error */}
@@ -246,13 +248,13 @@ export default function CommunityWrite() {
 
               {/* Actions */}
               <div className="community-form-actions">
-                <button type="button" className="community-cancel-btn" onClick={() => navigate(-1)}>취소</button>
+                <button type="button" className="community-cancel-btn" onClick={() => navigate(-1)}>{t('community.cancel')}</button>
                 <button
                   type="submit"
                   className="community-submit-btn"
                   disabled={!title.trim() || !content.trim() || submitting}
                 >
-                  {submitting ? '저장 중...' : isEdit ? '수정 완료' : '글 작성'}
+                  {submitting ? t('community.saving') : isEdit ? t('community.editComplete') : t('community.submitPost')}
                 </button>
               </div>
             </form>
