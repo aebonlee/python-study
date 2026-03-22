@@ -7,6 +7,7 @@ import { badges } from '../data/badges'
 import { quizzes } from '../data/quizzes'
 import { lessons } from '../data/lessons'
 import BadgeCard from '../components/BadgeCard'
+import Certificate, { CERT_CONFIG } from '../components/Certificate'
 
 function formatDate(dateStr) {
   if (!dateStr) return '-'
@@ -155,6 +156,72 @@ export default function MyPage() {
     const passed = bestScore !== undefined && bestScore >= (quiz.passingScore || 70)
     return { id, title: quiz.title, bestScore, attempts, passed, passingScore: quiz.passingScore || 70 }
   })
+
+  // Certificate eligibility
+  const CERT_REQUIREMENTS = {
+    bronze: {
+      levels: ['basics'],
+      quizzes: ['basics']
+    },
+    silver: {
+      levels: ['basics', 'intermediate'],
+      quizzes: ['basics', 'intermediate']
+    },
+    gold: {
+      levels: ['basics', 'intermediate', 'advanced'],
+      quizzes: ['basics', 'intermediate', 'advanced']
+    },
+    master: {
+      levels: ['basics', 'intermediate', 'advanced', 'applied'],
+      quizzes: ['basics', 'intermediate', 'advanced', 'applied',
+                'lib-standard', 'lib-turtle', 'lib-data', 'lib-ai']
+    }
+  }
+
+  const isLevelDone = (level) => {
+    const levelLessons = lessons[level]
+    if (!levelLessons) return true
+    return levelLessons.every(l => completedLessons.has(l.id))
+  }
+
+  const isQuizPassed = (quizId) => {
+    const best = getQuizBestScore(quizId)
+    return best !== undefined && best >= (quizzes[quizId]?.passingScore || 70)
+  }
+
+  const checkCertificateEligibility = (type) => {
+    const req = CERT_REQUIREMENTS[type]
+    const levelsDone = req.levels.filter(l => isLevelDone(l))
+    const quizzesPassed = req.quizzes.filter(q => isQuizPassed(q))
+    const totalConditions = req.levels.length + req.quizzes.length
+    const metConditions = levelsDone.length + quizzesPassed.length
+    return {
+      earned: metConditions === totalConditions,
+      met: metConditions,
+      total: totalConditions,
+      missingLevels: req.levels.filter(l => !isLevelDone(l)),
+      missingQuizzes: req.quizzes.filter(q => !isQuizPassed(q))
+    }
+  }
+
+  const certTypes = ['bronze', 'silver', 'gold', 'master']
+  const certStatus = certTypes.map(type => ({
+    type,
+    ...checkCertificateEligibility(type)
+  }))
+
+  const [previewCert, setPreviewCert] = useState(null)
+
+  const levelLabels = { basics: '기초', intermediate: '중급', advanced: '고급', applied: '응용',
+    'lib-standard': '표준 라이브러리', 'lib-turtle': 'Turtle', 'lib-data': '데이터 분석', 'lib-ai': 'AI/ML' }
+
+  const getCertStats = () => {
+    const attempted = quizList.filter(q => q.bestScore !== undefined)
+    const quizAvg = attempted.length > 0
+      ? Math.round(attempted.reduce((s, q) => s + q.bestScore, 0) / attempted.length)
+      : 0
+    return { completedLessons: completedCount, totalLessons: totalLessons, quizAvg, progress: totalProgress }
+  }
 
   if (!isAuthenticated) {
     return (
@@ -318,6 +385,71 @@ export default function MyPage() {
               <div className="mypage-stat-label">연속 학습일</div>
             </div>
           </div>
+        </section>
+
+        {/* Certificates */}
+        <section className="mypage-section cert-section">
+          <h2 className="mypage-section-title">
+            <i className="fa-solid fa-scroll" /> 수료증
+          </h2>
+          <div className="cert-grid">
+            {certStatus.map(cert => {
+              const config = CERT_CONFIG[cert.type]
+              return (
+                <div
+                  key={cert.type}
+                  className={`cert-card cert-card--${cert.type} ${cert.earned ? 'earned' : 'locked'}`}
+                >
+                  <div className="cert-card-emoji">{config.emoji}</div>
+                  <div className="cert-card-label">{config.label}</div>
+                  {cert.earned ? (
+                    <>
+                      <div className="cert-card-status earned">
+                        <i className="fa-solid fa-circle-check" /> 획득!
+                      </div>
+                      <button
+                        className="cert-card-action-btn"
+                        onClick={() => setPreviewCert(prev => prev === cert.type ? null : cert.type)}
+                      >
+                        {previewCert === cert.type ? '닫기' : '보기 / 다운로드'}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="cert-card-status locked">
+                        <i className="fa-solid fa-lock" /> {cert.met}/{cert.total} 조건
+                      </div>
+                      <div className="cert-progress">
+                        <div className="cert-progress-bar" style={{ width: `${Math.round(cert.met / cert.total * 100)}%` }} />
+                      </div>
+                      <div className="cert-card-missing">
+                        {cert.missingLevels.map(l => (
+                          <span key={l} className="cert-missing-tag level">
+                            {levelLabels[l] || l} 레슨 완료 필요
+                          </span>
+                        ))}
+                        {cert.missingQuizzes.map(q => (
+                          <span key={q} className="cert-missing-tag quiz">
+                            {levelLabels[q] || q} 퀴즈 합격 필요
+                          </span>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+          {previewCert && (
+            <div className="cert-preview-wrap">
+              <Certificate
+                userName={userName}
+                certificateType={previewCert}
+                issueDate={new Date().toLocaleDateString('ko-KR')}
+                stats={getCertStats()}
+              />
+            </div>
+          )}
         </section>
 
         {/* Earned Badges */}

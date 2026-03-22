@@ -15,7 +15,7 @@
 | 7 | 마이페이지 | 완료 | MyPage.jsx - 프로필/통계/배지/성적표 |
 | 8 | 학습 현황 페이지 | 완료 | Home.jsx 진도 현황 섹션 (로그인 없이 작동) |
 | 9 | 배지 시스템 | 완료 | 36개 배지, 4티어, 자동 평가, 알림 팝업 |
-| 10 | 수료증 발급 | 예정 | 모의고사 합격 시 PDF/PNG 다운로드 구현 예정 |
+| 10 | 수료증 발급 | 완료 | Canvas API 기반 4단계 수료증 PNG 다운로드 (Bronze/Silver/Gold/Master) |
 | 11 | 학습 완료 버튼 | 완료 | LessonPage.jsx 하단 "학습 완료" 버튼 |
 | 12 | 학습 완료 취소 | 완료 | uncompleteLesson() - 완료 상태 되돌리기 |
 | 13 | 시험 성적 기록 | 완료 | ProgressContext.saveQuizScore - 응시 이력(attempts) + 최고 점수 저장 |
@@ -81,7 +81,7 @@
 | 항목 | 수치 |
 |------|------|
 | 페이지 수 | 22개 (Home, Login, MyPage, AdminPage, TeacherPage, Guide, LevelPage, LessonPage, PythonLearning, PythonLesson01~11, PythonPractice, BadgeCollection, QuizCenter, Community, CommunityPost, CommunityWrite, 404) |
-| 컴포넌트 수 | 9개 (Navbar, Footer, CodeEditor, BadgeCard, LessonCard, ProgressBar, QuizComponent, ErrorBoundary, TurtleCanvas) |
+| 컴포넌트 수 | 10개 (Navbar, Footer, CodeEditor, BadgeCard, LessonCard, ProgressBar, QuizComponent, ErrorBoundary, TurtleCanvas, Certificate) |
 | CSS 파일 수 | 18개 |
 | Context 수 | 4개 (Theme, Progress, Badge, Auth) |
 | 학습 레슨 수 | 35개 (4단계) + 11개 (파이썬 학습) = 46개 |
@@ -89,9 +89,9 @@
 | 퀴즈 문제 수 | 88문제 (8개 퀴즈) |
 | 배지 수 | 36개 (4티어) |
 | Supabase 테이블 수 | 9개 (users, quiz_scores, user_progress, community_posts/comments/likes, classes, class_members, streaks) |
-| 빌드 사이즈 | index.js 453KB + CSS 117KB + 48 청크 |
+| 빌드 사이즈 | index.js 453KB + CSS 120KB + 48 청크 |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정
-2. ~~**학습 데이터 동기화**~~ - ✅ 완료 (pymaster_user_progress 테이블)
-3. **수료증 발급** - PDF/PNG 다운로드
+2. ~~**학습 데이터 동기화**~~ - 완료 (pymaster_user_progress 테이블)
+3. ~~**수료증 발급**~~ - 완료 (Canvas API 기반 4단계 PNG 다운로드)

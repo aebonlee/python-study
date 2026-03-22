@@ -394,6 +394,205 @@
 }
 
 /* ========================================
+   Certificate Section
+   ======================================== */
+.cert-section {
+  margin-bottom: 36px;
+}
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.cert-card {
+  background: var(--bg-white);
+  border: 2px solid var(--border-light);
+  border-radius: 14px;
+  padding: 20px 16px;
+  text-align: center;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.cert-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.cert-card.earned {
+  border-color: var(--primary);
+  box-shadow: 0 2px 12px rgba(48, 105, 152, 0.1);
+}
+
+.cert-card--bronze.earned { border-color: #CD7F32; box-shadow: 0 2px 12px rgba(205, 127, 50, 0.15); }
+.cert-card--silver.earned { border-color: #C0C0C0; box-shadow: 0 2px 12px rgba(192, 192, 192, 0.2); }
+.cert-card--gold.earned { border-color: #FFD700; box-shadow: 0 2px 12px rgba(255, 215, 0, 0.2); }
+.cert-card--master.earned { border-color: #306998; box-shadow: 0 2px 12px rgba(48, 105, 152, 0.2); }
+
+.cert-card.locked {
+  opacity: 0.75;
+}
+
+.cert-card-emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.cert-card-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cert-card-status {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cert-card-status.earned {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.1);
+}
+
+.cert-card-status.locked {
+  color: var(--text-light);
+  background: var(--bg-light);
+}
+
+.cert-card-action-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 4px;
+}
+
+.cert-card-action-btn:hover {
+  background: #265480;
+}
+
+.cert-progress {
+  width: 100%;
+  height: 4px;
+  background: var(--bg-light);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cert-progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--primary);
+  transition: width 0.6s ease;
+}
+
+.cert-card-missing {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.cert-missing-tag {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+  background: var(--bg-light);
+  white-space: nowrap;
+}
+
+.cert-preview-wrap {
+  margin-top: 20px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cert-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cert-preview canvas {
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.cert-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: #306998;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.cert-download-btn:hover {
+  background: #265480;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(48, 105, 152, 0.3);
+}
+
+/* ========================================
+   Dark Mode
+   ======================================== */
+[data-theme="dark"] .mypage-login-guide,
+[data-theme="dark"] .mypage-profile-card,
+[data-theme="dark"] .mypage-stat-card,
+[data-theme="dark"] .mypage-quiz-table-wrap,
+[data-theme="dark"] .mypage-empty,
+[data-theme="dark"] .cert-card {
+  background: var(--bg-light);
+  border-color: var(--border-medium);
+}
+
+[data-theme="dark"] .cert-card.earned {
+  border-color: var(--primary);
+}
+
+[data-theme="dark"] .cert-card--bronze.earned { border-color: #CD7F32; }
+[data-theme="dark"] .cert-card--silver.earned { border-color: #C0C0C0; }
+[data-theme="dark"] .cert-card--gold.earned { border-color: #FFD700; }
+[data-theme="dark"] .cert-card--master.earned { border-color: #306998; }
+
+[data-theme="dark"] .mypage-quiz-table thead {
+  background: var(--bg-medium);
+}
+
+[data-theme="dark"] .mypage-quiz-table td {
+  border-color: var(--border-medium);
+}
+
+[data-theme="dark"] .mypage-quiz-table th {
+  border-color: var(--border-medium);
+}
+
+/* ========================================
    Responsive
    ======================================== */
 @media (max-width: 768px) {
@@ -404,6 +603,10 @@
   }
 
   .mypage-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cert-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -421,6 +624,10 @@
 @media (max-width: 480px) {
   .mypage-stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .cert-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .mypage-title {

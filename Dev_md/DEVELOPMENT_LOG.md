@@ -598,3 +598,39 @@
 - **Dev_md/EVALUATION_REPORT.md**: 12개 섹션 종합 평가 — 기능 완성도(9.7), 기술 아키텍처(8.4), UI/UX(8.4), 사용자 경험(8.2), 성능(8.0), 보안(8.0), 코드 품질(8.4), 개발 프로세스(9.0) → **종합 8.67/10**
 - 강점 8개, 개선 권장 사항 10개 (우선순위별)
 - 커밋: 029137d
+
+---
+
+## 2026-03-22 (Day 5 추가) - 수료증 발급 기능
+
+### Certificate.jsx (신규 컴포넌트)
+- Canvas API 기반 수료증 이미지 생성
+- 4단계 수료증: Bronze(입문), Silver(중급), Gold(고급), Master(마스터)
+- 등급별 색상/테두리/배경 차별화
+- 800x566 A5 비율, 더블 보더, 코너 장식, 인장 등 디테일
+- PNG 다운로드 (`canvas.toDataURL()` → `<a download>`)
+- 사용자 이름, 등급명, 발급일, 학습 통계 표시
+
+### MyPage.jsx 수료증 섹션 추가
+- 학습 통계 아래, 배지 섹션 위에 수료증 섹션 삽입
+- `CERT_REQUIREMENTS` 정의: 등급별 필수 레벨/퀴즈 조건
+- `checkCertificateEligibility()`: 레슨 완료 + 퀴즈 합격 기반 자격 판별
+- 4개 등급 카드 그리드 표시
+  - 획득: 초록 "획득!" 뱃지 + "보기 / 다운로드" 토글 버튼
+  - 미획득: 잠금 상태 + 진행률 바 + 남은 조건 태그 (레슨/퀴즈별)
+- 미리보기: Canvas 렌더링 + PNG 다운로드 버튼
+
+### mypage.css 수료증 스타일 추가
+- `.cert-grid`: 4열 그리드 (반응형 2열)
+- `.cert-card`: 등급별 보더 색상 (earned/locked 상태)
+- `.cert-progress`: 진행률 바
+- `.cert-missing-tag`: 남은 조건 태그
+- `.cert-preview-wrap`: Canvas 미리보기 래퍼
+- `.cert-download-btn`: PNG 다운로드 버튼
+- 다크모드 + 반응형 대응
+
+### 빌드 결과
+- 빌드 성공
+- MyPage: 18.01KB (기존 11.32KB → +6.69KB, Certificate 컴포넌트 포함)
+- CSS: 120.53KB (기존 117.42KB → +3.11KB)
+- 총 48개 청크

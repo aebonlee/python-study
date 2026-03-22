@@ -189,12 +189,59 @@
 
 ---
 
+## 7. 수료증 발급 기능
+
+### 배경
+- 기능 점검표에서 "예정" 상태였던 수료증 발급 기능을 구현
+- 퀴즈 합격 + 레슨 완료 기반 4단계 수료증, Canvas API로 PNG 이미지 생성/다운로드
+
+### 변경 내용
+
+#### Certificate.jsx (신규 컴포넌트)
+- Canvas API 기반 수료증 이미지 생성
+- `generateCertificate()`: 800x566 Canvas에 수료증 디자인 렌더링
+- 4단계 수료증 등급별 디자인:
+  - Bronze (#CD7F32): 입문자 수료증
+  - Silver (#C0C0C0): 중급자 수료증
+  - Gold (#FFD700): 고급자 수료증
+  - Master (#306998): 마스터 수료증
+- 더블 보더, 코너 장식, 장식 라인, 인장 등 디테일 요소
+- PNG 다운로드: `canvas.toDataURL()` → `<a download>` 트리거
+
+#### MyPage.jsx 수료증 섹션 추가
+- 학습 통계 섹션과 배지 섹션 사이에 수료증 섹션 삽입
+- `CERT_REQUIREMENTS`: 등급별 필수 레벨/퀴즈 조건 정의
+- `checkCertificateEligibility()`: 자격 판별 함수
+  - 레벨 완료: `lessons[level]`의 모든 레슨이 `completedLessons`에 포함
+  - 퀴즈 합격: `getQuizBestScore(quizId) >= passingScore`
+- 4개 등급 카드 그리드:
+  - 획득: 초록 "획득!" 뱃지 + "보기 / 다운로드" 토글 버튼
+  - 미획득: 잠금 + 진행률 바 + 남은 조건 태그
+- Canvas 미리보기 영역 (토글)
+
+#### mypage.css 수료증 스타일
+- `.cert-grid`: 4열 그리드, 반응형 2열
+- `.cert-card`: 등급별 보더/그림자 (earned/locked)
+- `.cert-progress`: 진행률 바
+- `.cert-missing-tag`: 남은 조건 태그
+- `.cert-download-btn`: 다운로드 버튼
+- 다크모드 + 반응형
+
+### 변경 파일
+| 파일 | 변경 |
+|------|------|
+| `src/components/Certificate.jsx` | 신규 — Canvas API 수료증 생성 + PNG 다운로드 |
+| `src/pages/MyPage.jsx` | 수료증 섹션 추가 (자격 판별 + 카드 UI + Canvas 미리보기) |
+| `src/styles/mypage.css` | 수료증 카드/진행률/다운로드 스타일 + 다크모드/반응형 |
+
+---
+
 ## 빌드 결과 (최종)
-- CSS: 117.42KB
+- CSS: 120.53KB
 - index.js: 453.29KB
 - Guide.js: 6.18KB
 - TeacherPage.js: 18.65KB
 - AdminPage.js: 17.24KB
-- MyPage.js: 11.32KB
+- MyPage.js: 18.01KB
 - 총 48개 청크
 - GitHub Pages 배포 완료
