@@ -18,7 +18,7 @@
 3. 학생이 마이페이지 → "내 클래스" 섹션에서 코드 입력 → 참여
 4. 선생님은 참여한 학생만 조회 가능
 
-## 변경 파일 목록 (8개 파일)
+## 변경 파일 목록 (10개 파일)
 
 | 파일 | 변경 유형 | 설명 |
 |------|-----------|------|
@@ -27,9 +27,17 @@
 | `src/App.jsx` | 수정 | `TeacherPage` lazy import, `TeacherRoute` 가드, `/teacher` 라우트 |
 | `src/components/layout/Navbar.jsx` | 수정 | `isTeacher` → "선생님" 메뉴 링크 (fa-chalkboard-user) |
 | `src/pages/TeacherPage.jsx` | 신규 | 3탭 대시보드 (클래스 관리 / 학생 목록 / 학습 통계) |
+| `src/pages/AdminPage.jsx` | 수정 | 회원 목록에 선생님 뱃지 표시 (`TEACHER_EMAILS` 매칭) |
 | `src/pages/MyPage.jsx` | 수정 | "내 클래스" 섹션 (코드 입력, 참여/탈퇴, 목록) |
 | `src/styles/teacher.css` | 신규 | 선생님 페이지 + 마이페이지 클래스 UI 스타일 |
+| `src/styles/admin.css` | 수정 | `.admin-role-badge.teacher` 선생님 뱃지 스타일 + 다크모드 |
 | `src/index.css` | 수정 | `teacher.css` import 추가 |
+
+## 관리자 선생님 식별
+
+관리자 페이지(`/admin`) → 회원 관리 탭에서 선생님 계정을 확인할 수 있음:
+- `TEACHER_EMAILS` 배열에 포함된 이메일이면 이름 옆에 보라색 **"선생님"** 뱃지 표시
+- 뱃지 스타일: `.admin-role-badge.teacher` (보라색 #8e44ad, 다크모드 #bb6bd9)
 
 ## Supabase 테이블 (수동 실행)
 

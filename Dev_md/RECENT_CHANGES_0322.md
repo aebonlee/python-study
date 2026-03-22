@@ -54,11 +54,25 @@
 
 ---
 
-## 빌드 결과
-- CSS: 112.52KB
+## 2. 관리자 회원 목록 선생님 뱃지 표시 (7d2ccd9)
+
+### 변경 내용
+- 관리자 회원 관리 탭에서 선생님 계정 옆에 보라색 **선생님** 뱃지 표시
+- `TEACHER_EMAILS` 배열로 이메일 매칭 → `<span className="admin-role-badge teacher">` 렌더링
+
+### 변경 파일
+| 파일 | 변경 |
+|------|------|
+| `src/pages/AdminPage.jsx` | `TEACHER_EMAILS` 상수 추가, 이름 셀에 선생님 뱃지 조건부 렌더링 |
+| `src/styles/admin.css` | `.admin-role-badge`, `.admin-role-badge.teacher` 스타일 + 다크모드 |
+
+---
+
+## 빌드 결과 (최종 7d2ccd9)
+- CSS: 112.82KB
 - index.js: 453.01KB
 - TeacherPage.js: 18.65KB
-- AdminPage.js: 16.24KB
+- AdminPage.js: 16.42KB
 - MyPage.js: 11.32KB
 - 총 47개 청크
 - GitHub Pages 배포 완료

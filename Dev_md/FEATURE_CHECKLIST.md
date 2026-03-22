@@ -37,6 +37,7 @@
 | 29 | 회원 관리 테이블 개선 | 완료 | 구분/이름/이메일/로그인방식/가입일/마지막접속 6열 구성 |
 | 30 | 선생님 역할 시스템 | 완료 | TeacherPage — 클래스 관리/학생 목록/학습 통계, 6자리 코드 기반 클래스 참여 |
 | 31 | 마이페이지 클래스 참여 | 완료 | MyPage — 클래스 코드 입력/참여/탈퇴, 참여 중인 클래스 목록 |
+| 32 | 관리자 선생님 뱃지 표시 | 완료 | AdminPage 회원 목록에서 선생님 계정 이름 옆에 보라색 "선생님" 뱃지 |
 
 ### 추가 개선 사항
 
@@ -83,7 +84,7 @@
 | 퀴즈 문제 수 | 88문제 (8개 퀴즈) |
 | 배지 수 | 36개 (4티어) |
 | Supabase 테이블 수 | 9개 (users, quiz_scores, user_progress, community_posts/comments/likes, classes, class_members, streaks) |
-| 빌드 사이즈 | index.js 453KB + CSS 112KB + 47 청크 |
+| 빌드 사이즈 | index.js 453KB + CSS 113KB + 47 청크 |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정

@@ -533,3 +533,9 @@
 - 총 47개 청크
 - GitHub Pages 배포 완료
 - 커밋: 44fd4da
+
+### 관리자 회원 목록 선생님 뱃지 표시
+- **AdminPage.jsx**: `TEACHER_EMAILS` 배열 추가, 회원 목록에서 선생님 이메일 매칭 시 이름 옆에 보라색 "선생님" 뱃지 표시
+- **admin.css**: `.admin-role-badge.teacher` 스타일 (보라색 뱃지 + 다크모드)
+- 관리자가 회원 관리 탭에서 선생님 계정을 한눈에 식별 가능
+- 커밋: 7d2ccd9
