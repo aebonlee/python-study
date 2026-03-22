@@ -6,6 +6,7 @@ import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 import BadgeCard from '../components/BadgeCard'
 
 const CATEGORY_LABELS = { qna: 'Q&A', free: '자유', code: '코드', review: '후기' }
+const TEACHER_EMAILS = ['pch93472016@gmail.com']
 
 const ADMIN_TABS = [
   { key: 'stats', label: '사이트 통계', icon: 'fa-solid fa-chart-pie' },
@@ -436,7 +437,12 @@ export default function AdminPage() {
                         onClick={() => fetchMemberProgress(member)}
                       >
                         <td className="admin-member-num">{idx + 1}</td>
-                        <td className="admin-member-name">{member.name || '-'}</td>
+                        <td className="admin-member-name">
+                          {member.name || '-'}
+                          {TEACHER_EMAILS.includes(member.email) && (
+                            <span className="admin-role-badge teacher"><i className="fa-solid fa-chalkboard-user" /> 선생님</span>
+                          )}
+                        </td>
                         <td className="admin-member-email">{member.email || '-'}</td>
                         <td>
                           <span className="admin-provider-badge">

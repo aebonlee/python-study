@@ -356,6 +356,23 @@
   font-weight: 600;
 }
 
+.admin-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.admin-role-badge.teacher {
+  color: #8e44ad;
+  background: rgba(142, 68, 173, 0.1);
+}
+
 .admin-member-email {
   font-size: 13px;
   color: var(--text-secondary);
@@ -553,6 +570,11 @@
 [data-theme="dark"] .admin-tab.active {
   background: var(--bg-light);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .admin-role-badge.teacher {
+  color: #bb6bd9;
+  background: rgba(142, 68, 173, 0.2);
 }
 
 [data-theme="dark"] .admin-member-row:hover {
