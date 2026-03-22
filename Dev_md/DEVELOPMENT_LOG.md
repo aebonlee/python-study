@@ -539,3 +539,48 @@
 - **admin.css**: `.admin-role-badge.teacher` 스타일 (보라색 뱃지 + 다크모드)
 - 관리자가 회원 관리 탭에서 선생님 계정을 한눈에 식별 가능
 - 커밋: 7d2ccd9
+
+### 동적 역할 관리 시스템 (DB 기반)
+- `TEACHER_EMAILS` 하드코딩 → `pymaster_users.role` 컬럼 기반 DB 동적 역할
+- AuthContext: `userRole` 상태, `isTeacher = userRole === 'teacher'`
+- AdminPage: 역할 열 + 토글 버튼 (학생↔선생님), `set_user_role` RPC
+- 커밋: 9703f41
+
+---
+
+## 2026-03-22 (Day 5 후반) - 사용설명서 정적 페이지
+
+### Guide.jsx (신규)
+- `/guide` 라우트, 정적 사용설명서 페이지
+- 12개 섹션 카드: 로그인, 파이썬 학습, 단계별 과정, 라이브러리, 파이썬 실습, 퀴즈, 도장깨기, 마이페이지, 커뮤니티, 다크모드, 학습 진도, 선생님 안내
+- FAQ 4개 (로그인 없이 사용, 모바일 이용, 학습 순서, 선생님 권한)
+- `Link`로 관련 페이지 내부 링크 연결
+
+### guide.css (신규)
+- `.guide-page`, `.guide-header` 레이아웃
+- `.guide-section-card` 카드 (아이콘 + 제목 + 내용 + 링크)
+- `.guide-faq` FAQ 스타일 (Q/A 뱃지)
+- 다크모드 + 반응형 (768px)
+
+### 기존 파일 수정
+- **App.jsx**: `Guide` lazy import + `/guide` 라우트 추가
+- **Navbar.jsx**: navItems에 `{ to: '/guide', label: '사용설명서' }` 추가 (도장깨기 뒤, 커뮤니티 앞)
+- **index.css**: `@import './styles/guide.css'` 추가 (총 18개 CSS)
+
+### 정리
+- `Dev_md/community_guide_post.sql` 삭제 (커뮤니티 게시글 방식 대신 정적 페이지로 전환)
+
+### 변경 파일
+| 파일 | 변경 |
+|------|------|
+| `src/pages/Guide.jsx` | 신규 — 사용설명서 정적 페이지 |
+| `src/styles/guide.css` | 신규 — 사용설명서 스타일 |
+| `src/App.jsx` | Guide lazy import + /guide 라우트 |
+| `src/components/layout/Navbar.jsx` | 사용설명서 메뉴 추가 |
+| `src/index.css` | guide.css import 추가 |
+
+### 빌드 결과
+- 빌드 성공
+- Guide.js: 6.18KB
+- CSS: 117.42KB
+- 총 48개 청크

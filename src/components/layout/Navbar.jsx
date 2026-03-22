@@ -64,6 +64,7 @@ export default function Navbar() {
     { to: '/python-practice', label: '파이썬 실습' },
     { to: '/quiz', label: '퀴즈' },
     { to: '/badges', label: '도장깨기' },
+    { to: '/guide', label: '사용설명서' },
     { to: '/community', label: '커뮤니티' },
   ]
 

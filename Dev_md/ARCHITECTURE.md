@@ -37,7 +37,7 @@ D:\python-study\
 ├── src/
 │   ├── main.jsx               # React 엔트리 포인트
 │   ├── App.jsx                # 라우터 + Provider + ErrorBoundary + Lazy
-│   ├── index.css              # CSS 임포트 허브 (17개 CSS)
+│   ├── index.css              # CSS 임포트 허브 (18개 CSS)
 │   ├── hooks/
 │   │   └── useCodeRunner.js   # Pyodide Web Worker 실행 훅
 │   ├── workers/
@@ -76,6 +76,7 @@ D:\python-study\
 │   │   ├── MyPage.jsx         # 마이페이지 (프로필/통계/배지/성적)
 │   │   ├── AdminPage.jsx      # 관리자 페이지 (통계/콘텐츠/커뮤니티/회원관리)
 │   │   ├── TeacherPage.jsx    # 선생님 페이지 (클래스 관리/학생 목록/학습 통계)
+│   │   ├── Guide.jsx          # 사용설명서 정적 페이지 (12개 섹션 + FAQ)
 │   │   ├── LevelPage.jsx      # 단계별 레슨 목록
 │   │   ├── LessonPage.jsx     # 레슨 상세/학습
 │   │   ├── BadgeCollection.jsx # 배지 컬렉션
@@ -94,11 +95,12 @@ D:\python-study\
 │   │       ├── PythonLesson09.jsx  # 함수와 매개변수
 │   │       ├── PythonLesson10.jsx  # Try-Except 예외처리
 │   │       └── PythonLesson11.jsx  # 2차원, 3차원 리스트
-│   └── styles/                # CSS 17개 파일
+│   └── styles/                # CSS 18개 파일
 │       ├── auth.css           # 로그인 + 풍선 드롭다운 + 세션 경고
 │       ├── mypage.css         # 마이페이지 스타일
 │       ├── admin.css          # 관리자 페이지 + 학생 상세 모달 스타일
 │       ├── teacher.css        # 선생님 페이지 + 클래스 참여 UI 스타일
+│       ├── guide.css          # 사용설명서 페이지 스타일
 │       ├── practice.css       # 파이썬 실습 페이지 스타일
 │       └── python-learning.css # 파이썬 학습 허브 + 레슨 스타일
 └── Dev_md/                    # 개발 문서
@@ -165,6 +167,7 @@ App
 | `/:level/:lessonId` | LessonPage | lazy |
 | `/badges` | BadgeCollection | lazy |
 | `/quiz` | QuizCenter | lazy |
+| `/guide` | Guide | lazy |
 | `*` | 404 | inline |
 
 ## 아이콘 시스템
@@ -178,7 +181,7 @@ App
 
 ### Navbar 구조 (1열 + 라이브러리 드롭다운 3카테고리)
 ```
-파이썬 학습 | 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 파이썬 실습 | 퀴즈 | 도장깨기 | [진도] [테마] [로그인/아바타]
+파이썬 학습 | 기초 | 중급 | 고급 | 응용 | 라이브러리▼ | 파이썬 실습 | 퀴즈 | 도장깨기 | 사용설명서 | 커뮤니티 | [진도] [테마] [로그인/아바타]
                            └→ [기본 내장/표준 라이브러리]
                               os/sys / math/cmath / json / datetime
                               [교육용·그래픽 라이브러리]

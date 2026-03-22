@@ -19,6 +19,7 @@ const AdminPage = lazy(() => import('./pages/AdminPage'))
 const TeacherPage = lazy(() => import('./pages/TeacherPage'))
 const PythonLearning = lazy(() => import('./pages/PythonLearning'))
 const PythonPractice = lazy(() => import('./pages/PythonPractice'))
+const Guide = lazy(() => import('./pages/Guide'))
 const Community = lazy(() => import('./pages/community/Community'))
 const CommunityPost = lazy(() => import('./pages/community/CommunityPost'))
 const CommunityWrite = lazy(() => import('./pages/community/CommunityWrite'))
@@ -92,6 +93,7 @@ function AppLayout() {
           <Route path="/python-learning/10" element={<LazyRoute element={<PythonLesson10 />} />} />
           <Route path="/python-learning/11" element={<LazyRoute element={<PythonLesson11 />} />} />
           <Route path="/python-practice" element={<LazyRoute element={<PythonPractice />} />} />
+          <Route path="/guide" element={<LazyRoute element={<Guide />} />} />
           <Route path="/community" element={<LazyRoute element={<Community />} />} />
           <Route path="/community/write" element={<LazyRoute element={<CommunityWrite />} />} />
           <Route path="/community/:postId" element={<LazyRoute element={<CommunityPost />} />} />
