@@ -17,6 +17,8 @@ export const TABLES = {
   COMMUNITY_POSTS: `${TABLE_PREFIX}community_posts`,
   COMMUNITY_COMMENTS: `${TABLE_PREFIX}community_comments`,
   COMMUNITY_LIKES: `${TABLE_PREFIX}community_likes`,
+  CLASSES: `${TABLE_PREFIX}classes`,
+  CLASS_MEMBERS: `${TABLE_PREFIX}class_members`,
 }
 
 // Supabase 클라이언트 (URL/KEY 없으면 null - localStorage만 사용)

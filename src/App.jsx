@@ -16,6 +16,7 @@ const QuizCenter = lazy(() => import('./pages/QuizCenter'))
 const Login = lazy(() => import('./pages/Login'))
 const MyPage = lazy(() => import('./pages/MyPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
+const TeacherPage = lazy(() => import('./pages/TeacherPage'))
 const PythonLearning = lazy(() => import('./pages/PythonLearning'))
 const PythonPractice = lazy(() => import('./pages/PythonPractice'))
 const Community = lazy(() => import('./pages/community/Community'))
@@ -59,6 +60,14 @@ function AdminRoute({ children }) {
   return children
 }
 
+function TeacherRoute({ children }) {
+  const { isAuthenticated, isTeacher, loading } = useAuth()
+  if (loading) return <PageLoader />
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  if (!isTeacher) return <Navigate to="/" replace />
+  return children
+}
+
 function AppLayout() {
   return (
     <>
@@ -69,6 +78,7 @@ function AppLayout() {
           <Route path="/" element={<LazyRoute element={<Home />} />} />
           <Route path="/my" element={<LazyRoute element={<MyPage />} />} />
           <Route path="/admin" element={<AdminRoute><LazyRoute element={<AdminPage />} /></AdminRoute>} />
+          <Route path="/teacher" element={<TeacherRoute><LazyRoute element={<TeacherPage />} /></TeacherRoute>} />
           <Route path="/python-learning" element={<LazyRoute element={<PythonLearning />} />} />
           <Route path="/python-learning/01" element={<LazyRoute element={<PythonLesson01 />} />} />
           <Route path="/python-learning/02" element={<LazyRoute element={<PythonLesson02 />} />} />

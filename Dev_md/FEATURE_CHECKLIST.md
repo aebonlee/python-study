@@ -1,6 +1,6 @@
 # PyMaster - 기능 점검 결과서
 
-## 점검 일자: 2026-03-20 (최종 업데이트)
+## 점검 일자: 2026-03-22 (최종 업데이트)
 
 ### 핵심 기능 (21개)
 
@@ -35,6 +35,8 @@
 | 27 | 학생 개별 결과 페이지 | 완료 | 관리자 회원 관리에서 학생 클릭 → 개인 결과 모달 (MyPage 동일 레이아웃) |
 | 28 | 학습 데이터 Supabase 동기화 | 완료 | ProgressContext → pymaster_user_progress 테이블 자동 동기화 (즉시 + 디바운스) |
 | 29 | 회원 관리 테이블 개선 | 완료 | 구분/이름/이메일/로그인방식/가입일/마지막접속 6열 구성 |
+| 30 | 선생님 역할 시스템 | 완료 | TeacherPage — 클래스 관리/학생 목록/학습 통계, 6자리 코드 기반 클래스 참여 |
+| 31 | 마이페이지 클래스 참여 | 완료 | MyPage — 클래스 코드 입력/참여/탈퇴, 참여 중인 클래스 목록 |
 
 ### 추가 개선 사항
 
@@ -72,15 +74,16 @@
 
 | 항목 | 수치 |
 |------|------|
-| 페이지 수 | 20개 (Home, Login, MyPage, AdminPage, LevelPage, LessonPage, PythonLearning, PythonLesson01~11, PythonPractice, BadgeCollection, QuizCenter, Community, CommunityPost, CommunityWrite, 404) |
+| 페이지 수 | 21개 (Home, Login, MyPage, AdminPage, TeacherPage, LevelPage, LessonPage, PythonLearning, PythonLesson01~11, PythonPractice, BadgeCollection, QuizCenter, Community, CommunityPost, CommunityWrite, 404) |
 | 컴포넌트 수 | 9개 (Navbar, Footer, CodeEditor, BadgeCard, LessonCard, ProgressBar, QuizComponent, ErrorBoundary, TurtleCanvas) |
-| CSS 파일 수 | 16개 |
+| CSS 파일 수 | 17개 |
 | Context 수 | 4개 (Theme, Progress, Badge, Auth) |
 | 학습 레슨 수 | 35개 (4단계) + 11개 (파이썬 학습) = 46개 |
 | 실습 예제 수 | 13단계 (step1~11 + advanced1~2) |
 | 퀴즈 문제 수 | 88문제 (8개 퀴즈) |
 | 배지 수 | 36개 (4티어) |
-| 빌드 사이즈 | index.js 438KB + CSS 66KB + 38 청크 |
+| Supabase 테이블 수 | 9개 (users, quiz_scores, user_progress, community_posts/comments/likes, classes, class_members, streaks) |
+| 빌드 사이즈 | index.js 453KB + CSS 112KB + 47 청크 |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정

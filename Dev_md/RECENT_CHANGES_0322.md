@@ -1,0 +1,64 @@
+# 최근 변경 사항 — 2026-03-22
+
+## 커밋 범위: 9ef389d → (현재)
+
+---
+
+## 1. 선생님 역할 시스템 구현
+
+### 배경
+- 기존: `ADMIN_EMAILS = ['aebon@kakao.com', 'pch93472016@gmail.com']` — 두 이메일 모두 전체 관리자
+- 변경: `pch93472016@gmail.com`을 선생님 역할로 분리, 담당 학생만 관리
+
+### 변경 내용
+
+#### 역할 분리 (AuthContext)
+- `ADMIN_EMAILS`에서 `pch93472016@gmail.com` 제거
+- `TEACHER_EMAILS` 배열 신설
+- `isTeacher` boolean 계산 및 context value 노출
+
+#### 라우팅 (App.jsx)
+- `TeacherRoute` 가드 컴포넌트 추가 (`isTeacher` 체크)
+- `/teacher` 라우트 → `TeacherPage` (lazy load)
+
+#### Navbar 메뉴
+- `isTeacher`일 때 "선생님" 메뉴 표시 (`fa-chalkboard-user` 아이콘)
+
+#### TeacherPage (신규)
+3개 탭 구성:
+- **클래스 관리**: 클래스 생성 (이름 → 6자리 코드), 카드 목록 (코드 복사/삭제)
+- **학생 목록**: 클래스별 필터, 학생 테이블, 클릭 → 상세 모달
+- **학습 통계**: 총 학생 수, 평균 퀴즈/레슨, 클래스별 요약
+
+#### MyPage 클래스 참여
+- 프로필 카드 아래 "내 클래스" 섹션 추가
+- 6자리 코드 입력 → 클래스 조회 → 참여 (중복/오류 처리)
+- 참여 중인 클래스 목록 (클래스명 + 선생님 이메일 + 탈퇴)
+
+#### Supabase 테이블 (수동 실행 필요)
+- `pymaster_classes` — 클래스 정보 (id, class_name, class_code, teacher_id, teacher_email)
+- `pymaster_class_members` — 클래스 멤버 (class_id, student_id, joined_at)
+- RLS 정책: 선생님은 자기 클래스만 관리, 학생은 자기만 참여 가능
+
+### 변경 파일
+| 파일 | 변경 |
+|------|------|
+| `src/config/supabase.js` | TABLES에 CLASSES, CLASS_MEMBERS 추가 |
+| `src/contexts/AuthContext.jsx` | TEACHER_EMAILS + isTeacher |
+| `src/App.jsx` | TeacherRoute + /teacher 라우트 |
+| `src/components/layout/Navbar.jsx` | 선생님 메뉴 링크 |
+| `src/pages/TeacherPage.jsx` | 신규 — 선생님 대시보드 |
+| `src/pages/MyPage.jsx` | 내 클래스 섹션 추가 |
+| `src/styles/teacher.css` | 신규 — 선생님/클래스 UI 스타일 |
+| `src/index.css` | teacher.css import |
+
+---
+
+## 빌드 결과
+- CSS: 112.52KB
+- index.js: 453.01KB
+- TeacherPage.js: 18.65KB
+- AdminPage.js: 16.24KB
+- MyPage.js: 11.32KB
+- 총 47개 청크
+- GitHub Pages 배포 완료

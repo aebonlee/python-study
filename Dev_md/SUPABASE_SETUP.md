@@ -122,6 +122,44 @@ CREATE TABLE pymaster_community_likes (
 );
 ```
 
+#### pymaster_classes (클래스)
+```sql
+CREATE TABLE pymaster_classes (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  class_name TEXT NOT NULL,
+  class_code TEXT UNIQUE NOT NULL,
+  teacher_id UUID NOT NULL,
+  teacher_email TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX idx_classes_teacher ON pymaster_classes(teacher_id);
+ALTER TABLE pymaster_classes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can read classes" ON pymaster_classes FOR SELECT USING (true);
+CREATE POLICY "Teachers manage own classes" ON pymaster_classes FOR ALL USING (auth.uid() = teacher_id);
+```
+
+#### pymaster_class_members (클래스 멤버)
+```sql
+CREATE TABLE pymaster_class_members (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  class_id UUID NOT NULL REFERENCES pymaster_classes(id) ON DELETE CASCADE,
+  student_id UUID NOT NULL,
+  joined_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(class_id, student_id)
+);
+
+CREATE INDEX idx_class_members_class ON pymaster_class_members(class_id);
+CREATE INDEX idx_class_members_student ON pymaster_class_members(student_id);
+ALTER TABLE pymaster_class_members ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Read class members" ON pymaster_class_members FOR SELECT TO authenticated USING (true);
+CREATE POLICY "Teachers manage members" ON pymaster_class_members FOR DELETE USING (
+  class_id IN (SELECT id FROM pymaster_classes WHERE teacher_id = auth.uid())
+);
+CREATE POLICY "Students can join" ON pymaster_class_members FOR INSERT WITH CHECK (auth.uid() = student_id);
+```
+
 ## 3. 클라이언트 테이블 매핑 (`src/config/supabase.js`)
 ```js
 export const TABLES = {
@@ -134,6 +172,8 @@ export const TABLES = {
   COMMUNITY_POSTS: 'pymaster_community_posts',
   COMMUNITY_COMMENTS: 'pymaster_community_comments',
   COMMUNITY_LIKES: 'pymaster_community_likes',
+  CLASSES: 'pymaster_classes',              // 선생님 클래스
+  CLASS_MEMBERS: 'pymaster_class_members',  // 클래스 멤버
 }
 ```
 
@@ -169,7 +209,20 @@ export const TABLES = {
 3. Redirect URI: `https://[project-ref].supabase.co/auth/v1/callback`
 4. REST API 키를 Supabase에 입력
 
-## 6. 관리자 기능
-- 관리자 이메일: `AuthContext.jsx`의 `ADMIN_EMAILS` 배열
-- 관리자는 모든 사용자의 `pymaster_users`, `pymaster_user_progress`, `pymaster_quiz_scores` 조회 가능 (RLS SELECT 정책: `TO authenticated USING (true)`)
-- 회원 관리 탭에서 학생 클릭 → `pymaster_user_progress` + `pymaster_quiz_scores` 병합 조회 → 개인 결과 모달 표시
+## 6. 역할 기반 접근 제어
+
+### 관리자 (Admin)
+- 이메일: `AuthContext.jsx`의 `ADMIN_EMAILS` 배열 (`aebon@kakao.com`)
+- 전체 회원/데이터 조회, 커뮤니티 관리
+- 접근 경로: `/admin`
+
+### 선생님 (Teacher)
+- 이메일: `AuthContext.jsx`의 `TEACHER_EMAILS` 배열 (`pch93472016@gmail.com`)
+- 자기 클래스에 참여한 학생만 조회
+- 클래스 생성/삭제, 학생 목록, 학습 통계
+- 접근 경로: `/teacher`
+
+### RLS 설계
+- `pymaster_users`, `pymaster_user_progress`, `pymaster_quiz_scores`: `SELECT TO authenticated USING (true)` — 인증된 사용자 누구나 읽기 가능 (앱 레벨에서 필터링)
+- `pymaster_classes`: 선생님만 자기 클래스 관리, 모든 인증 사용자 읽기 가능
+- `pymaster_class_members`: 학생은 자기만 INSERT, 선생님은 자기 클래스 멤버 DELETE

@@ -10,7 +10,7 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const { theme, toggleTheme } = useTheme()
   const { getTotalProgress } = useProgress()
-  const { user, isAuthenticated, isAdmin, signOut } = useAuth()
+  const { user, isAuthenticated, isAdmin, isTeacher, signOut } = useAuth()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userMenuRef = useRef(null)
   const location = useLocation()
@@ -203,6 +203,11 @@ export default function Navbar() {
                   {isAdmin && (
                     <Link to="/admin" className="nav-balloon-link" onClick={() => setUserMenuOpen(false)}>
                       <i className="fa-solid fa-shield-halved" /> 관리자
+                    </Link>
+                  )}
+                  {isTeacher && (
+                    <Link to="/teacher" className="nav-balloon-link" onClick={() => setUserMenuOpen(false)}>
+                      <i className="fa-solid fa-chalkboard-user" /> 선생님
                     </Link>
                   )}
                 </div>

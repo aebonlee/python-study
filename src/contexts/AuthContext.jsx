@@ -7,6 +7,7 @@ const SESSION_DURATION = 30 * 60 * 1000 // 30분
 const WARNING_THRESHOLD = 5 * 60 * 1000 // 5분
 const SESSION_EXPIRY_KEY = 'pymaster-session-expiry'
 const ADMIN_EMAILS = ['aebon@kakao.com']
+const TEACHER_EMAILS = ['pch93472016@gmail.com']
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -175,6 +176,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const isAdmin = ADMIN_EMAILS.includes(user?.email)
+  const isTeacher = TEACHER_EMAILS.includes(user?.email)
   const showSessionWarning = sessionTimeLeft !== null && sessionTimeLeft <= WARNING_THRESHOLD && sessionTimeLeft > 0
 
   const formatTimeLeft = (ms) => {
@@ -191,6 +193,7 @@ export function AuthProvider({ children }) {
     signOut,
     isAuthenticated: !!user,
     isAdmin,
+    isTeacher,
     sessionTimeLeft,
     showSessionWarning,
     extendSession,

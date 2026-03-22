@@ -1,6 +1,8 @@
+import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useProgress } from '../contexts/ProgressContext'
 import { useBadge } from '../contexts/BadgeContext'
+import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 import { badges } from '../data/badges'
 import { quizzes } from '../data/quizzes'
 import { lessons } from '../data/lessons'
@@ -19,6 +21,119 @@ export default function MyPage() {
   const { user, isAuthenticated, requireAuth, signInWithGoogle, signInWithKakao } = useAuth()
   const { completedLessons, quizScores, codeRuns, streak, getTotalProgress, getQuizBestScore, getQuizAttempts } = useProgress()
   const { earnedBadges } = useBadge()
+
+  // Class join state
+  const [classCode, setClassCode] = useState('')
+  const [joinLoading, setJoinLoading] = useState(false)
+  const [joinMessage, setJoinMessage] = useState(null)
+  const [myClasses, setMyClasses] = useState([])
+  const [classesLoading, setClassesLoading] = useState(false)
+
+  const fetchMyClasses = useCallback(async () => {
+    if (!isSupabaseEnabled() || !user) return
+    setClassesLoading(true)
+    try {
+      const { data: memberships, error } = await supabase
+        .from(TABLES.CLASS_MEMBERS)
+        .select('class_id, joined_at')
+        .eq('student_id', user.id)
+
+      if (error) throw error
+      if (!memberships || memberships.length === 0) {
+        setMyClasses([])
+        setClassesLoading(false)
+        return
+      }
+
+      const classIds = memberships.map(m => m.class_id)
+      const { data: classData, error: classError } = await supabase
+        .from(TABLES.CLASSES)
+        .select('*')
+        .in('id', classIds)
+
+      if (classError) throw classError
+      setMyClasses((classData || []).map(cls => {
+        const membership = memberships.find(m => m.class_id === cls.id)
+        return { ...cls, joined_at: membership?.joined_at }
+      }))
+    } catch (err) {
+      console.error('내 클래스 조회 오류:', err.message)
+    } finally {
+      setClassesLoading(false)
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (isAuthenticated) fetchMyClasses()
+  }, [isAuthenticated, fetchMyClasses])
+
+  const handleJoinClass = async () => {
+    const code = classCode.trim().toUpperCase()
+    if (!code || code.length !== 6 || !isSupabaseEnabled() || !user) return
+
+    setJoinLoading(true)
+    setJoinMessage(null)
+    try {
+      // Look up class by code
+      const { data: cls, error: lookupError } = await supabase
+        .from(TABLES.CLASSES)
+        .select('*')
+        .eq('class_code', code)
+        .single()
+
+      if (lookupError || !cls) {
+        setJoinMessage({ type: 'error', text: '존재하지 않는 클래스 코드입니다.' })
+        setJoinLoading(false)
+        return
+      }
+
+      // Check if already a member
+      const { data: existing } = await supabase
+        .from(TABLES.CLASS_MEMBERS)
+        .select('id')
+        .eq('class_id', cls.id)
+        .eq('student_id', user.id)
+        .single()
+
+      if (existing) {
+        setJoinMessage({ type: 'error', text: '이미 참여 중인 클래스입니다.' })
+        setJoinLoading(false)
+        return
+      }
+
+      // Join
+      const { error: joinError } = await supabase
+        .from(TABLES.CLASS_MEMBERS)
+        .insert({ class_id: cls.id, student_id: user.id })
+
+      if (joinError) throw joinError
+
+      setJoinMessage({ type: 'success', text: `"${cls.class_name}" 클래스에 참여했습니다!` })
+      setClassCode('')
+      fetchMyClasses()
+    } catch (err) {
+      console.error('클래스 참여 오류:', err.message)
+      setJoinMessage({ type: 'error', text: '클래스 참여 중 오류가 발생했습니다.' })
+    } finally {
+      setJoinLoading(false)
+    }
+  }
+
+  const handleLeaveClass = async (classId) => {
+    if (!isSupabaseEnabled() || !user) return
+    try {
+      const { error } = await supabase
+        .from(TABLES.CLASS_MEMBERS)
+        .delete()
+        .eq('class_id', classId)
+        .eq('student_id', user.id)
+
+      if (error) throw error
+      fetchMyClasses()
+    } catch (err) {
+      console.error('클래스 탈퇴 오류:', err.message)
+    }
+  }
 
   const userAvatar = user?.user_metadata?.avatar_url || user?.user_metadata?.picture
   const userName = user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0]
@@ -102,6 +217,62 @@ export default function MyPage() {
               <i className={providerIcon} /> {providerLabel} 로그인
             </span>
           </div>
+        </section>
+
+        {/* My Classes */}
+        <section className="mypage-class-section">
+          <h3 className="mypage-class-title">
+            <i className="fa-solid fa-chalkboard" /> 내 클래스
+          </h3>
+          <div className="mypage-class-join-form">
+            <input
+              type="text"
+              className="mypage-class-input"
+              placeholder="클래스 코드 입력"
+              value={classCode}
+              onChange={e => setClassCode(e.target.value.toUpperCase().slice(0, 6))}
+              onKeyDown={e => e.key === 'Enter' && handleJoinClass()}
+              maxLength={6}
+            />
+            <button
+              className="mypage-class-join-btn"
+              onClick={handleJoinClass}
+              disabled={classCode.trim().length !== 6 || joinLoading}
+            >
+              {joinLoading ? '참여 중...' : <><i className="fa-solid fa-right-to-bracket" /> 참여</>}
+            </button>
+          </div>
+          {joinMessage && (
+            <div className={`mypage-class-message ${joinMessage.type}`}>
+              {joinMessage.text}
+            </div>
+          )}
+          {myClasses.length > 0 && (
+            <div className="mypage-class-list">
+              <div className="mypage-class-list-title">참여 중인 클래스</div>
+              {myClasses.map(cls => (
+                <div key={cls.id} className="mypage-class-item">
+                  <div className="mypage-class-item-info">
+                    <span className="mypage-class-item-name">{cls.class_name}</span>
+                    <span className="mypage-class-item-teacher">
+                      <i className="fa-solid fa-chalkboard-user" /> {cls.teacher_email}
+                    </span>
+                  </div>
+                  <button
+                    className="mypage-class-leave-btn"
+                    onClick={() => handleLeaveClass(cls.id)}
+                  >
+                    탈퇴
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          {myClasses.length === 0 && !classesLoading && (
+            <div style={{ fontSize: 13, color: 'var(--text-light)', marginTop: 8 }}>
+              참여 중인 클래스가 없습니다. 선생님에게 받은 6자리 코드를 입력해 참여하세요.
+            </div>
+          )}
         </section>
 
         {/* Learning Stats */}
