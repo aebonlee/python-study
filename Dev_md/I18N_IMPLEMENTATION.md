@@ -77,7 +77,20 @@ const { lang } = useLanguage();
 )}
 ```
 
-파이썬 학습 레슨(PythonLesson01~11)에서 사용. 코드 블록은 공유 (번역 안 함).
+파이썬 학습 레슨(PythonLesson01~11)에서 사용.
+
+### 4. 코드 예제 → `codeEn` / `expectedOutputEn` 필드
+
+```jsx
+// LessonPage.jsx — localizedField()로 코드/출력 번역
+initialCode={localizedField(sections[activeSection], 'code')}
+expectedOutput={localizedField(sections[activeSection], 'expectedOutput') || ''}
+
+// QuizComponent.jsx — 직접 분기
+<code>{lang === 'en' && q.codeEn ? q.codeEn : q.code}</code>
+```
+
+코드 내 한글 주석/문자열/데이터를 영어로 번역. 한글 없는 섹션은 `codeEn` 생략 → fallback.
 
 ## 로케일 키 네임스페이스
 
@@ -106,7 +119,8 @@ const { lang } = useLanguage();
 |------|-----------------|
 | `src/data/lessons.js` | `titleEn`, `descriptionEn` (35개 레슨 + levelInfo) |
 | `src/data/badges.js` | `nameEn`, `descriptionEn` (36개 배지) |
-| `src/data/quizzes.js` | `titleEn`, `descriptionEn`, 문제/선택지/해설 En 필드 (88문제) |
+| `src/data/quizzes.js` | `titleEn`, `descriptionEn`, 문제/선택지/해설 En 필드 (88문제), `codeEn` (4문제) |
+| `src/data/lessonContents.js` | `titleEn`, `contentEn`, `tipEn` (76섹션), `codeEn` (66섹션), `expectedOutputEn` (58섹션) |
 | `src/data/pythonSteps/index.js` | `titleEn` (이미 존재, 13개 step) |
 
 ## 수정 파일 목록 (총 ~45개)
@@ -166,7 +180,7 @@ const { lang } = useLanguage();
 1. **UI 라벨** → `t('key')` 함수로 번역
 2. **데이터 필드** → `localizedField(item, 'field')` + `fieldEn` 패턴
 3. **교육 콘텐츠** (레슨) → 컴포넌트 내 `lang === 'en'` 분기
-4. **코드 예제** → 번역 안 함 (파이썬 코드는 영어)
+4. **코드 예제** → `codeEn` + `expectedOutputEn` 필드 (한글 포함 코드만, 66+58개 섹션)
 5. **Fallback**: 영어 키 없으면 한국어 표시
 
 ## 빌드 결과 (i18n 적용 후)

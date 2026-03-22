@@ -696,3 +696,52 @@
 - 총 50개 청크 (기존 48 → +2)
 - 커밋: 5042340 (실습 개편), 58d8ef1 (폰트 컬러 수정)
 - GitHub Pages 배포 완료
+
+---
+
+## 2026-03-22~23 (Day 5~6) - 다국어(i18n) + 레슨/퀴즈 콘텐츠 영어 번역 + 코드 예제 영어화
+
+### 다국어(i18n) 기반 구조 (Day 5)
+- **LanguageContext.jsx** (신규): `lang` 상태, `t('key.subkey')` 번역 함수, `localizedField(item, 'field')` 헬퍼
+- **ko.js / en.js** (신규): 한국어/영어 UI 문자열 ~500키, 15개 네임스페이스
+- **Navbar 언어 토글**: fa-globe 아이콘, ko ↔ en 전환, localStorage 저장
+- 약 45개 파일 수정: 모든 페이지/컴포넌트에 t() 함수 적용
+- 데이터 파일: lessons.js (titleEn/descriptionEn), badges.js (nameEn/descriptionEn), quizzes.js (titleEn/descriptionEn/questionEn/optionsEn/explanationEn)
+
+### 레슨 콘텐츠 영어 번역 (Day 5)
+- **lessonContents.js**: 전체 76개 섹션에 `titleEn`, `contentEn`, `tipEn` 필드 추가
+- **PythonLesson01~11**: 11개 파이썬 학습 레슨 전체 영어 번역 (lang === 'en' 분기)
+
+### 코드 예제 영어화 (Day 6) — codeEn / expectedOutputEn
+- **목표**: 코드 내 한글 주석, 문자열, 출력 결과를 영어로 번역
+- **구현 방식**: 기존 `localizedField()` 패턴 활용, `codeEn` + `expectedOutputEn` 필드 추가
+
+#### 컴포넌트 수정 (2개 파일)
+- **LessonPage.jsx**: `localizedField(sections[activeSection], 'code')`, `localizedField(sections[activeSection], 'expectedOutput')` 으로 변경
+- **QuizComponent.jsx**: `lang === 'en' && q.codeEn ? q.codeEn : q.code` 분기 추가
+
+#### lessonContents.js — 대규모 데이터 추가
+- **기초 과정** (hello-python ~ functions-basic): 20 `codeEn` + 13 `expectedOutputEn`
+- **중급/고급 과정** (functions-advanced ~ typing-testing): 17개 섹션 수정
+- **응용 과정** (os-sys ~ tensorflow-pytorch): 29개 섹션 수정
+- **합계**: **66 `codeEn`** + **58 `expectedOutputEn`** 필드 추가
+
+번역 원칙:
+- `# 한글 주석` → `# English comment`
+- `"한글 문자열"` → `"English string"`
+- `print(f"한글 {var}")` → `print(f"English {var}")`
+- 한글 데이터 (`"이름": "김파이"`) → `"name": "Kim"`
+- 한글 없는 섹션은 codeEn/expectedOutputEn 생략 (localizedField fallback)
+
+#### quizzes.js — 4개 문제 수정
+- basics Q9: `name = 'Python'` + optionsEn 업데이트
+- intermediate Q2 (Dog 클래스): `Dog("Buddy")` + optionsEn 업데이트
+- intermediate Q3: `# List of even numbers from 1-10`
+- intermediate Q5 (greet 함수): `greet("Alice")` + optionsEn/explanationEn 업데이트
+
+### 빌드 결과
+- 빌드 성공 (153 modules, 6.38초)
+- LessonPage.js: 163.79KB (codeEn/expectedOutputEn 데이터 포함)
+- quizzes.js: 59.80KB
+- CSS: 124.77KB
+- 총 50개 청크

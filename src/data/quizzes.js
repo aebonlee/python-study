@@ -97,8 +97,9 @@ export const quizzes = {
         question: '다음 코드의 출력 결과는?',
         questionEn: 'What is the output of the following code?',
         code: "name = '파이썬'\nprint(f'안녕, {name}!')",
+        codeEn: "name = 'Python'\nprint(f'Hello, {name}!')",
         options: ["안녕, {name}!", "안녕, 파이썬!", "f'안녕, 파이썬!'", "에러 발생"],
-        optionsEn: ["안녕, {name}!", "안녕, 파이썬!", "f'안녕, 파이썬!'", "Error"],
+        optionsEn: ["Hello, {name}!", "Hello, Python!", "f'Hello, Python!'", "Error"],
         correct: 1,
         explanation: "f-string은 중괄호 안의 변수를 실제 값으로 치환합니다.",
         explanationEn: "f-strings replace variables inside curly braces with their actual values."
@@ -137,8 +138,9 @@ export const quizzes = {
         question: '다음 코드의 출력 결과는?',
         questionEn: 'What is the output of the following code?',
         code: 'class Dog:\n    def __init__(self, name):\n        self.name = name\n    def __str__(self):\n        return f"Dog: {self.name}"\n\nd = Dog("멍멍이")\nprint(d)',
+        codeEn: 'class Dog:\n    def __init__(self, name):\n        self.name = name\n    def __str__(self):\n        return f"Dog: {self.name}"\n\nd = Dog("Buddy")\nprint(d)',
         options: ['Dog: 멍멍이', '<Dog object>', 'Dog(멍멍이)', '에러 발생'],
-        optionsEn: ['Dog: 멍멍이', '<Dog object>', 'Dog(멍멍이)', 'Error'],
+        optionsEn: ['Dog: Buddy', '<Dog object>', 'Dog(Buddy)', 'Error'],
         correct: 0,
         explanation: '__str__ 메서드는 print() 호출 시 객체를 문자열로 표현하는 방법을 정의합니다.',
         explanationEn: 'The __str__ method defines how an object is represented as a string when print() is called.'
@@ -147,6 +149,7 @@ export const quizzes = {
         question: '다음 중 리스트 컴프리헨션의 올바른 사용은?',
         questionEn: 'Which of the following is a correct use of list comprehension?',
         code: '# 1~10의 짝수만 포함하는 리스트',
+        codeEn: '# List of even numbers from 1-10',
         options: [
           '[x for x in range(1,11) if x % 2 == 0]',
           '[x if x % 2 == 0 for x in range(1,11)]',
@@ -186,11 +189,12 @@ export const quizzes = {
         question: '다음 코드의 출력 결과는?',
         questionEn: 'What is the output of the following code?',
         code: 'def greet(name, greeting="안녕"):\n    return f"{greeting}, {name}!"\n\nprint(greet("철수"))',
+        codeEn: 'def greet(name, greeting="Hello"):\n    return f"{greeting}, {name}!"\n\nprint(greet("Alice"))',
         options: ['안녕, 철수!', '에러 발생', 'None, 철수!', 'greeting, 철수!'],
-        optionsEn: ['안녕, 철수!', 'Error', 'None, 철수!', 'greeting, 철수!'],
+        optionsEn: ['Hello, Alice!', 'Error', 'None, Alice!', 'greeting, Alice!'],
         correct: 0,
         explanation: 'greeting 매개변수에 기본값 "안녕"이 설정되어 있어, 인자를 전달하지 않으면 기본값이 사용됩니다.',
-        explanationEn: 'The greeting parameter has a default value of "안녕", so if no argument is passed, the default value is used.'
+        explanationEn: 'The greeting parameter has a default value of "Hello", so if no argument is passed, the default value is used.'
       },
       {
         question: '파이썬에서 with 문의 주요 목적은?',

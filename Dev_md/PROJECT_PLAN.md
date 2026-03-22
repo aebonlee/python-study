@@ -76,6 +76,7 @@
 - `t('key')` 번역 함수 + `localizedField(item, 'field')` 헬퍼
 - Navbar 언어 토글 버튼 (fa-globe 아이콘)
 - ~500 UI 문자열 키 + 데이터 필드 영어 추가 + 11개 파이썬 학습 레슨 영어 번역
+- 코드 예제 영어화: 66 `codeEn` + 58 `expectedOutputEn` (lessonContents.js) + 4 `codeEn` (quizzes.js)
 - localStorage 저장 (`pymaster-lang`), 새로고침 후 유지
 
 ### 12. SNS 공유
@@ -118,3 +119,4 @@
 24. ~~수료증 발급~~ ✅ (Canvas API 기반 4단계 PNG 다운로드)
 25. ~~파이썬 실습 전면 개편~~ ✅ (koreatech 동기화, PrismJS 에디터, 스크린샷, 184개 예제)
 26. ~~다국어(i18n) 지원~~ ✅ (한국어/영어 이중 언어, ~500 UI키 + 11개 레슨 번역, ~45개 파일 수정)
+27. ~~코드 예제 영어화~~ ✅ (codeEn/expectedOutputEn 필드 추가 — 66+58개 섹션 + 4개 퀴즈 문제)

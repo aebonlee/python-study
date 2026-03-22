@@ -157,7 +157,7 @@ export default function QuizComponent({ quiz, quizId, onComplete }) {
       <div className="quiz-question">
         <h3 className="question-text">{lang === 'en' && q.questionEn ? q.questionEn : q.question}</h3>
         {q.code && (
-          <pre className="question-code"><code>{q.code}</code></pre>
+          <pre className="question-code"><code>{lang === 'en' && q.codeEn ? q.codeEn : q.code}</code></pre>
         )}
       </div>
 

@@ -122,8 +122,8 @@ export default function LessonPage() {
                 <h3>{t('lesson.tryCode')}</h3>
                 <CodeEditor
                   key={`${lessonId}-${activeSection}`}
-                  initialCode={sections[activeSection].code}
-                  expectedOutput={sections[activeSection].expectedOutput || ''}
+                  initialCode={localizedField(sections[activeSection], 'code')}
+                  expectedOutput={localizedField(sections[activeSection], 'expectedOutput') || ''}
                   lessonId={lessonId}
                 />
               </div>

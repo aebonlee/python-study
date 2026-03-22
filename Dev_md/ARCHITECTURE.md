@@ -238,7 +238,7 @@ App
 |------|------|------|
 | index.js | 499KB | React, Router, Contexts, Supabase, Locales |
 | index.css | 125KB | CSS 18개 파일 통합 |
-| LessonPage.js | 91KB | 레슨 페이지 + 컨텐츠 + TurtleCanvas (35개 레슨) |
+| LessonPage.js | 164KB | 레슨 페이지 + 컨텐츠 + TurtleCanvas (35개 레슨, codeEn/expectedOutputEn 포함) |
 | PythonLesson03.js | 84KB | 파이썬 학습 03: Data Type (최대, 한/영) |
 | PythonLesson07.js | 73KB | 파이썬 학습 07: IF 조건문 (한/영) |
 | PythonLesson09.js | 69KB | 파이썬 학습 09: 함수 (한/영) |
@@ -250,7 +250,7 @@ App
 | PythonLesson05.js | 54KB | 파이썬 학습 05: Turtle (한/영) |
 | PythonLesson02.js | 53KB | 파이썬 학습 02: 입출력 (한/영) |
 | PythonLesson11.js | 46KB | 파이썬 학습 11: 리스트 (한/영) |
-| quizzes.js | 34KB | 퀴즈 데이터 (88문제, 한/영) |
+| quizzes.js | 60KB | 퀴즈 데이터 (88문제, 한/영, codeEn 포함) |
 | PracticeEditor.js | 29KB | PrismJS 구문 강조 에디터 (실습용) |
 | TeacherPage.js | 19KB | 선생님 대시보드 (클래스/학생/통계) |
 | MyPage.js | 18KB | 마이페이지 + 수료증 + 클래스 참여 |

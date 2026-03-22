@@ -44,6 +44,7 @@
 | 36 | README.md | 완료 | 프로젝트 소개, 기술 스택, 구조, 시작하기 가이드 |
 | 37 | 사이트 평가 보고서 | 완료 | 12개 섹션 종합 평가 — 기능/기술/UX/성능/보안/코드/프로세스, 종합 8.67/10 |
 | 38 | 다국어(i18n) 지원 | 완료 | 한국어/영어 이중 언어 — LanguageContext + t() + localizedField(), ~500 UI키, 11개 레슨 전체 번역 |
+| 39 | 코드 예제 영어화 | 완료 | lessonContents.js에 66 codeEn + 58 expectedOutputEn 추가, quizzes.js 4문제 codeEn 추가, 컴포넌트 localizedField() 적용 |
 
 ### 추가 개선 사항
 
@@ -77,6 +78,7 @@
 | 실습 데이터 13개 파일 | 완료 | step1~11, stepAdvanced, stepAdvanced2 |
 | CSS 감사 및 수정 | 완료 | 누락 클래스, 다크모드 27셀렉터, 480px 반응형 |
 | 에디터 변수/토큰 컬러 개선 | 완료 | 라이트/다크 모드 명시적 색상 지정 |
+| 코드 예제 codeEn/expectedOutputEn | 완료 | 66 codeEn + 58 expectedOutputEn (lessonContents.js) + 4 codeEn (quizzes.js) |
 
 ### 프로젝트 통계
 
@@ -91,8 +93,8 @@
 | 퀴즈 문제 수 | 88문제 (8개 퀴즈) |
 | 배지 수 | 36개 (4티어) |
 | Supabase 테이블 수 | 9개 (users, quiz_scores, user_progress, community_posts/comments/likes, classes, class_members, streaks) |
-| 다국어 지원 | 한국어/영어 이중 언어 (LanguageContext + ~500 UI키 + 11개 레슨 번역) |
-| 빌드 사이즈 | index.js 499KB + CSS 125KB + 50 청크 |
+| 다국어 지원 | 한국어/영어 이중 언어 (LanguageContext + ~500 UI키 + 11개 레슨 번역 + 66 codeEn + 58 expectedOutputEn) |
+| 빌드 사이즈 | index.js 499KB + CSS 125KB + LessonPage 164KB + quizzes 60KB + 50 청크 |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정
