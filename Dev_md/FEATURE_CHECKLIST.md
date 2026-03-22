@@ -21,7 +21,7 @@
 | 13 | 시험 성적 기록 | 완료 | ProgressContext.saveQuizScore - 응시 이력(attempts) + 최고 점수 저장 |
 | 26 | 퀴즈 응시 기록 테이블 | 완료 | 퀴즈 센터 + 마이페이지에 최근 3회 응시 기록 테이블 표시 |
 | 14 | Navbar 인증 UI | 완료 | 풍선 도움말 드롭다운 (마이페이지/관리자/로그아웃) |
-| 15 | CSS 추가 | 완료 | auth.css + mypage.css + admin.css + teacher.css 등, 총 17개 CSS |
+| 15 | CSS 추가 | 완료 | auth.css + mypage.css + admin.css + teacher.css + guide.css 등, 총 18개 CSS |
 | 16 | 다크모드/반응형 보강 | 완료 | 전체 다크모드/반응형 대응 (14개 CSS) |
 | 17 | 파이썬 학습 | 완료 | PythonLearning 허브 + PythonLesson01~11 (11개 레슨) |
 | 18 | 파이썬 실습 | 완료 | Pyodide 기반 브라우저 Python 실행, 13단계 실습 |
@@ -40,6 +40,7 @@
 | 32 | 관리자 선생님 뱃지 표시 | 완료 | AdminPage 회원 목록에서 선생님 계정 이름 옆에 보라색 "선생님" 뱃지 |
 | 33 | 동적 역할 관리 시스템 | 완료 | DB 기반 역할 (role 컬럼) + 관리자 토글 UI + set_user_role RPC |
 | 34 | 사용설명서 페이지 | 완료 | /guide 정적 페이지 — 12개 섹션 카드 + FAQ, Navbar 메뉴 추가 |
+| 35 | 퀴즈 항목 셔플 | 완료 | 재응시 시 객관식 선택지 순서 랜덤 셔플 — Fisher-Yates, 답 암기 방지 |
 
 ### 추가 개선 사항
 

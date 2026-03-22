@@ -144,6 +144,29 @@
 
 ---
 
+## 5. 퀴즈 객관식 항목 셔플 (답 암기 방지)
+
+### 배경
+- 퀴즈 재응시 시 선택지 순서가 동일하여 답 위치를 외워서 통과 가능
+- 학습 효과를 높이기 위해 매 응시마다 선택지 순서 랜덤화
+
+### 변경 내용
+
+#### QuizComponent.jsx
+- `shuffleOptions(options, correctIdx)`: Fisher-Yates 셔플 + 정답 인덱스 재매핑
+- `createShuffledQuestions(questions)`: 전체 문제 옵션 셔플 배열 생성
+- `shuffledQuestions` 상태로 관리, 최초 마운트 시 셔플
+- "다시 도전하기" 클릭 시 `setShuffledQuestions()` 재호출로 매번 새 순서
+- 문제 텍스트, 코드, 해설은 그대로 유지 — 선택지 순서만 변경
+- 채점 정확도 유지: 셔플된 정답 인덱스로 비교
+
+### 변경 파일
+| 파일 | 변경 |
+|------|------|
+| `src/components/QuizComponent.jsx` | Fisher-Yates 셔플 함수 + shuffledQuestions 상태 |
+
+---
+
 ## 빌드 결과 (최종)
 - CSS: 117.42KB
 - index.js: 453.29KB

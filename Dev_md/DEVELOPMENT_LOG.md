@@ -584,3 +584,11 @@
 - Guide.js: 6.18KB
 - CSS: 117.42KB
 - 총 48개 청크
+
+### 퀴즈 객관식 항목 셔플 (답 암기 방지)
+- **QuizComponent.jsx**: Fisher-Yates 셔플 알고리즘 적용
+  - `shuffleOptions()`: 옵션 배열 셔플 + 정답 인덱스 재매핑
+  - `createShuffledQuestions()`: 전체 문제의 옵션을 셔플한 새 배열 생성
+  - 최초 진입 시 셔플, "다시 도전하기" 클릭 시 매번 재셔플
+  - 문제 텍스트/코드/해설은 유지, 선택지 순서만 변경
+- 커밋: 0adf65f
