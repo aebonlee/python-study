@@ -236,12 +236,69 @@
 
 ---
 
+## 8. 파이썬 실습 페이지 전면 개편 (koreatech 동기화)
+
+### 배경
+- `D:\koreatech` 프로젝트의 파이썬 실습 콘텐츠·에디터·스크린샷 기능을 python-study에 동기화
+- 기존 textarea 에디터를 PrismJS 구문 강조 에디터로 교체
+- 미지원 모듈 실행 시 결과 스크린샷 표시 기능 추가
+
+### 변경 내용
+
+#### 데이터 파일 동기화 (13개 단계)
+- `step1.js` ~ `step10.js`, `step5adv.js`, `stepAdvanced.js`, `stepAdvanced2.js` koreatech에서 복사
+- `step11.js` 삭제 (koreatech에서는 `step10.js`로 통합)
+- `index.js` 매핑 업데이트: step 6 → `step5adv.js`, step 7 → `step6.js` ... (shifted)
+- 예제에 `type` 필드 추가 (tkinter, matplotlib, webbrowser, gTTS 등)
+
+#### PracticeEditor.jsx (신규 컴포넌트)
+- `react-simple-code-editor` + PrismJS 기반 구문 강조 Python 에디터
+- 라이트/다크 모드 GitHub 스타일 syntax 토큰 색상
+- Lazy loading (`React.lazy + Suspense`)
+
+#### PythonPractice.jsx 개편
+- textarea → PracticeEditor 교체
+- `example.type` 필드 우선 감지 → regex fallback
+- `webbrowser`, `gTTS` 미지원 모듈 추가
+- 미지원 모듈 감지 시 결과 스크린샷 (`/py/img/${name}.png`) 자동 표시
+- 수정됨 뱃지 (`isModified`) 표시
+- 단계별 안내 메시지 (turtle step 5/6, GUI step 98/99)
+- `key={example.name}` on StepCodeRunner for proper remounting
+
+#### public/py/ 에셋 복사
+- Python 예제 파일 170+개 (`.py`, `.txt`, `.csv`, `.GIF`, `.gif`, `.png`)
+- 실행 결과 스크린샷 27개 (`/py/img/*.png`)
+
+#### practice.css 스타일 추가
+- `.code-editor-wrapper`: PrismJS 에디터 래퍼 + focus 상태
+- GitHub Light/Dark syntax token 색상 (comment, keyword, string, number, function, class-name, operator)
+- `.practice-screenshot`, `.practice-screenshot-label`, `.practice-screenshot-img`: 스크린샷 표시
+- `.practice-modified-badge`: 수정됨 뱃지
+- `.practice-runner-empty-icon`, `.practice-runner-empty-notice`: 빈 상태 + 안내 메시지
+- 다크모드 전체 대응
+
+### 변경 파일
+| 파일 | 변경 |
+|------|------|
+| `src/components/PracticeEditor.jsx` | 신규 — PrismJS 구문 강조 에디터 |
+| `src/pages/PythonPractice.jsx` | 전면 개편 — 에디터/스크린샷/안내 메시지 |
+| `src/data/pythonSteps/index.js` | 매핑 업데이트 |
+| `src/data/pythonSteps/step1~10.js` | koreatech에서 동기화 |
+| `src/data/pythonSteps/step5adv.js` | 신규 — Turtle 심화 |
+| `src/data/pythonSteps/step11.js` | 삭제 |
+| `src/data/pythonSteps/stepAdvanced.js` | koreatech에서 동기화 |
+| `src/data/pythonSteps/stepAdvanced2.js` | koreatech에서 동기화 |
+| `src/styles/practice.css` | 에디터/스크린샷/뱃지/안내 스타일 추가 |
+| `public/py/` | 170+개 에셋 파일 복사 |
+
+---
+
 ## 빌드 결과 (최종)
-- CSS: 120.53KB
-- index.js: 453.29KB
-- Guide.js: 6.18KB
-- TeacherPage.js: 18.65KB
-- AdminPage.js: 17.24KB
+- CSS: 124.04KB
+- index.js: 453.43KB
+- PracticeEditor.js: 28.67KB
+- PythonPractice.js: 13.69KB
+- 단계 데이터: step1~10 + step5adv + stepAdvanced + stepAdvanced2 (총 13개 청크)
 - MyPage.js: 18.01KB
-- 총 48개 청크
+- 총 50개 청크
 - GitHub Pages 배포 완료

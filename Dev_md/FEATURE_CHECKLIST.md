@@ -81,15 +81,15 @@
 | 항목 | 수치 |
 |------|------|
 | 페이지 수 | 22개 (Home, Login, MyPage, AdminPage, TeacherPage, Guide, LevelPage, LessonPage, PythonLearning, PythonLesson01~11, PythonPractice, BadgeCollection, QuizCenter, Community, CommunityPost, CommunityWrite, 404) |
-| 컴포넌트 수 | 10개 (Navbar, Footer, CodeEditor, BadgeCard, LessonCard, ProgressBar, QuizComponent, ErrorBoundary, TurtleCanvas, Certificate) |
+| 컴포넌트 수 | 11개 (Navbar, Footer, CodeEditor, PracticeEditor, BadgeCard, LessonCard, ProgressBar, QuizComponent, ErrorBoundary, TurtleCanvas, Certificate) |
 | CSS 파일 수 | 18개 |
 | Context 수 | 4개 (Theme, Progress, Badge, Auth) |
 | 학습 레슨 수 | 35개 (4단계) + 11개 (파이썬 학습) = 46개 |
-| 실습 예제 수 | 13단계 (step1~11 + advanced1~2) |
+| 실습 예제 수 | 13단계 (step1~10 + step5adv + advanced1~2), 184개 예제 |
 | 퀴즈 문제 수 | 88문제 (8개 퀴즈) |
 | 배지 수 | 36개 (4티어) |
 | Supabase 테이블 수 | 9개 (users, quiz_scores, user_progress, community_posts/comments/likes, classes, class_members, streaks) |
-| 빌드 사이즈 | index.js 453KB + CSS 120KB + 48 청크 |
+| 빌드 사이즈 | index.js 453KB + CSS 124KB + 50 청크 |
 
 ### 남은 작업 (우선순위)
 1. **Supabase OAuth Provider 활성화** - Dashboard에서 Google/Kakao 설정
