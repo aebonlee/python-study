@@ -3,6 +3,7 @@ const stepAdvanced2 = [
   {
     name: 'image',
     title: '이미지 변경 GUI',
+    type: 'tkinter',
     desc: 'PhotoImage로 GIF 표시·교체',
     code: `# === 이미지 변경 GUI ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -35,6 +36,7 @@ window.mainloop()`
   {
     name: 'mypaint',
     title: '마우스 그림판',
+    type: 'tkinter',
     desc: 'Canvas 드래그로 선 그리기',
     code: `# === 마우스 그림판 ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -68,6 +70,7 @@ window.mainloop()`
   {
     name: 'mypaint2',
     title: '색상 버튼 그림판',
+    type: 'tkinter',
     desc: '색상 선택 버튼 추가 그림판',
     code: `# === 색상 버튼 그림판 ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -99,6 +102,7 @@ window.mainloop()`
   {
     name: 'filename',
     title: '파일 대화상자',
+    type: 'tkinter',
     desc: 'askopenfilename 파일 선택',
     code: `# === 파일 대화상자 ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -122,6 +126,7 @@ if readFile != None:
   {
     name: 'memo',
     title: 'tkinter 메모장',
+    type: 'tkinter',
     desc: '열기·저장·종료 메뉴 메모장',
     code: `# === tkinter 메모장 ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -178,6 +183,7 @@ window.mainloop()`
   {
     name: 'pillow5',
     title: 'Pillow 이미지 편집기',
+    type: 'tkinter',
     desc: '회전·흐리기 등 영상처리 GUI',
     code: `# === Pillow 이미지 편집기 ===
 # [주의] tkinter + Pillow는 브라우저에서 실행할 수 없습니다.
@@ -233,105 +239,101 @@ window.mainloop()`
   {
     name: 'plot',
     title: '난수 선 그래프',
+    type: 'matplotlib',
     desc: 'matplotlib 기본 선 그래프',
     code: `# === 난수 선 그래프 ===
 # [주의] matplotlib는 브라우저에서 실행할 수 없습니다.
 # pip install matplotlib 후 IDLE 또는 VS Code에서 실행하세요.
 
+import matplotlib.pyplot as plt
 import random
 
-# matplotlib 없이 데이터만 출력합니다.
 numbers = []
 for i in range(10):
     numbers.append(random.randint(1, 10))
 
-print("생성된 난수 데이터:", numbers)
-print("\\n[matplotlib 코드]")
-print("import matplotlib.pyplot as plt")
-print("plt.plot(numbers)")
-print("plt.ylabel('some random numbers')")
-print("plt.show()")`
+plt.plot(numbers)
+plt.ylabel('some random numbers')
+plt.title('Random Numbers')
+plt.show()`
   },
   {
     name: 'plot1',
     title: '요일별 기온 그래프',
+    type: 'matplotlib',
     desc: 'X·Y 데이터 선 그래프',
     code: `# === 요일별 기온 그래프 ===
 # [주의] matplotlib는 브라우저에서 실행할 수 없습니다.
 # pip install matplotlib 후 IDLE 또는 VS Code에서 실행하세요.
 
+import matplotlib.pyplot as plt
+
 X = [1, 2, 3, 4, 5, 6, 7]
 Y = [15.6, 14.2, 16.3, 18.2, 17.1, 20.2, 22.4]
 
-print("요일별 기온 데이터:")
-days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-for i in range(len(days)):
-    bar = "*" * int(Y[i])     # 간단한 텍스트 막대
-    print(f"  {days[i]}: {Y[i]:5.1f}도 {bar}")
-
-print("\\n[matplotlib 코드]")
-print("plt.plot(X, Y)")
-print("plt.show()")`
+plt.plot(X, Y)
+plt.xlabel('Day')
+plt.ylabel('Temperature')
+plt.title('Weekly Temperature')
+plt.show()`
   },
   {
     name: 'plot2',
     title: '두 도시 기온 비교',
+    type: 'matplotlib',
     desc: '두 선을 하나의 그래프에',
     code: `# === 두 도시 기온 비교 ===
 # [주의] matplotlib는 브라우저에서 실행할 수 없습니다.
+# pip install matplotlib 후 IDLE 또는 VS Code에서 실행하세요.
+
+import matplotlib.pyplot as plt
 
 X = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
 Y1 = [15.6, 14.2, 16.3, 18.2, 17.1, 20.2, 22.4]  # 서울
 Y2 = [20.1, 23.1, 23.8, 25.9, 23.4, 25.1, 26.3]  # 부산
 
-print("서울 vs 부산 기온 비교:")
-print(f"{'요일':>5} {'서울':>6} {'부산':>6}")
-print("-" * 20)
-for i in range(len(X)):
-    print(f"{X[i]:>5} {Y1[i]:>6.1f} {Y2[i]:>6.1f}")
-
-print("\\n[matplotlib 코드]")
-print('plt.plot(X, Y1, X, Y2)')
-print('plt.xlabel("day")')
-print('plt.ylabel("temperature")')
-print("plt.show()")`
+plt.plot(X, Y1, X, Y2)
+plt.xlabel('Day')
+plt.ylabel('Temperature')
+plt.title('Seoul vs Busan')
+plt.show()`
   },
   {
     name: 'plot3',
     title: '레전드·제목 그래프',
+    type: 'matplotlib',
     desc: 'label, legend, title 완성판',
     code: `# === 레전드·제목 그래프 ===
 # [주의] matplotlib는 브라우저에서 실행할 수 없습니다.
+# pip install matplotlib 후 IDLE 또는 VS Code에서 실행하세요.
+
+import matplotlib.pyplot as plt
 
 X = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
 Y1 = [15.6, 14.2, 16.3, 18.2, 17.1, 20.2, 22.4]  # Seoul
 Y2 = [20.1, 23.1, 23.8, 25.9, 23.4, 25.1, 26.3]  # Busan
 
-print("=== Temperatures of Cities ===")
-print(f"{'Day':>5} {'Seoul':>7} {'Busan':>7}")
-print("-" * 22)
-for i in range(len(X)):
-    print(f"{X[i]:>5} {Y1[i]:>7.1f} {Y2[i]:>7.1f}")
-
-print("\\n[matplotlib 코드]")
-print('plt.plot(X, Y1, label="Seoul")')
-print('plt.plot(X, Y2, label="Busan")')
-print('plt.legend(loc="upper left")')
-print('plt.title("Temperatures of Cities")')
-print("plt.show()")`
+plt.plot(X, Y1, label="Seoul")
+plt.plot(X, Y2, label="Busan")
+plt.xlabel('Day')
+plt.ylabel('Temperature')
+plt.legend(loc="upper left")
+plt.title("Temperatures of Cities")
+plt.show()`
   },
   {
     name: 'graph',
     title: '2차 함수 그래프',
+    type: 'matplotlib',
     desc: 'ax\u00B2+bx+c 그래프 그리기',
     code: `# === 2차 함수 그래프 ===
 # [주의] matplotlib는 브라우저에서 실행할 수 없습니다.
+# pip install matplotlib 후 IDLE 또는 VS Code에서 실행하세요.
 
-# a = int(input("a : "))
+import matplotlib.pyplot as plt
+
 a = 1   # a 계수 (직접 수정하여 테스트해보세요)
-# b = int(input("b : "))
 b = 0   # b 계수
-# c = int(input("c : "))
 c = -4  # c 계수
 
 # x값 생성: -10.0 ~ 9.9
@@ -344,24 +346,17 @@ ylist = []
 for i in xlist:
     ylist.append(a * i ** 2 + b * i + c)
 
-# 텍스트로 간단히 표시
-print(f"함수: y = {a}x² + {b}x + {c}")
-print(f"x 범위: {xlist[0]} ~ {xlist[-1]}")
-print(f"y 범위: {min(ylist):.1f} ~ {max(ylist):.1f}")
-
-# 일부 값 출력
-print("\\n일부 계산 결과:")
-for x in [-5, -2, 0, 2, 5]:
-    y = a * x ** 2 + b * x + c
-    print(f"  x={x:3d} → y={y:6.1f}")
-
-print("\\n[matplotlib 코드]")
-print("plt.plot(xlist, ylist)")
-print("plt.show()")`
+plt.plot(xlist, ylist)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title(f'y = {a}x² + {b}x + {c}')
+plt.grid(True)
+plt.show()`
   },
   {
     name: 'datediff',
     title: '날짜 차이 계산',
+    type: 'runnable',
     desc: 'datetime 모듈 활용',
     code: `# === 날짜 차이 계산 ===
 # datetime 모듈로 두 날짜 사이의 일수를 계산합니다.
@@ -380,54 +375,57 @@ print("경과 일수:", str(delta.days) + "일")`
   {
     name: 'webopen',
     title: '웹브라우저 열기',
+    type: 'webbrowser',
     desc: 'webbrowser.open() 사용',
     code: `# === 웹브라우저 열기 ===
 # [주의] webbrowser 모듈은 브라우저(Pyodide) 환경에서 실행할 수 없습니다.
 # IDLE 또는 VS Code에서 실행하세요.
 
-# import webbrowser
-# url = input("웹 사이트 URL을 입력하시오: ")
-url = "google"
+import webbrowser
+
+url = input("웹 사이트 URL을 입력하시오: ")
 full_url = "https://www." + url + ".com"
 
 print(f"열려는 URL: {full_url}")
-print("# webbrowser.open(full_url)  ← 데스크톱에서 실행하세요")`
+webbrowser.open(full_url)`
   },
   {
     name: 'webopen1',
     title: '구글 번역기 열기',
+    type: 'webbrowser',
     desc: 'URL 조합 후 브라우저 열기',
     code: `# === 구글 번역기 열기 ===
 # [주의] webbrowser 모듈은 브라우저(Pyodide) 환경에서 실행할 수 없습니다.
+# IDLE 또는 VS Code에서 실행하세요.
 
-# import webbrowser
-# s = input("번역할 영어 문장을 입력하시오: ")
-s = "Hello World"
+import webbrowser
+
+s = input("번역할 영어 문장을 입력하시오: ")
 url = "https://translate.google.co.kr/#en/ko/" + s
 
 print(f"번역할 문장: {s}")
 print(f"구글 번역 URL: {url}")
-print("# webbrowser.open(url)  ← 데스크톱에서 실행하세요")`
+webbrowser.open(url)`
   },
   {
     name: 'tts',
     title: '텍스트 음성 변환',
+    type: 'gTTS',
     desc: 'gTTS로 mp3 변환·재생',
     code: `# === 텍스트 음성 변환 (TTS) ===
 # [주의] gTTS 모듈은 브라우저에서 실행할 수 없습니다.
 # pip install gTTS 후 IDLE 또는 VS Code에서 실행하세요.
 
-# from gtts import gTTS
-# import os
+from gtts import gTTS
+import os
 
 text = "안녕하세요, 여러분. 파이썬은 재미있습니다."
 
+tts = gTTS(text=text, lang='ko')
+tts.save('output.mp3')
 print(f"변환할 텍스트: {text}")
-print()
-print("# [gTTS 사용법]")
-print("# tts = gTTS(text=text, lang='ko')")
-print("# tts.save('output.mp3')")
-print("# os.system('output.mp3')  ← 생성된 mp3 재생")`
+print("output.mp3 파일이 생성되었습니다.")
+os.system('output.mp3')`
   },
 ];
 export default stepAdvanced2;

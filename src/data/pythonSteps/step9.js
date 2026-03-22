@@ -1,270 +1,356 @@
-// === 9단계: 함수와 매개변수 ===
+// === 9단계: 예외처리와 파일 I/O ===
+// [참고] 파일 I/O 관련 코드는 브라우저에서 직접 실행할 수 없습니다.
+// io.StringIO로 대체하거나 경고 주석을 포함합니다.
 const step9 = [
   {
-    name: 'func1',
-    title: '기본 함수 (매개변수 없음)',
-    desc: 'print_address() 정의·호출',
-    code: `# === 기본 함수 (매개변수 없음) ===
-# 함수를 정의(def)하고 호출하는 가장 기본적인 예제입니다.
+    name: 'file1',
+    title: '파일 전체 읽기 (read)',
+    desc: 'read()로 phones.txt 읽기',
+    code: `# === 파일 전체 읽기 (read) ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# io.StringIO를 사용하여 가상 파일로 시뮬레이션합니다.
 
-def print_address():
-    """주소를 출력하는 함수 (매개변수 없음)"""
-    print("서울 특별시 종로구 1번지")
-    print("파이썬 빌딩 7층")
-    print("홍길동")
+import io
 
-# 함수 호출
-print_address()`
+# 가상 파일 데이터 (원래는 phones.txt 파일)
+file_content = """홍길동 010-1234-5678
+김철수 010-1234-5679
+김영희 010-1234-5680"""
+
+# io.StringIO로 가상 파일 객체 생성
+infile = io.StringIO(file_content)
+
+# read()로 파일 전체 읽기
+lines = infile.read()
+print(lines)`
   },
   {
-    name: 'func2',
-    title: '매개변수 있는 함수',
-    desc: 'print_address(name)',
-    code: `# === 매개변수 있는 함수 ===
-# 매개변수(parameter)를 통해 함수에 값을 전달합니다.
+    name: 'file2',
+    title: '줄 단위 읽기 (readlines)',
+    desc: 'readlines()로 리스트 반환',
+    code: `# === 줄 단위 읽기 (readlines) ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# io.StringIO를 사용하여 가상 파일로 시뮬레이션합니다.
 
-def print_address(name):
-    """이름을 매개변수로 받아 주소를 출력하는 함수"""
-    print("서울 특별시 종로구 1번지")
-    print("파이썬 빌딩 7층")
-    print(name)  # 전달받은 이름 출력
+import io
 
-# "홍길동"을 인수(argument)로 전달하여 호출
-print_address("홍길동")`
+file_content = """홍길동 010-1234-5678
+김철수 010-1234-5679
+김영희 010-1234-5680"""
+
+infile = io.StringIO(file_content)
+
+# readlines()는 각 줄을 요소로 갖는 리스트를 반환합니다.
+lines = infile.readlines()
+print(lines)  # ['홍길동 010-1234-5678\\n', ...]`
   },
   {
-    name: 'func3',
-    title: '반환값 있는 함수',
-    desc: '원의 넓이 계산 + return',
-    code: `# === 반환값 있는 함수 ===
-# return 키워드로 계산 결과를 반환합니다.
+    name: 'readline',
+    title: '한 줄씩 읽기 (readline)',
+    desc: 'while+readline() 반복',
+    code: `# === 한 줄씩 읽기 (readline) ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
 
-def calculate_area(radius):
-    """반지름을 받아 원의 넓이를 반환하는 함수"""
-    area = 3.14 * radius ** 2   # 원의 넓이 = π × r²
-    return area                  # 계산 결과 반환
+import io
 
-# 반지름 5.0으로 함수 호출, 반환값 출력
-result = calculate_area(5.0)
-print("원의 넓이:", result)`
+file_content = """홍길동 010-1234-5678
+김철수 010-1234-5679
+김영희 010-1234-5680"""
+
+infile = io.StringIO(file_content)
+
+# readline()으로 한 줄씩 읽기
+line = infile.readline().rstrip()   # 오른쪽 공백/줄바꿈 제거
+while line != "":
+    print(line)
+    line = infile.readline().rstrip()
+
+infile.close()`
   },
   {
-    name: 'paddr1',
-    title: '주소 출력 함수',
-    desc: '매개변수로 이름 전달',
-    code: `# === 주소 출력 함수 ===
-# func2.py와 동일한 패턴: 매개변수로 이름을 전달합니다.
+    name: 'file6',
+    title: '파일 쓰기 (write)',
+    desc: 'write()로 전화번호 기록',
+    code: `# === 파일 쓰기 (write) ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# io.StringIO로 가상 파일에 쓰기를 시뮬레이션합니다.
 
-def print_address(name):
-    """이름을 받아 주소와 함께 출력"""
-    print("서울 특별시 종로구 1번지")
-    print("파이썬 빌딩 7층")
-    print(name)
+import io
 
-print_address("홍길동")`
+outfile = io.StringIO()  # 가상 출력 파일
+
+outfile.write("홍길동 010-1234-5678\\n")
+outfile.write("김철수 010-1234-5679\\n")
+outfile.write("김영희 010-1234-5680\\n")
+
+# 쓴 내용 확인
+print("파일에 기록된 내용:")
+print(outfile.getvalue())   # StringIO의 내용 출력
+
+outfile.close()`
   },
   {
-    name: 'get_sum',
-    title: '범위 합산 함수',
-    desc: 'get_sum(start, end) 정의',
-    code: `# === 범위 합산 함수 ===
-# start부터 end까지의 합을 계산하여 반환합니다.
+    name: 'fwrite',
+    title: '파일 쓰기 예제',
+    desc: 'phones1.txt에 데이터 기록',
+    code: `# === 파일 쓰기 예제 ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
 
-def get_sum(start, end):
-    """start부터 end까지의 합을 계산하는 함수"""
-    sum = 0
-    for i in range(start, end + 1):  # start ~ end 반복
-        sum += i                      # 누적 합산
-    return sum
+import io
 
-# 1부터 10까지의 합: 55
-print("1~10의 합:", get_sum(1, 10))
-print("1~100의 합:", get_sum(1, 100))`
+outfile = io.StringIO()
+
+# write() 메서드로 데이터 기록
+outfile.write("홍길동 010-1234-5678\\n")
+outfile.write("김철수 010-1234-5679\\n")
+outfile.write("김영희 010-1234-5680\\n")
+
+print("파일에 기록된 내용:")
+print(outfile.getvalue())
+outfile.close()`
   },
   {
-    name: 'default',
-    title: '기본값 매개변수',
-    desc: 'msg 기본값 지정 함수',
-    code: `# === 기본값 매개변수 ===
-# 매개변수에 기본값을 지정하면, 인수를 생략할 수 있습니다.
+    name: 'fappend',
+    title: '파일 추가 모드',
+    desc: "'a' 모드로 데이터 추가",
+    code: `# === 파일 추가 모드 ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# 'a' 모드: 기존 내용 뒤에 새 데이터를 추가합니다.
 
-def greet(name, msg="별일없죠?"):
-    """인사 함수: msg를 생략하면 기본값 사용"""
-    print("안녕", name + ', ' + msg)
+import io
 
-greet("영희")                    # msg 생략 → 기본값 "별일없죠?" 사용
-greet("철수", "오늘 뭐해?")     # msg에 "오늘 뭐해?" 전달`
+# 기존 파일 내용 시뮬레이션
+existing = "홍길동 010-1234-5678\\n김철수 010-1234-5679\\n"
+outfile = io.StringIO(existing)
+outfile.seek(0, 2)  # 파일 끝으로 이동 (append 모드 시뮬레이션)
+
+# 새 데이터 추가
+outfile.write("강감찬 010-1234-5681\\n")
+outfile.write("김유신 010-1234-5682\\n")
+outfile.write("정약용 010-1234-5683\\n")
+
+print("추가 후 전체 내용:")
+print(outfile.getvalue())
+outfile.close()`
   },
   {
-    name: 'max3',
-    title: '세 수 최대값 함수',
-    desc: '기본값 매개변수로 최대값',
-    code: `# === 세 수 최대값 함수 ===
-# 기본값 매개변수를 활용한 최대값 함수입니다.
+    name: 'fcopy',
+    title: '파일 복사 프로그램',
+    desc: '입출력 파일명 받아 복사',
+    code: `# === 파일 복사 프로그램 ===
+# [주의] 파일 I/O는 브라우저에서 직접 실행할 수 없습니다.
+# io.StringIO로 시뮬레이션합니다.
 
-def getMax(a, b, c=-10000):
-    """최대 3개의 수 중 최대값을 반환 (c는 선택)"""
-    if (a >= b) and (a >= c):
-        largest = a
-    elif (b >= a) and (b >= c):
-        largest = b
-    else:
-        largest = c
-    return largest
+import io
 
-print(f"(10, 20, 50) 중에서 최대값: {getMax(10, 20, 50)}")
-print(f"(10, 20) 중에서 최대값: {getMax(10, 20)}")  # c 생략`
+# 원본 파일 시뮬레이션
+original = """첫 번째 줄입니다.
+두 번째 줄입니다.
+세 번째 줄입니다."""
+
+infile = io.StringIO(original)   # 입력 파일
+outfile = io.StringIO()          # 출력 파일
+
+# 파일 전체를 읽어서 복사
+s = infile.read()
+outfile.write(s)
+
+print("원본 파일 내용:")
+print(original)
+print("\\n복사된 파일 내용:")
+print(outfile.getvalue())
+
+infile.close()
+outfile.close()`
   },
   {
-    name: 'keyword',
-    title: '키워드 인수',
-    desc: '순서와 무관한 인수 전달',
-    code: `# === 키워드 인수 ===
-# 키워드 인수를 사용하면 매개변수 이름으로 전달하여 순서가 달라도 됩니다.
+    name: 'grep',
+    title: '파일 키워드 검색',
+    desc: '텍스트 파일에서 Python 검색',
+    code: `# === 파일 키워드 검색 ===
+# [주의] 파일 I/O와 os.listdir()는 브라우저에서 실행할 수 없습니다.
+# 가상 데이터로 시뮬레이션합니다.
 
-def calc(x, y, z):
-    """세 수의 합을 반환하는 함수"""
-    return x + y + z
+# 가상 파일 데이터
+files = {
+    "readme.txt": "Welcome to Python programming!\\nPython is easy to learn.",
+    "notes.txt": "Java and C++ are also popular.\\nBut Python is my favorite.",
+    "data.txt": "This file has no keyword."
+}
 
-# 키워드 인수: 순서가 달라도 이름으로 매칭됨
-result = calc(y=20, x=10, z=30)
-print("결과:", result)  # 10 + 20 + 30 = 60`
+keyword = "Python"  # 검색할 키워드
+
+# 각 파일에서 키워드 검색
+for filename, content in files.items():
+    for line in content.split("\\n"):
+        if keyword in line:
+            print(f"{filename} : {line}")`
   },
   {
-    name: 'global',
-    title: '전역변수 접근',
-    desc: '함수 내 전역변수 r 참조',
-    code: `# === 전역변수 접근 ===
-# 함수 안에서 전역변수를 읽을 수 있습니다 (수정은 불가).
+    name: 'split',
+    title: '파일 검색 (split)',
+    desc: 'split() 활용 키워드 검색',
+    code: `# === 파일 검색 (split 활용) ===
+# [주의] 파일 I/O는 브라우저에서 실행할 수 없습니다.
 
-def calculate_area():
-    """전역변수 r을 사용하여 원의 넓이를 계산"""
-    result = 3.14 * r ** 2   # 전역변수 r 참조
-    return result
+# 가상 파일 데이터
+files = {
+    "readme.txt": "Welcome to Python programming!\\nPython is easy.",
+    "notes.txt": "Java and C++ are popular.\\nPython is my favorite."
+}
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름 (직접 수정하여 테스트해보세요)
+keyword = "Python"
 
-area = calculate_area()
-print("원의 넓이:", area)`
+for filename, content in files.items():
+    for line in content.split("\\n"):
+        line = line.rstrip()       # 오른쪽 공백 제거
+        if keyword in line:
+            print(f"{filename} : {line}")`
   },
   {
-    name: 'global1',
-    title: '지역/전역 변수 혼동',
-    desc: 'return 없는 오류 예제',
-    code: `# === 지역/전역 변수 혼동 ===
-# 함수 내에서 area에 값을 저장해도 전역변수 area는 변하지 않습니다.
+    name: 'cipher',
+    title: '시저 암호화 (파일)',
+    desc: '파일 읽어 3칸 이동 암호화',
+    code: `# === 시저 암호화 ===
+# 알파벳을 n칸 이동시켜 암호화합니다. (시저 암호)
 
-def calculate_area(radius):
-    area = 3.14 * radius ** 2   # 이것은 지역변수 area!
-    # return이 없으므로 None을 반환
-    return
+key = 'abcdefghijklmnopqrstuvwxyz'  # 알파벳 키
 
-area = 0  # 전역변수 area
+def encrypt(n, plaintext):
+    """n칸 이동 시저 암호화 함수"""
+    result = ''
+    for l in plaintext.lower():      # 소문자로 변환 후 처리
+        try:
+            i = (key.index(l) + n) % 26  # 알파벳 인덱스 + n
+            result += key[i]
+        except ValueError:
+            result += l                   # 알파벳이 아니면 그대로
+    return result.lower()
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름
+# 원래는 파일에서 읽지만, 문자열로 대체합니다.
+s = "hello python world"
 
-calculate_area(r)
-print("area =", area)  # 0 출력 (전역변수는 변하지 않음!)`
+encrypted = encrypt(3, s)         # 3칸 이동 암호화
+print('평문:', s)
+print('암호문:', encrypted)
+
+# 복호화: -3칸 이동
+decrypted = encrypt(-3, encrypted)
+print('복호화:', decrypted)`
   },
   {
-    name: 'global2',
-    title: 'global 키워드',
-    desc: 'global 선언으로 전역변수 수정',
-    code: `# === global 키워드 ===
-# global 키워드를 사용하면 함수 안에서 전역변수를 수정할 수 있습니다.
+    name: 'fzip',
+    title: 'gzip 파일 압축',
+    desc: 'gzip 모듈로 압축·읽기',
+    code: `# === gzip 파일 압축 ===
+# [주의] 파일 I/O는 브라우저에서 실행할 수 없습니다.
+# gzip 모듈의 사용법을 보여주는 코드입니다.
 
-def calculate_area(radius):
-    global area                   # 전역변수 area를 사용하겠다고 선언
-    area = 3.14 * radius ** 2    # 전역변수 area가 변경됨
-    return
+# gzip 모듈은 파일 시스템 접근이 필요하므로 코드만 확인하세요.
+# 아래는 gzip의 기본 사용법입니다.
 
-area = 0  # 전역변수 area
+data = """You said some winds blow forever
+And I didn't understand
+But you saw my eyes were asking
+And smiling you took my hand
+So we walked along the seaside"""
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름
+print("원본 데이터:")
+print(data)
+print(f"\\n원본 크기: {len(data.encode('UTF-8'))} bytes")
 
-calculate_area(r)
-print("area =", area)  # 78.5 출력 (전역변수가 변경됨!)`
+# 실제 gzip 사용법 (파일 시스템 필요):
+# import gzip
+# f = gzip.open('data.gz', 'wb')
+# f.write(data.encode('UTF-8'))
+# f.close()
+#
+# f = gzip.open('data.gz', 'rb')
+# result = f.read().decode('UTF-8')
+# print(result)
+# f.close()`
   },
   {
-    name: 'var1',
-    title: '지역변수 접근 오류',
-    desc: 'NameError 발생 예제',
-    code: `# === 지역변수 접근 오류 ===
-# 함수 안의 지역변수는 함수 밖에서 접근할 수 없습니다.
+    name: 'csv1',
+    title: 'CSV 읽기 (기본)',
+    desc: 'csv.reader()로 전체 출력',
+    code: `# === CSV 읽기 (기본) ===
+# csv 모듈로 CSV 형식 데이터를 읽습니다.
+# io.StringIO를 사용하여 가상 CSV 파일을 시뮬레이션합니다.
 
-def calculate_area(radius):
-    result = 3.14 * radius ** 2  # result는 지역변수
-    return result
+import csv
+import io
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름
+# 가상 CSV 데이터 (weather.csv 시뮬레이션)
+csv_data = """날짜,최고기온,최저기온,평균기온
+2024-01-01,5.2,-2.1,1.5
+2024-01-02,3.8,-3.5,0.2
+2024-01-03,7.1,-1.0,3.1
+2024-01-04,2.5,-4.2,-0.9"""
 
-area = calculate_area(r)
-print("area =", area)     # 정상 출력: 78.5
+f = io.StringIO(csv_data)
+data = csv.reader(f)             # csv.reader()로 읽기
 
-# 아래 줄은 NameError를 발생시킵니다!
-# result는 함수 안의 지역변수이므로 함수 밖에서 접근 불가
-# print(result)  # NameError: name 'result' is not defined
-print("# print(result) → NameError 발생!")`
+for row in data:
+    print(row)                    # 각 행을 리스트로 출력
+
+f.close()`
   },
   {
-    name: 'var2',
-    title: '전역변수 참조 함수',
-    desc: '전역 r로 원 넓이 계산',
-    code: `# === 전역변수 참조 함수 ===
-# 함수 안에서 전역변수를 읽어 사용하는 예제입니다.
+    name: 'csv2',
+    title: 'CSV 읽기 (헤더 제거)',
+    desc: 'next()로 헤더 건너뛰기',
+    code: `# === CSV 읽기 (헤더 제거) ===
+# next()로 첫 행(헤더)을 건너뛰고 데이터만 읽습니다.
 
-def calculate_area():
-    """전역변수 r을 참조하여 원의 넓이 계산"""
-    result = 3.14 * r ** 2  # 전역변수 r 참조 (읽기만 가능)
-    return result
+import csv
+import io
 
-# r = float(input("원의 반지름: "))
-r = 5.0  # 반지름 (직접 수정하여 테스트해보세요)
+csv_data = """날짜,최고기온,최저기온,평균기온
+2024-01-01,5.2,-2.1,1.5
+2024-01-02,3.8,-3.5,0.2
+2024-01-03,7.1,-1.0,3.1
+2024-01-04,2.5,-4.2,-0.9"""
 
-area = calculate_area()
-print("원의 넓이:", area)`
+f = io.StringIO(csv_data)
+data = csv.reader(f)
+
+header = next(data)               # 첫 행(헤더) 건너뛰기
+print("헤더:", header)
+
+for row in data:                  # 데이터 행만 출력
+    print(row)
+
+f.close()`
   },
   {
-    name: 'var3',
-    title: '전역변수 미수정 예제',
-    desc: 'return 없이 지역변수만 변경',
-    code: `# === 전역변수 미수정 예제 ===
-# global 없이 함수 안에서 area에 값을 대입하면 지역변수가 됩니다.
+    name: 'csv3',
+    title: 'CSV 최솟값 찾기',
+    desc: 'float 변환 후 최솟값 분석',
+    code: `# === CSV 최솟값 찾기 ===
+# CSV 데이터에서 특정 열의 최솟값을 찾습니다.
 
-def calculate_area(radius):
-    area = 3.14 * radius ** 2  # 지역변수 area (전역변수와 별개!)
-    # return 없음 → None 반환
+import csv
+import io
 
-area = 0  # 전역변수 area
+csv_data = """날짜,최고기온,최저기온,평균기온
+2024-01-01,5.2,-2.1,1.5
+2024-01-02,3.8,-3.5,0.2
+2024-01-03,7.1,-1.0,3.1
+2024-01-04,2.5,-4.2,-0.9"""
 
-# r = float(input("원의 반지름: "))
-r = 5.0
+f = io.StringIO(csv_data)
+data = csv.reader(f)
+header = next(data)               # 헤더 건너뛰기
 
-calculate_area(r)
-print("area =", area)  # 0 출력 (전역변수 area는 그대로)`
-  },
-  {
-    name: 'var4',
-    title: 'global로 전역 수정',
-    desc: 'global area로 직접 수정',
-    code: `# === global로 전역변수 수정 ===
-# global 키워드로 함수 안에서 전역변수를 직접 수정합니다.
+temp = 1000                        # 최솟값 초기값 (충분히 큰 수)
+for row in data:
+    if temp > float(row[3]):      # 평균기온(4번째 열)과 비교
+        temp = float(row[3])
 
-def calculate_area(radius):
-    global area                   # 전역변수 area 사용 선언
-    area = 3.14 * radius ** 2    # 전역변수 area 수정
+print(f"평균기온 최솟값: {temp}")
 
-area = 0  # 전역변수 area
-
-# r = float(input("원의 반지름: "))
-r = 5.0
-
-calculate_area(r)
-print("area =", area)  # 78.5 출력 (global 덕분에 수정됨)`
+f.close()`
   },
 ];
 export default step9;

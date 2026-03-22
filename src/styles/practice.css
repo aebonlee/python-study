@@ -34,9 +34,11 @@
 
 /* Runner Panel */
 .practice-runner-panel { flex: 1; min-width: 0; }
-.practice-runner-empty { min-height: 400px; border: 2px dashed var(--border-light); border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--text-light); }
+.practice-runner-empty { min-height: 400px; border: 2px dashed var(--border-light); border-radius: var(--radius-md); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--text-light); text-align: center; }
 .practice-runner-empty i { font-size: 32px; }
-.practice-runner-empty p { font-size: 14px; }
+.practice-runner-empty p { margin: 0; font-size: 0.95rem; line-height: 1.7; white-space: pre-line; }
+.practice-runner-empty-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
+.practice-runner-empty-notice { margin-top: 16px !important; padding: 12px 16px 12px 14px; background: #fef9e7; border-left: 4px solid #f0c040; border-radius: 0 8px 8px 0; font-size: 0.82rem !important; color: #6b5900; max-width: 480px; line-height: 1.8 !important; text-align: left; white-space: normal !important; }
 
 /* Step Code Runner */
 .practice-step-runner { border: 2px solid var(--primary); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-white); animation: fadeInRunner 0.2s ease; }
@@ -56,7 +58,30 @@
 .practice-mode-tab.active { background: var(--primary); color: white; }
 .practice-mode-tab:not(.active):hover { background: rgba(48,105,152,0.12); }
 
-/* Editor Body */
+/* Code Editor (PrismJS syntax-highlighted) */
+.code-editor-wrapper { background: #FAFBFC; border: 1px solid var(--border-light); border-top: none; overflow: hidden; font-size: 15px; transition: outline 0.15s ease, background 0.15s ease; }
+.code-editor-wrapper:focus-within { outline: 2px solid var(--primary); outline-offset: -2px; background: #F5F7FA; }
+.code-editor-wrapper textarea { -webkit-text-fill-color: transparent !important; caret-color: #333; }
+.code-editor-wrapper textarea:focus { outline: none; }
+.code-editor-wrapper pre { user-select: none; }
+.practice-step-runner .code-editor-wrapper { border: none; border-top: none; }
+
+/* Light mode syntax tokens (GitHub Light) */
+.code-editor-wrapper .token.comment,
+.code-editor-wrapper .token.prolog,
+.code-editor-wrapper .token.doctype { color: #116329; }
+.code-editor-wrapper .token.keyword,
+.code-editor-wrapper .token.boolean { color: #CF222E; }
+.code-editor-wrapper .token.string,
+.code-editor-wrapper .token.char { color: #0550AE; }
+.code-editor-wrapper .token.number { color: #0550AE; }
+.code-editor-wrapper .token.function { color: #8250DF; }
+.code-editor-wrapper .token.class-name,
+.code-editor-wrapper .token.builtin { color: #953800; }
+.code-editor-wrapper .token.operator,
+.code-editor-wrapper .token.punctuation { color: #24292F; }
+
+/* Editor Body (fallback for old textarea-based editor) */
 .practice-editor-body { display: flex; min-height: 360px; }
 .practice-editor-body .line-numbers { padding: 16px 0; background: #1E293B; color: #64748B; font-family: var(--font-code); font-size: 14px; line-height: 1.7; text-align: right; user-select: none; min-width: 48px; }
 .practice-editor-body .line-numbers span { display: block; padding: 0 12px; }
@@ -77,6 +102,14 @@
 .practice-unsupported { display: flex; align-items: flex-start; gap: 12px; padding: 16px; background: rgba(245,158,11,0.08); }
 .practice-unsupported i { font-size: 20px; color: var(--warning); flex-shrink: 0; margin-top: 2px; }
 .practice-unsupported p { margin: 6px 0 0; font-size: 13px; opacity: 0.85; }
+
+/* Modified badge */
+.practice-modified-badge { display: inline-block; margin-left: 8px; padding: 1px 8px; font-size: 0.7rem; font-weight: 600; background: #fef3c7; color: #92400e; border-radius: 10px; vertical-align: middle; }
+
+/* Screenshot for unsupported modules */
+.practice-screenshot { padding: 16px 20px; border-top: 1px solid #e5e7eb; background: #f9fafb; }
+.practice-screenshot-label { margin: 0 0 10px; font-size: 0.82rem; font-weight: 600; color: #6b7280; display: flex; align-items: center; gap: 6px; }
+.practice-screenshot-img { max-width: 100%; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
 
 /* Turtle SVG output */
 .practice-turtle-svg { padding: 12px; display: flex; justify-content: center; background: #fff; border-radius: 6px; }
@@ -107,8 +140,30 @@
 [data-theme="dark"] .practice-turtle-svg { background: #161b22; }
 [data-theme="dark"] .practice-input-form { background: rgba(75,139,190,0.08); }
 [data-theme="dark"] .practice-runner-empty { border-color: var(--border-medium); }
+[data-theme="dark"] .practice-runner-empty-notice { background: rgba(240, 192, 64, 0.1); border-left-color: #d4a830; color: #e0c868; }
 [data-theme="dark"] .practice-unsupported { background: rgba(245,158,11,0.12); }
 [data-theme="dark"] .practice-output-header { background: var(--bg-medium); }
+[data-theme="dark"] .practice-modified-badge { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+[data-theme="dark"] .practice-screenshot { background: #0d1117; border-top-color: #374151; }
+[data-theme="dark"] .practice-screenshot-label { color: #8b949e; }
+[data-theme="dark"] .practice-screenshot-img { border-color: #374151; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+[data-theme="dark"] .code-editor-wrapper { background: #0d1117; }
+[data-theme="dark"] .code-editor-wrapper:focus-within { outline-color: var(--primary); background: #161b22; }
+[data-theme="dark"] .code-editor-wrapper textarea { caret-color: #e5e7eb; }
+/* Dark mode syntax tokens (GitHub Dark) */
+[data-theme="dark"] .code-editor-wrapper .token.comment,
+[data-theme="dark"] .code-editor-wrapper .token.prolog,
+[data-theme="dark"] .code-editor-wrapper .token.doctype { color: #8B949E; }
+[data-theme="dark"] .code-editor-wrapper .token.keyword,
+[data-theme="dark"] .code-editor-wrapper .token.boolean { color: #FF7B72; }
+[data-theme="dark"] .code-editor-wrapper .token.string,
+[data-theme="dark"] .code-editor-wrapper .token.char { color: #A5D6FF; }
+[data-theme="dark"] .code-editor-wrapper .token.number { color: #79C0FF; }
+[data-theme="dark"] .code-editor-wrapper .token.function { color: #D2A8FF; }
+[data-theme="dark"] .code-editor-wrapper .token.class-name,
+[data-theme="dark"] .code-editor-wrapper .token.builtin { color: #FFA657; }
+[data-theme="dark"] .code-editor-wrapper .token.operator,
+[data-theme="dark"] .code-editor-wrapper .token.punctuation { color: #C9D1D9; }
 
 /* Responsive */
 @media (max-width: 1024px) {

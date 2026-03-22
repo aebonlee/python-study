@@ -1,504 +1,328 @@
-// === 6단계: Turtle 그래픽 (응용) ===
+// === 6단계: IF 조건문 ===
 const step6 = [
   {
-    name: 'race',
-    title: '토끼와 거북이 경주',
-    desc: '두 turtle 랜덤 이동 경주',
-    code: `# === 토끼와 거북이 경주 ===
+    name: 'if1',
+    title: '합격/불합격 판단',
+    desc: '60점 기준 if-else',
+    code: `# === 합격/불합격 판단 프로그램 ===
+# if-else 문으로 60점 이상이면 합격, 아니면 불합격을 출력합니다.
 
-import turtle
-import random
+# score = int(input("성적을 입력하시오: "))
+score = 85  # 성적 값 (직접 수정하여 테스트해보세요)
 
-screen = turtle.Screen()
-screen.setup(600, 400)
-
-# 토끼 (빨강)
-rabbit = turtle.Turtle()
-rabbit.shape("turtle")
-rabbit.color("red")
-rabbit.penup()
-rabbit.goto(-250, 50)
-
-# 거북이 (녹색)
-tortoise = turtle.Turtle()
-tortoise.shape("turtle")
-tortoise.color("green")
-tortoise.penup()
-tortoise.goto(-250, -50)
-
-# 경주 시작
-for _ in range(100):
-    rabbit.forward(random.randint(1, 10))    # 토끼: 1~10 랜덤 이동
-    tortoise.forward(random.randint(1, 5))   # 거북이: 1~5 랜덤 이동
-
-    if rabbit.xcor() >= 250:
-        print("토끼 승리!")
-        break
-    if tortoise.xcor() >= 250:
-        print("거북이 승리!")
-        break
-
-turtle.done()`
+if score >= 60:            # score가 60 이상이면
+    print("합격입니다.")    # 합격 출력
+else:                      # 그렇지 않으면
+    print("불합격입니다.")  # 불합격 출력`
   },
   {
-    name: 'randw',
-    title: '거북이 랜덤 걷기',
-    desc: '랜덤 거리·각도 이동',
-    code: `# === 거북이 랜덤 걷기 ===
+    name: 'if2',
+    title: '홀수/짝수 판별',
+    desc: '% 연산자로 판별',
+    code: `# === 홀수/짝수 판별 프로그램 ===
+# % 연산자(나머지)로 홀수/짝수를 구분합니다.
 
-import turtle
-import random
+# num = int(input("정수를 입력하시오: "))
+num = 7  # 정수 값 (직접 수정하여 테스트해보세요)
 
-t = turtle.Turtle()
-t.shape("turtle")
-t.speed(0)
-
-for _ in range(100):
-    distance = random.randint(10, 50)   # 랜덤 거리 (10~50)
-    angle = random.randint(-180, 180)   # 랜덤 각도 (-180~180)
-    t.right(angle)
-    t.forward(distance)
-
-turtle.done()`
+if num % 2 == 0:           # num을 2로 나눈 나머지가 0이면
+    print("짝수입니다.")    # 짝수
+else:                      # 그렇지 않으면
+    print("홀수입니다.")    # 홀수`
   },
   {
-    name: 'randrect',
-    title: '랜덤 사각형 30개',
-    desc: '랜덤 위치·색상·크기',
-    code: `# === 랜덤 사각형 30개 ===
-
-import turtle
-import random
-
-t = turtle.Turtle()
-t.speed(0)
-
-for _ in range(30):
-    # 랜덤 위치
-    x = random.randint(-200, 200)
-    y = random.randint(-200, 200)
-    # 랜덤 크기
-    size = random.randint(20, 80)
-    # 랜덤 색상
-    r = random.random()
-    g = random.random()
-    b = random.random()
-
-    t.penup()
-    t.goto(x, y)
-    t.pendown()
-    t.fillcolor(r, g, b)
-    t.begin_fill()
-    for _ in range(4):         # 사각형 그리기
-        t.forward(size)
-        t.right(90)
-    t.end_fill()
-
-turtle.done()`
-  },
-  {
-    name: 'click',
-    title: '클릭 위치에 사각형',
-    desc: 'onscreenclick 이벤트',
-    code: `# === 클릭 위치에 사각형 그리기 ===
-
-import turtle
-
-t = turtle.Turtle()
-t.speed(0)
-
-def draw_square(x, y):
-    """클릭한 위치에 사각형을 그리는 함수"""
-    t.penup()
-    t.goto(x, y)         # 클릭 위치로 이동
-    t.pendown()
-    for _ in range(4):
-        t.forward(50)    # 50픽셀 사각형
-        t.right(90)
-
-screen = turtle.Screen()
-screen.onscreenclick(draw_square)  # 클릭 이벤트 등록
-
-turtle.done()`
-  },
-  {
-    name: 'paint',
-    title: '마우스로 선 그리기',
-    desc: '클릭 이동 + 펜 Up/Down 키',
-    code: `# === 마우스로 선 그리기 ===
-
-import turtle
-
-t = turtle.Turtle()
-t.shape("turtle")
-
-def move_to(x, y):
-    """클릭한 위치로 거북이 이동"""
-    t.goto(x, y)
-
-def pen_up():
-    """u 키: 펜 올리기 (선 안 그림)"""
-    t.penup()
-
-def pen_down():
-    """d 키: 펜 내리기 (선 그림)"""
-    t.pendown()
-
-screen = turtle.Screen()
-screen.onscreenclick(move_to)    # 클릭 → 이동
-screen.onkey(pen_up, "u")        # u 키 → 펜 올리기
-screen.onkey(pen_down, "d")      # d 키 → 펜 내리기
-screen.listen()                   # 키보드 입력 대기
-
-turtle.done()`
-  },
-  {
-    name: 'robot',
-    title: '키보드로 거북이 조종',
-    desc: 'l/r 입력으로 방향 전환',
-    code: `# === 키보드로 거북이 조종 ===
+    name: 'if3',
+    title: 'turtle로 양수/음수 표시',
+    desc: 'if 조건에 따라 turtle 이동',
+    code: `# === turtle로 양수/음수 표시 ===
+# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
+# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
 t.shape("turtle")
 
-# 명령어: l=왼쪽, r=오른쪽, f=전진, q=종료
-print("명령어: l(왼쪽), r(오른쪽), f(전진), q(종료)")
+t.penup()
+t.goto(100, 100)
+t.write("거북이가 여기로 오면 양수입니다.")  # 양수 위치 라벨
+t.goto(100, 0)
+t.write("거북이가 여기로 오면 0입니다.")     # 0 위치 라벨
+t.goto(100, -100)
+t.write("거북이가 여기로 오면 음수입니다.")  # 음수 위치 라벨
 
-# 아래는 터미널 입력 기반이므로 브라우저에서는 데모용입니다.
-commands = ["f", "f", "r", "f", "f", "l", "f"]
+t.goto(0, 0)
+t.pendown()
 
-for cmd in commands:
-    if cmd == "l":
-        t.left(90)        # 왼쪽 90도 회전
-    elif cmd == "r":
-        t.right(90)       # 오른쪽 90도 회전
-    elif cmd == "f":
-        t.forward(50)     # 50픽셀 전진
-    elif cmd == "q":
-        break
+# n = int(turtle.textinput("", "숫자를 입력하시오: "))
+n = 5  # 숫자 값 (직접 수정하여 테스트해보세요)
+
+# 조건에 따라 거북이 이동
+if n > 0:
+    t.goto(100, 100)     # 양수 위치
+if n == 0:
+    t.goto(100, 0)       # 0 위치
+if n < 0:
+    t.goto(100, -100)    # 음수 위치
 
 turtle.done()`
   },
   {
-    name: 'maze',
-    title: '도로 주행 게임',
-    desc: '방향키로 turtle 조종',
-    code: `# === 도로 주행 게임 ===
+    name: 'if4',
+    title: '양수/0/음수 (elif)',
+    desc: 'elif 기본 패턴',
+    code: `# === 양수/0/음수 판별 (elif) ===
+# if-elif-else 패턴으로 세 가지 경우를 구분합니다.
 
-import turtle
+# num = int(input("정수를 입력하시오: "))
+num = -3  # 정수 값 (직접 수정하여 테스트해보세요)
 
-screen = turtle.Screen()
-t = turtle.Turtle()
-t.shape("turtle")
-t.speed(3)
-
-def go_up():
-    t.setheading(90)      # 위쪽
-    t.forward(30)
-
-def go_down():
-    t.setheading(270)     # 아래쪽
-    t.forward(30)
-
-def go_left():
-    t.setheading(180)     # 왼쪽
-    t.forward(30)
-
-def go_right():
-    t.setheading(0)       # 오른쪽
-    t.forward(30)
-
-# 방향키 이벤트 바인딩
-screen.onkey(go_up, "Up")
-screen.onkey(go_down, "Down")
-screen.onkey(go_left, "Left")
-screen.onkey(go_right, "Right")
-screen.listen()
-
-turtle.done()`
+if num > 0:                # 양수인 경우
+    print("양수입니다.")
+elif num == 0:             # 0인 경우
+    print("0입니다.")
+else:                      # 음수인 경우
+    print("음수입니다.")`
   },
   {
-    name: 'angry',
-    title: '포물선 발사 게임',
-    desc: '각도·속도 조절 후 발사',
-    code: `# === 포물선 발사 게임 ===
+    name: 'if5',
+    title: '양수/0/음수 (중첩 if)',
+    desc: '중첩 if 구조',
+    code: `# === 양수/0/음수 판별 (중첩 if) ===
+# if 안에 if를 넣는 중첩(nested) 구조입니다.
 
-import turtle
-import math
+# num = int(input("정수를 입력하시오: "))
+num = 0  # 정수 값 (직접 수정하여 테스트해보세요)
 
-t = turtle.Turtle()
-t.shape("circle")
-t.color("red")
-t.speed(0)
-
-# angle = int(input("발사 각도(도): "))
-angle = 45    # 발사 각도 (직접 수정하여 테스트해보세요)
-
-# speed = int(input("발사 속도: "))
-speed = 30    # 발사 속도
-
-# 각도를 라디안으로 변환
-rad = math.radians(angle)
-vx = speed * math.cos(rad)   # x 방향 속도
-vy = speed * math.sin(rad)   # y 방향 속도
-
-gravity = 1.0                  # 중력
-x, y = -200, -150             # 시작 위치
-
-t.penup()
-t.goto(x, y)
-t.pendown()
-
-# 포물선 이동
-while y >= -150:
-    x += vx
-    vy -= gravity              # 중력 적용
-    y += vy
-    t.goto(x, y)
-
-print(f"착지 지점: x = {x:.0f}")
-turtle.done()`
+if num >= 0:               # 0 이상인 경우
+    if num == 0:           # 그 중에서 0인 경우
+        print("0입니다.")
+    else:                  # 0이 아닌 양수
+        print("양수입니다.")
+else:                      # 0 미만 (음수)
+    print("음수입니다.")`
   },
   {
-    name: 'fractal',
-    title: '프랙탈 나무',
-    desc: '재귀 함수로 가지 그리기',
-    code: `# === 프랙탈 나무 ===
+    name: 'elif',
+    title: '양수/0/음수 판별',
+    desc: 'if-elif-else 기본 예제',
+    code: `# === 양수/0/음수 판별 (if-elif-else) ===
+# elif는 else if를 줄인 것으로, 여러 조건을 순차 검사합니다.
 
-import turtle
+# num = int(input("정수를 입력하시오: "))
+num = 10  # 정수 값 (직접 수정하여 테스트해보세요)
 
-t = turtle.Turtle()
-t.speed(0)
-t.left(90)         # 위를 향하게 시작
-
-def draw_tree(branch_len):
-    """재귀 함수로 나무를 그립니다."""
-    if branch_len > 5:                    # 가지 길이가 5보다 크면
-        t.forward(branch_len)             # 전진
-        t.right(20)                       # 오른쪽 가지
-        draw_tree(branch_len - 15)        # 재귀 호출 (더 짧은 가지)
-        t.left(40)                        # 왼쪽 가지
-        draw_tree(branch_len - 15)        # 재귀 호출
-        t.right(20)                       # 원래 방향 복원
-        t.backward(branch_len)            # 뒤로 이동
-
-t.penup()
-t.goto(0, -200)
-t.pendown()
-draw_tree(80)       # 초기 가지 길이: 80
-
-turtle.done()`
+if num > 0:
+    print("양수입니다.")
+elif num == 0:
+    print("0입니다.")
+else:
+    print("음수입니다.")`
   },
   {
-    name: 'draw_tree',
-    title: '크리스마스 트리',
-    desc: '함수 조합으로 트리 완성',
-    code: `# === 크리스마스 트리 ===
+    name: 'nested',
+    title: '중첩 if 예제',
+    desc: '중첩 if로 부호 판별',
+    code: `# === 중첩 if 예제 ===
+# 바깥 if에서 양수/음수를 나누고, 안쪽 if에서 0을 구분합니다.
 
-import turtle
+# num = int(input("정수를 입력하시오: "))
+num = -5  # 정수 값 (직접 수정하여 테스트해보세요)
 
-t = turtle.Turtle()
-t.speed(3)
-
-def draw_triangle(size, color):
-    """삼각형을 그리는 함수"""
-    t.fillcolor(color)
-    t.begin_fill()
-    for _ in range(3):
-        t.forward(size)
-        t.left(120)
-    t.end_fill()
-
-# 나무 (초록 삼각형 3개, 위로 갈수록 작게)
-t.penup()
-t.goto(-60, -100)
-t.pendown()
-draw_triangle(120, "darkgreen")   # 아래층
-
-t.penup()
-t.goto(-50, -40)
-t.pendown()
-draw_triangle(100, "green")       # 중간층
-
-t.penup()
-t.goto(-40, 20)
-t.pendown()
-draw_triangle(80, "lightgreen")   # 윗층
-
-# 기둥 (갈색 사각형)
-t.penup()
-t.goto(-15, -100)
-t.pendown()
-t.fillcolor("brown")
-t.begin_fill()
-for _ in range(2):
-    t.forward(30)
-    t.right(90)
-    t.forward(40)
-    t.right(90)
-t.end_fill()
-
-turtle.done()`
+if num >= 0:
+    if num == 0:
+        print("0입니다.")
+    else:
+        print("양수입니다.")
+else:
+    print("음수입니다.")`
   },
   {
-    name: 'bar_graph',
-    title: '막대 그래프 (turtle)',
-    desc: 'drawBar() 함수로 그래프',
-    code: `# === 막대 그래프 (turtle) ===
+    name: 'coin',
+    title: '동전 던지기',
+    desc: 'random으로 앞면/뒷면',
+    code: `# === 동전 던지기 게임 ===
+# random 모듈로 0 또는 1을 생성하여 앞면/뒷면을 결정합니다.
 
-import turtle
+import random
 
-t = turtle.Turtle()
-t.speed(3)
+print("동전 던지기 게임을 시작합니다.")
 
-def drawBar(height, color):
-    """막대 하나를 그리는 함수"""
-    t.fillcolor(color)
-    t.begin_fill()
-    t.left(90)
-    t.forward(height)       # 높이만큼 위로
-    t.right(90)
-    t.forward(40)           # 막대 너비: 40
-    t.right(90)
-    t.forward(height)       # 아래로 복귀
-    t.left(90)
-    t.end_fill()
+coin = random.randrange(2)  # 0 또는 1 랜덤 생성
 
-# 데이터와 색상
-data = [120, 80, 150, 60, 100]
-colors = ["red", "blue", "green", "orange", "purple"]
+if coin == 0:
+    print("앞면입니다.")   # 0이면 앞면
+else:
+    print("뒷면입니다.")   # 1이면 뒷면
 
-t.penup()
-t.goto(-150, -100)
-t.pendown()
-
-for i in range(len(data)):
-    drawBar(data[i], colors[i])
-    t.forward(10)           # 막대 간 간격
-
-turtle.done()`
+print("게임이 종료되었습니다.")`
   },
   {
-    name: 'cookie',
-    title: '과자 먹기 게임 (1개)',
-    desc: '키보드로 강아지 이동해 과자 먹기',
-    code: `# === 과자 먹기 게임 (1개) ===
+    name: 'coin2',
+    title: '이미지 동전 던지기',
+    desc: 'turtle GIF로 시각적 동전',
+    code: `# === 이미지 동전 던지기 ===
+# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
+# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
+# (front.gif, back.gif 이미지 파일이 같은 폴더에 필요합니다)
 
 import turtle
 import random
 
 screen = turtle.Screen()
-screen.setup(400, 400)
+image1 = "front.gif"       # 앞면 이미지
+image2 = "back.gif"        # 뒷면 이미지
+screen.addshape(image1)    # 이미지를 turtle 모양으로 등록
+screen.addshape(image2)
 
-# 강아지 (플레이어)
-player = turtle.Turtle()
-player.shape("turtle")
-player.color("blue")
-player.penup()
+t1 = turtle.Turtle()
+coin = random.randrange(2)  # 0 또는 1
 
-# 과자 (목표)
-cookie = turtle.Turtle()
-cookie.shape("circle")
-cookie.color("red")
-cookie.penup()
-cookie.goto(random.randint(-180, 180), random.randint(-180, 180))
-
-def go_up():
-    player.setheading(90)
-    player.forward(20)
-
-def go_down():
-    player.setheading(270)
-    player.forward(20)
-
-def go_left():
-    player.setheading(180)
-    player.forward(20)
-
-def go_right():
-    player.setheading(0)
-    player.forward(20)
-
-screen.onkey(go_up, "Up")
-screen.onkey(go_down, "Down")
-screen.onkey(go_left, "Left")
-screen.onkey(go_right, "Right")
-screen.listen()
+if coin == 0:
+    t1.shape(image1)        # 앞면 이미지 표시
+    t1.stamp()
+else:
+    t1.shape(image2)        # 뒷면 이미지 표시
+    t1.stamp()
 
 turtle.done()`
   },
   {
-    name: 'cookie2',
-    title: '과자 먹기 게임 (다중)',
-    desc: '과자 10개 먹기 + 점수판',
-    code: `# === 과자 먹기 게임 (다중) ===
+    name: 'fgame',
+    title: '페널티킥 수비 게임',
+    desc: '랜덤 방향 vs 사용자 선택',
+    code: `# === 페널티킥 수비 게임 ===
+# 컴퓨터가 랜덤으로 방향을 선택하고, 사용자 선택과 비교합니다.
 
-import turtle
 import random
 
-screen = turtle.Screen()
-screen.setup(400, 400)
+options = ["왼쪽", "중앙", "오른쪽"]  # 선택지 목록
+computer_choice = random.choice(options)  # 컴퓨터 랜덤 선택
 
-player = turtle.Turtle()
-player.shape("turtle")
-player.color("blue")
-player.penup()
+# user_choice = input("어디를 수비하시겠어요?(왼쪽, 중앙, 오른쪽) ")
+user_choice = "중앙"  # 수비 방향 (직접 수정하여 테스트해보세요)
 
-score = 0
-score_display = turtle.Turtle()
-score_display.penup()
-score_display.goto(0, 170)
-score_display.write(f"점수: {score}", align="center", font=("Arial", 16, "bold"))
+print(f"컴퓨터의 킥 방향: {computer_choice}")
+print(f"당신의 수비 방향: {user_choice}")
 
-# 과자 10개 생성
-cookies = []
-for _ in range(10):
-    c = turtle.Turtle()
-    c.shape("circle")
-    c.color("red")
-    c.penup()
-    c.goto(random.randint(-180, 180), random.randint(-180, 180))
-    cookies.append(c)
+if computer_choice == user_choice:
+    print("수비에 성공하셨습니다!")    # 같으면 수비 성공
+else:
+    print("페널티킥이 성공하였습니다.")  # 다르면 골`
+  },
+  {
+    name: 'movie',
+    title: '영화 관람 나이 제한',
+    desc: '15세 이상 판별',
+    code: `# === 영화 관람 나이 제한 ===
+# 15세 이상만 관람할 수 있는 영화의 나이 검사를 합니다.
 
-def check_collision():
-    """과자와 충돌 체크"""
-    global score
-    for c in cookies:
-        if player.distance(c) < 20:
-            c.hideturtle()
-            cookies.remove(c)
-            score += 1
-            score_display.clear()
-            score_display.write(f"점수: {score}", align="center", font=("Arial", 16, "bold"))
+print("안녕하세요? 두근두근 영화관입니다.")
 
-def go_up():
-    player.setheading(90)
-    player.forward(20)
-    check_collision()
+# age = int(input("나이를 입력하시오: "))
+age = 17  # 나이 (직접 수정하여 테스트해보세요)
 
-def go_down():
-    player.setheading(270)
-    player.forward(20)
-    check_collision()
+if age >= 15:
+    print("본 영화를 보실 수 있습니다.")     # 15세 이상
+else:
+    print("본 영화를 보실 수 없습니다.")     # 15세 미만`
+  },
+  {
+    name: 'command',
+    title: '시스템 명령어 처리',
+    desc: 'if-elif로 명령 분기',
+    code: `# === 시스템 명령어 처리 ===
+# if-elif-else로 명령어에 따라 다른 동작을 수행합니다.
 
-def go_left():
-    player.setheading(180)
-    player.forward(20)
-    check_collision()
+import os
 
-def go_right():
-    player.setheading(0)
-    player.forward(20)
-    check_collision()
+# command = input("명령을 입력하시오: ")
+command = "cwd"  # 명령어 (직접 수정하여 테스트해보세요: "cwd" 또는 "shutdown")
 
-screen.onkey(go_up, "Up")
-screen.onkey(go_down, "Down")
-screen.onkey(go_left, "Left")
-screen.onkey(go_right, "Right")
-screen.listen()
+if command == "shutdown":
+    print("컴퓨터가 곧 종료됩니다.")
+    # os.system("shutdown /s /t 1")  # 실제 종료 명령 (주의!)
+elif command == "cwd":
+    cwd = os.getcwd()              # 현재 작업 디렉토리 가져오기
+    print("Current working directory:", cwd)
+else:
+    print("알수 없는 명령어입니다.")`
+  },
+  {
+    name: 'sing',
+    title: '종달새 노래 조건',
+    desc: '시간·날씨 and 복합 조건',
+    code: `# === 종달새 노래 조건 ===
+# and 연산자로 여러 조건을 동시에 만족하는지 확인합니다.
 
-turtle.done()`
+import random
+
+time = random.randint(1, 24)  # 랜덤 시각 (1~24)
+print("좋은 아침입니다. 지금 시각은 " + str(time) + "시 입니다.")
+
+sunny = random.choice([True, False])  # 화창한 날씨 여부
+
+if sunny:
+    print("현재 날씨가 화창합니다.")
+else:
+    print("현재 날씨가 화창하지 않습니다.")
+
+# 복합 조건: 6시~9시 사이 AND 화창한 날씨일 때만 노래
+if time >= 6 and time < 9 and sunny:
+    print("종달새가 노래를 합니다.")
+else:
+    print("종달새가 노래를 하지 않습니다.")`
+  },
+  {
+    name: 'leap',
+    title: '윤년 판별',
+    desc: '4, 100, 400 복합 논리 연산',
+    code: `# === 윤년 판별 프로그램 ===
+# 윤년 조건: (4의 배수 AND 100의 배수가 아님) OR 400의 배수
+
+# year = int(input("연도를 입력하시오: "))
+year = 2024  # 연도 (직접 수정하여 테스트해보세요)
+
+if (year % 4 == 0 and year % 100 != 0) or year % 400 == 0:
+    print(year, "년은 윤년입니다.")
+else:
+    print(year, "년은 윤년이 아닙니다.")`
+  },
+  {
+    name: 'for_teller',
+    title: '미래 예언 프로그램',
+    desc: '랜덤+if로 8가지 예언',
+    code: `# === 미래 예언 프로그램 ===
+# 랜덤 숫자와 if-elif로 8가지 예언을 출력합니다.
+
+import random
+
+# name = input("이름: ")
+name = "김파이"  # 이름 (직접 수정하여 테스트해보세요)
+
+# question = input("무엇에 대하여 알고 싶은가요? ")
+question = "오늘의 운세"  # 질문
+
+print(name + "님", "\\"", question, "\\"에 대하여 질문 주셨군요.")
+print("운명의 주사위를 굴려볼께요...")
+
+answers = random.randint(1, 8)  # 1~8 랜덤
+
+if answers == 1:
+    print("네, 확실합니다.")
+elif answers == 2:
+    print("전망이 좋은 거 같은 데요.")
+elif answers == 3:
+    print("믿으셔도 됩니다.")
+elif answers == 4:
+    print("글쎄요 아닌 거 같군요.")
+elif answers == 5:
+    print("한 점의 의심도 없이 맞습니다.")
+elif answers == 6:
+    print("그럼요, 명백히 올바른 선택을 했습니다.")
+elif answers == 7:
+    print("제 답변은 No입니다.")
+else:
+    print("나중에 다시 물어 보세요.")`
   },
 ];
 export default step6;

@@ -1,327 +1,346 @@
-// === 7단계: IF 조건문 ===
+// === 7단계: 반복문 (While / For) ===
 const step7 = [
   {
-    name: 'if1',
-    title: '합격/불합격 판단',
-    desc: '60점 기준 if-else',
-    code: `# === 합격/불합격 판단 프로그램 ===
-# if-else 문으로 60점 이상이면 합격, 아니면 불합격을 출력합니다.
+    name: 'forloop',
+    title: 'for 루프 기본',
+    desc: '리스트 순회 반복 출력',
+    code: `# === for 루프 기본 ===
+# 리스트의 각 요소를 하나씩 꺼내 반복합니다.
 
-# score = int(input("성적을 입력하시오: "))
-score = 85  # 성적 값 (직접 수정하여 테스트해보세요)
-
-if score >= 60:            # score가 60 이상이면
-    print("합격입니다.")    # 합격 출력
-else:                      # 그렇지 않으면
-    print("불합격입니다.")  # 불합격 출력`
+for i in [1, 2, 3, 4, 5]:       # 리스트의 요소를 순회
+    print("방문을 환영합니다.")   # 5번 출력됨`
   },
   {
-    name: 'if2',
-    title: '홀수/짝수 판별',
-    desc: '% 연산자로 판별',
-    code: `# === 홀수/짝수 판별 프로그램 ===
-# % 연산자(나머지)로 홀수/짝수를 구분합니다.
+    name: 'forloop1',
+    title: 'for 루프 변수 출력',
+    desc: '반복 변수 i 값 출력',
+    code: `# === for 루프 변수 출력 ===
+# 반복 변수 i가 리스트의 각 값을 순서대로 갖습니다.
 
-# num = int(input("정수를 입력하시오: "))
-num = 7  # 정수 값 (직접 수정하여 테스트해보세요)
-
-if num % 2 == 0:           # num을 2로 나눈 나머지가 0이면
-    print("짝수입니다.")    # 짝수
-else:                      # 그렇지 않으면
-    print("홀수입니다.")    # 홀수`
+for i in [1, 2, 3, 4, 5]:
+    print("i=", i)   # i가 1, 2, 3, 4, 5로 변화`
   },
   {
-    name: 'if3',
-    title: 'turtle로 양수/음수 표시',
-    desc: 'if 조건에 따라 turtle 이동',
-    code: `# === turtle로 양수/음수 표시 ===
-# if 조건에 따라 turtle이 다른 위치로 이동합니다.
+    name: 'forloop2',
+    title: '9의 배수 출력',
+    desc: 'for 루프로 구구단 일부',
+    code: `# === 9의 배수 출력 ===
+# for 루프로 9×1부터 9×5까지 출력합니다.
+
+for i in [1, 2, 3, 4, 5]:
+    print("9*", i, "=", 9 * i)  # 9×i 계산 결과 출력`
+  },
+  {
+    name: 'range1',
+    title: 'range() 기본',
+    desc: 'range(5)로 5번 반복',
+    code: `# === range() 기본 ===
+# range(n)은 0부터 n-1까지의 숫자를 생성합니다.
+
+for i in range(5):               # 0, 1, 2, 3, 4
+    print("방문을 환영합니다!")    # 5번 반복 출력`
+  },
+  {
+    name: 'range',
+    title: 'range() 변형',
+    desc: '시작·끝·증감 다양한 range()',
+    code: `# === range() 변형 ===
+# range(시작, 끝): 시작부터 끝-1까지
+# range(시작, 끝, 증감): 증감값만큼 변화
+
+for i in range(5, 10):           # 5, 6, 7, 8, 9
+    print(f"변수 i의 값={i}")
+print()
+
+for i in range(1, 10, 3):       # 1, 4, 7 (3씩 증가)
+    print(f"변수 i의 값={i}")
+print()
+
+for i in range(10, 7, -1):      # 10, 9, 8 (1씩 감소)
+    print(f"변수 i의 값={i}")`
+  },
+  {
+    name: 'while1',
+    title: '1~10 합 (while)',
+    desc: 'while 루프로 합산',
+    code: `# === 1부터 10까지 합 (while) ===
+# while 루프: 조건이 참인 동안 반복합니다.
+
+count = 1    # 카운터 초기값
+sum = 0      # 합계 초기값
+
+while count <= 10:       # count가 10 이하인 동안 반복
+    sum = sum + count    # 합계에 count 더하기
+    count = count + 1    # count 1 증가
+
+print("합계는", sum)     # 1+2+...+10 = 55`
+  },
+  {
+    name: 'while2',
+    title: '1~10 합 (while 변형)',
+    desc: '동일 로직 while 변형',
+    code: `# === 1부터 10까지 합 (while 변형) ===
+# while1.py와 동일한 로직의 변형입니다.
+
+count = 1
+sum = 0
+
+while count <= 10:
+    sum = sum + count     # 누적 합산
+    count = count + 1     # 카운터 증가
+
+print("합계는", sum)      # 결과: 55`
+  },
+  {
+    name: 'while3',
+    title: 'while로 사각형 그리기',
+    desc: 'while+turtle 사각형',
+    code: `# === while로 사각형 그리기 ===
+# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
+# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
 
 import turtle
 t = turtle.Turtle()
-t.shape("turtle")
 
-t.penup()
-t.goto(100, 100)
-t.write("거북이가 여기로 오면 양수입니다.")  # 양수 위치 라벨
-t.goto(100, 0)
-t.write("거북이가 여기로 오면 0입니다.")     # 0 위치 라벨
-t.goto(100, -100)
-t.write("거북이가 여기로 오면 음수입니다.")  # 음수 위치 라벨
-
-t.goto(0, 0)
-t.pendown()
-
-# n = int(turtle.textinput("", "숫자를 입력하시오: "))
-n = 5  # 숫자 값 (직접 수정하여 테스트해보세요)
-
-# 조건에 따라 거북이 이동
-if n > 0:
-    t.goto(100, 100)     # 양수 위치
-if n == 0:
-    t.goto(100, 0)       # 0 위치
-if n < 0:
-    t.goto(100, -100)    # 음수 위치
+i = 0
+while i < 4:            # 4번 반복
+    t.forward(100)      # 100픽셀 전진
+    t.right(90)         # 오른쪽 90도 회전
+    i = i + 1           # 카운터 증가
 
 turtle.done()`
   },
   {
-    name: 'if4',
-    title: '양수/0/음수 (elif)',
-    desc: 'elif 기본 패턴',
-    code: `# === 양수/0/음수 판별 (elif) ===
-# if-elif-else 패턴으로 세 가지 경우를 구분합니다.
+    name: 'inf_loop',
+    title: '무한 루프 + break',
+    desc: "'blue' 입력 시 탈출",
+    code: `# === 무한 루프 + break ===
+# while True는 무한 루프이며, break로 탈출합니다.
 
-# num = int(input("정수를 입력하시오: "))
-num = -3  # 정수 값 (직접 수정하여 테스트해보세요)
+# 브라우저에서는 input()을 사용할 수 없으므로
+# 시뮬레이션 데이터를 사용합니다.
 
-if num > 0:                # 양수인 경우
-    print("양수입니다.")
-elif num == 0:             # 0인 경우
-    print("0입니다.")
-else:                      # 음수인 경우
-    print("음수입니다.")`
+lights = ["red", "green", "yellow", "blue"]  # 시뮬레이션 데이터
+
+for light in lights:
+    print(f"신호등 색상: {light}")
+    if light == 'blue':     # 'blue'이면 탈출
+        break
+
+print('전진!!')`
   },
   {
-    name: 'if5',
-    title: '양수/0/음수 (중첩 if)',
-    desc: '중첩 if 구조',
-    code: `# === 양수/0/음수 판별 (중첩 if) ===
-# if 안에 if를 넣는 중첩(nested) 구조입니다.
+    name: 'mtable',
+    title: '구구단 출력',
+    desc: 'for range(1,10) 구구단',
+    code: `# === 구구단 출력 ===
+# 입력한 단의 구구단을 출력합니다.
 
-# num = int(input("정수를 입력하시오: "))
-num = 0  # 정수 값 (직접 수정하여 테스트해보세요)
+# dan = int(input("원하는 단은: "))
+dan = 7  # 구구단 단 (직접 수정하여 테스트해보세요)
 
-if num >= 0:               # 0 이상인 경우
-    if num == 0:           # 그 중에서 0인 경우
-        print("0입니다.")
-    else:                  # 0이 아닌 양수
-        print("양수입니다.")
-else:                      # 0 미만 (음수)
-    print("음수입니다.")`
+for i in range(1, 10, 1):      # 1부터 9까지 반복
+    print(f"{dan}*{i}={dan*i}")  # f-string으로 포맷팅`
   },
   {
-    name: 'elif',
-    title: '양수/0/음수 판별',
-    desc: 'if-elif-else 기본 예제',
-    code: `# === 양수/0/음수 판별 (if-elif-else) ===
-# elif는 else if를 줄인 것으로, 여러 조건을 순차 검사합니다.
+    name: 'mquiz',
+    title: '랜덤 덧셈 퀴즈',
+    desc: 'while True 반복 퀴즈',
+    code: `# === 랜덤 덧셈 퀴즈 ===
+# 랜덤 덧셈 문제를 풀어봅니다.
+# 원래는 while True 무한 반복이지만, 3문제로 제한합니다.
 
-# num = int(input("정수를 입력하시오: "))
-num = 10  # 정수 값 (직접 수정하여 테스트해보세요)
+import random
 
-if num > 0:
-    print("양수입니다.")
-elif num == 0:
-    print("0입니다.")
-else:
-    print("음수입니다.")`
-  },
-  {
-    name: 'nested',
-    title: '중첩 if 예제',
-    desc: '중첩 if로 부호 판별',
-    code: `# === 중첩 if 예제 ===
-# 바깥 if에서 양수/음수를 나누고, 안쪽 if에서 0을 구분합니다.
+for _ in range(3):              # 3문제 출제
+    x = random.randint(1, 100)  # 1~100 랜덤 정수
+    y = random.randint(1, 100)
 
-# num = int(input("정수를 입력하시오: "))
-num = -5  # 정수 값 (직접 수정하여 테스트해보세요)
+    answer = x + y              # 정답 자동 계산
+    print(f"{x} + {y} = {answer}")
 
-if num >= 0:
-    if num == 0:
-        print("0입니다.")
+    if answer == x + y:
+        print("잘했어요!!")
     else:
-        print("양수입니다.")
-else:
-    print("음수입니다.")`
+        print("다음번에는 잘할 수 있죠?")`
   },
   {
-    name: 'coin',
-    title: '동전 던지기',
-    desc: 'random으로 앞면/뒷면',
-    code: `# === 동전 던지기 게임 ===
-# random 모듈로 0 또는 1을 생성하여 앞면/뒷면을 결정합니다.
+    name: 'login',
+    title: '비밀번호 반복 입력',
+    desc: '올바른 입력까지 while 반복',
+    code: `# === 비밀번호 반복 입력 ===
+# 올바른 비밀번호를 입력할 때까지 반복합니다.
+# 브라우저에서는 input()을 사용할 수 없으므로 시뮬레이션합니다.
+
+correct_password = "pythonisfun"
+
+# 시뮬레이션: 비밀번호 시도 목록
+attempts = ["hello", "python", "pythonisfun"]
+
+for password in attempts:
+    print(f"입력한 암호: {password}")
+    if password == correct_password:
+        print("로그인 성공")
+        break
+    else:
+        print("틀렸습니다. 다시 입력하세요.")`
+  },
+  {
+    name: 'guess',
+    title: '숫자 맞추기 게임',
+    desc: '1~100 높음/낮음 힌트',
+    code: `# === 숫자 맞추기 게임 ===
+# 1~100 사이의 랜덤 숫자를 맞추는 게임입니다.
+# 브라우저에서는 input()을 사용할 수 없으므로 시뮬레이션합니다.
 
 import random
 
-print("동전 던지기 게임을 시작합니다.")
+answer = random.randint(1, 100)  # 정답: 1~100 랜덤
+tries = 0
 
-coin = random.randrange(2)  # 0 또는 1 랜덤 생성
+print("1부터 100 사이의 숫자를 맞추시오")
+print(f"(정답 힌트: {answer})")   # 테스트용 힌트
 
-if coin == 0:
-    print("앞면입니다.")   # 0이면 앞면
-else:
-    print("뒷면입니다.")   # 1이면 뒷면
+# 시뮬레이션: 이진 탐색으로 맞추기
+low, high = 1, 100
+while True:
+    guess = (low + high) // 2    # 중간값 추측
+    tries += 1
+    print(f"추측: {guess}")
 
-print("게임이 종료되었습니다.")`
+    if guess < answer:
+        print("낮음!")
+        low = guess + 1
+    elif guess > answer:
+        print("높음!")
+        high = guess - 1
+    else:
+        print(f"축하합니다! 시도횟수= {tries}")
+        break`
   },
   {
-    name: 'coin2',
-    title: '이미지 동전 던지기',
-    desc: 'turtle GIF로 시각적 동전',
-    code: `# === 이미지 동전 던지기 ===
-# [주의] turtle 모듈은 브라우저에서 실행할 수 없습니다.
-# 코드를 다운로드하여 IDLE 또는 VS Code에서 실행하세요.
-# (front.gif, back.gif 이미지 파일이 같은 폴더에 필요합니다)
+    name: 'timer',
+    title: '카운트다운 타이머',
+    desc: 'for+sleep 카운트다운',
+    code: `# === 카운트다운 타이머 ===
+# time.sleep()으로 1초 간격 카운트다운합니다.
+# [참고] winsound는 Windows 전용이므로 제외합니다.
 
-import turtle
-import random
+import time
 
-screen = turtle.Screen()
-image1 = "front.gif"       # 앞면 이미지
-image2 = "back.gif"        # 뒷면 이미지
-screen.addshape(image1)    # 이미지를 turtle 모양으로 등록
-screen.addshape(image2)
+# seconds = int(input("초단위의 시간을 입력하시오: "))
+seconds = 5  # 카운트다운 초 (직접 수정하여 테스트해보세요)
 
-t1 = turtle.Turtle()
-coin = random.randrange(2)  # 0 또는 1
+for i in range(seconds, 0, -1):    # 역순 반복
+    print(f"{i}초 남았습니다.")
+    time.sleep(1)                   # 1초 대기
 
-if coin == 0:
-    t1.shape(image1)        # 앞면 이미지 표시
-    t1.stamp()
-else:
-    t1.shape(image2)        # 뒷면 이미지 표시
-    t1.stamp()
-
-turtle.done()`
+print("시간 종료!")`
   },
   {
-    name: 'fgame',
-    title: '페널티킥 수비 게임',
-    desc: '랜덤 방향 vs 사용자 선택',
-    code: `# === 페널티킥 수비 게임 ===
-# 컴퓨터가 랜덤으로 방향을 선택하고, 사용자 선택과 비교합니다.
+    name: 'encrypt',
+    title: '문자 코드 암호화',
+    desc: '코드값 +1로 암호문 생성',
+    code: `# === 문자 코드 암호화 (시저 암호) ===
+# 각 문자의 유니코드 값을 1씩 증가시켜 암호화합니다.
 
-import random
+plain_text = "Love will find a way."  # 평문
 
-options = ["왼쪽", "중앙", "오른쪽"]  # 선택지 목록
-computer_choice = random.choice(options)  # 컴퓨터 랜덤 선택
+encrypted_text = ""                    # 암호문 (빈 문자열로 시작)
 
-# user_choice = input("어디를 수비하시겠어요?(왼쪽, 중앙, 오른쪽) ")
-user_choice = "중앙"  # 수비 방향 (직접 수정하여 테스트해보세요)
+for c in plain_text:                   # 평문의 모든 글자에 대해 반복
+    x = ord(c)                         # 글자의 유니코드 값을 구함
+    x = x + 1                          # 코드값을 1 증가
+    cc = chr(x)                        # 증가된 코드값의 문자를 구함
+    encrypted_text = encrypted_text + cc  # 암호문에 추가
 
-print(f"컴퓨터의 킥 방향: {computer_choice}")
-print(f"당신의 수비 방향: {user_choice}")
-
-if computer_choice == user_choice:
-    print("수비에 성공하셨습니다!")    # 같으면 수비 성공
-else:
-    print("페널티킥이 성공하였습니다.")  # 다르면 골`
+print("평문:", plain_text)
+print("암호문:", encrypted_text)`
   },
   {
-    name: 'movie',
-    title: '영화 관람 나이 제한',
-    desc: '15세 이상 판별',
-    code: `# === 영화 관람 나이 제한 ===
-# 15세 이상만 관람할 수 있는 영화의 나이 검사를 합니다.
+    name: 'decrypt',
+    title: '문자 코드 복호화',
+    desc: '코드값 -1로 평문 복원',
+    code: `# === 문자 코드 복호화 ===
+# 암호문의 각 문자 코드값을 1 감소시켜 원래 문장을 복원합니다.
 
-print("안녕하세요? 두근두근 영화관입니다.")
+encrypted_text = "Mpwf!xjmm!gjoe!b!xbz/"  # 암호문
 
-# age = int(input("나이를 입력하시오: "))
-age = 17  # 나이 (직접 수정하여 테스트해보세요)
+plain_text = ""                             # 복호화된 평문
 
-if age >= 15:
-    print("본 영화를 보실 수 있습니다.")     # 15세 이상
-else:
-    print("본 영화를 보실 수 없습니다.")     # 15세 미만`
+for c in encrypted_text:                    # 암호문의 모든 글자에 대해 반복
+    x = ord(c)                              # 글자의 유니코드 값
+    x = x - 1                               # 코드값을 1 감소
+    cc = chr(x)                             # 감소된 코드값의 문자
+    plain_text = plain_text + cc            # 평문에 추가
+
+print("암호문:", encrypted_text)
+print("복호화:", plain_text)`
   },
   {
-    name: 'command',
-    title: '시스템 명령어 처리',
-    desc: 'if-elif로 명령 분기',
-    code: `# === 시스템 명령어 처리 ===
-# if-elif-else로 명령어에 따라 다른 동작을 수행합니다.
+    name: 'count',
+    title: '모음 개수 세기',
+    desc: '문자열에서 a,e,i,o,u 카운트',
+    code: `# === 모음 개수 세기 ===
+# 문자열에서 영어 모음(a, e, i, o, u)의 개수를 셉니다.
 
-import os
+def countVowel(string):
+    """문자열에서 모음의 개수를 반환하는 함수"""
+    count = 0
+    for ch in string:                     # 문자열의 각 문자를 순회
+        if ch in ['a', 'e', 'i', 'o', 'u']:  # 모음인지 확인
+            count += 1                    # 모음이면 카운트 증가
+    return count
 
-# command = input("명령을 입력하시오: ")
-command = "cwd"  # 명령어 (직접 수정하여 테스트해보세요: "cwd" 또는 "shutdown")
+# s = input("문자열을 입력하시오: ")
+s = "Hello Python Programming"  # 문자열 (직접 수정하여 테스트해보세요)
 
-if command == "shutdown":
-    print("컴퓨터가 곧 종료됩니다.")
-    # os.system("shutdown /s /t 1")  # 실제 종료 명령 (주의!)
-elif command == "cwd":
-    cwd = os.getcwd()              # 현재 작업 디렉토리 가져오기
-    print("Current working directory:", cwd)
-else:
-    print("알수 없는 명령어입니다.")`
+n = countVowel(s)
+print(f"입력 문자열: {s}")
+print(f"모음의 개수는 {n}개입니다.")`
   },
   {
-    name: 'sing',
-    title: '종달새 노래 조건',
-    desc: '시간·날씨 and 복합 조건',
-    code: `# === 종달새 노래 조건 ===
-# and 연산자로 여러 조건을 동시에 만족하는지 확인합니다.
+    name: 'remove_words',
+    title: '단어 리스트 제거',
+    desc: 'for 루프로 특정 단어 제거',
+    code: `# === 단어 리스트 제거 ===
+# 문자열에서 특정 단어를 제거합니다.
 
-import random
+s = "You said some winds blow forever and I didn't understand"
+list1 = s.split()  # 공백 기준으로 분리하여 리스트로 변환
 
-time = random.randint(1, 24)  # 랜덤 시각 (1~24)
-print("좋은 아침입니다. 지금 시각은 " + str(time) + "시 입니다.")
+remove_words = ['some', 'forever']  # 제거할 단어 목록
 
-sunny = random.choice([True, False])  # 화창한 날씨 여부
+print("입력 문자열:")
+print(s)
+print("삭제 단어들:")
+print(remove_words)
 
-if sunny:
-    print("현재 날씨가 화창합니다.")
-else:
-    print("현재 날씨가 화창하지 않습니다.")
+# 삭제 단어를 제외한 새 리스트 생성
+result = [word for word in list1 if word not in remove_words]
 
-# 복합 조건: 6시~9시 사이 AND 화창한 날씨일 때만 노래
-if time >= 6 and time < 9 and sunny:
-    print("종달새가 노래를 합니다.")
-else:
-    print("종달새가 노래를 하지 않습니다.")`
+print("삭제 후 남은 단어들:")
+print(result)`
   },
   {
-    name: 'leap',
-    title: '윤년 판별',
-    desc: '4, 100, 400 복합 논리 연산',
-    code: `# === 윤년 판별 프로그램 ===
-# 윤년 조건: (4의 배수 AND 100의 배수가 아님) OR 400의 배수
-
-# year = int(input("연도를 입력하시오: "))
-year = 2024  # 연도 (직접 수정하여 테스트해보세요)
-
-if (year % 4 == 0 and year % 100 != 0) or year % 400 == 0:
-    print(year, "년은 윤년입니다.")
-else:
-    print(year, "년은 윤년이 아닙니다.")`
-  },
-  {
-    name: 'for_teller',
-    title: '미래 예언 프로그램',
-    desc: '랜덤+if로 8가지 예언',
-    code: `# === 미래 예언 프로그램 ===
-# 랜덤 숫자와 if-elif로 8가지 예언을 출력합니다.
+    name: 'lotto',
+    title: '로또 번호 생성기',
+    desc: '중복 없이 6개 번호 뽑기',
+    code: `# === 로또 번호 생성기 ===
+# 1~45 사이에서 중복 없이 6개의 번호를 뽑습니다.
 
 import random
 
-# name = input("이름: ")
-name = "김파이"  # 이름 (직접 수정하여 테스트해보세요)
+def getLotto():
+    """중복 없는 6개의 로또 번호를 생성하는 함수"""
+    numbers = []
+    while len(numbers) < 6:                 # 6개가 될 때까지 반복
+        n = random.randint(1, 45)           # 1~45 랜덤 정수
+        if n not in numbers:                # 중복 검사
+            numbers.append(n)               # 중복이 아니면 추가
+    return numbers
 
-# question = input("무엇에 대하여 알고 싶은가요? ")
-question = "오늘의 운세"  # 질문
-
-print(name + "님", "\\"", question, "\\"에 대하여 질문 주셨군요.")
-print("운명의 주사위를 굴려볼께요...")
-
-answers = random.randint(1, 8)  # 1~8 랜덤
-
-if answers == 1:
-    print("네, 확실합니다.")
-elif answers == 2:
-    print("전망이 좋은 거 같은 데요.")
-elif answers == 3:
-    print("믿으셔도 됩니다.")
-elif answers == 4:
-    print("글쎄요 아닌 거 같군요.")
-elif answers == 5:
-    print("한 점의 의심도 없이 맞습니다.")
-elif answers == 6:
-    print("그럼요, 명백히 올바른 선택을 했습니다.")
-elif answers == 7:
-    print("제 답변은 No입니다.")
-else:
-    print("나중에 다시 물어 보세요.")`
+print(f"생성된 로또번호: {getLotto()}")`
   },
 ];
 export default step7;

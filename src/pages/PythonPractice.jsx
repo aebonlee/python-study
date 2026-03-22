@@ -3,6 +3,8 @@ import { useCodeRunner } from '../hooks/useCodeRunner'
 import { useAuth } from '../contexts/AuthContext'
 import { stepMeta, stepLoaders } from '../data/pythonSteps/index.js'
 
+const PracticeEditor = lazy(() => import('../components/PracticeEditor'))
+
 /* ── 기본값→직접입력 자동 변환 ── */
 function generateInputVersion(code) {
   const lines = code.split('\n')
@@ -45,10 +47,8 @@ function detectInputPrompts(code) {
   const prompts = []
   for (const line of code.split('\n')) {
     if (line.trim().startsWith('#')) continue
-    /* standard input("prompt") - exclude textinput/numinput */
     const inputMatches = [...line.matchAll(/(?<![a-zA-Z])input\s*\(\s*(?:["']([^"']*?)["'])?\s*\)/g)]
     for (const m of inputMatches) prompts.push(m[1] || '입력하세요:')
-    /* turtle.textinput("title", "prompt") / turtle.numinput("title", "prompt") */
     const turtleMatches = [...line.matchAll(/(?:textinput|numinput)\s*\(\s*["'][^"']*["']\s*,\s*["']([^"']*?)["']/g)]
     for (const m of turtleMatches) prompts.push(m[1] || '입력하세요:')
   }
@@ -60,6 +60,8 @@ const UNSUPPORTED_MODULES = [
   { pattern: /(?:^|\n)\s*(?:import\s+tkinter|from\s+tkinter\s)/, name: 'tkinter' },
   { pattern: /(?:^|\n)\s*(?:import\s+matplotlib|from\s+matplotlib\s)/, name: 'matplotlib' },
   { pattern: /(?:^|\n)\s*(?:import\s+pygame|from\s+pygame\s)/, name: 'pygame' },
+  { pattern: /(?:^|\n)\s*(?:import\s+webbrowser)/, name: 'webbrowser' },
+  { pattern: /(?:^|\n)\s*(?:from\s+gtts\s)/, name: 'gTTS' },
 ]
 
 /* ── 단계별 코드 실행 패널 ── */
@@ -77,6 +79,7 @@ const StepCodeRunner = ({ example, onReset }) => {
   const inputVersion = useMemo(() => generateInputVersion(example.code), [example.code])
   const hasTabs = inputVersion !== null
   const baseCode = codeMode === 'input' ? inputVersion : example.code
+  const isModified = code !== baseCode
 
   useEffect(() => {
     setCode(example.code)
@@ -102,6 +105,13 @@ const StepCodeRunner = ({ example, onReset }) => {
   const handleRun = useCallback(() => {
     setUnsupportedMsg(null)
     setWaitingForInput(false)
+    // type 필드 우선 → regex fallback
+    const exType = example.type
+    if (exType && exType !== 'runnable') {
+      resetOutput()
+      setUnsupportedMsg(exType)
+      return
+    }
     const found = UNSUPPORTED_MODULES.find(m => m.pattern.test(code))
     if (found) {
       resetOutput()
@@ -117,7 +127,7 @@ const StepCodeRunner = ({ example, onReset }) => {
       return
     }
     runCode(code)
-  }, [runCode, code, resetOutput])
+  }, [runCode, code, resetOutput, example.type])
 
   const updateInputValue = useCallback((idx, val) => {
     setInputValues(prev => { const next = [...prev]; next[idx] = val; return next })
@@ -163,14 +173,13 @@ const StepCodeRunner = ({ example, onReset }) => {
   const isRunning = status === 'loading' || status === 'running'
   const hasOutput = output || errorMsg || unsupportedMsg
 
-  const lineCount = code.split('\n').length
-
   return (
     <div className="practice-step-runner">
       <div className="practice-runner-header">
         <span className="practice-runner-filename">
           <i className="fa-brands fa-python" /> {example.name}.py
           <span className="practice-runner-title">{example.title}</span>
+          {isModified && <span className="practice-modified-badge">수정됨</span>}
         </span>
         <div className="practice-runner-actions">
           <button className={`editor-btn${copied ? ' copied' : ''}`} onClick={handleCopy}>
@@ -202,30 +211,9 @@ const StepCodeRunner = ({ example, onReset }) => {
         </div>
       )}
 
-      <div className="practice-editor-body">
-        <div className="line-numbers">
-          {Array.from({ length: lineCount }, (_, i) => (
-            <span key={i + 1}>{i + 1}</span>
-          ))}
-        </div>
-        <textarea
-          className="code-input"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Tab') {
-              e.preventDefault()
-              const start = e.target.selectionStart
-              const end = e.target.selectionEnd
-              setCode(code.substring(0, start) + '    ' + code.substring(end))
-              setTimeout(() => { e.target.selectionStart = e.target.selectionEnd = start + 4 }, 0)
-            }
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') handleRun()
-          }}
-          spellCheck={false}
-          disabled={isRunning}
-        />
-      </div>
+      <Suspense fallback={<div style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-light)' }}>Loading editor...</div>}>
+        <PracticeEditor value={code} onChange={setCode} disabled={isRunning} fontSize={15} />
+      </Suspense>
 
       <div className="practice-toolbar">
         <button className="editor-btn run-btn" onClick={() => requireAuth(handleRun)} disabled={isRunning}>
@@ -252,6 +240,17 @@ const StepCodeRunner = ({ example, onReset }) => {
               <strong>{unsupportedMsg}</strong> 모듈은 브라우저에서 실행할 수 없습니다.
               <p>코드를 다운로드하여 PC의 Python IDLE 또는 VS Code에서 실행해 주세요.</p>
             </div>
+          </div>
+          <div className="practice-screenshot">
+            <p className="practice-screenshot-label">
+              <i className="fa-solid fa-image" /> 실행 결과 예시
+            </p>
+            <img
+              src={`/py/img/${example.name}.png?v=2`}
+              alt={`${example.name} 실행 결과`}
+              className="practice-screenshot-img"
+              onError={(e) => { e.target.closest('.practice-screenshot').style.display = 'none' }}
+            />
           </div>
         </div>
       )}
@@ -364,13 +363,29 @@ const StepSection = ({ meta }) => {
       <div className="practice-runner-panel">
         {selectedIdx !== null && examples && examples[selectedIdx] ? (
           <StepCodeRunner
+            key={examples[selectedIdx].name}
             example={examples[selectedIdx]}
             onReset={() => setSelectedIdx(null)}
           />
         ) : (
           <div className="practice-runner-empty">
-            <i className="fa-solid fa-hand-point-left" />
+            <div className="practice-runner-empty-icon"><i className="fa-solid fa-hand-point-left" /></div>
             <p>예제를 선택하면 코드를 편집하고 실행할 수 있습니다.</p>
+            {meta.step === 5 && (
+              <p className="practice-runner-empty-notice">
+                이 단계는 Python turtle 모듈의 동작을 이해할 수 있도록 SVG 기반으로 구현된 웹 실습 환경입니다. 실제 turtle 모듈과 문법이 동일하므로 학습한 내용을 로컬 Python 환경에서도 그대로 활용할 수 있습니다.
+              </p>
+            )}
+            {meta.step === 6 && (
+              <p className="practice-runner-empty-notice">
+                이 단계의 예제들은 이벤트/애니메이션 등 turtle 고급 기능을 사용하므로 브라우저에서는 실행할 수 없습니다. 코드를 다운로드하여 로컬 Python 환경(IDLE, VS Code 등)에서 실행하세요.
+              </p>
+            )}
+            {(meta.step === 98 || meta.step === 99) && (
+              <p className="practice-runner-empty-notice">
+                이 단계는 Python tkinter 모듈의 동작을 이해할 수 있도록 웹 환경에서 구현된 실습입니다. 실제 tkinter GUI 프로그래밍의 구조와 문법을 학습할 수 있으며, 로컬 Python 환경에서 동일한 코드를 실행할 수 있습니다.
+              </p>
+            )}
           </div>
         )}
       </div>

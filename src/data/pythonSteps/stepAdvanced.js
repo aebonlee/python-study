@@ -3,6 +3,7 @@ const stepAdvanced = [
   {
     name: 'window1',
     title: 'tkinter 기본 창',
+    type: 'tkinter',
     desc: '버튼 하나 있는 기본 GUI 창',
     code: `# === tkinter 기본 창 ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -19,6 +20,7 @@ window.mainloop()                      # 이벤트 루프 시작`
   {
     name: 'event1',
     title: 'tkinter 버튼 이벤트',
+    type: 'tkinter',
     desc: '클릭 시 메시지 출력',
     code: `# === tkinter 버튼 이벤트 ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -38,6 +40,7 @@ window.mainloop()`
   {
     name: 'absolute',
     title: 'tkinter 절대 배치',
+    type: 'tkinter',
     desc: 'place()로 레이블 절대 좌표 배치',
     code: `# === tkinter 절대 배치 (place) ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -62,6 +65,7 @@ window.mainloop()`
   {
     name: 'place',
     title: 'tkinter place() 레이아웃',
+    type: 'tkinter',
     desc: '절대 좌표 레이아웃 예제',
     code: `# === tkinter place() 레이아웃 ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -86,6 +90,7 @@ window.mainloop()`
   {
     name: 'temp1',
     title: '온도 변환 GUI (pack)',
+    type: 'tkinter',
     desc: 'pack() 레이아웃 온도 변환기',
     code: `# === 온도 변환 GUI (pack 레이아웃) ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -116,6 +121,7 @@ window.mainloop()`
   {
     name: 'temp2',
     title: '온도 변환 GUI (grid)',
+    type: 'tkinter',
     desc: 'grid() 레이아웃 온도 변환기',
     code: `# === 온도 변환 GUI (grid 레이아웃) ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -146,6 +152,7 @@ window.mainloop()`
   {
     name: 'temp3',
     title: '온도 변환 GUI (이벤트)',
+    type: 'tkinter',
     desc: '버튼 클릭 이벤트 처리',
     code: `# === 온도 변환 GUI (이벤트 처리) ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -180,6 +187,7 @@ window.mainloop()`
   {
     name: 'temp4',
     title: '온도 변환 GUI (계산)',
+    type: 'tkinter',
     desc: '화씨→섭씨 실제 계산 완성',
     code: `# === 온도 변환 GUI (실제 계산) ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -215,6 +223,7 @@ window.mainloop()`
   {
     name: 'temp5',
     title: '온도 변환 GUI (스타일)',
+    type: 'tkinter',
     desc: '폰트·배경 스타일 적용 완성판',
     code: `# === 온도 변환 GUI (스타일 적용) ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -250,6 +259,7 @@ window.mainloop()`
   {
     name: 'calc1',
     title: '계산기 UI (버튼 배치)',
+    type: 'tkinter',
     desc: 'tkinter 그리드 계산기 레이아웃',
     code: `# === 계산기 UI (버튼 배치) ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -282,7 +292,7 @@ col_index = 0
 for button_text in button_list:
     # 주의: command=click(button_text)는 즉시 실행됨 (오류 예제)
     Button(window, text=button_text, width=5,
-           command=lambda t=button_text: click(t)
+           command=click(button_text)
     ).grid(row=row_index, column=col_index)
     col_index += 1
     if col_index > 4:
@@ -294,6 +304,7 @@ window.mainloop()`
   {
     name: 'calc2',
     title: '계산기 (이벤트 수정)',
+    type: 'tkinter',
     desc: '버튼 클릭 이벤트 올바른 바인딩',
     code: `# === 계산기 (이벤트 수정) ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
@@ -336,6 +347,7 @@ window.mainloop()`
   {
     name: 'calc3',
     title: '계산기 (완성)',
+    type: 'tkinter',
     desc: 'eval()로 수식 계산 완성판',
     code: `# === 계산기 (완성) ===
 # [주의] tkinter는 브라우저에서 실행할 수 없습니다.
