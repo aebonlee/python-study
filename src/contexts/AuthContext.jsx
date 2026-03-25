@@ -14,8 +14,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const [sessionTimeLeft, setSessionTimeLeft] = useState(null)
   const [showLoginModal, setShowLoginModal] = useState(false)
+  const [accountBlock, setAccountBlock] = useState(null)
   const intervalRef = useRef(null)
   const pendingActionRef = useRef(null)
+
+  const clearAccountBlock = () => setAccountBlock(null)
 
   const getSessionExpiry = () => {
     try {
@@ -89,6 +92,45 @@ export function AuthProvider({ children }) {
         .eq('id', u.id)
         .single()
       setUserRole(data?.role || 'student')
+
+      // signup_domain / visited_sites 자동 처리 (user_profiles 공유 테이블)
+      const currentDomain = window.location.hostname
+      const { data: upData } = await supabase
+        .from('user_profiles')
+        .select('signup_domain, visited_sites')
+        .eq('id', u.id)
+        .single()
+      if (upData) {
+        const updates = {}
+        if (!upData.signup_domain) updates.signup_domain = currentDomain
+        const sites = Array.isArray(upData.visited_sites) ? upData.visited_sites : []
+        if (!sites.includes(currentDomain)) {
+          updates.visited_sites = [...sites, currentDomain]
+        }
+        if (Object.keys(updates).length > 0) {
+          supabase.from('user_profiles').update(updates).eq('id', u.id).then(() => {})
+        }
+      }
+
+      // 계정 상태 체크
+      try {
+        const { data: statusData } = await supabase.rpc('check_user_status', {
+          target_user_id: u.id,
+          current_domain: currentDomain,
+        })
+        if (statusData && statusData.status && statusData.status !== 'active') {
+          setAccountBlock({
+            status: statusData.status,
+            reason: statusData.reason || '',
+            suspended_until: statusData.suspended_until || null,
+          })
+          await supabase.auth.signOut()
+          setUser(null)
+          return
+        }
+      } catch {
+        // check_user_status 함수 미존재 시 무시
+      }
     } catch (err) {
       console.error('사용자 정보 저장 오류:', err)
       setUserRole('student')
@@ -123,7 +165,7 @@ export function AuthProvider({ children }) {
       setLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       const u = session?.user ?? null
       setUser(u)
       if (u) {
@@ -132,6 +174,12 @@ export function AuthProvider({ children }) {
         setSessionTimeLeft(SESSION_DURATION)
         startSessionTimer()
         upsertUser(u)
+        if (event === 'SIGNED_IN') {
+          supabase.from('user_profiles')
+            .update({ last_sign_in_at: new Date().toISOString() })
+            .eq('id', u.id)
+            .then(() => {})
+        }
         // Execute pending action after login
         if (pendingActionRef.current) {
           const action = pendingActionRef.current
@@ -198,6 +246,8 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     loading,
+    accountBlock,
+    clearAccountBlock,
     signInWithGoogle,
     signInWithKakao,
     signOut,
