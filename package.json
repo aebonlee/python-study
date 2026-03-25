@@ -1,5 +1,7 @@
 {
   "name": "python-study",
+  "description": "파이썬 학습 사이트",
+  "homepage": "https://python-study.dreamitbiz.com",
   "private": true,
   "version": "1.0.0",
   "type": "module",
