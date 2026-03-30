@@ -217,6 +217,30 @@ export function AuthProvider({ children }) {
     if (error) console.error('Kakao 로그인 오류:', error.message)
   }
 
+  const signInWithEmail = async (email, password) => {
+    if (!isSupabaseEnabled()) return { error: { message: 'Supabase가 설정되지 않았습니다.' } }
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    return { data, error }
+  }
+
+  const signUpWithEmail = async (email, password, displayName) => {
+    if (!isSupabaseEnabled()) return { error: { message: 'Supabase가 설정되지 않았습니다.' } }
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { display_name: displayName } }
+    })
+    return { data, error }
+  }
+
+  const resetPassword = async (email) => {
+    if (!isSupabaseEnabled()) return { error: { message: 'Supabase가 설정되지 않았습니다.' } }
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/login',
+    })
+    return { data, error }
+  }
+
   const signOut = doSignOut
 
   const requireAuth = useCallback((callback) => {
@@ -250,6 +274,9 @@ export function AuthProvider({ children }) {
     clearAccountBlock,
     signInWithGoogle,
     signInWithKakao,
+    signInWithEmail,
+    signUpWithEmail,
+    resetPassword,
     signOut,
     isAuthenticated: !!user,
     isAdmin,
