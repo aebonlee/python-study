@@ -1,8 +1,13 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 
-const ThemeContext = createContext()
+interface ThemeContextType {
+  theme: string
+  toggleTheme: () => void
+}
 
-export function ThemeProvider({ children }) {
+const ThemeContext = createContext<ThemeContextType | null>(null)
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('pymaster-theme')
     return saved || 'light'

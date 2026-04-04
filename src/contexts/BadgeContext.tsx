@@ -1,21 +1,46 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
 import { badges } from '../data/badges'
 import { useProgress } from './ProgressContext'
 import { useLanguage } from './LanguageContext'
 import { lessons } from '../data/lessons'
 
-const BadgeContext = createContext()
+interface Badge {
+  id: string
+  title: string
+  titleEn: string
+  description: string
+  descriptionEn: string
+  icon: string
+  tier: string
+  condition: {
+    type: string
+    count?: number
+    level?: string
+    quizId?: string
+    minScore?: number
+    days?: number
+    lessonIds?: string[]
+  }
+}
+
+interface BadgeContextType {
+  earnedBadges: string[]
+  newBadge: Badge | null
+  dismissBadgeNotification: () => void
+}
+
+const BadgeContext = createContext<BadgeContextType | null>(null)
 
 const STORAGE_KEY = 'pymaster-badges'
 
-export function BadgeProvider({ children }) {
-  const [earnedBadges, setEarnedBadges] = useState(() => {
+export function BadgeProvider({ children }: { children: ReactNode }) {
+  const [earnedBadges, setEarnedBadges] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
       return saved ? JSON.parse(saved) : []
     } catch { return [] }
   })
-  const [newBadge, setNewBadge] = useState(null)
+  const [newBadge, setNewBadge] = useState<Badge | null>(null)
 
   const { completedLessons, quizScores, codeRuns, streak, isLevelCompleted, getQuizBestScore } = useProgress()
   const { lang, localizedField } = useLanguage()
@@ -28,9 +53,9 @@ export function BadgeProvider({ children }) {
 
   // Evaluate badge conditions
   useEffect(() => {
-    const newlyEarned = []
+    const newlyEarned: string[] = []
 
-    for (const badge of badges) {
+    for (const badge of badges as Badge[]) {
       if (earnedBadges.includes(badge.id)) continue
 
       const { condition } = badge
@@ -38,18 +63,18 @@ export function BadgeProvider({ children }) {
 
       switch (condition.type) {
         case 'lessons_completed':
-          earned = completedLessons.size >= condition.count
+          earned = completedLessons.size >= (condition.count || 0)
           break
         case 'level_completed':
-          earned = isLevelCompleted(condition.level)
+          earned = isLevelCompleted(condition.level || '')
           break
         case 'quiz_passed': {
-          const bs = getQuizBestScore(condition.quizId)
-          earned = bs !== undefined && bs >= condition.minScore
+          const bs = getQuizBestScore(condition.quizId || '')
+          earned = bs !== undefined && bs >= (condition.minScore || 0)
           break
         }
         case 'quiz_perfect':
-          earned = getQuizBestScore(condition.quizId) === 100
+          earned = getQuizBestScore(condition.quizId || '') === 100
           break
         case 'all_quizzes_passed':
           earned = Object.keys(quizScores).length >= 8 && Object.values(quizScores).every(s => s?.bestScore >= 70)
@@ -64,16 +89,16 @@ export function BadgeProvider({ children }) {
           earned = ['lib-standard', 'lib-turtle', 'lib-data', 'lib-ai'].every(id => getQuizBestScore(id) === 100)
           break
         case 'code_runs':
-          earned = codeRuns >= condition.count
+          earned = codeRuns >= (condition.count || 0)
           break
         case 'streak':
-          earned = streak.count >= condition.days
+          earned = streak.count >= (condition.days || 0)
           break
         case 'all_completed':
           earned = Object.keys(lessons).every(level => isLevelCompleted(level))
           break
         case 'specific_lessons':
-          earned = condition.lessonIds.every(id => completedLessons.has(id))
+          earned = (condition.lessonIds || []).every(id => completedLessons.has(id))
           break
         default:
           break
@@ -85,7 +110,7 @@ export function BadgeProvider({ children }) {
     if (newlyEarned.length > 0) {
       setEarnedBadges(prev => [...prev, ...newlyEarned])
       // Show the first new badge notification
-      const badgeData = badges.find(b => b.id === newlyEarned[0])
+      const badgeData = (badges as Badge[]).find(b => b.id === newlyEarned[0])
       if (badgeData) setNewBadge(badgeData)
     }
   }, [completedLessons, quizScores, codeRuns, streak, earnedBadges, isLevelCompleted, getQuizBestScore])

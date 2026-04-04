@@ -62,7 +62,7 @@ export default function Community() {
   const updateParams = useCallback((updates) => {
     const params = new URLSearchParams(searchParams)
     Object.entries(updates).forEach(([k, v]) => {
-      if (v) params.set(k, v)
+      if (v) params.set(k, v as string)
       else params.delete(k)
     })
     if (updates.category || updates.search || updates.tag) params.delete('page')

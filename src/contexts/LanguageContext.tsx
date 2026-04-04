@@ -1,12 +1,20 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
 import ko from '../locales/ko'
 import en from '../locales/en'
 
-const LanguageContext = createContext()
+interface LanguageContextType {
+  lang: string
+  setLang: (lang: string) => void
+  toggleLang: () => void
+  t: (key: string) => any
+  localizedField: (item: any, field: string) => any
+}
 
-const locales = { ko, en }
+const LanguageContext = createContext<LanguageContextType | null>(null)
 
-export function LanguageProvider({ children }) {
+const locales: Record<string, any> = { ko, en }
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState(() => {
     const saved = localStorage.getItem('pymaster-lang')
     return saved === 'en' ? 'en' : 'ko'
@@ -21,22 +29,22 @@ export function LanguageProvider({ children }) {
     setLang(prev => prev === 'ko' ? 'en' : 'ko')
   }, [])
 
-  const t = useCallback((key) => {
+  const t = useCallback((key: string) => {
     const keys = key.split('.')
-    let val = locales[lang]
+    let val: any = locales[lang]
     for (const k of keys) {
       val = val?.[k]
     }
     if (val !== undefined) return val
     // fallback to Korean
-    let fallback = locales.ko
+    let fallback: any = locales.ko
     for (const k of keys) {
       fallback = fallback?.[k]
     }
     return fallback ?? key
   }, [lang])
 
-  const localizedField = useCallback((item, field) => {
+  const localizedField = useCallback((item: any, field: string) => {
     if (lang === 'en') {
       const enField = field + 'En'
       if (item[enField]) return item[enField]

@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 
-let workerInstance = null;
+let workerInstance: Worker | null = null;
 let workerIdCounter = 0;
 
 function getPyodideWorker() {
@@ -13,12 +13,12 @@ function getPyodideWorker() {
   return workerInstance;
 }
 
-function runPython(code, inputs) {
+function runPython(code: string, inputs?: string[]): Promise<any> {
   return new Promise((resolve) => {
     const worker = getPyodideWorker();
     const id = ++workerIdCounter;
 
-    const handler = (e) => {
+    const handler = (e: MessageEvent) => {
       if (e.data.id === id) {
         worker.removeEventListener('message', handler);
         resolve(e.data);
@@ -35,7 +35,7 @@ export function useCodeRunner() {
   const [errorMsg, setErrorMsg] = useState('');
   const abortRef = useRef(false);
 
-  const runCode = useCallback(async (code, inputs) => {
+  const runCode = useCallback(async (code: string, inputs?: string[]) => {
     abortRef.current = false;
     setOutput('');
     setErrorMsg('');
@@ -58,7 +58,7 @@ export function useCodeRunner() {
       }
     } catch (err) {
       if (abortRef.current) return;
-      setErrorMsg(err.message || 'Unknown error');
+      setErrorMsg((err as Error).message || 'Unknown error');
       setStatus('error');
     }
   }, []);

@@ -39,7 +39,7 @@ export default function Home() {
                   height: `${3 + Math.random() * 5}px`,
                   '--duration': `${15 + Math.random() * 15}s`,
                   animationDelay: `${Math.random() * 10}s`
-                }}
+                } as React.CSSProperties}
               />
             ))}
           </div>
@@ -136,7 +136,7 @@ export default function Home() {
               const levelLessons = lessons[key] || []
               const progress = getLevelProgress(key)
               const title = t(`levelInfo.${key}.title`) || info.title
-              const desc = t(`levelInfo.${key}.description`) || info.description
+              const desc = t(`levelInfo.${key}.description`) || (info as any).description
               return (
                 <Link to={`/${key}`} key={key} className="path-card">
                   <div className="path-card-icon" style={{ background: `${info.color}15`, color: info.color }}>

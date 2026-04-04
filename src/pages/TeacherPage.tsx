@@ -75,7 +75,7 @@ export default function TeacherPage() {
 
       if (error) throw error
       setClasses(data || [])
-    } catch (err) {
+    } catch (err: any) {
       console.error('클래스 조회 오류:', err.message)
     } finally {
       setClassesLoading(false)
@@ -125,7 +125,7 @@ export default function TeacherPage() {
       })
 
       setAllStudents(studentsWithClass)
-    } catch (err) {
+    } catch (err: any) {
       console.error('학생 조회 오류:', err.message)
     } finally {
       setStudentsLoading(false)
@@ -161,7 +161,7 @@ export default function TeacherPage() {
         const quizData = p.quiz_data || {}
         const quizEntries = Object.values(quizData)
         if (quizEntries.length > 0) {
-          const avg = quizEntries.reduce((sum, q) => sum + (q.bestScore || 0), 0) / quizEntries.length
+          const avg = quizEntries.reduce((sum: number, q: any) => sum + (q.bestScore || 0), 0) / quizEntries.length
           totalQuizAvg += avg
           quizStudentCount++
         }
@@ -190,7 +190,7 @@ export default function TeacherPage() {
           const quizData = p.quiz_data || {}
           const quizEntries = Object.values(quizData)
           if (quizEntries.length > 0) {
-            classQuizTotal += quizEntries.reduce((sum, q) => sum + (q.bestScore || 0), 0) / quizEntries.length
+            classQuizTotal += quizEntries.reduce((sum: number, q: any) => sum + (q.bestScore || 0), 0) / quizEntries.length
             classQuizCount++
           }
         }
@@ -209,7 +209,7 @@ export default function TeacherPage() {
         avgLessonCompletion,
         classSummary,
       })
-    } catch (err) {
+    } catch (err: any) {
       console.error('통계 조회 오류:', err.message)
     } finally {
       setStatsLoading(false)
@@ -234,7 +234,7 @@ export default function TeacherPage() {
       if (error) throw error
       setNewClassName('')
       fetchClasses()
-    } catch (err) {
+    } catch (err: any) {
       console.error('클래스 생성 오류:', err.message)
       if (err.message?.includes('duplicate')) {
         // Code collision - retry
@@ -257,7 +257,7 @@ export default function TeacherPage() {
       if (error) throw error
       setClasses(prev => prev.filter(c => c.id !== classId))
       setDeleteConfirm(null)
-    } catch (err) {
+    } catch (err: any) {
       console.error('클래스 삭제 오류:', err.message)
     }
   }
@@ -338,7 +338,7 @@ export default function TeacherPage() {
       }
 
       setMemberProgress({ ...progress, quiz_data: quizData })
-    } catch (err) {
+    } catch (err: any) {
       console.error('학생 데이터 조회 오류:', err.message)
       setMemberProgress(emptyProgress)
     } finally {
@@ -405,7 +405,7 @@ export default function TeacherPage() {
 
       if (error) throw error
       fetchStudents()
-    } catch (err) {
+    } catch (err: any) {
       console.error('학생 제거 오류:', err.message)
     }
   }

@@ -1,22 +1,50 @@
-import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback, useRef, type ReactNode } from 'react'
 import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 
-const AuthContext = createContext()
+interface AccountBlock {
+  status: string
+  reason: string
+  suspended_until: string | null
+}
+
+interface AuthContextType {
+  user: any
+  loading: boolean
+  accountBlock: AccountBlock | null
+  clearAccountBlock: () => void
+  signInWithGoogle: () => Promise<void>
+  signInWithKakao: () => Promise<void>
+  signInWithEmail: (email: string, password: string) => Promise<{ data?: any; error?: any }>
+  signUpWithEmail: (email: string, password: string, displayName: string) => Promise<{ data?: any; error?: any }>
+  resetPassword: (email: string) => Promise<{ data?: any; error?: any }>
+  signOut: () => Promise<void>
+  isAuthenticated: boolean
+  isAdmin: boolean
+  isTeacher: boolean
+  sessionTimeLeft: number | null
+  showSessionWarning: boolean
+  extendSession: () => void
+  requireAuth: (callback: () => void) => void
+  showLoginModal: boolean
+  dismissLoginModal: () => void
+}
+
+const AuthContext = createContext<AuthContextType | null>(null)
 
 const SESSION_DURATION = 30 * 60 * 1000 // 30분
 const WARNING_THRESHOLD = 5 * 60 * 1000 // 5분
 const SESSION_EXPIRY_KEY = 'pymaster-session-expiry'
 const ADMIN_EMAILS = ['aebon@kakao.com']
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [userRole, setUserRole] = useState(null)
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<any>(null)
+  const [userRole, setUserRole] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
-  const [sessionTimeLeft, setSessionTimeLeft] = useState(null)
+  const [sessionTimeLeft, setSessionTimeLeft] = useState<number | null>(null)
   const [showLoginModal, setShowLoginModal] = useState(false)
-  const [accountBlock, setAccountBlock] = useState(null)
-  const intervalRef = useRef(null)
-  const pendingActionRef = useRef(null)
+  const [accountBlock, setAccountBlock] = useState<AccountBlock | null>(null)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const pendingActionRef = useRef<(() => void) | null>(null)
 
   const clearAccountBlock = () => setAccountBlock(null)
 
@@ -27,7 +55,7 @@ export function AuthProvider({ children }) {
     } catch { return null }
   }
 
-  const setSessionExpiry = (expiry) => {
+  const setSessionExpiry = (expiry: number | null) => {
     if (expiry) {
       localStorage.setItem(SESSION_EXPIRY_KEY, String(expiry))
     } else {
@@ -47,7 +75,7 @@ export function AuthProvider({ children }) {
   const doSignOut = useCallback(async () => {
     clearSessionTimer()
     if (isSupabaseEnabled()) {
-      await supabase.auth.signOut()
+      await supabase!.auth.signOut()
     }
   }, [clearSessionTimer])
 
@@ -73,10 +101,10 @@ export function AuthProvider({ children }) {
   }, [])
 
   // Upsert user info to pymaster_users table and fetch role
-  const upsertUser = useCallback(async (u) => {
+  const upsertUser = useCallback(async (u: any) => {
     if (!isSupabaseEnabled() || !u) return
     try {
-      await supabase.from(TABLES.USERS).upsert({
+      await supabase!.from(TABLES.USERS).upsert({
         id: u.id,
         email: u.email,
         name: u.user_metadata?.full_name || u.user_metadata?.name,
@@ -86,7 +114,7 @@ export function AuthProvider({ children }) {
       }, { onConflict: 'id' })
 
       // Fetch role from DB
-      const { data } = await supabase
+      const { data } = await supabase!
         .from(TABLES.USERS)
         .select('role')
         .eq('id', u.id)
@@ -95,26 +123,26 @@ export function AuthProvider({ children }) {
 
       // signup_domain / visited_sites 자동 처리 (user_profiles 공유 테이블)
       const currentDomain = window.location.hostname
-      const { data: upData } = await supabase
+      const { data: upData } = await supabase!
         .from('user_profiles')
         .select('signup_domain, visited_sites')
         .eq('id', u.id)
         .single()
       if (upData) {
-        const updates = {}
+        const updates: Record<string, any> = {}
         if (!upData.signup_domain) updates.signup_domain = currentDomain
         const sites = Array.isArray(upData.visited_sites) ? upData.visited_sites : []
         if (!sites.includes(currentDomain)) {
           updates.visited_sites = [...sites, currentDomain]
         }
         if (Object.keys(updates).length > 0) {
-          supabase.from('user_profiles').update(updates).eq('id', u.id).then(() => {})
+          supabase!.from('user_profiles').update(updates).eq('id', u.id).then(() => {})
         }
       }
 
       // 계정 상태 체크
       try {
-        const { data: statusData } = await supabase.rpc('check_user_status', {
+        const { data: statusData } = await supabase!.rpc('check_user_status', {
           target_user_id: u.id,
           current_domain: currentDomain,
         })
@@ -124,7 +152,7 @@ export function AuthProvider({ children }) {
             reason: statusData.reason || '',
             suspended_until: statusData.suspended_until || null,
           })
-          await supabase.auth.signOut()
+          await supabase!.auth.signOut()
           setUser(null)
           return
         }
@@ -144,7 +172,7 @@ export function AuthProvider({ children }) {
       return
     }
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase!.auth.getSession().then(async ({ data: { session } }) => {
       const u = session?.user ?? null
       setUser(u)
       if (u) {
@@ -165,7 +193,7 @@ export function AuthProvider({ children }) {
       setLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase!.auth.onAuthStateChange((_event, session) => {
       const u = session?.user ?? null
       setUser(u)
       if (u) {
@@ -174,8 +202,8 @@ export function AuthProvider({ children }) {
         setSessionTimeLeft(SESSION_DURATION)
         startSessionTimer()
         upsertUser(u)
-        if (event === 'SIGNED_IN') {
-          supabase.from('user_profiles')
+        if (_event === 'SIGNED_IN') {
+          supabase!.from('user_profiles')
             .update({ last_sign_in_at: new Date().toISOString() })
             .eq('id', u.id)
             .then(() => {})
@@ -201,7 +229,7 @@ export function AuthProvider({ children }) {
 
   const signInWithGoogle = async () => {
     if (!isSupabaseEnabled()) return
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase!.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: window.location.origin },
     })
@@ -210,22 +238,22 @@ export function AuthProvider({ children }) {
 
   const signInWithKakao = async () => {
     if (!isSupabaseEnabled()) return
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase!.auth.signInWithOAuth({
       provider: 'kakao',
       options: { redirectTo: window.location.origin },
     })
     if (error) console.error('Kakao 로그인 오류:', error.message)
   }
 
-  const signInWithEmail = async (email, password) => {
+  const signInWithEmail = async (email: string, password: string) => {
     if (!isSupabaseEnabled()) return { error: { message: 'Supabase가 설정되지 않았습니다.' } }
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase!.auth.signInWithPassword({ email, password })
     return { data, error }
   }
 
-  const signUpWithEmail = async (email, password, displayName) => {
+  const signUpWithEmail = async (email: string, password: string, displayName: string) => {
     if (!isSupabaseEnabled()) return { error: { message: 'Supabase가 설정되지 않았습니다.' } }
-    const { data, error } = await supabase.auth.signUp({
+    const { data, error } = await supabase!.auth.signUp({
       email,
       password,
       options: { data: { display_name: displayName } }
@@ -233,9 +261,9 @@ export function AuthProvider({ children }) {
     return { data, error }
   }
 
-  const resetPassword = async (email) => {
+  const resetPassword = async (email: string) => {
     if (!isSupabaseEnabled()) return { error: { message: 'Supabase가 설정되지 않았습니다.' } }
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { data, error } = await supabase!.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin + '/login',
     })
     return { data, error }
@@ -243,7 +271,7 @@ export function AuthProvider({ children }) {
 
   const signOut = doSignOut
 
-  const requireAuth = useCallback((callback) => {
+  const requireAuth = useCallback((callback: () => void) => {
     if (user) {
       callback()
     } else {
@@ -261,13 +289,13 @@ export function AuthProvider({ children }) {
   const isTeacher = userRole === 'teacher'
   const showSessionWarning = sessionTimeLeft !== null && sessionTimeLeft <= WARNING_THRESHOLD && sessionTimeLeft > 0
 
-  const formatTimeLeft = (ms) => {
+  const formatTimeLeft = (ms: number) => {
     const minutes = Math.floor(ms / 60000)
     const seconds = Math.floor((ms % 60000) / 1000)
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
 
-  const value = {
+  const value: AuthContextType = {
     user,
     loading,
     accountBlock,
@@ -296,7 +324,7 @@ export function AuthProvider({ children }) {
         <div className="session-warning">
           <div className="session-warning-content">
             <i className="fa-solid fa-clock" />
-            <span>세션이 <strong>{formatTimeLeft(sessionTimeLeft)}</strong> 후 만료됩니다</span>
+            <span>세션이 <strong>{formatTimeLeft(sessionTimeLeft!)}</strong> 후 만료됩니다</span>
             <button className="session-extend-btn" onClick={extendSession}>
               <i className="fa-solid fa-rotate-right" /> 연장하기
             </button>

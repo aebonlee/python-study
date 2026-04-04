@@ -19,7 +19,7 @@ export default function ForgotPassword() {
       if (err) throw err
       setSent(true)
     } catch (err) {
-      setError(err.message || '비밀번호 재설정 이메일 전송에 실패했습니다.')
+      setError((err as Error).message || '비밀번호 재설정 이메일 전송에 실패했습니다.')
     } finally {
       setLoading(false)
     }

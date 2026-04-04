@@ -102,7 +102,7 @@ export default function AdminPage() {
 
       if (error) throw error
       setCommunityPosts(data || [])
-    } catch (err) {
+    } catch (err: any) {
       console.error('게시글 조회 오류:', err.message)
     } finally {
       setCommunityLoading(false)
@@ -120,7 +120,7 @@ export default function AdminPage() {
 
       if (error) throw error
       setMembers(data || [])
-    } catch (err) {
+    } catch (err: any) {
       console.error('회원 조회 오류:', err.message)
     } finally {
       setMembersLoading(false)
@@ -187,7 +187,7 @@ export default function AdminPage() {
       }
 
       setMemberProgress({ ...progress, quiz_data: quizData })
-    } catch (err) {
+    } catch (err: any) {
       console.error('학생 데이터 조회 오류:', err.message)
       setMemberProgress(emptyProgress)
     } finally {
@@ -211,7 +211,7 @@ export default function AdminPage() {
       if (error) throw error
       setCommunityPosts(prev => prev.filter(p => p.id !== postId))
       setDeleteConfirm(null)
-    } catch (err) {
+    } catch (err: any) {
       console.error('삭제 오류:', err.message)
     }
   }
@@ -242,7 +242,7 @@ export default function AdminPage() {
       setMembers(prev => prev.map(m =>
         m.id === member.id ? { ...m, role: newRole } : m
       ))
-    } catch (err) {
+    } catch (err: any) {
       console.error('역할 변경 오류:', err.message)
     } finally {
       setRoleToggling(null)

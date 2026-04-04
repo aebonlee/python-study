@@ -251,7 +251,7 @@ const StepCodeRunner = ({ example, onReset }) => {
               src={`/py/img/${example.name}.png?v=2`}
               alt={`${example.name} output`}
               className="practice-screenshot-img"
-              onError={(e) => { e.target.closest('.practice-screenshot').style.display = 'none' }}
+              onError={(e) => { (e.target as HTMLElement).closest('.practice-screenshot')?.setAttribute('style', 'display:none') }}
             />
           </div>
         </div>

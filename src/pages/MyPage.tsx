@@ -59,7 +59,7 @@ export default function MyPage() {
         const membership = memberships.find(m => m.class_id === cls.id)
         return { ...cls, joined_at: membership?.joined_at }
       }))
-    } catch (err) {
+    } catch (err: any) {
       console.error('Class fetch error:', err.message)
     } finally {
       setClassesLoading(false)
@@ -111,7 +111,7 @@ export default function MyPage() {
       setJoinMessage({ type: 'success', text: `"${cls.class_name}" ${t('mypage.joinSuccess')}` })
       setClassCode('')
       fetchMyClasses()
-    } catch (err) {
+    } catch (err: any) {
       console.error('Class join error:', err.message)
       setJoinMessage({ type: 'error', text: t('mypage.joinError') })
     } finally {
@@ -130,7 +130,7 @@ export default function MyPage() {
 
       if (error) throw error
       fetchMyClasses()
-    } catch (err) {
+    } catch (err: any) {
       console.error('Class leave error:', err.message)
     }
   }

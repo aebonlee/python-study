@@ -93,10 +93,10 @@ export default function PythonLesson03() {
                     <tr><th>Category</th><th>Type</th><th>Description</th><th>Example</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td rowSpan="3"><strong>Numeric</strong></td><td><code>int</code></td><td>Integer</td><td><code>42, -3, 0</code></td></tr>
+                    <tr><td rowSpan={3}><strong>Numeric</strong></td><td><code>int</code></td><td>Integer</td><td><code>42, -3, 0</code></td></tr>
                     <tr><td><code>float</code></td><td>Float (floating point)</td><td><code>3.14, -0.5, 1.0</code></td></tr>
                     <tr><td><code>complex</code></td><td>Complex number</td><td><code>3+4j, 1j</code></td></tr>
-                    <tr><td rowSpan="3"><strong>Sequence</strong></td><td><code>str</code></td><td>String</td><td><code>"hello", 'Python'</code></td></tr>
+                    <tr><td rowSpan={3}><strong>Sequence</strong></td><td><code>str</code></td><td>String</td><td><code>"hello", 'Python'</code></td></tr>
                     <tr><td><code>list</code></td><td>List (mutable)</td><td><code>[1, 2, 3]</code></td></tr>
                     <tr><td><code>tuple</code></td><td>Tuple (immutable)</td><td><code>(1, 2, 3)</code></td></tr>
                     <tr><td><strong>Mapping</strong></td><td><code>dict</code></td><td>Dictionary (key-value pairs)</td><td><code>{'{'}name: "Alice"{'}'}</code></td></tr>
@@ -117,10 +117,10 @@ export default function PythonLesson03() {
                     <tr><th>분류</th><th>자료형</th><th>설명</th><th>예시</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td rowSpan="3"><strong>수치형</strong></td><td><code>int</code></td><td>정수</td><td><code>42, -3, 0</code></td></tr>
+                    <tr><td rowSpan={3}><strong>수치형</strong></td><td><code>int</code></td><td>정수</td><td><code>42, -3, 0</code></td></tr>
                     <tr><td><code>float</code></td><td>실수 (부동소수점)</td><td><code>3.14, -0.5, 1.0</code></td></tr>
                     <tr><td><code>complex</code></td><td>복소수</td><td><code>3+4j, 1j</code></td></tr>
-                    <tr><td rowSpan="3"><strong>시퀀스형</strong></td><td><code>str</code></td><td>문자열</td><td><code>"hello", '파이썬'</code></td></tr>
+                    <tr><td rowSpan={3}><strong>시퀀스형</strong></td><td><code>str</code></td><td>문자열</td><td><code>"hello", '파이썬'</code></td></tr>
                     <tr><td><code>list</code></td><td>리스트 (가변)</td><td><code>[1, 2, 3]</code></td></tr>
                     <tr><td><code>tuple</code></td><td>튜플 (불변)</td><td><code>(1, 2, 3)</code></td></tr>
                     <tr><td><strong>매핑형</strong></td><td><code>dict</code></td><td>딕셔너리 (키-값 쌍)</td><td><code>{'{'}name: "홍길동"{'}'}</code></td></tr>

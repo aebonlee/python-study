@@ -4,20 +4,20 @@ import { supabase, isSupabaseEnabled, TABLES } from '../config/supabase'
 const POSTS_PER_PAGE = 12
 
 export function useCommunity() {
-  const [posts, setPosts] = useState([])
-  const [post, setPost] = useState(null)
-  const [comments, setComments] = useState([])
+  const [posts, setPosts] = useState<any[]>([])
+  const [post, setPost] = useState<any>(null)
+  const [comments, setComments] = useState<any[]>([])
   const [totalCount, setTotalCount] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
 
   // 게시글 목록 조회
-  const fetchPosts = useCallback(async ({ category, search, tag, page = 1, sortBy = 'latest' } = {}) => {
+  const fetchPosts = useCallback(async ({ category, search, tag, page = 1, sortBy = 'latest' }: { category?: string; search?: string; tag?: string; page?: number; sortBy?: string } = {}) => {
     if (!isSupabaseEnabled()) return
     setLoading(true)
     setError(null)
     try {
-      let query = supabase
+      let query = supabase!
         .from(TABLES.COMMUNITY_POSTS)
         .select('*', { count: 'exact' })
 
@@ -51,7 +51,7 @@ export function useCommunity() {
       setPosts(data || [])
       setTotalCount(count || 0)
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       setPosts([])
     } finally {
       setLoading(false)
@@ -59,12 +59,12 @@ export function useCommunity() {
   }, [])
 
   // 게시글 상세 조회 + 조회수 증가
-  const fetchPost = useCallback(async (postId) => {
+  const fetchPost = useCallback(async (postId: string) => {
     if (!isSupabaseEnabled()) return
     setLoading(true)
     setError(null)
     try {
-      const { data, error: fetchError } = await supabase
+      const { data, error: fetchError } = await supabase!
         .from(TABLES.COMMUNITY_POSTS)
         .select('*')
         .eq('id', postId)
@@ -74,9 +74,9 @@ export function useCommunity() {
       setPost(data)
 
       // 조회수 증가 (비로그인도 가능 - RPC)
-      supabase.rpc('pymaster_increment_view_count', { p_post_id: postId }).catch(() => {})
+      supabase!.rpc('pymaster_increment_view_count', { p_post_id: postId }).then(() => {})
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       setPost(null)
     } finally {
       setLoading(false)
@@ -84,17 +84,17 @@ export function useCommunity() {
   }, [])
 
   // 글 작성
-  const createPost = useCallback(async ({ category, title, content, tags }) => {
+  const createPost = useCallback(async ({ category, title, content, tags }: { category: string; title: string; content: string; tags?: string[] }) => {
     if (!isSupabaseEnabled()) return null
     setError(null)
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user } } = await supabase!.auth.getUser()
       if (!user) throw new Error('로그인이 필요합니다')
 
       const authorName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0]
       const authorAvatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || ''
 
-      const { data, error: insertError } = await supabase
+      const { data, error: insertError } = await supabase!
         .from(TABLES.COMMUNITY_POSTS)
         .insert({
           author_id: user.id,
@@ -111,17 +111,17 @@ export function useCommunity() {
       if (insertError) throw insertError
       return data
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       return null
     }
   }, [])
 
   // 글 수정
-  const updatePost = useCallback(async (postId, updates) => {
+  const updatePost = useCallback(async (postId: string, updates: any) => {
     if (!isSupabaseEnabled()) return null
     setError(null)
     try {
-      const { data, error: updateError } = await supabase
+      const { data, error: updateError } = await supabase!
         .from(TABLES.COMMUNITY_POSTS)
         .update(updates)
         .eq('id', postId)
@@ -131,17 +131,17 @@ export function useCommunity() {
       if (updateError) throw updateError
       return data
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       return null
     }
   }, [])
 
   // 글 삭제
-  const deletePost = useCallback(async (postId) => {
+  const deletePost = useCallback(async (postId: string) => {
     if (!isSupabaseEnabled()) return false
     setError(null)
     try {
-      const { error: deleteError } = await supabase
+      const { error: deleteError } = await supabase!
         .from(TABLES.COMMUNITY_POSTS)
         .delete()
         .eq('id', postId)
@@ -149,35 +149,35 @@ export function useCommunity() {
       if (deleteError) throw deleteError
       return true
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       return false
     }
   }, [])
 
   // Q&A 해결 토글
-  const toggleSolved = useCallback(async (postId, isSolved) => {
+  const toggleSolved = useCallback(async (postId: string, isSolved: boolean) => {
     if (!isSupabaseEnabled()) return false
     setError(null)
     try {
-      const { error: updateError } = await supabase
+      const { error: updateError } = await supabase!
         .from(TABLES.COMMUNITY_POSTS)
         .update({ is_solved: isSolved })
         .eq('id', postId)
 
       if (updateError) throw updateError
-      setPost(prev => prev ? { ...prev, is_solved: isSolved } : prev)
+      setPost((prev: any) => prev ? { ...prev, is_solved: isSolved } : prev)
       return true
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       return false
     }
   }, [])
 
   // 댓글 목록 조회
-  const fetchComments = useCallback(async (postId) => {
+  const fetchComments = useCallback(async (postId: string) => {
     if (!isSupabaseEnabled()) return
     try {
-      const { data, error: fetchError } = await supabase
+      const { data, error: fetchError } = await supabase!
         .from(TABLES.COMMUNITY_COMMENTS)
         .select('*')
         .eq('post_id', postId)
@@ -186,23 +186,23 @@ export function useCommunity() {
       if (fetchError) throw fetchError
       setComments(data || [])
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       setComments([])
     }
   }, [])
 
   // 댓글 작성
-  const createComment = useCallback(async (postId, content) => {
+  const createComment = useCallback(async (postId: string, content: string) => {
     if (!isSupabaseEnabled()) return null
     setError(null)
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user } } = await supabase!.auth.getUser()
       if (!user) throw new Error('로그인이 필요합니다')
 
       const authorName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0]
       const authorAvatar = user.user_metadata?.avatar_url || user.user_metadata?.picture || ''
 
-      const { data, error: insertError } = await supabase
+      const { data, error: insertError } = await supabase!
         .from(TABLES.COMMUNITY_COMMENTS)
         .insert({
           post_id: postId,
@@ -216,44 +216,44 @@ export function useCommunity() {
 
       if (insertError) throw insertError
       setComments(prev => [...prev, data])
-      setPost(prev => prev ? { ...prev, comment_count: (prev.comment_count || 0) + 1 } : prev)
+      setPost((prev: any) => prev ? { ...prev, comment_count: (prev.comment_count || 0) + 1 } : prev)
       return data
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       return null
     }
   }, [])
 
   // 댓글 삭제
-  const deleteComment = useCallback(async (commentId) => {
+  const deleteComment = useCallback(async (commentId: string) => {
     if (!isSupabaseEnabled()) return false
     setError(null)
     try {
-      const { error: deleteError } = await supabase
+      const { error: deleteError } = await supabase!
         .from(TABLES.COMMUNITY_COMMENTS)
         .delete()
         .eq('id', commentId)
 
       if (deleteError) throw deleteError
-      setComments(prev => prev.filter(c => c.id !== commentId))
-      setPost(prev => prev ? { ...prev, comment_count: Math.max((prev.comment_count || 1) - 1, 0) } : prev)
+      setComments(prev => prev.filter((c: any) => c.id !== commentId))
+      setPost((prev: any) => prev ? { ...prev, comment_count: Math.max((prev.comment_count || 1) - 1, 0) } : prev)
       return true
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       return false
     }
   }, [])
 
   // 좋아요 토글
-  const toggleLike = useCallback(async (postId) => {
+  const toggleLike = useCallback(async (postId: string) => {
     if (!isSupabaseEnabled()) return null
     setError(null)
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user } } = await supabase!.auth.getUser()
       if (!user) throw new Error('로그인이 필요합니다')
 
       // 이미 좋아요 했는지 확인
-      const { data: existing } = await supabase
+      const { data: existing } = await supabase!
         .from(TABLES.COMMUNITY_LIKES)
         .select('id')
         .eq('post_id', postId)
@@ -262,36 +262,36 @@ export function useCommunity() {
 
       if (existing) {
         // 좋아요 취소
-        await supabase
+        await supabase!
           .from(TABLES.COMMUNITY_LIKES)
           .delete()
           .eq('id', existing.id)
 
-        setPost(prev => prev ? { ...prev, like_count: Math.max((prev.like_count || 1) - 1, 0) } : prev)
+        setPost((prev: any) => prev ? { ...prev, like_count: Math.max((prev.like_count || 1) - 1, 0) } : prev)
         return false
       } else {
         // 좋아요 추가
-        await supabase
+        await supabase!
           .from(TABLES.COMMUNITY_LIKES)
           .insert({ post_id: postId, user_id: user.id })
 
-        setPost(prev => prev ? { ...prev, like_count: (prev.like_count || 0) + 1 } : prev)
+        setPost((prev: any) => prev ? { ...prev, like_count: (prev.like_count || 0) + 1 } : prev)
         return true
       }
     } catch (err) {
-      setError(err.message)
+      setError((err as Error).message)
       return null
     }
   }, [])
 
   // 좋아요 여부 확인
-  const checkLiked = useCallback(async (postId) => {
+  const checkLiked = useCallback(async (postId: string) => {
     if (!isSupabaseEnabled()) return false
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user } } = await supabase!.auth.getUser()
       if (!user) return false
 
-      const { data } = await supabase
+      const { data } = await supabase!
         .from(TABLES.COMMUNITY_LIKES)
         .select('id')
         .eq('post_id', postId)
