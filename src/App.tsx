@@ -19,6 +19,7 @@ const Register = lazy(() => import('./pages/Register'))
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
 const MyPage = lazy(() => import('./pages/MyPage'))
 const AdminPage = lazy(() => import('./pages/AdminPage'))
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
 const TeacherPage = lazy(() => import('./pages/TeacherPage'))
 const PythonLearning = lazy(() => import('./pages/PythonLearning'))
 const PythonPractice = lazy(() => import('./pages/PythonPractice'))
@@ -98,6 +99,7 @@ function AppLayout() {
           <Route path="/" element={<LazyRoute element={<Home />} />} />
           <Route path="/my" element={<LazyRoute element={<MyPage />} />} />
           <Route path="/admin" element={<AdminRoute><LazyRoute element={<AdminPage />} /></AdminRoute>} />
+          <Route path="/admin/dashboard/*" element={<AdminRoute><LazyRoute element={<AdminDashboard />} /></AdminRoute>} />
           <Route path="/teacher" element={<TeacherRoute><LazyRoute element={<TeacherPage />} /></TeacherRoute>} />
           <Route path="/python-learning" element={<LazyRoute element={<PythonLearning />} />} />
           <Route path="/python-learning/01" element={<LazyRoute element={<PythonLesson01 />} />} />
