@@ -9,6 +9,11 @@
   .hero-title { font-size: 44px; }
 }
 @media (max-width: 768px) {
+  /* Touch target minimum size */
+  .btn, .nav-login-btn, button:not(.mobile-toggle) {
+      min-height: 44px;
+  }
+
   .container { padding: 0 16px; }
   .navbar { --nav-height: 56px; }
   .nav-menu { position: fixed; top: var(--nav-height); left: 0; right: 0; height: calc(100vh - var(--nav-height)); background: var(--bg-white); flex-direction: column; padding: 12px 20px; padding-bottom: calc(env(safe-area-inset-bottom, 16px) + 60px); gap: 0; transform: translateX(100%); transition: transform 0.3s; z-index: 1001; overflow-y: auto; -webkit-overflow-scrolling: touch; }
